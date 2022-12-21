@@ -1,0 +1,16 @@
+export enum TAX_TYPE {
+  NONE,
+  LAST_YEAR,
+  CURRENT_YEAR,
+  BOTH,
+}
+
+export enum STEP {
+  QUICK_QUOTE,
+  CLAIM_NOW,
+  SIGN_COMPLETE,
+  LAST_THING,
+  THANK_YOU,
+  ALL_DONE,
+  ERROR,
+}
