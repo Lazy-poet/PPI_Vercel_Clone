@@ -1,19 +1,12 @@
-import dynamic from "next/dynamic";
-import Footer from "@/components/Footer";
-import ReviewSection from "@/components/ReviewSection";
 import HeroSection from "@/components/HeroSection";
-
-const Header = dynamic(() => import("@/components/Header"), {
-  ssr: false,
-});
+import ReviewSection from "@/components/ReviewSection";
+import Layout from "@/components/Layout";
 
 export default function Home() {
   return (
-    <main>
-      <Header />
+    <Layout>
       <HeroSection />
       <ReviewSection />
-      <Footer />
-    </main>
+    </Layout>
   );
 }

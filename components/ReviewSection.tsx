@@ -5,7 +5,7 @@ const ReviewSection = () => {
         <figure className="max-w-screen-md mx-auto">
           <img
             className="mx-auto p-2 w-36 h-36 rounded-full ring-4 ring-gray-300 dark:ring-gray-500 mb-3 lg:mb-5"
-            src="reviewer-photo.jpg"
+            src="/images/reviewer-photo.jpg"
             alt="profile picture"
           />
           <div
@@ -22,12 +22,12 @@ const ReviewSection = () => {
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
             <img
               className="p-1 w-10 h-10 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-              src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
+              src="/images/reviewer-photo.jpg"
               alt="profile picture"
             />
             <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
               <div className="pr-3 font-medium text-gray-900 dark:text-white">
-                S
+                Sanya
               </div>
               <div className="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">
                 from reviews.io
