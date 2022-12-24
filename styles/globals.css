@@ -7,6 +7,7 @@
 }
 
 /* Form Validation */
+input,
 input:focus {
   background: #F3FAF7;
   border: 1px solid #0E9F6E !important;

@@ -5,19 +5,9 @@ const ClaimNow = () => {
   const [checked2, setChecked2] = useState<boolean>(true);
   const [employerName, setEmployerName] = useState<string>('');
 
-  const [formValidation, setFormValidation] = useState<any>({
-    employerName: true
-  });
-
-  const validateForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValidation({
-      employerName: employerName ? true : false,
-    });
-  }
-
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={formValidation.employerName ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
+      <div className={employerName ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -32,13 +22,10 @@ const ClaimNow = () => {
           placeholder="Name Of Employer"
           required
           value={employerName}
-          onChange={(e) => {
-            setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
-            validateForm(e);
-          }}
+          onChange={(e) => setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
         />
         {
-          (!employerName || !formValidation.employerName) &&
+          !employerName &&
           <p className="mt-2 text-sm text-red-600 dark:text-red-500">
             Please type the name of your employer
           </p>

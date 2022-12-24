@@ -1,7 +1,12 @@
+import { useState } from "react";
+const isNino = require('is-national-insurance-number');
+
 const LastThing = () => {
+  const [insurance, setInsurance] = useState<string>('');
+
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className="sm:col-span-2">
+      <div className={insurance && isNino(insurance) ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
         <label
           htmlFor="insurance"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -32,8 +37,16 @@ const LastThing = () => {
             placeholder="AA123456A"
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             required
+            value={insurance}
+            onChange={(e) => setInsurance(e.target.value.toUpperCase())}
           />
         </div>
+        {
+          (!insurance || !isNino(insurance)) &&
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            Please provide a valid National Insurance (NI) number
+          </p>
+        }
         <p
           id="helper-text-explanation"
           className="mt-2 text-sm text-gray-500 dark:text-gray-400"
