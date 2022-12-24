@@ -1,4 +1,27 @@
+import { useState } from "react";
+
 const QuickQuote = () => {
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [postCode, setPostCode] = useState<string>('');
+
+  const [formValidation, setFormValidation] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true
+  });
+
+  const validateForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValidation({
+      firstName: firstName ? true : false,
+      lastName: lastName ? true : false,
+      email: (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) ? true : false,
+      postCode: postCode ? true : false,
+    });
+  }
+
   return (
     <>
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
@@ -27,44 +50,61 @@ const QuickQuote = () => {
           </select>
         </div>
         <div className="hidden md:flex"></div> */}
-        <div>
+        <div className={formValidation.firstName ? '' : 'error'}>
           <label
             htmlFor="first-name"
-            className="block mb-2 text-lg font-medium text-green-700 dark:text-green-500"
+            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
           >
             First Name
           </label>
           <input
             type="text"
-            name="first-name"
+            name="firstName"
             id="first-name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="First Name"
             required
+            value={firstName}
+            onChange={(e) => {
+              setFirstName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+              validateForm(e);
+            }}
           />
-          <p className="mt-2 text-sm text-green-600 dark:text-green-500">
-            <span className="font-medium">Well done!</span> Some success
-            message.
-          </p>
+          {
+            !firstName &&
+            <p className="mt-2 text-sm">
+              {/* <span className="font-medium">Well done!</span> */}
+              Type Your First Name
+            </p>
+          }
         </div>
-        <div>
+        <div className={formValidation.lastName ? '' : 'error'}>
           <label
             htmlFor="last-name"
-            className="block mb-2 text-lg font-medium text-red-700 dark:text-red-500"
+            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
           >
             Last Name
           </label>
           <input
             type="text"
-            name="last-name"
+            name="lastName"
             id="last-name"
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             placeholder="Last Name"
             required
+            value={lastName}
+            onChange={(e) => {
+              setLastName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+              validateForm(e);
+            }}
           />
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            <span className="font-medium">Oh, snapp!</span> Some error message.
-          </p>
+          {
+            !lastName &&
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <span className="font-medium">Oh, snapp!</span> */}
+              Type Your Last Name
+            </p>
+          }
         </div>
         {/* <div className="sm:col-span-2">
           <label
@@ -107,7 +147,7 @@ const QuickQuote = () => {
             messages
           </p>
         </div> */}
-        <div className="sm:col-span-2">
+        <div className={formValidation.email ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
           <label
             htmlFor="email"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -132,14 +172,25 @@ const QuickQuote = () => {
               SECURE
             </span>
             <input
-              type="text"
+              type="email"
               name="email"
               id="email"
               placeholder="Email Address"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateForm(e);
+              }}
             />
           </div>
+          {
+            (!email || !formValidation.email) &&
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please provide a valid Email Address
+            </p>
+          }
           <p
             id="helper-text-explanation"
             className="mt-2 text-sm text-gray-500 dark:text-gray-400"
@@ -147,7 +198,7 @@ const QuickQuote = () => {
             We need your email so we can keep you updated on your claim
           </p>
         </div>
-        <div className="sm:col-span-2">
+        <div className={formValidation.postCode ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -175,9 +226,15 @@ const QuickQuote = () => {
             <input
               type="search"
               id="address"
+              name="postCode"
               className="block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Enter Your Postcode"
               required
+              value={postCode}
+              onChange={(e) => {
+                setPostCode(e.target.value.toUpperCase());
+                validateForm(e);
+              }}
             />
             <button
               type="submit"
@@ -186,6 +243,12 @@ const QuickQuote = () => {
               Search
             </button>
           </div>
+          {
+            !postCode &&
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please provide a valid UK postcode
+            </p>
+          }
           <p
             id="helper-text-explanation"
             className="mt-2 text-sm text-gray-500 dark:text-gray-400"

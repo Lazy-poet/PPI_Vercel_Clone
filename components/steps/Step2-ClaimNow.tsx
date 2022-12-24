@@ -3,10 +3,21 @@ import { useState } from "react";
 const ClaimNow = () => {
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
+  const [employerName, setEmployerName] = useState<string>('');
+
+  const [formValidation, setFormValidation] = useState<any>({
+    employerName: true
+  });
+
+  const validateForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValidation({
+      employerName: employerName ? true : false,
+    });
+  }
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className="sm:col-span-2">
+      <div className={formValidation.employerName ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -15,12 +26,23 @@ const ClaimNow = () => {
         </label>
         <input
           type="text"
-          name="employer"
+          name="employerName"
           id="employer"
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder="Name Of Employer"
           required
+          value={employerName}
+          onChange={(e) => {
+            setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+            validateForm(e);
+          }}
         />
+        {
+          (!employerName || !formValidation.employerName) &&
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            Please type the name of your employer
+          </p>
+        }
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
           Please write your employer&apos;s name as it appears on your payslip
         </p>

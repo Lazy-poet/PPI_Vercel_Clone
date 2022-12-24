@@ -5,3 +5,23 @@
 .animated-container {
   display: inline-flex !important;
 }
+
+/* Form Validation */
+input:focus {
+  background: #F3FAF7;
+  border: 1px solid #0E9F6E !important;
+  box-shadow: none !important;
+}
+
+.error {
+  color: #E02424;
+}
+
+.error input,
+.error input:focus {
+  background: #FDF2F2;
+  border: 1px solid #F05252 !important;
+  box-shadow: none !important;
+}
+
+/* ./Form Validation */
