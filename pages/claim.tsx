@@ -33,6 +33,7 @@ export default function Claim() {
     year: ''
   });
   const handleFormChange1 = (key: string, value: string) => {
+    console.log('>>>', key, value);
     setFormData1({
       ...formData1,
       firstEvent: false,

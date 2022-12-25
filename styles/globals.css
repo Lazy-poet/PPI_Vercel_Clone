@@ -7,29 +7,65 @@
 }
 
 /* Form Validation */
-.success input,
 input:focus,
-.success select,
-select:focus {
-  background: #F3FAF7 !important;
+select:focus,
+.success input:focus,
+.success select:focus,
+.error input:focus,
+.error select:focus {
+  background: #F9FAFB !important;
+  border: 1px solid #1C64F2 !important;
+  box-shadow: none !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  color: #111928 !important;
+  -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #F9FAFB inset !important;
+}
+
+input::placeholder {
+  color: #111928;
+}
+
+input:focus+.form-icon,
+select:focus+.form-icon {
+  display: none;
+}
+
+/* success */
+
+.success input,
+.success input:-webkit-autofill,
+.success select {
+  background-color: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
   box-shadow: none !important;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  /* font-size: 14px;
-  line-height: 150%; */
   color: #046C4E !important;
+  -webkit-text-fill-color: #046C4E !important;
+  -webkit-box-shadow: 0 0 0 30px #F3FAF7 inset !important;
 }
 
 .success input::placeholder {
   color: #046C4E !important;
 }
 
-.dark .success input,
 .dark input:focus,
-.dark .success select,
-.dark select:focus {
+.dark select:focus,
+.dark .success input:focus,
+.dark .success select:focus,
+.dark .error input:focus,
+.dark .error select:focus {
+  background: #374151 !important;
+  border: 1px solid #3F83F8 !important;
+  color: #FFFFFF !important;
+}
+
+.dark .success input,
+.dark .success select {
   background: #374151 !important;
   border: 1px solid #0E9F6E !important;
   color: #0E9F6E !important;
@@ -44,9 +80,7 @@ select:focus {
 }
 
 .error input,
-.error input:focus,
-.error select,
-.error select:focus {
+.error select {
   background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
   box-shadow: none !important;
@@ -55,7 +89,8 @@ select:focus {
   font-weight: 400;
   /* font-size: 14px;
   line-height: 150%; */
-  color: #C81E1E !important;
+  /* color: #C81E1E !important; */
+  color: #111928 !important;
 }
 
 /* 
@@ -64,9 +99,7 @@ select:focus {
 } */
 
 .dark .error input,
-.dark .error input:focus,
-.dark .error select,
-.dark .error select:focus {
+.dark .error select {
   background: #374151 !important;
   border: 1px solid #F05252 !important;
   color: #F05252 !important;
@@ -86,15 +119,38 @@ select:focus {
 .form-icon {
   position: absolute;
   right: 10px;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background-size: 22px 22px;
+  background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: center center;
+}
+
+@media (min-width: 640px) {
+  .form-icon {
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-icon {
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+  }
 }
 
 .success .form-icon {
