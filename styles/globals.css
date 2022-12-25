@@ -76,3 +76,30 @@ select:focus {
 }
 
 /* ./Form Validation */
+.icon-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-icon {
+  position: absolute;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-size: 22px 22px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.success .form-icon {
+  background-image: url(../public/images/icons/check.png);
+}
+
+.error .form-icon {
+  background-image: url(../public/images/icons/exclamation-circle.png);
+}

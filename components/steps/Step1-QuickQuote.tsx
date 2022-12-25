@@ -65,16 +65,19 @@ const QuickQuote = (props: any) => {
           >
             First Name
           </label>
-          <input
-            type="text"
-            name="firstName"
-            id="first-name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-            placeholder="First Name"
-            required
-            value={data.firstName}
-            onChange={(e) => handleInputChange(e)}
-          />
+          <div className="icon-input">
+            <input
+              type="text"
+              name="firstName"
+              id="first-name"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              placeholder="First Name"
+              required
+              value={data.firstName}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <span className="form-icon"></span>
+          </div>
           {
             data.firstEvent ? ''
               :
@@ -91,16 +94,19 @@ const QuickQuote = (props: any) => {
           >
             Last Name
           </label>
-          <input
-            type="text"
-            name="lastName"
-            id="last-name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-            placeholder="Last Name"
-            required
-            value={data.lastName}
-            onChange={(e) => handleInputChange(e)}
-          />
+          <div className="icon-input">
+            <input
+              type="text"
+              name="lastName"
+              id="last-name"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              placeholder="Last Name"
+              required
+              value={data.lastName}
+              onChange={(e) => handleInputChange(e)}
+            />
+            <span className="form-icon"></span>
+          </div>
           {
             data.firstEvent ? ''
               :
@@ -176,16 +182,19 @@ const QuickQuote = (props: any) => {
               </svg>
               SECURE
             </span>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Email Address"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-              required
-              value={data.email}
-              onChange={(e) => handleInputChange(e)}
-            />
+            <div className="icon-input w-full">
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Email Address"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                required
+                value={data.email}
+                onChange={(e) => handleInputChange(e)}
+              />
+              <span className="form-icon"></span>
+            </div>
           </div>
           {
             data.firstEvent
@@ -290,25 +299,28 @@ const QuickQuote = (props: any) => {
         <div id="birthday" className="grid gap-5 sm:grid-cols-3">
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
             <div className={data.firstEvent ? '' : (data.day ? 'success' : 'error')}>
-              <select
-                id="day"
-                className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="day"
-                value={data.day}
-                onChange={(e) => handleSelectChange(e)}
-              >
-                <option value="">DD</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+              <div className="icon-input">
+                <select
+                  id="day"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  name="day"
+                  value={data.day}
+                  onChange={(e) => handleSelectChange(e)}
+                >
+                  <option value="">DD</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <span className="form-icon"></span>
+              </div>
               {
                 data.firstEvent
                   ?
@@ -326,25 +338,28 @@ const QuickQuote = (props: any) => {
               }
             </div>
             <div className={data.firstEvent ? '' : (data.month ? 'success' : 'error')}>
-              <select
-                id="month"
-                className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="month"
-                value={data.month}
-                onChange={(e) => handleSelectChange(e)}
-              >
-                <option value="">MM</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+              <div className="icon-input">
+                <select
+                  id="month"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  name="month"
+                  value={data.month}
+                  onChange={(e) => handleSelectChange(e)}
+                >
+                  <option value="">MM</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <span className="form-icon"></span>
+              </div>
               {
                 data.firstEvent
                   ?
@@ -364,25 +379,28 @@ const QuickQuote = (props: any) => {
             </div>
           </div>
           <div className={data.firstEvent ? '' : (data.year ? 'success' : 'error')}>
-            <select
-              id="year"
-              className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              name="year"
-              value={data.year}
-              onChange={(e) => handleSelectChange(e)}
-            >
-              <option value="">YYYY</option>
-              <option value="1960">1960</option>
-              <option value="1961">1961</option>
-              <option value="1962">1962</option>
-              <option value="1963">1963</option>
-              <option value="1964">1964</option>
-              <option value="1965">1965</option>
-              <option value="1966">1966</option>
-              <option value="1967">1967</option>
-              <option value="1968">1968</option>
-              <option value="1969">1969</option>
-            </select>
+            <div className="icon-input">
+              <select
+                id="year"
+                className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                name="year"
+                value={data.year}
+                onChange={(e) => handleSelectChange(e)}
+              >
+                <option value="">YYYY</option>
+                <option value="1960">1960</option>
+                <option value="1961">1961</option>
+                <option value="1962">1962</option>
+                <option value="1963">1963</option>
+                <option value="1964">1964</option>
+                <option value="1965">1965</option>
+                <option value="1966">1966</option>
+                <option value="1967">1967</option>
+                <option value="1968">1968</option>
+                <option value="1969">1969</option>
+              </select>
+              <span className="form-icon"></span>
+            </div>
             {
               data.firstEvent
                 ?

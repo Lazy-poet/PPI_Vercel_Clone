@@ -19,16 +19,19 @@ const ClaimNow = (props: any) => {
         >
           What was the name of your employer?
         </label>
-        <input
-          type="text"
-          name="employerName"
-          id="employer"
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-          placeholder="Name Of Employer"
-          required
-          value={data.employerName}
-          onChange={(e) => handleInputChange(e)}
-        />
+        <div className="icon-input">
+          <input
+            type="text"
+            name="employerName"
+            id="employer"
+            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+            placeholder="Name Of Employer"
+            required
+            value={data.employerName}
+            onChange={(e) => handleInputChange(e)}
+          />
+          <span className="form-icon"></span>
+        </div>
         {
           data.firstEvent
             ?
