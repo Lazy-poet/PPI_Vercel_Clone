@@ -58,9 +58,10 @@ select:focus {
   color: #C81E1E !important;
 }
 
+/* 
 .error input::placeholder {
   color: #C81E1E !important;
-}
+} */
 
 .dark .error input,
 .dark .error input:focus,
@@ -97,9 +98,9 @@ select:focus {
 }
 
 .success .form-icon {
-  background-image: url(../public/images/icons/check.png);
+  background-image: url(../public/images/icons/check.svg);
 }
 
 .error .form-icon {
-  background-image: url(../public/images/icons/exclamation-circle.png);
+  background-image: url(../public/images/icons/exclamation-circle.svg);
 }
