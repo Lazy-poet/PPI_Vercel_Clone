@@ -1,22 +1,22 @@
 import { useState } from "react";
+import Utils from "../../libs/utils";
 
-const ThankYou = () => {
-  const [paye, setPaye] = useState<string>("");
+const ThankYou = (props: any) => {
+  const { data, handleFormChange } = props;
+  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [isBackspacePressed, setIsBackspacePressed] = useState<boolean>(false);
 
-  const onEnterPaye = (value: string) => {
+  const onEnterPaye = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstEvent(false);
+    let value = e.target.value;
     if (isBackspacePressed) {
-      setPaye(value.substring(0, value.length));
-      return;
+      value = value.substring(0, value.length);
+    } else {
+      if (value.length == 3) {
+        value = value + "/";
+      }
     }
-
-    if (value.length < 3) {
-      setPaye(value);
-    } else if (value.length == 3) {
-      setPaye(value + "/");
-    } else if (value.length > 4) {
-      setPaye(value);
-    }
+    handleFormChange(e.target.name, value);
   };
 
   const onKeyDown = (type: string) => {
@@ -29,7 +29,7 @@ const ThankYou = () => {
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className="sm:col-span-2">
+      <div className={`sm:col-span-2 ${firstEvent ? '' : (data.paye && Utils.validatePAYE(data.paye) ? 'success' : 'error')}`}>
         <label
           htmlFor="insurance"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -55,26 +55,50 @@ const ThankYou = () => {
           </span>
           <input
             type="text"
-            name="insurance"
-            id="insurance"
+            name="paye"
+            id="paye"
             maxLength={9}
             placeholder="123/AB456"
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             required
-            value={paye}
-            onChange={(e) => onEnterPaye(e.target.value)}
+            value={data.paye}
+            onChange={(e) => onEnterPaye(e)}
             onKeyDown={(e) => onKeyDown(e.key)}
           />
         </div>
-        <p
-          id="helper-text-explanation"
-          className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-        >
-          Example format: &apos;123/AB456&apos;. You can find your PAYE number
-          on letters or emails about PAYE from HMRC, your P60, or your employer
-          may provide it on your payslip. It may be called &apos;Employer PAYE
-          reference&apos; or &apos;PAYE reference&apos;
-        </p>
+        {
+          firstEvent
+            ?
+            <p
+              id="helper-text-explanation"
+              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+            >
+              Example format: &apos;123/AB456&apos;. You can find your PAYE number
+              on letters or emails about PAYE from HMRC, your P60, or your employer
+              may provide it on your payslip. It may be called &apos;Employer PAYE
+              reference&apos; or &apos;PAYE reference&apos;
+            </p>
+            :
+            (!data.paye || !Utils.validatePAYE(data.paye))
+              ?
+              <p
+                id="helper-text-explanation"
+                className="mt-2 text-sm"
+              >
+                Please provide a valid PAYE number
+              </p>
+              :
+              <p
+                id="helper-text-explanation"
+                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                Example format: &apos;123/AB456&apos;. You can find your PAYE number
+                on letters or emails about PAYE from HMRC, your P60, or your employer
+                may provide it on your payslip. It may be called &apos;Employer PAYE
+                reference&apos; or &apos;PAYE reference&apos;
+              </p>
+        }
+
       </div>
     </div>
   );

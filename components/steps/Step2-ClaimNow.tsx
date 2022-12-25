@@ -1,19 +1,21 @@
 import { useState } from "react";
 
-const ClaimNow = () => {
+const ClaimNow = (props: any) => {
+  const { data, handleFormChange } = props;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
-  const [employerName, setEmployerName] = useState<string>('');
+  // const [employerName, setEmployerName] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstEvent(false);
-    setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+    let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+    handleFormChange(e.target.name, value);
   }
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={`sm:col-span-2 ${firstEvent ? '' : (employerName ? 'success' : 'error')}`}>
+      <div className={`sm:col-span-2 ${firstEvent ? '' : (data.employerName ? 'success' : 'error')}`}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -27,7 +29,7 @@ const ClaimNow = () => {
           className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           placeholder="Name Of Employer"
           required
-          value={employerName}
+          value={data.employerName}
           onChange={(e) => handleInputChange(e)}
         />
         {
@@ -37,7 +39,7 @@ const ClaimNow = () => {
               Please write your employer&apos;s name as it appears on your payslip
             </p>
             :
-            !employerName
+            !data.employerName
               ?
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 Please type the name of your employer

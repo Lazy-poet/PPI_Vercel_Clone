@@ -28,7 +28,7 @@ input:focus {
 }
 
 .error {
-  color: #E02424;
+  color: #E02424 !important;
 }
 
 .error input,
