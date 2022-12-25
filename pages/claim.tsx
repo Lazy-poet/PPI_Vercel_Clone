@@ -16,9 +16,11 @@ import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import Layout from "@/components/Layout";
 
+
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [slide, setslide] = useState(false)
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -26,6 +28,7 @@ export default function Claim() {
     } else {
       setStep((step) => step - 1);
     }
+    setslide(true)
   };
 
   const nextStep = () => {
@@ -34,7 +37,10 @@ export default function Claim() {
     } else {
       setStep((step) => step + 1);
     }
+    setslide(false)
   };
+
+
 
   return (
     <Layout>
@@ -49,18 +55,17 @@ export default function Claim() {
                 <StepAlert step={step} />
               )}
 
-              <Title step={step} />
-
-              {step == STEP.QUICK_QUOTE && <QuickQuote />}
-              {step == STEP.CLAIM_NOW && <ClaimNow />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete />}
-              {step == STEP.LAST_THING && <LastThing />}
-              {step == STEP.THANK_YOU && <ThankYou />}
-              {step == STEP.ALL_DONE && <AllDone />}
+              {step == STEP.QUICK_QUOTE && <QuickQuote slide={slide} />}
+              {step == STEP.CLAIM_NOW && <ClaimNow slide={slide} />}
+              {step == STEP.SIGN_COMPLETE && <SignComplete slide={slide} />}
+              {step == STEP.LAST_THING && <LastThing  slide={slide}/>}
+              {step == STEP.THANK_YOU && <ThankYou  slide={slide}/>}
+              {step == STEP.ALL_DONE && <AllDone  slide={slide}/>}
 
               {step != STEP.ALL_DONE && (
                 <NextButton
-                  onClick={nextStep}
+                  onClick={nextStep
+                  }
                   label={step == STEP.THANK_YOU ? "Submit" : "Next"}
                   helper={NEXT_BUTTON_HELPERS[step]}
                 />
