@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-const QuickQuote = () => {
+const QuickQuote = (props: any) => {
+  // const { handleStepValidation } = props;
+  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -8,6 +10,27 @@ const QuickQuote = () => {
 
   const validateEmail = (e: string) => {
     return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e)) ? true : false
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstEvent(false);
+    switch (e.target.name) {
+      case 'firstName':
+        setFirstName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+        break;
+      case 'lastName':
+        setLastName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+        break;
+      case 'email':
+        setEmail(e.target.value);
+        break;
+      case 'postCode':
+        setPostCode(e.target.value.toUpperCase());
+        break;
+      default:
+        break;
+    }
+    // handleStepValidation('QUICK_QUOTE', (firstName !== '' && lastName !== '' && email !== '' && validateEmail(email) && postCode !== ''));
   }
 
   return (
@@ -38,7 +61,7 @@ const QuickQuote = () => {
           </select>
         </div>
         <div className="hidden md:flex"></div> */}
-        <div className={firstName ? '' : 'error'}>
+        <div className={firstEvent ? '' : (firstName ? 'success' : 'error')}>
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -53,17 +76,19 @@ const QuickQuote = () => {
             placeholder="First Name"
             required
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+            onChange={(e) => handleInputChange(e)}
           />
           {
-            !firstName &&
-            <p className="mt-2 text-sm">
-              {/* <span className="font-medium">Well done!</span> */}
-              Type Your First Name
-            </p>
+            firstEvent ? ''
+              :
+              !firstName &&
+              <p className="mt-2 text-sm">
+                {/* <span className="font-medium">Well done!</span> */}
+                Type Your First Name
+              </p>
           }
         </div>
-        <div className={lastName ? '' : 'error'}>
+        <div className={firstEvent ? '' : (lastName ? 'success' : 'error')}>
           <label
             htmlFor="last-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -78,14 +103,16 @@ const QuickQuote = () => {
             placeholder="Last Name"
             required
             value={lastName}
-            onChange={(e) => setLastName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+            onChange={(e) => handleInputChange(e)}
           />
           {
-            !lastName &&
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {/* <span className="font-medium">Oh, snapp!</span> */}
-              Type Your Last Name
-            </p>
+            firstEvent ? ''
+              :
+              !lastName &&
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                {/* <span className="font-medium">Oh, snapp!</span> */}
+                Type Your Last Name
+              </p>
           }
         </div>
         {/* <div className="sm:col-span-2">
@@ -129,7 +156,7 @@ const QuickQuote = () => {
             messages
           </p>
         </div> */}
-        <div className={email && validateEmail(email) ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
+        <div className={`sm:col-span-2 ${firstEvent ? '' : (email && validateEmail(email) ? 'success' : 'error')}`}>
           <label
             htmlFor="email"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -161,23 +188,36 @@ const QuickQuote = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
             />
           </div>
           {
-            (!email || !validateEmail(email)) &&
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid Email Address
-            </p>
+            firstEvent
+              ?
+              <p
+                id="helper-text-explanation"
+                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                We need your email so we can keep you updated on your claim
+              </p>
+              :
+              (
+                (!email || !validateEmail(email))
+                  ?
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Please provide a valid Email Address
+                  </p>
+                  :
+                  <p
+                    id="helper-text-explanation"
+                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    We need your email so we can keep you updated on your claim
+                  </p>
+              )
           }
-          <p
-            id="helper-text-explanation"
-            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-          >
-            We need your email so we can keep you updated on your claim
-          </p>
         </div>
-        <div className={postCode ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
+        <div className={`sm:col-span-2 ${firstEvent ? '' : (postCode ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -210,7 +250,7 @@ const QuickQuote = () => {
               placeholder="Enter Your Postcode"
               required
               value={postCode}
-              onChange={(e) => setPostCode(e.target.value.toUpperCase())}
+              onChange={(e) => handleInputChange(e)}
             />
             <button
               type="submit"
@@ -220,18 +260,29 @@ const QuickQuote = () => {
             </button>
           </div>
           {
-            !postCode &&
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid UK postcode
-            </p>
+            firstEvent
+              ?
+              <p
+                id="helper-text-explanation"
+                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                Enter your postcode, then click &apos;Search&apos; to find your
+                address and proceed
+              </p>
+              : !postCode
+                ?
+                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                  Please provide a valid UK postcode
+                </p>
+                :
+                <p
+                  id="helper-text-explanation"
+                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                >
+                  Enter your postcode, then click &apos;Search&apos; to find your
+                  address and proceed
+                </p>
           }
-          <p
-            id="helper-text-explanation"
-            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-          >
-            Enter your postcode, then click &apos;Search&apos; to find your
-            address and proceed
-          </p>
         </div>
       </div>
       <div className="w-full my-5">

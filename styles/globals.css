@@ -7,11 +7,24 @@
 }
 
 /* Form Validation */
-input,
+.success input,
 input:focus {
-  background: #F3FAF7;
+  background: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
   box-shadow: none !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  /* font-size: 14px;
+  line-height: 150%; */
+  color: #046C4E !important;
+}
+
+.dark .success input,
+.dark input:focus {
+  background: #374151 !important;
+  border: 1px solid #0E9F6E !important;
+  color: #0E9F6E !important;
 }
 
 .error {
@@ -20,9 +33,22 @@ input:focus {
 
 .error input,
 .error input:focus {
-  background: #FDF2F2;
+  background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
   box-shadow: none !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  /* font-size: 14px;
+  line-height: 150%; */
+  color: #C81E1E !important;
+}
+
+.dark .error input,
+.dark .error input:focus {
+  background: #374151 !important;
+  border: 1px solid #F05252 !important;
+  color: #F05252 !important;
 }
 
 /* ./Form Validation */

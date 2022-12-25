@@ -1,13 +1,19 @@
 import { useState } from "react";
 
 const ClaimNow = () => {
+  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
   const [employerName, setEmployerName] = useState<string>('');
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstEvent(false);
+    setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
+  }
+
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={employerName ? 'sm:col-span-2' : 'sm:col-span-2 error'}>
+      <div className={`sm:col-span-2 ${firstEvent ? '' : (employerName ? 'success' : 'error')}`}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -22,17 +28,25 @@ const ClaimNow = () => {
           placeholder="Name Of Employer"
           required
           value={employerName}
-          onChange={(e) => setEmployerName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
+          onChange={(e) => handleInputChange(e)}
         />
         {
-          !employerName &&
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            Please type the name of your employer
-          </p>
+          firstEvent
+            ?
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              Please write your employer&apos;s name as it appears on your payslip
+            </p>
+            :
+            !employerName
+              ?
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please type the name of your employer
+              </p>
+              :
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Please write your employer&apos;s name as it appears on your payslip
+              </p>
         }
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Please write your employer&apos;s name as it appears on your payslip
-        </p>
       </div>
       <div className="sm:col-span-2">
         <label
