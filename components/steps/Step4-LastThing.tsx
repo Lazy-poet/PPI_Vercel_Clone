@@ -1,7 +1,6 @@
 import Title from "@/components/Title";
 import NextButton from "../NextButton";
 import { useState } from "react";
-import '../../loader.js'
 const LastThing = ({slide}) => {
   const [next4, setnext4] = useState(false)
  

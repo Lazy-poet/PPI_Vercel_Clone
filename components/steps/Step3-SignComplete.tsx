@@ -1,6 +1,5 @@
 import { CONFIRMS } from "@/libs/doms";
 import Title from "@/components/Title";
-import '../../loader.js';
 import { useState } from "react";
 
 
