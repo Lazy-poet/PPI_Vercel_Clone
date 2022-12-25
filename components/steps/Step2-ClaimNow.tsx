@@ -2,20 +2,17 @@ import { useState } from "react";
 
 const ClaimNow = (props: any) => {
   const { data, handleFormChange } = props;
-  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
-  // const [employerName, setEmployerName] = useState<string>('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstEvent(false);
     let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
     handleFormChange(e.target.name, value);
   }
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={`sm:col-span-2 ${firstEvent ? '' : (data.employerName ? 'success' : 'error')}`}>
+      <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.employerName ? 'success' : 'error')}`}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -33,7 +30,7 @@ const ClaimNow = (props: any) => {
           onChange={(e) => handleInputChange(e)}
         />
         {
-          firstEvent
+          data.firstEvent
             ?
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
               Please write your employer&apos;s name as it appears on your payslip
@@ -42,12 +39,10 @@ const ClaimNow = (props: any) => {
             !data.employerName
               ?
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Please type the name of your employer
-              </p>
-              :
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                 Please write your employer&apos;s name as it appears on your payslip
               </p>
+              :
+              ''
         }
       </div>
       <div className="sm:col-span-2">

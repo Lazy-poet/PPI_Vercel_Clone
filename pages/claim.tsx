@@ -23,46 +23,57 @@ export default function Claim() {
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   // Step1
   const [formData1, setFormData1] = useState<any>({
+    firstEvent: true,
     firstName: '',
     lastName: '',
     email: '',
-    postCode: ''
+    postCode: '',
+    day: '',
+    month: '',
+    year: ''
   });
   const handleFormChange1 = (key: string, value: string) => {
     setFormData1({
       ...formData1,
+      firstEvent: false,
       [key]: value
     });
   }
   // Step2
   const [formData2, setFormData2] = useState<any>({
+    firstEvent: true,
     employerName: ''
   });
   const handleFormChange2 = (key: string, value: string) => {
     setFormData2({
       ...formData2,
+      firstEvent: false,
       [key]: value
     });
   }
 
   // Step4
   const [formData4, setFormData4] = useState<any>({
+    firstEvent: true,
     insurance: ''
   });
   const handleFormChange4 = (key: string, value: string) => {
     setFormData4({
       ...formData4,
+      firstEvent: false,
       [key]: value
     });
   }
 
   // Step5
   const [formData5, setFormData5] = useState<any>({
+    firstEvent: true,
     paye: ''
   });
   const handleFormChange5 = (key: string, value: string) => {
     setFormData5({
       ...formData5,
+      firstEvent: false,
       [key]: value
     });
   }
@@ -78,18 +89,22 @@ export default function Claim() {
   const nextStep = () => {
     switch (step) {
       case STEP.QUICK_QUOTE:
-        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '') setStep((step) => step + 1);
+        setFormData1({ ...formData1, firstEvent: false });
+        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') setStep((step) => step + 1);
         break;
       case STEP.CLAIM_NOW:
+        setFormData2({ ...formData2, firstEvent: false });
         if (formData2.employerName !== '') setStep((step) => step + 1);
         break;
       case STEP.SIGN_COMPLETE:
         setStep((step) => step + 1);
         break;
       case STEP.LAST_THING:
+        setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance !== '' && isNino(formData4.insurance)) setStep((step) => step + 1);
         break;
       case STEP.THANK_YOU:
+        setFormData5({ ...formData5, firstEvent: false });
         if (formData5.paye !== '' && Utils.validatePAYE(formData5.paye)) setStep((step) => step + 1);
         break;
       case STEP.ALL_DONE:

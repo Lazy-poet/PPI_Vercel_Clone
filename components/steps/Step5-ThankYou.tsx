@@ -3,11 +3,9 @@ import Utils from "../../libs/utils";
 
 const ThankYou = (props: any) => {
   const { data, handleFormChange } = props;
-  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [isBackspacePressed, setIsBackspacePressed] = useState<boolean>(false);
 
   const onEnterPaye = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstEvent(false);
     let value = e.target.value;
     if (isBackspacePressed) {
       value = value.substring(0, value.length);
@@ -29,7 +27,7 @@ const ThankYou = (props: any) => {
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={`sm:col-span-2 ${firstEvent ? '' : (data.paye && Utils.validatePAYE(data.paye) ? 'success' : 'error')}`}>
+      <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.paye && Utils.validatePAYE(data.paye) ? 'success' : 'error')}`}>
         <label
           htmlFor="insurance"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -67,7 +65,7 @@ const ThankYou = (props: any) => {
           />
         </div>
         {
-          firstEvent
+          data.firstEvent
             ?
             <p
               id="helper-text-explanation"
@@ -88,15 +86,7 @@ const ThankYou = (props: any) => {
                 Please provide a valid PAYE number
               </p>
               :
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Example format: &apos;123/AB456&apos;. You can find your PAYE number
-                on letters or emails about PAYE from HMRC, your P60, or your employer
-                may provide it on your payslip. It may be called &apos;Employer PAYE
-                reference&apos; or &apos;PAYE reference&apos;
-              </p>
+              ''
         }
 
       </div>

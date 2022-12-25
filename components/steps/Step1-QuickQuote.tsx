@@ -1,43 +1,32 @@
-import { useState } from "react";
 import Utils from "../../libs/utils";
 
 const QuickQuote = (props: any) => {
   const { data, handleFormChange } = props;
-  // const { handleStepValidation } = props;
-  const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  // const [firstName, setFirstName] = useState<string>('');
-  // const [lastName, setLastName] = useState<string>('');
-  // const [email, setEmail] = useState<string>('');
-  // const [postCode, setPostCode] = useState<string>('');
-
-  // const validateEmail = (e: string) => {
-  //   return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e)) ? true : false
-  // }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstEvent(false);
     let value = e.target.value;
     switch (e.target.name) {
       case 'firstName':
         value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-        // setFirstName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
         break;
       case 'lastName':
         value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-        // setLastName(e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1));
         break;
       case 'email':
         value = e.target.value;
-        // setEmail(e.target.value);
         break;
       case 'postCode':
         value = e.target.value.toUpperCase();
-        // setPostCode(e.target.value.toUpperCase());
         break;
       default:
         value = e.target.value;
         break;
     }
+    handleFormChange(e.target.name, value);
+  }
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let value = e.target.value;
     handleFormChange(e.target.name, value);
   }
 
@@ -69,7 +58,7 @@ const QuickQuote = (props: any) => {
           </select>
         </div>
         <div className="hidden md:flex"></div> */}
-        <div className={firstEvent ? '' : (data.firstName ? 'success' : 'error')}>
+        <div className={data.firstEvent ? '' : (data.firstName ? 'success' : 'error')}>
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -87,16 +76,15 @@ const QuickQuote = (props: any) => {
             onChange={(e) => handleInputChange(e)}
           />
           {
-            firstEvent ? ''
+            data.firstEvent ? ''
               :
               !data.firstName &&
               <p className="mt-2 text-sm">
-                {/* <span className="font-medium">Well done!</span> */}
                 Type Your First Name
               </p>
           }
         </div>
-        <div className={firstEvent ? '' : (data.lastName ? 'success' : 'error')}>
+        <div className={data.firstEvent ? '' : (data.lastName ? 'success' : 'error')}>
           <label
             htmlFor="last-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -114,7 +102,7 @@ const QuickQuote = (props: any) => {
             onChange={(e) => handleInputChange(e)}
           />
           {
-            firstEvent ? ''
+            data.firstEvent ? ''
               :
               !data.lastName &&
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -164,7 +152,7 @@ const QuickQuote = (props: any) => {
             messages
           </p>
         </div> */}
-        <div className={`sm:col-span-2 ${firstEvent ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
+        <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
           <label
             htmlFor="email"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -200,7 +188,7 @@ const QuickQuote = (props: any) => {
             />
           </div>
           {
-            firstEvent
+            data.firstEvent
               ?
               <p
                 id="helper-text-explanation"
@@ -210,22 +198,24 @@ const QuickQuote = (props: any) => {
               </p>
               :
               (
-                (!data.email || !Utils.validateEmail(data.email))
+                !data.email
                   ?
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                    Please provide a valid Email Address
-                  </p>
-                  :
-                  <p
-                    id="helper-text-explanation"
-                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                  >
                     We need your email so we can keep you updated on your claim
                   </p>
+                  :
+                  (
+                    !Utils.validateEmail(data.email)
+                      ?
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                        Please provide a valid Email Address
+                      </p>
+                      : ''
+                  )
               )
           }
         </div>
-        <div className={`sm:col-span-2 ${firstEvent ? '' : (data.postCode ? 'success' : 'error')}`}>
+        <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.postCode ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -268,7 +258,7 @@ const QuickQuote = (props: any) => {
             </button>
           </div>
           {
-            firstEvent
+            data.firstEvent
               ?
               <p
                 id="helper-text-explanation"
@@ -283,13 +273,7 @@ const QuickQuote = (props: any) => {
                   Please provide a valid UK postcode
                 </p>
                 :
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Enter your postcode, then click &apos;Search&apos; to find your
-                  address and proceed
-                </p>
+                ''
           }
         </div>
       </div>
@@ -305,10 +289,13 @@ const QuickQuote = (props: any) => {
 
         <div id="birthday" className="grid gap-5 sm:grid-cols-3">
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
-            <div>
+            <div className={data.firstEvent ? '' : (data.day ? 'success' : 'error')}>
               <select
                 id="day"
                 className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                name="day"
+                value={data.day}
+                onChange={(e) => handleSelectChange(e)}
               >
                 <option value="">DD</option>
                 <option value="1">1</option>
@@ -322,17 +309,29 @@ const QuickQuote = (props: any) => {
                 <option value="9">9</option>
                 <option value="10">10</option>
               </select>
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Day of birth
-              </p>
+              {
+                data.firstEvent
+                  ?
+                  <p
+                    id="helper-text-explanation"
+                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    Day of birth
+                  </p>
+                  :
+                  !data.day &&
+                  <p className="mt-2 text-sm">
+                    Select the Day of birth
+                  </p>
+              }
             </div>
-            <div>
+            <div className={data.firstEvent ? '' : (data.month ? 'success' : 'error')}>
               <select
                 id="month"
                 className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                name="month"
+                value={data.month}
+                onChange={(e) => handleSelectChange(e)}
               >
                 <option value="">MM</option>
                 <option value="1">1</option>
@@ -346,18 +345,31 @@ const QuickQuote = (props: any) => {
                 <option value="9">9</option>
                 <option value="10">10</option>
               </select>
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Month of birth
-              </p>
+              {
+                data.firstEvent
+                  ?
+                  <p
+                    id="helper-text-explanation"
+                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    Month of birth
+                  </p>
+                  :
+                  !data.month &&
+                  <p className="mt-2 text-sm">
+                    Select the Month of birth
+                  </p>
+              }
+
             </div>
           </div>
-          <div>
+          <div className={data.firstEvent ? '' : (data.year ? 'success' : 'error')}>
             <select
               id="year"
               className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              name="year"
+              value={data.year}
+              onChange={(e) => handleSelectChange(e)}
             >
               <option value="">YYYY</option>
               <option value="1960">1960</option>
@@ -371,12 +383,22 @@ const QuickQuote = (props: any) => {
               <option value="1968">1968</option>
               <option value="1969">1969</option>
             </select>
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Year of birth
-            </p>
+            {
+              data.firstEvent
+                ?
+                <p
+                  id="helper-text-explanation"
+                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                >
+                  Year of birth
+                </p>
+                :
+                !data.month &&
+                <p className="mt-2 text-sm">
+                  Select the Year of birth
+                </p>
+            }
+
           </div>
         </div>
       </div>

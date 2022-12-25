@@ -8,7 +8,9 @@
 
 /* Form Validation */
 .success input,
-input:focus {
+input:focus,
+.success select,
+select:focus {
   background: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
   box-shadow: none !important;
@@ -20,10 +22,20 @@ input:focus {
   color: #046C4E !important;
 }
 
+.success input::placeholder {
+  color: #046C4E !important;
+}
+
 .dark .success input,
-.dark input:focus {
+.dark input:focus,
+.dark .success select,
+.dark select:focus {
   background: #374151 !important;
   border: 1px solid #0E9F6E !important;
+  color: #0E9F6E !important;
+}
+
+.dark .success input::placeholder {
   color: #0E9F6E !important;
 }
 
@@ -32,7 +44,9 @@ input:focus {
 }
 
 .error input,
-.error input:focus {
+.error input:focus,
+.error select,
+.error select:focus {
   background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
   box-shadow: none !important;
@@ -44,10 +58,20 @@ input:focus {
   color: #C81E1E !important;
 }
 
+.error input::placeholder {
+  color: #C81E1E !important;
+}
+
 .dark .error input,
-.dark .error input:focus {
+.dark .error input:focus,
+.dark .error select,
+.dark .error select:focus {
   background: #374151 !important;
   border: 1px solid #F05252 !important;
+  color: #F05252 !important;
+}
+
+.dark .error input::placeholder {
   color: #F05252 !important;
 }
 
