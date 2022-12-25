@@ -32,12 +32,24 @@ export default function Claim() {
     month: '',
     year: ''
   });
+  const [fdEvents1, setFdEvents1] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    day: true,
+    month: true,
+    year: true
+  });
   const handleFormChange1 = (key: string, value: string) => {
-    console.log('>>>', key, value);
     setFormData1({
       ...formData1,
-      firstEvent: false,
+      // firstEvent: false,
       [key]: value
+    });
+    setFdEvents1({
+      ...fdEvents1,
+      [key]: false
     });
   }
   // Step2
@@ -91,6 +103,15 @@ export default function Claim() {
     switch (step) {
       case STEP.QUICK_QUOTE:
         setFormData1({ ...formData1, firstEvent: false });
+        setFdEvents1({
+          firstName: false,
+          lastName: false,
+          email: false,
+          postCode: false,
+          day: false,
+          month: false,
+          year: false
+        });
         if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') setStep((step) => step + 1);
         break;
       case STEP.CLAIM_NOW:
@@ -137,7 +158,7 @@ export default function Claim() {
 
               <Title step={step} />
 
-              {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} handleFormChange={handleFormChange1} />}
+              {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
               {step == STEP.CLAIM_NOW && <ClaimNow data={formData2} handleFormChange={handleFormChange2} />}
               {step == STEP.SIGN_COMPLETE && <SignComplete />}
               {step == STEP.LAST_THING && <LastThing data={formData4} handleFormChange={handleFormChange4} />}

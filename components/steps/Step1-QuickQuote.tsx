@@ -1,7 +1,7 @@
 import Utils from "../../libs/utils";
 
 const QuickQuote = (props: any) => {
-  const { data, handleFormChange } = props;
+  const { data, fdEvents, handleFormChange } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -58,7 +58,7 @@ const QuickQuote = (props: any) => {
           </select>
         </div>
         <div className="hidden md:flex"></div> */}
-        <div className={data.firstEvent ? '' : (data.firstName ? 'success' : 'error')}>
+        <div className={fdEvents.firstName ? '' : (data.firstName ? 'success' : 'error')}>
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -79,7 +79,7 @@ const QuickQuote = (props: any) => {
             <span className="form-icon"></span>
           </div>
           {
-            data.firstEvent ? ''
+            fdEvents.firstName ? ''
               :
               !data.firstName &&
               <p className="mt-2 text-sm">
@@ -87,7 +87,7 @@ const QuickQuote = (props: any) => {
               </p>
           }
         </div>
-        <div className={data.firstEvent ? '' : (data.lastName ? 'success' : 'error')}>
+        <div className={fdEvents.lastName ? '' : (data.lastName ? 'success' : 'error')}>
           <label
             htmlFor="last-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -108,7 +108,7 @@ const QuickQuote = (props: any) => {
             <span className="form-icon"></span>
           </div>
           {
-            data.firstEvent ? ''
+            fdEvents.lastName ? ''
               :
               !data.lastName &&
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -158,7 +158,7 @@ const QuickQuote = (props: any) => {
             messages
           </p>
         </div> */}
-        <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
+        <div className={`sm:col-span-2 ${fdEvents.email ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
           <label
             htmlFor="email"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -197,7 +197,7 @@ const QuickQuote = (props: any) => {
             </div>
           </div>
           {
-            data.firstEvent
+            fdEvents.email
               ?
               <p
                 id="helper-text-explanation"
@@ -224,7 +224,7 @@ const QuickQuote = (props: any) => {
               )
           }
         </div>
-        <div className={`sm:col-span-2 ${data.firstEvent ? '' : (data.postCode ? 'success' : 'error')}`}>
+        <div className={`sm:col-span-2 ${fdEvents.postCode ? '' : (data.postCode ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -267,7 +267,7 @@ const QuickQuote = (props: any) => {
             </button>
           </div>
           {
-            data.firstEvent
+            fdEvents.postCode
               ?
               <p
                 id="helper-text-explanation"
@@ -298,7 +298,7 @@ const QuickQuote = (props: any) => {
 
         <div id="birthday" className="grid gap-5 sm:grid-cols-3">
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
-            <div className={data.firstEvent ? '' : (data.day ? 'success' : 'error')}>
+            <div className={fdEvents.day ? '' : (data.day ? 'success' : 'error')}>
               <div className="icon-input">
                 <select
                   id="day"
@@ -322,7 +322,7 @@ const QuickQuote = (props: any) => {
                 <span className="form-icon"></span>
               </div>
               {
-                data.firstEvent
+                fdEvents.day
                   ?
                   <p
                     id="helper-text-explanation"
@@ -337,7 +337,7 @@ const QuickQuote = (props: any) => {
                   </p>
               }
             </div>
-            <div className={data.firstEvent ? '' : (data.month ? 'success' : 'error')}>
+            <div className={fdEvents.month ? '' : (data.month ? 'success' : 'error')}>
               <div className="icon-input">
                 <select
                   id="month"
@@ -361,7 +361,7 @@ const QuickQuote = (props: any) => {
                 <span className="form-icon"></span>
               </div>
               {
-                data.firstEvent
+                fdEvents.month
                   ?
                   <p
                     id="helper-text-explanation"
@@ -378,7 +378,7 @@ const QuickQuote = (props: any) => {
 
             </div>
           </div>
-          <div className={data.firstEvent ? '' : (data.year ? 'success' : 'error')}>
+          <div className={fdEvents.year ? '' : (data.year ? 'success' : 'error')}>
             <div className="icon-input">
               <select
                 id="year"
@@ -402,7 +402,7 @@ const QuickQuote = (props: any) => {
               <span className="form-icon"></span>
             </div>
             {
-              data.firstEvent
+              fdEvents.year
                 ?
                 <p
                   id="helper-text-explanation"
@@ -411,7 +411,7 @@ const QuickQuote = (props: any) => {
                   Year of birth
                 </p>
                 :
-                !data.month &&
+                !data.year &&
                 <p className="mt-2 text-sm">
                   Select the Year of birth
                 </p>
