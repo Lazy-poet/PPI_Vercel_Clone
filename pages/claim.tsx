@@ -17,6 +17,7 @@ import AllDone from "@/components/steps/Step6-AllDone";
 import Layout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require('is-national-insurance-number');
+import { postcodeValidator } from 'postcode-validator';
 
 export default function Claim() {
   const router = useRouter();
@@ -112,7 +113,7 @@ export default function Claim() {
           month: false,
           year: false
         });
-        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') setStep((step) => step + 1);
+        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && postcodeValidator(formData1.postCode, 'GB') && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') setStep((step) => step + 1);
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
