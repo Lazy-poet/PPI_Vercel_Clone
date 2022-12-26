@@ -29,6 +29,7 @@ export default function Claim() {
     lastName: '',
     email: '',
     postCode: '',
+    address: '',
     day: '',
     month: '',
     year: ''
@@ -38,6 +39,7 @@ export default function Claim() {
     lastName: true,
     email: true,
     postCode: true,
+    address: true,
     day: true,
     month: true,
     year: true

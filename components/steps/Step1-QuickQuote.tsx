@@ -1,8 +1,10 @@
+import { useState } from "react";
 import Utils from "../../libs/utils";
 import { postcodeValidator } from 'postcode-validator';
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
+  const [addressList, setAddressList] = useState<any>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -29,6 +31,27 @@ const QuickQuote = (props: any) => {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let value = e.target.value;
     handleFormChange(e.target.name, value);
+  }
+
+  const searchAddressByPostcode = (e: string) => {
+    if (!e || !postcodeValidator(e, 'GB')) {
+      return;
+    }
+    var endpoint = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_ku4e95aqGky1uIIQZMefHVykARiTn&q=${e}`;
+    var requestOptions: any = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+    fetch(endpoint, requestOptions)
+      .then(response => response.json())
+      .then(res => {
+        if (res.result && res.result.hits) {
+          setAddressList(res.result.hits);
+        } else {
+          setAddressList([]);
+        }
+      })
+      .catch(error => console.log('error', error));
   }
 
   return (
@@ -254,7 +277,7 @@ const QuickQuote = (props: any) => {
             </div>
             <input
               type="search"
-              id="address"
+              id="postCode"
               name="postCode"
               className="block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Postcode"
@@ -263,8 +286,9 @@ const QuickQuote = (props: any) => {
               onChange={(e) => handleInputChange(e)}
             />
             <button
-              type="submit"
+              type="button"
               className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={() => searchAddressByPostcode(data.postCode)}
             >
               Search
             </button>
@@ -279,7 +303,7 @@ const QuickQuote = (props: any) => {
                 Enter your postcode, then click &apos;Search&apos; to find your
                 address and proceed
               </p>
-              : !data.postCode
+              : !(data.postCode && postcodeValidator(data.postCode, 'GB'))
                 ?
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   Please provide a valid UK postcode
@@ -294,7 +318,40 @@ const QuickQuote = (props: any) => {
                 </p>
           }
         </div>
+        {
+          addressList.length > 0
+            ?
+            <div className={`form-group sm:col-span-2 ${fdEvents.address ? '' : (data.address ? 'success' : 'error')}`}>
+              <label
+                htmlFor="address"
+                className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              >
+                Address
+              </label>
+              <div className="icon-input">
+                <select
+                  id="address"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  name="address"
+                  value={data.address}
+                  onChange={(e) => handleSelectChange(e)}
+                >
+                  <option value="">Please Select Your Address</option>
+                  {
+                    addressList && addressList.map((item: any, index: number) =>
+                      <option key={index} value={item.suggestion}>{item.suggestion}</option>
+                    )
+                  }
+                </select>
+                <span className="form-icon"></span>
+              </div>
+
+            </div>
+            :
+            null
+        }
       </div>
+
       <div className="form-group w-full my-5">
         <div className={`w-full mb-2 ${(fdEvents.day && fdEvents.month && fdEvents.year) ? '' : (data.day && data.month && data.year) ? 'success' : 'error'}`}>
           <label
