@@ -231,7 +231,7 @@ const QuickQuote = (props: any) => {
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
           >
-            What is your current address?
+            Postcode
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -256,7 +256,7 @@ const QuickQuote = (props: any) => {
               id="address"
               name="postCode"
               className="block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Enter Your Postcode"
+              placeholder="Postcode"
               required
               value={data.postCode}
               onChange={(e) => handleInputChange(e)}

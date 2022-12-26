@@ -136,11 +136,7 @@ export default function Claim() {
         break;
     }
     // 
-    // if (step == STEP.ALL_DONE) {
-    //   router.push("/");
-    // } else {
-    //   setStep((step) => step + 1);
-    // }
+    document.getElementById('btnNext')?.blur();
   };
 
   return (
