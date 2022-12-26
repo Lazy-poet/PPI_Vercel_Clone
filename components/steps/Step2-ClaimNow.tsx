@@ -45,7 +45,9 @@ const ClaimNow = (props: any) => {
                 Please write your employer&apos;s name as it appears on your payslip
               </p>
               :
-              ''
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Please write your employer&apos;s name as it appears on your payslip
+              </p>
         }
       </div>
       <div className="sm:col-span-2">

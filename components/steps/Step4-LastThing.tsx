@@ -77,7 +77,13 @@ const LastThing = (props: any) => {
                     Please provide a valid National Insurance (NI) number
                   </p>
                   :
-                  ''
+                  <p
+                    id="helper-text-explanation"
+                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    You can find your NI number on your payslip, P60, or any letters sent
+                    to you by HMRC relating to tax and benefits.
+                  </p>
               )
         }
       </div>

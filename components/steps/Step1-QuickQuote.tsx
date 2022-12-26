@@ -112,7 +112,6 @@ const QuickQuote = (props: any) => {
               :
               !data.lastName &&
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                {/* <span className="font-medium">Oh, snapp!</span> */}
                 Type Your Last Name
               </p>
           }
@@ -219,7 +218,10 @@ const QuickQuote = (props: any) => {
                       <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                         Please provide a valid Email Address
                       </p>
-                      : ''
+                      :
+                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                        We need your email so we can keep you updated on your claim
+                      </p>
                   )
               )
           }
@@ -282,7 +284,13 @@ const QuickQuote = (props: any) => {
                   Please provide a valid UK postcode
                 </p>
                 :
-                ''
+                <p
+                  id="helper-text-explanation"
+                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                >
+                  Enter your postcode, then click &apos;Search&apos; to find your
+                  address and proceed
+                </p>
           }
         </div>
       </div>
@@ -331,10 +339,20 @@ const QuickQuote = (props: any) => {
                     Day of birth
                   </p>
                   :
-                  !data.day &&
-                  <p className="mt-2 text-sm">
-                    Select the Day of birth
-                  </p>
+                  (
+                    !data.day
+                      ?
+                      <p className="mt-2 text-sm">
+                        Select the Day of birth
+                      </p>
+                      :
+                      <p
+                        id="helper-text-explanation"
+                        className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                      >
+                        Day of birth
+                      </p>
+                  )
               }
             </div>
             <div className={fdEvents.month ? '' : (data.month ? 'success' : 'error')}>
@@ -370,10 +388,20 @@ const QuickQuote = (props: any) => {
                     Month of birth
                   </p>
                   :
-                  !data.month &&
-                  <p className="mt-2 text-sm">
-                    Select the Month of birth
-                  </p>
+                  (
+                    !data.month
+                      ?
+                      <p className="mt-2 text-sm">
+                        Select the Month of birth
+                      </p>
+                      :
+                      <p
+                        id="helper-text-explanation"
+                        className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                      >
+                        Month of birth
+                      </p>
+                  )
               }
 
             </div>
@@ -411,10 +439,20 @@ const QuickQuote = (props: any) => {
                   Year of birth
                 </p>
                 :
-                !data.year &&
-                <p className="mt-2 text-sm">
-                  Select the Year of birth
-                </p>
+                (
+                  !data.year
+                    ?
+                    <p className="mt-2 text-sm">
+                      Select the Year of birth
+                    </p>
+                    :
+                    <p
+                      id="helper-text-explanation"
+                      className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      Year of birth
+                    </p>
+                )
             }
 
           </div>

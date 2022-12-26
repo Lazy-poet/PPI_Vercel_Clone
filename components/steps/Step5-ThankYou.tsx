@@ -89,7 +89,15 @@ const ThankYou = (props: any) => {
                 Please provide a valid PAYE number
               </p>
               :
-              ''
+              <p
+                id="helper-text-explanation"
+                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+              >
+                Example format: &apos;123/AB456&apos;. You can find your PAYE number
+                on letters or emails about PAYE from HMRC, your P60, or your employer
+                may provide it on your payslip. It may be called &apos;Employer PAYE
+                reference&apos; or &apos;PAYE reference&apos;
+              </p>
         }
 
       </div>
