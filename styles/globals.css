@@ -6,21 +6,29 @@
   display: inline-flex !important;
 }
 
+input[type='checkbox']:focus {
+  -webkit-box-shadow: unset !important;
+}
+
+input[type='checkbox']:checked {
+  background-color: #1C64F2 !important;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
+}
+
 /* Form Validation */
 .form-group:has(input:focus) label,
 .form-group:has(select:focus) label {
   color: #111928;
 }
 
-input:focus,
+input:focus:not([type='checkbox']),
 select:focus,
-.success input:focus,
+.success input:focus:not([type='checkbox']),
 .success select:focus,
-.error input:focus,
+.error input:focus:not([type='checkbox']),
 .error select:focus {
   background: #F9FAFB !important;
   border: 1px solid #1C64F2 !important;
-  box-shadow: none !important;
   /* font-family: 'Inter'; */
   font-style: normal;
   font-weight: 400;
@@ -44,8 +52,8 @@ select:focus+.form-icon {
   color: #057A55;
 }
 
-.success input,
-.success input:-webkit-autofill,
+.success input:not([type='checkbox']),
+.success input:-webkit-autofill:not([type='checkbox']),
 .success select {
   background-color: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
@@ -67,11 +75,11 @@ select:focus+.form-icon {
   color: #FFFFFF;
 }
 
-.dark input:focus,
+.dark input:focus:not([type='checkbox']),
 .dark select:focus,
-.dark .success input:focus,
+.dark .success input:focus:not([type='checkbox']),
 .dark .success select:focus,
-.dark .error input:focus,
+.dark .error input:focus:not([type='checkbox']),
 .dark .error select:focus {
   background: #374151 !important;
   border: 1px solid #3F83F8 !important;
@@ -80,7 +88,7 @@ select:focus+.form-icon {
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
-.dark .success input,
+.dark .success input:not([type='checkbox']),
 .dark .success select {
   background: #374151 !important;
   border: 1px solid #0E9F6E !important;
@@ -104,7 +112,7 @@ select:focus+.form-icon {
   color: #E02424;
 }
 
-.error input,
+.error input:not([type='checkbox']),
 .error select {
   background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
@@ -125,7 +133,7 @@ select:focus+.form-icon {
   color: #C81E1E !important;
 } */
 
-.dark .error input,
+.dark .error input:not([type='checkbox']),
 .dark .error select {
   background: #374151 !important;
   border: 1px solid #F05252 !important;

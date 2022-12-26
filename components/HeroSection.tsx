@@ -2,12 +2,15 @@ import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
 });
 
 const HeroSection = () => {
+  const router = useRouter();
+  const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(false);
   const [checked2, setChecked2] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(624);
@@ -160,71 +163,80 @@ const HeroSection = () => {
                 Have you worked from home for a single day or more during the
                 pandemic?
               </p>
-              <div className="grid gap-5 sm:grid-cols-2 select-none">
-                <div className="flex items-center px-4 rounded border border-gray-200 dark:border-gray-700 cursor-pointer">
+              <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
+                <div className={`flex items-center px-4 rounded border cursor-pointer ${firstEvent || checked1 || checked2 ? 'border-gray-200 dark:border-gray-700' : 'border-red-500 dark:border-red-500'}`}>
                   <input
                     id="bordered-checkbox-1"
                     type="checkbox"
                     value=""
                     name="bordered-checkbox"
                     checked={checked1}
-                    onChange={(e) => setChecked1(e.target.checked)}
+                    onChange={(e) => {
+                      setFirstEvent(false);
+                      setChecked1(e.target.checked);
+                    }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-1"
-                    className="py-4 ml-2 w-full sm:text-lg font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2 ? 'text-gray-900 dark:text-gray-300' : 'text-red-700 dark:text-red-500'}`}
                   >
                     2020 - 21
                   </label>
                 </div>
-                <div className="flex items-center px-4 rounded border border-gray-200 dark:border-gray-700 cursor-pointer">
+                <div className={`flex items-center px-4 rounded border cursor-pointer ${firstEvent || checked1 || checked2 ? 'border-gray-200 dark:border-gray-700' : 'border-red-500 dark:border-red-500'}`}>
                   <input
                     id="bordered-checkbox-2"
                     type="checkbox"
                     value=""
                     name="bordered-checkbox"
                     checked={checked2}
-                    onChange={(e) => setChecked2(e.target.checked)}
+                    onChange={(e) => {
+                      setFirstEvent(false);
+                      setChecked2(e.target.checked);
+                    }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-2"
-                    className="py-4 ml-2 w-full sm:text-lg font-medium text-gray-900 dark:text-gray-300 cursor-pointer"
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2 ? 'text-gray-900 dark:text-gray-300' : 'text-red-700 dark:text-red-500'}`}
                   >
                     2021 - 22
                   </label>
                 </div>
               </div>
-              <p className="max-w-2xl mt-2 mb-10 text-sm text-gray-500 dark:text-gray-400">
+              <p className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2 ? 'text-gray-500 dark:text-gray-400' : 'text-red-600 dark:text-red-500'}`}>
                 Select which year you worked a day or more from home. If you
                 worked from home during both years, select &apos;Both&apos;
               </p>
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
-                    <Link href="/claim">
-                      <button className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                        <div className="flex-grow">
-                          <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
-                            <span>Check my claim</span>
-                          </div>
+                    <button className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                      onClick={() => {
+                        setFirstEvent(false);
+                        (checked1 || checked2) && router.push("/claim");
+                      }}
+                    >
+                      <div className="flex-grow">
+                        <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
+                          <span>Check my claim</span>
                         </div>
-                        <svg
-                          aria-hidden="true"
-                          className="ml-3 w-6 h-6"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                      </button>
-                    </Link>
+                      </div>
+                      <svg
+                        aria-hidden="true"
+                        className="ml-3 w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        ></path>
+                      </svg>
+                    </button>
                   </li>
                 </ul>
               </div>
