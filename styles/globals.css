@@ -7,6 +7,11 @@
 }
 
 /* Form Validation */
+.form-group:has(input:focus) label,
+.form-group:has(select:focus) label {
+  color: #111928;
+}
+
 input:focus,
 select:focus,
 .success input:focus,
@@ -34,6 +39,10 @@ select:focus+.form-icon {
 }
 
 /* success */
+.success label,
+.dark .success label {
+  color: #057A55;
+}
 
 .success input,
 .success input:-webkit-autofill,
@@ -51,6 +60,11 @@ select:focus+.form-icon {
 
 .success input::placeholder {
   color: #046C4E !important;
+}
+
+.dark .form-group:has(input:focus) label,
+.dark .form-group:has(select:focus) label {
+  color: #FFFFFF;
 }
 
 .dark input:focus,
@@ -83,6 +97,11 @@ select:focus+.form-icon {
 
 .error {
   color: #E02424 !important;
+}
+
+.error label,
+.dark .error label {
+  color: #E02424;
 }
 
 .error input,

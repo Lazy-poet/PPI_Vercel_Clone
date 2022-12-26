@@ -58,7 +58,7 @@ const QuickQuote = (props: any) => {
           </select>
         </div>
         <div className="hidden md:flex"></div> */}
-        <div className={fdEvents.firstName ? '' : (data.firstName ? 'success' : 'error')}>
+        <div className={`form-group ${fdEvents.firstName ? '' : (data.firstName ? 'success' : 'error')}`}>
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -87,7 +87,7 @@ const QuickQuote = (props: any) => {
               </p>
           }
         </div>
-        <div className={fdEvents.lastName ? '' : (data.lastName ? 'success' : 'error')}>
+        <div className={`form-group ${fdEvents.lastName ? '' : (data.lastName ? 'success' : 'error')}`}>
           <label
             htmlFor="last-name"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -157,7 +157,7 @@ const QuickQuote = (props: any) => {
             messages
           </p>
         </div> */}
-        <div className={`sm:col-span-2 ${fdEvents.email ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
+        <div className={`form-group sm:col-span-2 ${fdEvents.email ? '' : (data.email && Utils.validateEmail(data.email) ? 'success' : 'error')}`}>
           <label
             htmlFor="email"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -226,7 +226,7 @@ const QuickQuote = (props: any) => {
               )
           }
         </div>
-        <div className={`sm:col-span-2 ${fdEvents.postCode ? '' : (data.postCode ? 'success' : 'error')}`}>
+        <div className={`form-group sm:col-span-2 ${fdEvents.postCode ? '' : (data.postCode ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -294,8 +294,8 @@ const QuickQuote = (props: any) => {
           }
         </div>
       </div>
-      <div className="w-full my-5">
-        <div className="w-full mb-2">
+      <div className="form-group w-full my-5">
+        <div className={`w-full mb-2 ${(fdEvents.day && fdEvents.month && fdEvents.year) ? '' : (data.day && data.month && data.year) ? 'success' : 'error'}`}>
           <label
             htmlFor="birthday"
             className="block text-lg font-medium text-gray-900 dark:text-white"
