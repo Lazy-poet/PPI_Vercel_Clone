@@ -1,13 +1,16 @@
-import { Autocomplete, TextField } from "@mui/material";
-import { useState } from "react";
-const CHA = require('companies-house-api-es6');
-const cha = new CHA('5b4b9a72-2734-40e9-9df4-eee5a44391cf');
+import { Autocomplete } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const ClaimNow = (props: any) => {
   const { data, handleFormChange } = props;
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
   const [companies, setCompanies] = useState<any>([]);
+  const [refresh, setRefresh] = useState(true);
+
+  useEffect(() => {
+    search('a');
+  }, []);
 
   const handleInputChange = (e: any) => {
     if (!e.target.value) {
@@ -15,22 +18,35 @@ const ClaimNow = (props: any) => {
       handleFormChange('employerName', '');
       //   return;
     }
-    var value = e.target.value.toString();
+    var value = e.target.value ? e.target.value.toString() : 'a';
     value = value.charAt(0).toUpperCase() + value.slice(1);
-    // handleFormChange(e.target.name, value);
-    // 
-    cha.searchAll(e.target.value)
-      .then((result: any) => {
+    search(value);
+  }
+
+  const search = (query: string) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "5b4b9a72-2734-40e9-9df4-eee5a44391cf");
+
+    var requestOptions: any = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(`https://api.company-information.service.gov.uk/search/companies?q=${query}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        var items = result.items;
         var _companies = [];
-        if (result) {
-          for (var i = 0; i < result.length; i++) {
-            _companies.push(result[i].title.trim('"'));
-          }
+        for (var i = 0; i < items.length; i++) {
+          _companies.push(items[i].title.trim('"'));
         }
         setCompanies(_companies);
-      }).catch((err: any) => {
-        console.log(err);
-      });
+        setTimeout(function () {
+          setRefresh(!refresh);
+        }, 1000);
+      })
+      .catch(error => console.log('error', error));
   }
 
   const handleChange = (e: any) => {
