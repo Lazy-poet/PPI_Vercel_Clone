@@ -111,26 +111,43 @@ export default function Claim() {
           lastName: false,
           email: false,
           postCode: false,
+          address: false,
           day: false,
           month: false,
           year: false
         });
-        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && postcodeValidator(formData1.postCode, 'GB') && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') setStep((step) => step + 1);
+        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && postcodeValidator(formData1.postCode, 'GB') && formData1.address !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.employerName !== '') setStep((step) => step + 1);
+        if (formData2.employerName !== '') {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         break;
       case STEP.SIGN_COMPLETE:
         setStep((step) => step + 1);
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance !== '' && isNino(formData4.insurance)) setStep((step) => step + 1);
+        if (formData4.insurance !== '' && isNino(formData4.insurance)) {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         break;
       case STEP.THANK_YOU:
         setFormData5({ ...formData5, firstEvent: false });
-        if (formData5.paye !== '' && Utils.validatePAYE(formData5.paye)) setStep((step) => step + 1);
+        if (formData5.paye !== '' && Utils.validatePAYE(formData5.paye)) {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         break;
       case STEP.ALL_DONE:
         router.push("/");

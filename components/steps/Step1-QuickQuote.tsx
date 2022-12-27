@@ -351,7 +351,7 @@ const QuickQuote = (props: any) => {
         {
           addressList.length > 0
             ?
-            <div className={`form-group sm:col-span-2 ${fdEvents.address ? '' : (data.address ? 'success' : 'error')}`}>
+            <div className={`form-group max-w-full sm:col-span-2 ${fdEvents.address ? '' : (data.address ? 'success' : 'error')}`}>
               <label
                 htmlFor="address"
                 className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -359,20 +359,6 @@ const QuickQuote = (props: any) => {
                 Address
               </label>
               <div className="icon-input">
-                {/* <select
-                  id="address"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  name="address"
-                  value={data.address}
-                  onChange={(e) => handleSelectChange(e)}
-                >
-                  <option value="">Please Select Your Address</option>
-                  {
-                    addressList && addressList.map((item: any, index: number) =>
-                      <option key={index} value={item.suggestion}>{item.suggestion}</option>
-                    )
-                  }
-                </select> */}
                 <FormControl className="w-full mui-select">
                   <Select
                     id="address"
@@ -388,7 +374,11 @@ const QuickQuote = (props: any) => {
                     </MenuItem>
                     {
                       addressList && addressList.map((item: any, index: number) =>
-                        <MenuItem key={index} value={item.suggestion}>{item.suggestion}</MenuItem>
+                        <MenuItem key={index}
+                          value={`${item.suggestion.split(', ' + item.suggestion.split(', ')[item.suggestion.split(', ').length - 1])}`}
+                        >
+                          {item.suggestion.split(', ' + item.suggestion.split(', ')[item.suggestion.split(', ').length - 1])}
+                        </MenuItem>
                       )
                     }
                   </Select>
@@ -416,26 +406,6 @@ const QuickQuote = (props: any) => {
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
             <div className={fdEvents.day ? '' : (data.day ? 'success' : 'error')}>
               <div className="icon-input">
-                {/* <select
-                  id="day"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  name="day"
-                  value={data.day}
-                  onChange={(e) => handleSelectChange(e)}
-                >
-                  <option value="">DD</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-                <span className="form-icon"></span> */}
                 <FormControl className="w-full mui-select">
                   <Select
                     id="day"
@@ -486,26 +456,6 @@ const QuickQuote = (props: any) => {
             </div>
             <div className={fdEvents.month ? '' : (data.month ? 'success' : 'error')}>
               <div className="icon-input">
-                {/* <select
-                  id="month"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  name="month"
-                  value={data.month}
-                  onChange={(e) => handleSelectChange(e)}
-                >
-                  <option value="">MM</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-                <span className="form-icon"></span> */}
                 <FormControl className="w-full mui-select">
                   <Select
                     id="month"
@@ -558,26 +508,6 @@ const QuickQuote = (props: any) => {
           </div>
           <div className={fdEvents.year ? '' : (data.year ? 'success' : 'error')}>
             <div className="icon-input">
-              {/* <select
-                id="year"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                name="year"
-                value={data.year}
-                onChange={(e) => handleSelectChange(e)}
-              >
-                <option value="">YYYY</option>
-                <option value="1960">1960</option>
-                <option value="1961">1961</option>
-                <option value="1962">1962</option>
-                <option value="1963">1963</option>
-                <option value="1964">1964</option>
-                <option value="1965">1965</option>
-                <option value="1966">1966</option>
-                <option value="1967">1967</option>
-                <option value="1968">1968</option>
-                <option value="1969">1969</option>
-              </select>
-              <span className="form-icon"></span> */}
               <FormControl className="w-full mui-select">
                 <Select
                   id="year"

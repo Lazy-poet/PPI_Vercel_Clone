@@ -164,7 +164,7 @@ const HeroSection = () => {
                 pandemic?
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
-                <div className={`flex items-center px-4 rounded border cursor-pointer ${firstEvent || checked1 || checked2 ? 'border-gray-200 dark:border-gray-700' : 'border-red-500 dark:border-red-500'}`}>
+                <div className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2 ? (checked1 ? 'success' : '') : 'error'}`}>
                   <input
                     id="bordered-checkbox-1"
                     type="checkbox"
@@ -184,7 +184,7 @@ const HeroSection = () => {
                     2020 - 21
                   </label>
                 </div>
-                <div className={`flex items-center px-4 rounded border cursor-pointer ${firstEvent || checked1 || checked2 ? 'border-gray-200 dark:border-gray-700' : 'border-red-500 dark:border-red-500'}`}>
+                <div className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2 ? (checked2 ? 'success' : '') : 'error'}`}>
                   <input
                     id="bordered-checkbox-2"
                     type="checkbox"
@@ -215,7 +215,7 @@ const HeroSection = () => {
                     <button className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={() => {
                         setFirstEvent(false);
-                        (checked1 || checked2) && router.push("/claim");
+                        (checked1 || checked2) ? router.push("/claim") : window.scrollTo({ top: 0, behavior: 'smooth' })
                       }}
                     >
                       <div className="flex-grow">

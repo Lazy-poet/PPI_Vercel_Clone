@@ -2,17 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-.animated-container {
-  display: inline-flex !important;
+/* Local Fonts */
+@font-face {
+  font-family: 'Inter';
+  src: url(../public/fonts/Inter/Inter-Regular.ttf);
 }
 
-input[type='checkbox']:focus {
-  -webkit-box-shadow: unset !important;
+.animated-container {
+  display: inline-flex !important;
 }
 
 input[type='checkbox']:checked {
   background-color: #1C64F2 !important;
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
+}
+
+.checkbox-item {
+  border-radius: 8px;
+}
+
+.checkbox-item.success {
+  background: #F3FAF7;
+  border: 1px solid #0E9F6E;
+}
+
+.checkbox-item.error {
+  background: #FDF2F2;
+  border: 1px solid #F05252;
+}
+
+.dark .checkbox-item.success {
+  background: #374151;
+  border: 1px solid #0E9F6E;
+}
+
+.dark .checkbox-item.error {
+  background: #374151;
+  border: 1px solid #F05252;
 }
 
 /* Form Validation */
@@ -31,7 +57,7 @@ select:focus,
 .error .mui-select .MuiInputBase-root:focus {
   background: #F9FAFB !important;
   border: 1px solid #1C64F2 !important;
-  /* font-family: 'Inter'; */
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   color: #111928 !important;
@@ -67,7 +93,7 @@ select:focus+.form-icon {
   background-color: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
   box-shadow: none !important;
-  /* font-family: 'Inter'; */
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   color: #046C4E !important;
@@ -131,7 +157,7 @@ select:focus+.form-icon {
   background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
   box-shadow: none !important;
-  /* font-family: 'Inter'; */
+  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   /* font-size: 14px;
@@ -167,6 +193,7 @@ select:focus+.form-icon {
   position: relative;
   display: flex;
   align-items: center;
+  max-width: calc(100vw - 32px);
 }
 
 .form-icon {
@@ -215,6 +242,15 @@ select:focus+.form-icon {
 }
 
 /* MUI Select */
+.MuiPopover-root .MuiMenu-list .MuiMenuItem-root {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-height: 48px;
+  line-height: 38px;
+}
+
 .mui-select {
   display: flex;
   justify-content: center;
@@ -246,6 +282,11 @@ select:focus+.form-icon {
 
 .mui-select .MuiSelect-select {
   padding: 3.5px 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  padding-right: 0px !important;
+  max-width: calc(100% - 32px);
 }
 
 .mui-select .form-icon {

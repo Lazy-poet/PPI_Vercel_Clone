@@ -10,6 +10,15 @@ const ClaimNow = (props: any) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
     handleFormChange(e.target.name, value);
+    // 
+    return;
+    console.log('>>>', e.target.value);
+    cha.searchForCompanyById(e.target.value)
+      .then((result: any) => {
+        console.log(result);
+      }).catch((err: any) => {
+        console.log(err);
+      });
   }
 
   return (
