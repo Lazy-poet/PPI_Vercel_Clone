@@ -39,9 +39,13 @@ const ClaimNow = (props: any) => {
         var items = result.items;
         var _companies = [];
         for (var i = 0; i < items.length; i++) {
-          _companies.push(items[i].title.trim('"'));
+          _companies.push({
+            label: items[i].title,
+            key: i
+          });
         }
         setCompanies(_companies);
+        // setCompanies(items);
         setTimeout(function () {
           setRefresh(!refresh);
         }, 1000);
@@ -74,6 +78,9 @@ const ClaimNow = (props: any) => {
             freeSolo={false}
             popupIcon={""}
             options={companies}
+            renderOption={(props, option: any, { selected }) => (
+              <li {...props} key={option.key}>{option.label.trim('"')}</li>
+            )}
             renderInput={(params) =>
               <div ref={params.InputProps.ref}>
                 <input
