@@ -1,24 +1,44 @@
+import { Autocomplete, TextField } from "@mui/material";
 import { useState } from "react";
 const CHA = require('companies-house-api-es6');
-const cha = new CHA('BR33-UY4I-QPKF-IGJV');
+const cha = new CHA('5b4b9a72-2734-40e9-9df4-eee5a44391cf');
 
 const ClaimNow = (props: any) => {
   const { data, handleFormChange } = props;
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
+  const [companies, setCompanies] = useState<any>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
-    handleFormChange(e.target.name, value);
+  const handleInputChange = (e: any) => {
+    if (!e.target.value) {
+      //   setCompanies([]);
+      handleFormChange('employerName', '');
+      //   return;
+    }
+    var value = e.target.value.toString();
+    value = value.charAt(0).toUpperCase() + value.slice(1);
+    // handleFormChange(e.target.name, value);
     // 
-    return;
-    console.log('>>>', e.target.value);
-    cha.searchForCompanyById(e.target.value)
+    cha.searchAll(e.target.value)
       .then((result: any) => {
-        console.log(result);
+        var _companies = [];
+        if (result) {
+          for (var i = 0; i < result.length; i++) {
+            _companies.push(result[i].title.trim('"'));
+          }
+        }
+        setCompanies(_companies);
       }).catch((err: any) => {
         console.log(err);
       });
+  }
+
+  const handleChange = (e: any) => {
+    if (!e) {
+      return;
+    }
+    var value = e.target.innerText ? e.target.innerText : e.target.value;
+    handleFormChange('employerName', value);
   }
 
   return (
@@ -31,15 +51,26 @@ const ClaimNow = (props: any) => {
           What was the name of your employer?
         </label>
         <div className="icon-input">
-          <input
-            type="text"
-            name="employerName"
-            id="employer"
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-            placeholder="Name Of Employer"
-            required
-            value={data.employerName}
-            onChange={(e) => handleInputChange(e)}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            className="w-full"
+            freeSolo={false}
+            popupIcon={""}
+            options={companies}
+            renderInput={(params) =>
+              <div ref={params.InputProps.ref}>
+                <input
+                  type="text"
+                  {...params.inputProps}
+                  name="employerName"
+                  placeholder="Name Of Employer"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                />
+              </div>
+            }
+            onInputChange={(e) => handleInputChange(e)}
+            onChange={(e) => handleChange(e)}
           />
           <span className="form-icon"></span>
         </div>
