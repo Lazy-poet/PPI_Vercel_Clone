@@ -369,7 +369,7 @@ const QuickQuote = (props: any) => {
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
                   >
-                    <MenuItem value="">
+                    <MenuItem value="" disabled>
                       Please Select Your Address
                     </MenuItem>
                     {
@@ -416,7 +416,7 @@ const QuickQuote = (props: any) => {
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
                   >
-                    <MenuItem value="">
+                    <MenuItem value="" disabled>
                       DD
                     </MenuItem>
                     {
@@ -466,7 +466,7 @@ const QuickQuote = (props: any) => {
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
                   >
-                    <MenuItem value="">
+                    <MenuItem value="" disabled>
                       MM
                     </MenuItem>
                     {
@@ -518,7 +518,7 @@ const QuickQuote = (props: any) => {
                   displayEmpty
                   inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
                 >
-                  <MenuItem value="">
+                  <MenuItem value="" disabled>
                     YYYY
                   </MenuItem>
                   {
