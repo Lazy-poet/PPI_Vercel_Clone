@@ -1,10 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Utils from "../../libs/utils";
 import { postcodeValidator } from 'postcode-validator';
+import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
   const [addressList, setAddressList] = useState<any>([]);
+  const [Dates, setDates] = useState<string[]>([]);
+  const [Months, setMonths] = useState<string[]>([]);
+  const [Years, setYears] = useState<string[]>([]);
+
+  useEffect(() => {
+    var _dates = [];
+    for (var d = 1; d <= 31; d++) {
+      _dates.push(('0' + d).slice(-2));
+    }
+    setDates(_dates);
+    // 
+    var _months = [];
+    for (var m = 1; m <= 12; m++) {
+      _months.push(('0' + m).slice(-2));
+    }
+    setMonths(_months);
+    // 
+    var _years = [];
+    for (var y = 1950; y <= 2005; y++) {
+      _years.push(y.toString());
+    }
+    setYears(_years);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -29,6 +54,11 @@ const QuickQuote = (props: any) => {
   }
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let value = e.target.value;
+    handleFormChange(e.target.name, value);
+  }
+
+  const handleMUISelectChange = (e: SelectChangeEvent<any>) => {
     let value = e.target.value;
     handleFormChange(e.target.name, value);
   }
@@ -329,7 +359,7 @@ const QuickQuote = (props: any) => {
                 Address
               </label>
               <div className="icon-input">
-                <select
+                {/* <select
                   id="address"
                   className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   name="address"
@@ -342,8 +372,28 @@ const QuickQuote = (props: any) => {
                       <option key={index} value={item.suggestion}>{item.suggestion}</option>
                     )
                   }
-                </select>
-                <span className="form-icon"></span>
+                </select> */}
+                <FormControl className="w-full mui-select">
+                  <Select
+                    id="address"
+                    name="address"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={data.address}
+                    onChange={(e) => handleMUISelectChange(e)}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                  >
+                    <MenuItem value="">
+                      Please Select Your Address
+                    </MenuItem>
+                    {
+                      addressList && addressList.map((item: any, index: number) =>
+                        <MenuItem key={index} value={item.suggestion}>{item.suggestion}</MenuItem>
+                      )
+                    }
+                  </Select>
+                  <span className="form-icon"></span>
+                </FormControl>
               </div>
 
             </div>
@@ -366,7 +416,7 @@ const QuickQuote = (props: any) => {
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
             <div className={fdEvents.day ? '' : (data.day ? 'success' : 'error')}>
               <div className="icon-input">
-                <select
+                {/* <select
                   id="day"
                   className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   name="day"
@@ -385,7 +435,28 @@ const QuickQuote = (props: any) => {
                   <option value="9">9</option>
                   <option value="10">10</option>
                 </select>
-                <span className="form-icon"></span>
+                <span className="form-icon"></span> */}
+                <FormControl className="w-full mui-select">
+                  <Select
+                    id="day"
+                    name="day"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={data.day}
+                    onChange={(e) => handleMUISelectChange(e)}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                  >
+                    <MenuItem value="">
+                      DD
+                    </MenuItem>
+                    {
+                      Dates && Dates.map((item: any, index: number) =>
+                        <MenuItem key={index} value={item}>{item}</MenuItem>
+                      )
+                    }
+                  </Select>
+                  <span className="form-icon"></span>
+                </FormControl>
               </div>
               {
                 fdEvents.day
@@ -415,9 +486,9 @@ const QuickQuote = (props: any) => {
             </div>
             <div className={fdEvents.month ? '' : (data.month ? 'success' : 'error')}>
               <div className="icon-input">
-                <select
+                {/* <select
                   id="month"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   name="month"
                   value={data.month}
                   onChange={(e) => handleSelectChange(e)}
@@ -434,7 +505,28 @@ const QuickQuote = (props: any) => {
                   <option value="9">9</option>
                   <option value="10">10</option>
                 </select>
-                <span className="form-icon"></span>
+                <span className="form-icon"></span> */}
+                <FormControl className="w-full mui-select">
+                  <Select
+                    id="month"
+                    name="month"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    value={data.month}
+                    onChange={(e) => handleMUISelectChange(e)}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                  >
+                    <MenuItem value="">
+                      MM
+                    </MenuItem>
+                    {
+                      Months && Months.map((item: any, index: number) =>
+                        <MenuItem key={index} value={item}>{item}</MenuItem>
+                      )
+                    }
+                  </Select>
+                  <span className="form-icon"></span>
+                </FormControl>
               </div>
               {
                 fdEvents.month
@@ -466,9 +558,9 @@ const QuickQuote = (props: any) => {
           </div>
           <div className={fdEvents.year ? '' : (data.year ? 'success' : 'error')}>
             <div className="icon-input">
-              <select
+              {/* <select
                 id="year"
-                className="bg-gray-50 border border-gray-300 text-gray-900 md:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 name="year"
                 value={data.year}
                 onChange={(e) => handleSelectChange(e)}
@@ -485,7 +577,28 @@ const QuickQuote = (props: any) => {
                 <option value="1968">1968</option>
                 <option value="1969">1969</option>
               </select>
-              <span className="form-icon"></span>
+              <span className="form-icon"></span> */}
+              <FormControl className="w-full mui-select">
+                <Select
+                  id="year"
+                  name="year"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  value={data.year}
+                  onChange={(e) => handleMUISelectChange(e)}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                >
+                  <MenuItem value="">
+                    YYYY
+                  </MenuItem>
+                  {
+                    Years && Years.map((item: any, index: number) =>
+                      <MenuItem key={index} value={item}>{item}</MenuItem>
+                    )
+                  }
+                </Select>
+                <span className="form-icon"></span>
+              </FormControl>
             </div>
             {
               fdEvents.year

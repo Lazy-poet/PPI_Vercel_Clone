@@ -25,8 +25,10 @@ input:focus:not([type='checkbox']),
 select:focus,
 .success input:focus:not([type='checkbox']),
 .success select:focus,
+.success .mui-select .MuiInputBase-root:focus,
 .error input:focus:not([type='checkbox']),
-.error select:focus {
+.error select:focus,
+.error .mui-select .MuiInputBase-root:focus {
   background: #F9FAFB !important;
   border: 1px solid #1C64F2 !important;
   /* font-family: 'Inter'; */
@@ -37,8 +39,14 @@ select:focus,
   -webkit-box-shadow: 0 0 0 30px #F9FAFB inset !important;
 }
 
-input::placeholder {
+input::placeholder,
+.mui-select .MuiInputBase-root {
   color: #111928;
+}
+
+.dark input::placeholder,
+.dark .mui-select .MuiInputBase-root {
+  color: #9CA3AF;
 }
 
 input:focus+.form-icon,
@@ -54,7 +62,8 @@ select:focus+.form-icon {
 
 .success input:not([type='checkbox']),
 .success input:-webkit-autofill:not([type='checkbox']),
-.success select {
+.success select,
+.success .mui-select .MuiInputBase-root {
   background-color: #F3FAF7 !important;
   border: 1px solid #0E9F6E !important;
   box-shadow: none !important;
@@ -77,10 +86,13 @@ select:focus+.form-icon {
 
 .dark input:focus:not([type='checkbox']),
 .dark select:focus,
+.dark .mui-select .MuiInputBase-root:focus,
 .dark .success input:focus:not([type='checkbox']),
 .dark .success select:focus,
+.dark .success .mui-select .MuiInputBase-root:focus,
 .dark .error input:focus:not([type='checkbox']),
-.dark .error select:focus {
+.dark .error select:focus,
+.dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
   border: 1px solid #3F83F8 !important;
   color: #FFFFFF !important;
@@ -89,7 +101,8 @@ select:focus+.form-icon {
 }
 
 .dark .success input:not([type='checkbox']),
-.dark .success select {
+.dark .success select,
+.dark .success .mui-select .MuiInputBase-root {
   background: #374151 !important;
   border: 1px solid #0E9F6E !important;
   color: #0E9F6E !important;
@@ -113,7 +126,8 @@ select:focus+.form-icon {
 }
 
 .error input:not([type='checkbox']),
-.error select {
+.error select,
+.error .mui-select .MuiInputBase-root {
   background: #FDF2F2 !important;
   border: 1px solid #F05252 !important;
   box-shadow: none !important;
@@ -129,12 +143,14 @@ select:focus+.form-icon {
 }
 
 /* 
-.error input::placeholder {
+.error input::placeholder,
+.mui-select .MuiInputBase-root {
   color: #C81E1E !important;
 } */
 
 .dark .error input:not([type='checkbox']),
-.dark .error select {
+.dark .error select,
+.dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
   border: 1px solid #F05252 !important;
   color: #F05252 !important;
@@ -191,9 +207,51 @@ select:focus+.form-icon {
 }
 
 .success .form-icon {
-  background-image: url(../public/images/icons/check.svg);
+  background-image: url(../public/images/icons/check.svg) !important;
 }
 
 .error .form-icon {
-  background-image: url(../public/images/icons/exclamation-circle.svg);
+  background-image: url(../public/images/icons/exclamation-circle.svg) !important;
+}
+
+/* MUI Select */
+.mui-select {
+  display: flex;
+  justify-content: center;
+}
+
+.mui-select .rounded-lg {
+  border-radius: 0.5rem !important;
+}
+
+.mui-select .MuiInputBase-root .MuiOutlinedInput-notchedOutline,
+.mui-select .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
+.mui-select .MuiInputBase-root:focus .MuiOutlinedInput-notchedOutline {
+  border-width: 0px !important;
+}
+
+.mui-select .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-width: 1px !important;
+}
+
+.mui-select .MuiInputBase-root:focus {
+  border-color: #1C64F2;
+  border-width: 0px;
+}
+
+.dark .mui-select .MuiInputBase-root:focus {
+  border-color: #3F83F8;
+  border-width: 0px;
+}
+
+.mui-select .MuiSelect-select {
+  padding: 3.5px 0;
+}
+
+.mui-select .form-icon {
+  background-image: url(../public/images/icons/chevron-down.svg);
+}
+
+.dark .mui-select .form-icon {
+  background-image: url(../public/images/icons/chevron-down-dark.svg);
 }

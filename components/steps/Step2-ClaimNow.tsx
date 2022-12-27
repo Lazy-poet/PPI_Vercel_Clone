@@ -1,4 +1,6 @@
 import { useState } from "react";
+const CHA = require('companies-house-api-es6');
+const cha = new CHA('BR33-UY4I-QPKF-IGJV');
 
 const ClaimNow = (props: any) => {
   const { data, handleFormChange } = props;
