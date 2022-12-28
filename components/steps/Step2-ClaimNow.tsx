@@ -6,22 +6,11 @@ const ClaimNow = (props: any) => {
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
   const [companies, setCompanies] = useState<any>([]);
-  const [refresh, setRefresh] = useState(true);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     search('a');
   }, []);
-
-  const handleInputChange = (e: any) => {
-    if (!e.target.value) {
-      //   setCompanies([]);
-      handleFormChange('employerName', '');
-      //   return;
-    }
-    var value = e.target.value ? e.target.value.toString() : 'a';
-    value = value.charAt(0).toUpperCase() + value.slice(1);
-    search(value);
-  }
 
   const search = (query: string) => {
     var myHeaders = new Headers();
@@ -33,7 +22,7 @@ const ClaimNow = (props: any) => {
       redirect: 'follow'
     };
 
-    fetch(`https://api.company-information.service.gov.uk/search/companies?q=${query}`, requestOptions)
+    fetch(`https://api.company-information.service.gov.uk/search/companies?q=${query ? query : 'a'}`, requestOptions)
       .then(response => response.json())
       .then(result => {
         var items = result.items;
@@ -45,20 +34,8 @@ const ClaimNow = (props: any) => {
           });
         }
         setCompanies(_companies);
-        // setCompanies(items);
-        setTimeout(function () {
-          setRefresh(!refresh);
-        }, 1000);
       })
       .catch(error => console.log('error', error));
-  }
-
-  const handleChange = (e: any) => {
-    if (!e) {
-      return;
-    }
-    var value = e.target.innerText ? e.target.innerText : e.target.value;
-    handleFormChange('employerName', value);
   }
 
   return (
@@ -81,6 +58,15 @@ const ClaimNow = (props: any) => {
             renderOption={(props, option: any, { selected }) => (
               <li {...props} key={option.key}>{option.label.trim('"')}</li>
             )}
+            value={data.employerName}
+            onChange={(e: any, newValue: any) => {
+              handleFormChange('employerName', newValue);
+            }}
+            inputValue={searchQuery}
+            onInputChange={(e, newInputValue) => {
+              setSearchQuery(newInputValue);
+              search(newInputValue);
+            }}
             renderInput={(params) =>
               <div ref={params.InputProps.ref}>
                 <input
@@ -92,8 +78,6 @@ const ClaimNow = (props: any) => {
                 />
               </div>
             }
-            onInputChange={(e) => handleInputChange(e)}
-            onChange={(e) => handleChange(e)}
           />
           <span className="form-icon"></span>
         </div>

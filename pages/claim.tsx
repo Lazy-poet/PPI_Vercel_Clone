@@ -58,9 +58,9 @@ export default function Claim() {
   // Step2
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
-    employerName: ''
+    employerName: null
   });
-  const handleFormChange2 = (key: string, value: string) => {
+  const handleFormChange2 = (key: string, value: any) => {
     setFormData2({
       ...formData2,
       firstEvent: false,
