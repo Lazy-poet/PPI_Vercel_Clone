@@ -42,7 +42,7 @@ const ClaimNow = (props: any) => {
 
   return (
     <>
-    <div className={` ${slide ? 'transition' : 'step_2 step'}`}
+    <div className={` step  slider-content`}
     >
       <Title step={1} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
@@ -177,7 +177,7 @@ const ClaimNow = (props: any) => {
           </div>
         </div>
       </div>
-      {/* <NextButton className="slide_button" onClick={nextSlide}/> */}
+
     </div>
     </>
   );

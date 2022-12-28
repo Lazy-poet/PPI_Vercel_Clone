@@ -18,6 +18,11 @@ import Layout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require('is-national-insurance-number');
 import { postcodeValidator } from 'postcode-validator';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper";
 
 
 export default function Claim() {
@@ -102,7 +107,6 @@ export default function Claim() {
     } else {
       setStep((step) => step - 1);
     }
-    setslide(true)
   };
 
   const nextStep = () => {
@@ -159,11 +163,10 @@ export default function Claim() {
         break;
     }
     // 
-    document.getElementById('btnNext')?.blur();
+    document.getElementById('swiper-forward')?.blur();
     setslide(false)
   };
-
-
+  
 
   return (
     <Layout>
@@ -172,23 +175,29 @@ export default function Claim() {
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
               {step < STEP.LAST_THING && (
-                <ProgressBar step={step} prevStep={prevStep} />
+                <ProgressBar step={step} prevStep={prevStep} id='swiper-back' />
               )}
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
               )}
-
-              {step == STEP.QUICK_QUOTE && <QuickQuote slide={slide} data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
-              {step == STEP.CLAIM_NOW && <ClaimNow slide={slide} data={formData2} handleFormChange={handleFormChange2} />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete slide={slide} />}
-              {step == STEP.LAST_THING && <LastThing slide={slide} data={formData4} handleFormChange={handleFormChange4} />}
-              {step == STEP.THANK_YOU && <ThankYou slide={slide} data={formData5} handleFormChange={handleFormChange5} />}
-              {step == STEP.ALL_DONE && <AllDone slide={slide} />}
+        <Swiper 
+             autoHeight
+             modules={[Pagination, Navigation]}
+             navigation={{ nextEl: '#swiper-forward', prevEl: '#swiper-back' }}
+             className=" swiper-container mySwiper swiper-autoheight global-form-slider"
+        >
+           <SwiperSlide>{<QuickQuote slide={slide} data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}</SwiperSlide>
+           <SwiperSlide>{<ClaimNow slide={slide} data={formData2} handleFormChange={handleFormChange2} />}</SwiperSlide>  
+           <SwiperSlide>{<SignComplete slide={slide} />}</SwiperSlide>
+           <SwiperSlide>{ <LastThing slide={slide} data={formData4} handleFormChange={handleFormChange4} />}</SwiperSlide>  
+           <SwiperSlide>{ <ThankYou slide={slide} data={formData5} handleFormChange={handleFormChange5} />}</SwiperSlide>  
+           <SwiperSlide> { <AllDone slide={slide} />}</SwiperSlide>
+      </Swiper>
 
               {step != STEP.ALL_DONE && (
                 <NextButton
-                  onClick={nextStep
-                  }
+                id={'swiper-forward'}
+                  onClick={nextStep}
                   label={step == STEP.THANK_YOU ? "Submit" : "Next"}
                   helper={NEXT_BUTTON_HELPERS[step]}
                 />

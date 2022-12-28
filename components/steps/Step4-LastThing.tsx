@@ -18,7 +18,7 @@ const LastThing = (props: any) => {
 
   return (
     <>
-    <div className={` ${slide ? 'transition' : 'step_4 step'}`}
+    <div className={` step slide slider-content`}
     >
       <Title step={3} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
@@ -99,7 +99,6 @@ const LastThing = (props: any) => {
               )
         }
       </div>
-      {/* <NextButton className="slide_button"/> */}
     </div>
     </>
   );

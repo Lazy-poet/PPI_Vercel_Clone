@@ -3,6 +3,7 @@ import Utils from "../../libs/utils";
 import { postcodeValidator } from 'postcode-validator';
 import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
+import Title from "@/components/Title";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
@@ -86,6 +87,9 @@ const QuickQuote = (props: any) => {
 
   return (
     <>
+      <div className={`step slider-content`}
+      >
+        <Title step={0} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         {/* <div>
           <label
@@ -196,12 +200,16 @@ const QuickQuote = (props: any) => {
             </span>
             <input
               type="text"
-              name="mobile-number"
-              id="mobile-number"
-              placeholder=""
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              name="first-name"
+              id="first-name"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              placeholder="First Name"
               required
             />
+            <p className="mt-2 text-sm text-green-600 dark:text-green-500">
+              <span className="font-medium">Well done!</span> Some success
+              message.
+            </p>
           </div>
           <p
             id="helper-text-explanation"
@@ -297,13 +305,8 @@ const QuickQuote = (props: any) => {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
-              </svg>
+                Search
+              </button>
             </div>
             <input
               type="search"
@@ -320,8 +323,9 @@ const QuickQuote = (props: any) => {
               className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={() => searchAddressByPostcode(data.postCode)}
             >
-              Search
-            </button>
+              Enter your postcode, then click &apos;Search&apos; to find your
+              address and proceed
+            </p>
           </div>
           {
             fdEvents.postCode
@@ -401,6 +405,15 @@ const QuickQuote = (props: any) => {
             Date of Birth
           </label>
         </div>
+        <div className="w-full my-5">
+          <div className="w-full mb-2">
+            <label
+              htmlFor="birthday"
+              className="block text-lg font-medium text-gray-900 dark:text-white"
+            >
+              Date of Birth
+            </label>
+          </div>
 
         <div id="birthday" className="grid gap-5 sm:grid-cols-3">
           <div className="grid gap-5 grid-cols-2 sm:col-span-2">
@@ -559,6 +572,7 @@ const QuickQuote = (props: any) => {
           </div>
         </div>
       </div>
+
     </>
   );
 };

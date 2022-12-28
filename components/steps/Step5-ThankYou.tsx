@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Utils from "../../libs/utils";
+import Title from "@/components/Title";
 
 const ThankYou = (props: any) => {
   const { slide, data, handleFormChange } = props;
@@ -31,7 +32,7 @@ const ThankYou = (props: any) => {
 
   return (
     <>
-    <div className={` ${slide ? 'transition' : 'step_5 step'}`}
+    <div className={`step  slider-content`}
     >
       <Title step={4} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
