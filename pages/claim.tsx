@@ -124,7 +124,7 @@ export default function Claim() {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.employerName !== '') {
+        if (formData2.employerName !== null) {
           setStep((step) => step + 1);
         } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
