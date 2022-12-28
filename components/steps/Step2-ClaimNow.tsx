@@ -1,13 +1,13 @@
 import { useState } from "react";
 import Title from "@/components/Title";
 
-const ClaimNow = () => {
+const ClaimNow = ({slide}) => {
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
 
   return (
     <>
-    <div className={` step  slider-content`}
+    <div className={` ${slide ? 'transition' : 'step_2 step'}`}
     >
       <Title step={1} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2 "
@@ -70,7 +70,7 @@ const ClaimNow = () => {
           </div>
         </div>
       </div>
-
+      {/* <NextButton className="slide_button" onClick={nextSlide}/> */}
     </div>
     </>
   );

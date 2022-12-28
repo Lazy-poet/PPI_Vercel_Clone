@@ -6,13 +6,11 @@ type Props = {
   prevStep: any;
 };
 
-
-const ProgressBar = ({ step, prevStep,id }: Props) => {
+const ProgressBar = ({ step, prevStep }: Props) => {
   return (
     <div className="w-full pt-4 mx-auto text-center lg:pt-8">
       <div className="flex justify-between items-center mb-1">
         <button
-         id={id}
           className="inline-flex items-center text-sm font-medium text-blue-700 dark:text-white"
           onClick={() => prevStep()}
         >

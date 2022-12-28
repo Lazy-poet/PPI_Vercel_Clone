@@ -1,12 +1,13 @@
 import { CONFIRMS } from "@/libs/doms";
 import Title from "@/components/Title";
+import { useState } from "react";
 
 
-const SignComplete = () => {
+const SignComplete = ({slide}) => {
 
   return (
     <>
-    <div className={`step slider-content`}
+    <div className={` ${slide ? 'transition' : 'step_3 step'}`}
     >
       <Title step={2} />
       <div className="mt-6 mb-5">
@@ -32,6 +33,7 @@ const SignComplete = () => {
           })}
         </ul>
       </div>
+      {/* <NextButton className="slide_button"/> */}
       </div>
     </>
   )
