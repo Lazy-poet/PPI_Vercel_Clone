@@ -12,6 +12,10 @@
   display: inline-flex !important;
 }
 
+/*  */
+/* Form Validation */
+/*  */
+
 input[type='checkbox']:checked {
   background-color: #1C64F2 !important;
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
@@ -295,4 +299,52 @@ select:focus+.form-icon {
 
 .dark .mui-select .form-icon {
   background-image: url(../public/images/icons/chevron-down-dark.svg);
+
+/*    */
+/*  Form Slide  */
+/*    */
+.slide-child{
+  width: calc(672px * 6); 
+  display:flex; 
+  gap: 20px;
+}
+.slide-parent {
+  width: 100%;
+  overflow: hidden;
+}
+
+
+
+
+.step{
+  transform: translateX(350px);
+  animation:trans 0.6s;
+  animation-fill-mode: forwards;
+}
+.transition{
+  transform: translateX(-250px);
+  animation:transBack 0.6s;
+  animation-fill-mode:forwards;
+}
+@-webkit-keyframes transBack{
+  100%{
+    transform: translateX(0);
+  }
+}
+@keyframes transBack {
+  100%{
+    transform: translateX(0);
+  }
+}
+
+@-webkit-keyframes trans{
+  100%{
+    transform: translateX(0);
+  }
+}
+@keyframes trans {
+  100%{
+    transform: translateX(0);
+  }
+
 }

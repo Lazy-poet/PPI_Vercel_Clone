@@ -19,9 +19,11 @@ import Utils from "../libs/utils";
 const isNino = require('is-national-insurance-number');
 import { postcodeValidator } from 'postcode-validator';
 
+
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [slide, setslide] = useState(false)
   // Step1
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -100,6 +102,7 @@ export default function Claim() {
     } else {
       setStep((step) => step - 1);
     }
+    setslide(true)
   };
 
   const nextStep = () => {
@@ -157,7 +160,10 @@ export default function Claim() {
     }
     // 
     document.getElementById('btnNext')?.blur();
+    setslide(false)
   };
+
+
 
   return (
     <Layout>
@@ -172,18 +178,17 @@ export default function Claim() {
                 <StepAlert step={step} />
               )}
 
-              <Title step={step} />
-
-              {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
-              {step == STEP.CLAIM_NOW && <ClaimNow data={formData2} handleFormChange={handleFormChange2} />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete />}
-              {step == STEP.LAST_THING && <LastThing data={formData4} handleFormChange={handleFormChange4} />}
-              {step == STEP.THANK_YOU && <ThankYou data={formData5} handleFormChange={handleFormChange5} />}
-              {step == STEP.ALL_DONE && <AllDone />}
+              {step == STEP.QUICK_QUOTE && <QuickQuote slide={slide} data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
+              {step == STEP.CLAIM_NOW && <ClaimNow slide={slide} data={formData2} handleFormChange={handleFormChange2} />}
+              {step == STEP.SIGN_COMPLETE && <SignComplete slide={slide} />}
+              {step == STEP.LAST_THING && <LastThing slide={slide} data={formData4} handleFormChange={handleFormChange4} />}
+              {step == STEP.THANK_YOU && <ThankYou slide={slide} data={formData5} handleFormChange={handleFormChange5} />}
+              {step == STEP.ALL_DONE && <AllDone slide={slide} />}
 
               {step != STEP.ALL_DONE && (
                 <NextButton
-                  onClick={nextStep}
+                  onClick={nextStep
+                  }
                   label={step == STEP.THANK_YOU ? "Submit" : "Next"}
                   helper={NEXT_BUTTON_HELPERS[step]}
                 />

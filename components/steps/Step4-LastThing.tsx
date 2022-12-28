@@ -1,7 +1,15 @@
+import Title from "@/components/Title";
+import NextButton from "../NextButton";
+import { useState } from "react";
 const isNino = require('is-national-insurance-number');
 
 const LastThing = (props: any) => {
-  const { data, handleFormChange } = props;
+  const { slide, data, handleFormChange } = props;
+  const [next4, setnext4] = useState(false);
+    
+  const nextSlide = ()=>{
+    setnext4(true)
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.toUpperCase();
@@ -9,7 +17,11 @@ const LastThing = (props: any) => {
   }
 
   return (
-    <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+    <>
+    <div className={` ${slide ? 'transition' : 'step_4 step'}`}
+    >
+      <Title step={3} />
+      <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
       <div className={`form-group sm:col-span-2 ${data.firstEvent ? '' : (data.insurance && isNino(data.insurance) ? 'success' : 'error')}`}>
         <label
           htmlFor="insurance"
@@ -87,7 +99,9 @@ const LastThing = (props: any) => {
               )
         }
       </div>
+      {/* <NextButton className="slide_button"/> */}
     </div>
+    </>
   );
 };
 

@@ -2,8 +2,12 @@ import { useState } from "react";
 import Utils from "../../libs/utils";
 
 const ThankYou = (props: any) => {
-  const { data, handleFormChange } = props;
+  const { slide, data, handleFormChange } = props;
+  const [next5, setnext5] = useState(false);
   const [isBackspacePressed, setIsBackspacePressed] = useState<boolean>(false);
+  const nextSlide = ()=>{
+    setnext5(true)
+  }
 
   const onEnterPaye = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -26,10 +30,14 @@ const ThankYou = (props: any) => {
   };
 
   return (
-    <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+    <>
+    <div className={` ${slide ? 'transition' : 'step_5 step'}`}
+    >
+      <Title step={4} />
+      <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
       <div className={`form-group sm:col-span-2 ${data.firstEvent ? '' : (data.paye && Utils.validatePAYE(data.paye) ? 'success' : 'error')}`}>
         <label
-          htmlFor="insurance"
+          htmlFor="paye"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
         >
           Your employer&apos;s PAYE number
@@ -99,9 +107,10 @@ const ThankYou = (props: any) => {
                 reference&apos; or &apos;PAYE reference&apos;
               </p>
         }
-
       </div>
+      {/* <NextButton className="slide_button"/> */}
     </div>
+    </>
   );
 };
 
