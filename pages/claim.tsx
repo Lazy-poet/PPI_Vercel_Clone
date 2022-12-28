@@ -15,10 +15,84 @@ import ThankYou from "@/components/steps/Step5-ThankYou";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import Layout from "@/components/Layout";
+import Utils from "../libs/utils";
+const isNino = require('is-national-insurance-number');
+import { postcodeValidator } from 'postcode-validator';
 
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  // Step1
+  const [formData1, setFormData1] = useState<any>({
+    firstEvent: true,
+    firstName: '',
+    lastName: '',
+    email: '',
+    postCode: '',
+    address: '',
+    day: '',
+    month: '',
+    year: ''
+  });
+  const [fdEvents1, setFdEvents1] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    day: true,
+    month: true,
+    year: true
+  });
+  const handleFormChange1 = (key: string, value: string) => {
+    setFormData1({
+      ...formData1,
+      // firstEvent: false,
+      [key]: value
+    });
+    setFdEvents1({
+      ...fdEvents1,
+      [key]: false
+    });
+  }
+  // Step2
+  const [formData2, setFormData2] = useState<any>({
+    firstEvent: true,
+    employerName: null
+  });
+  const handleFormChange2 = (key: string, value: any) => {
+    setFormData2({
+      ...formData2,
+      firstEvent: false,
+      [key]: value
+    });
+  }
+
+  // Step4
+  const [formData4, setFormData4] = useState<any>({
+    firstEvent: true,
+    insurance: ''
+  });
+  const handleFormChange4 = (key: string, value: string) => {
+    setFormData4({
+      ...formData4,
+      firstEvent: false,
+      [key]: value
+    });
+  }
+
+  // Step5
+  const [formData5, setFormData5] = useState<any>({
+    firstEvent: true,
+    paye: ''
+  });
+  const handleFormChange5 = (key: string, value: string) => {
+    setFormData5({
+      ...formData5,
+      firstEvent: false,
+      [key]: value
+    });
+  }
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -29,11 +103,60 @@ export default function Claim() {
   };
 
   const nextStep = () => {
-    if (step == STEP.ALL_DONE) {
-      router.push("/");
-    } else {
-      setStep((step) => step + 1);
+    switch (step) {
+      case STEP.QUICK_QUOTE:
+        setFormData1({ ...formData1, firstEvent: false });
+        setFdEvents1({
+          firstName: false,
+          lastName: false,
+          email: false,
+          postCode: false,
+          address: false,
+          day: false,
+          month: false,
+          year: false
+        });
+        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && postcodeValidator(formData1.postCode, 'GB') && formData1.address !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        break;
+      case STEP.CLAIM_NOW:
+        setFormData2({ ...formData2, firstEvent: false });
+        if (formData2.employerName !== null) {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        break;
+      case STEP.SIGN_COMPLETE:
+        setStep((step) => step + 1);
+        break;
+      case STEP.LAST_THING:
+        setFormData4({ ...formData4, firstEvent: false });
+        if (formData4.insurance !== '' && isNino(formData4.insurance)) {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        break;
+      case STEP.THANK_YOU:
+        setFormData5({ ...formData5, firstEvent: false });
+        if (formData5.paye !== '' && Utils.validatePAYE(formData5.paye)) {
+          setStep((step) => step + 1);
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        break;
+      case STEP.ALL_DONE:
+        router.push("/");
+        break;
+      default:
+        break;
     }
+    // 
+    document.getElementById('btnNext')?.blur();
   };
 
   return (
@@ -51,11 +174,11 @@ export default function Claim() {
 
               <Title step={step} />
 
-              {step == STEP.QUICK_QUOTE && <QuickQuote />}
-              {step == STEP.CLAIM_NOW && <ClaimNow />}
+              {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
+              {step == STEP.CLAIM_NOW && <ClaimNow data={formData2} handleFormChange={handleFormChange2} />}
               {step == STEP.SIGN_COMPLETE && <SignComplete />}
-              {step == STEP.LAST_THING && <LastThing />}
-              {step == STEP.THANK_YOU && <ThankYou />}
+              {step == STEP.LAST_THING && <LastThing data={formData4} handleFormChange={handleFormChange4} />}
+              {step == STEP.THANK_YOU && <ThankYou data={formData5} handleFormChange={handleFormChange5} />}
               {step == STEP.ALL_DONE && <AllDone />}
 
               {step != STEP.ALL_DONE && (

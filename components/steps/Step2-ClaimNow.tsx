@@ -1,29 +1,104 @@
-import { useState } from "react";
+import { Autocomplete } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const ClaimNow = () => {
+const ClaimNow = (props: any) => {
+  const { data, handleFormChange } = props;
   const [checked1, setChecked1] = useState<boolean>(true);
   const [checked2, setChecked2] = useState<boolean>(true);
+  const [companies, setCompanies] = useState<any>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  useEffect(() => {
+    search('a');
+  }, []);
+
+  const search = (query: string) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "5b4b9a72-2734-40e9-9df4-eee5a44391cf");
+
+    var requestOptions: any = {
+      method: 'GET',
+      headers: myHeaders,
+      crossDomain: true,
+      redirect: 'follow'
+    };
+
+    fetch(`https://api.company-information.service.gov.uk/search/companies?q=${query ? query : 'a'}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        var items = result.items;
+        var _companies = [];
+        for (var i = 0; i < items.length; i++) {
+          _companies.push({
+            label: items[i].title,
+            key: i
+          });
+        }
+        setCompanies(_companies);
+      })
+      .catch(error => console.log('error', error));
+  }
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className="sm:col-span-2">
+      <div className={`form-group sm:col-span-2 ${data.firstEvent ? '' : (data.employerName ? 'success' : 'error')}`}>
         <label
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
         >
           What was the name of your employer?
         </label>
-        <input
-          type="text"
-          name="employer"
-          id="employer"
-          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-          placeholder="Name Of Employer"
-          required
-        />
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Please write your employer&apos;s name as it appears on your payslip
-        </p>
+        <div className="icon-input">
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            className="w-full"
+            freeSolo={false}
+            popupIcon={""}
+            options={companies}
+            renderOption={(props, option: any, { selected }) => (
+              <li {...props} key={option.key}>{option.label.trim('"')}</li>
+            )}
+            value={data.employerName}
+            onChange={(e: any, newValue: any) => {
+              handleFormChange('employerName', newValue);
+            }}
+            inputValue={searchQuery}
+            onInputChange={(e, newInputValue) => {
+              setSearchQuery(newInputValue);
+              search(newInputValue);
+            }}
+            renderInput={(params) =>
+              <div ref={params.InputProps.ref}>
+                <input
+                  type="text"
+                  {...params.inputProps}
+                  name="employerName"
+                  placeholder="Name Of Employer"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                />
+              </div>
+            }
+          />
+          <span className="form-icon"></span>
+        </div>
+        {
+          data.firstEvent
+            ?
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              Please write your employer&apos;s name as it appears on your payslip
+            </p>
+            :
+            !data.employerName
+              ?
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please write your employer&apos;s name as it appears on your payslip
+              </p>
+              :
+              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                Please write your employer&apos;s name as it appears on your payslip
+              </p>
+        }
       </div>
       <div className="sm:col-span-2">
         <label

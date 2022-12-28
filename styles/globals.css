@@ -2,6 +2,297 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Local Fonts */
+@font-face {
+  font-family: 'Inter';
+  src: url(../public/fonts/Inter/Inter-Regular.ttf);
+}
+
 .animated-container {
   display: inline-flex !important;
+}
+
+input[type='checkbox']:checked {
+  background-color: #1C64F2 !important;
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e") !important;
+}
+
+.checkbox-item {
+  border-radius: 8px;
+}
+
+.checkbox-item.success {
+  background: #F3FAF7;
+  border: 1px solid #0E9F6E;
+}
+
+.checkbox-item.error {
+  background: #FDF2F2;
+  border: 1px solid #F05252;
+}
+
+.dark .checkbox-item.success {
+  background: #374151;
+  border: 1px solid #0E9F6E;
+}
+
+.dark .checkbox-item.error {
+  background: #374151;
+  border: 1px solid #F05252;
+}
+
+/* Form Validation */
+.form-group:has(input:focus) label,
+.form-group:has(select:focus) label {
+  color: #111928;
+}
+
+input:focus:not([type='checkbox']),
+select:focus,
+.success input:focus:not([type='checkbox']),
+.success select:focus,
+.success .mui-select .MuiInputBase-root:focus,
+.error input:focus:not([type='checkbox']),
+.error select:focus,
+.error .mui-select .MuiInputBase-root:focus {
+  background: #F9FAFB !important;
+  border: 1px solid #1C64F2 !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  color: #111928 !important;
+  -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #F9FAFB inset !important;
+}
+
+input::placeholder,
+.mui-select .MuiInputBase-root {
+  color: #111928;
+}
+
+.dark input::placeholder,
+.dark .mui-select .MuiInputBase-root {
+  color: #9CA3AF;
+}
+
+input:focus+.form-icon,
+select:focus+.form-icon {
+  display: none;
+}
+
+/* success */
+.success label,
+.dark .success label {
+  color: #057A55;
+}
+
+.success input:not([type='checkbox']),
+.success input:-webkit-autofill:not([type='checkbox']),
+.success select,
+.success .mui-select .MuiInputBase-root {
+  background-color: #F3FAF7 !important;
+  border: 1px solid #0E9F6E !important;
+  box-shadow: none !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  color: #046C4E !important;
+  -webkit-text-fill-color: #046C4E !important;
+  -webkit-box-shadow: 0 0 0 30px #F3FAF7 inset !important;
+}
+
+.success input::placeholder {
+  color: #046C4E !important;
+}
+
+.dark .form-group:has(input:focus) label,
+.dark .form-group:has(select:focus) label {
+  color: #FFFFFF;
+}
+
+.dark input:focus:not([type='checkbox']),
+.dark select:focus,
+.dark .mui-select .MuiInputBase-root:focus,
+.dark .success input:focus:not([type='checkbox']),
+.dark .success select:focus,
+.dark .success .mui-select .MuiInputBase-root:focus,
+.dark .error input:focus:not([type='checkbox']),
+.dark .error select:focus,
+.dark .error .mui-select .MuiInputBase-root {
+  background: #374151 !important;
+  border: 1px solid #3F83F8 !important;
+  color: #FFFFFF !important;
+  -webkit-text-fill-color: #FFFFFF !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+}
+
+.dark .success input:not([type='checkbox']),
+.dark .success select,
+.dark .success .mui-select .MuiInputBase-root {
+  background: #374151 !important;
+  border: 1px solid #0E9F6E !important;
+  color: #0E9F6E !important;
+  -webkit-text-fill-color: #0E9F6E !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+}
+
+.dark .success input::placeholder {
+  color: #0E9F6E !important;
+}
+
+/* error */
+
+.error {
+  color: #E02424 !important;
+}
+
+.error label,
+.dark .error label {
+  color: #E02424;
+}
+
+.error input:not([type='checkbox']),
+.error select,
+.error .mui-select .MuiInputBase-root {
+  background: #FDF2F2 !important;
+  border: 1px solid #F05252 !important;
+  box-shadow: none !important;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  /* font-size: 14px;
+  line-height: 150%; */
+  /* color: #C81E1E !important; */
+  color: #111928 !important;
+  -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #FDF2F2 inset !important;
+}
+
+/* 
+.error input::placeholder,
+.mui-select .MuiInputBase-root {
+  color: #C81E1E !important;
+} */
+
+.dark .error input:not([type='checkbox']),
+.dark .error select,
+.dark .error .mui-select .MuiInputBase-root {
+  background: #374151 !important;
+  border: 1px solid #F05252 !important;
+  color: #F05252 !important;
+  -webkit-text-fill-color: #F05252 !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+}
+
+.dark .error input::placeholder {
+  color: #F05252 !important;
+}
+
+/* ./Form Validation */
+.icon-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: calc(100vw - 32px);
+}
+
+.form-icon {
+  position: absolute;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+@media (min-width: 640px) {
+  .form-icon {
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-icon {
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-icon {
+    width: 24px;
+    height: 24px;
+    background-size: 24px 24px;
+  }
+}
+
+.success .form-icon {
+  background-image: url(../public/images/icons/check.svg) !important;
+}
+
+.error .form-icon {
+  background-image: url(../public/images/icons/exclamation-circle.svg) !important;
+}
+
+/* MUI Select */
+.MuiPopover-root .MuiMenu-list .MuiMenuItem-root {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-height: 48px;
+  line-height: 38px;
+}
+
+.mui-select {
+  display: flex;
+  justify-content: center;
+}
+
+.mui-select .rounded-lg {
+  border-radius: 0.5rem !important;
+}
+
+.mui-select .MuiInputBase-root .MuiOutlinedInput-notchedOutline,
+.mui-select .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
+.mui-select .MuiInputBase-root:focus .MuiOutlinedInput-notchedOutline {
+  border-width: 0px !important;
+}
+
+.mui-select .Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-width: 1px !important;
+}
+
+.mui-select .MuiInputBase-root:focus {
+  border-color: #1C64F2;
+  border-width: 0px;
+}
+
+.dark .mui-select .MuiInputBase-root:focus {
+  border-color: #3F83F8;
+  border-width: 0px;
+}
+
+.mui-select .MuiSelect-select {
+  padding: 3.5px 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  padding-right: 0px !important;
+  max-width: calc(100% - 32px);
+}
+
+.mui-select .form-icon {
+  background-image: url(../public/images/icons/chevron-down.svg);
+}
+
+.dark .mui-select .form-icon {
+  background-image: url(../public/images/icons/chevron-down-dark.svg);
 }
