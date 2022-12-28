@@ -15,12 +15,16 @@ import ThankYou from "@/components/steps/Step5-ThankYou";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import Layout from "@/components/Layout";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Pagination, Navigation } from "swiper";
 
 
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
-  const [slide, setslide] = useState(false)
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -28,7 +32,6 @@ export default function Claim() {
     } else {
       setStep((step) => step - 1);
     }
-    setslide(true)
   };
 
   const nextStep = () => {
@@ -37,10 +40,8 @@ export default function Claim() {
     } else {
       setStep((step) => step + 1);
     }
-    setslide(false)
   };
-
-
+  
 
   return (
     <Layout>
@@ -49,23 +50,31 @@ export default function Claim() {
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
               {step < STEP.LAST_THING && (
-                <ProgressBar step={step} prevStep={prevStep} />
+                <ProgressBar step={step} prevStep={prevStep} id='swiper-back' />
               )}
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
               )}
 
-              {step == STEP.QUICK_QUOTE && <QuickQuote slide={slide} />}
-              {step == STEP.CLAIM_NOW && <ClaimNow slide={slide} />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete slide={slide} />}
-              {step == STEP.LAST_THING && <LastThing  slide={slide}/>}
-              {step == STEP.THANK_YOU && <ThankYou  slide={slide}/>}
-              {step == STEP.ALL_DONE && <AllDone  slide={slide}/>}
+        <Swiper 
+             autoHeight
+             modules={[Pagination, Navigation]}
+             navigation={{ nextEl: '#swiper-forward', prevEl: '#swiper-back' }}
+             className=" swiper-container mySwiper swiper-autoheight global-form-slider"
+        >
+           <SwiperSlide>{<QuickQuote />}</SwiperSlide>
+           <SwiperSlide>{<ClaimNow />}</SwiperSlide>  
+           <SwiperSlide>{<SignComplete />}</SwiperSlide>
+           <SwiperSlide>{ <LastThing />}</SwiperSlide>  
+           <SwiperSlide>{ <ThankYou />}</SwiperSlide>  
+           <SwiperSlide> { <AllDone />}</SwiperSlide>
+      </Swiper>
+ 
 
               {step != STEP.ALL_DONE && (
                 <NextButton
-                  onClick={nextStep
-                  }
+                id={'swiper-forward'}
+                  onClick={nextStep}
                   label={step == STEP.THANK_YOU ? "Submit" : "Next"}
                   helper={NEXT_BUTTON_HELPERS[step]}
                 />
