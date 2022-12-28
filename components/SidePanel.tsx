@@ -27,7 +27,7 @@ const SideItem = ({ info }: { info: string }) => {
 
 const SidePanel = ({ step }: Props) => {
   return (
-    <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block bg-primary-600 z-10">
+    <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block bg-primary-600">
       <div className="block p-8 text-white rounded-lg bg-primary-500">
         <h3 className="mb-1 text-2xl font-semibold">Your £624 tax refund</h3>
 
