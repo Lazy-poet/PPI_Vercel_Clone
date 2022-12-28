@@ -1,9 +1,7 @@
 import Title from "@/components/Title";
-import { useState } from "react";
 const AllDone = () => {
-  const [slide, setslide] = useState(false)
   return <>
-  <div className={` ${slide ? 'transition' : 'step_6 step'}`}>
+  <div className={` step slide slider-content`}>
   <Title step={5} />
   </div>
   </>;

@@ -1,15 +1,10 @@
 import Title from "@/components/Title";
-import NextButton from "../NextButton";
-import { useState } from "react";
-const LastThing = ({slide}) => {
-  const [next4, setnext4] = useState(false)
- 
-  const nextSlide = ()=>{
-    setnext4(true)
-  }
+
+const LastThing = () => {
+
   return (
     <>
-    <div className={` ${slide ? 'transition' : 'step_4 step'}`}
+    <div className={` step slide slider-content`}
     >
       <Title step={3} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
@@ -55,7 +50,6 @@ const LastThing = ({slide}) => {
           </p>
         </div>
       </div>
-      {/* <NextButton className="slide_button"/> */}
     </div>
     </>
   );
