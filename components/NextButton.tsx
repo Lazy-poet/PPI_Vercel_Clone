@@ -11,6 +11,7 @@ const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {
         <li className="md:col-span-2">
           <div>
             <button
+              id="btnNext"
               className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               onClick={() => onClick()}
             >
