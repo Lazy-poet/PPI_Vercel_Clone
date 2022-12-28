@@ -1,10 +1,15 @@
 import { useState } from "react";
+import NextButton from "../NextButton";
 import Title from "@/components/Title";
 
-const ThankYou = () => {
+const ThankYou = ({slide}) => {
   const [paye, setPaye] = useState<string>("");
+  const [next5, setnext5] = useState(false)
   const [isBackspacePressed, setIsBackspacePressed] = useState<boolean>(false);
 
+  const nextSlide = ()=>{
+    setnext5(true)
+  }
   const onEnterPaye = (value: string) => {
     if (isBackspacePressed) {
       setPaye(value.substring(0, value.length));
@@ -30,7 +35,7 @@ const ThankYou = () => {
 
   return (
     <>
-    <div className={`step  slider-content`}
+    <div className={` ${slide ? 'transition' : 'step_5 step'}`}
     >
       <Title step={4} />
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
