@@ -58,7 +58,9 @@ export default function Claim() {
   // Step2
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
-    employerName: null
+    employerName: null,
+    claimChecked1: true,
+    claimChecked2: true
   });
   const handleFormChange2 = (key: string, value: any) => {
     setFormData2({
@@ -125,7 +127,11 @@ export default function Claim() {
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
         if (formData2.employerName !== null) {
-          setStep((step) => step + 1);
+          if (!formData2.claimChecked1 || !formData2.claimChecked2) {
+            router.push('/error');
+          } else {
+            setStep((step) => step + 1);
+          }
         } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
