@@ -10,7 +10,7 @@ export default function Error() {
   const router = useRouter();
 
   const restart = () => {
-    router.push("/claim");
+    router.push("/");
   };
 
   return (
