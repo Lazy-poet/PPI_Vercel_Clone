@@ -173,7 +173,8 @@ select:focus+.form-icon {
   max-width: calc(100vw - 32px);
 }
 
-.form-icon {
+.form-icon,
+.input-icon {
   position: absolute;
   right: 10px;
   width: 16px;
@@ -187,7 +188,9 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 640px) {
-  .form-icon {
+
+  .form-icon,
+  .input-icon {
     width: 16px;
     height: 16px;
     background-size: 16px 16px;
@@ -195,7 +198,9 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 768px) {
-  .form-icon {
+
+  .form-icon,
+  .input-icon {
     width: 18px;
     height: 18px;
     background-size: 18px 18px;
@@ -203,7 +208,9 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 1024px) {
-  .form-icon {
+
+  .form-icon,
+  .input-icon {
     width: 24px;
     height: 24px;
     background-size: 24px 24px;
@@ -261,8 +268,6 @@ select:focus+.form-icon {
   padding: 0.5px 0;
   font-style: normal;
   font-weight: 400;
-  padding-right: 0px !important;
-  max-width: calc(100% - 32px);
   display: flex;
   align-items: center;
 }
@@ -275,9 +280,15 @@ select:focus+.form-icon {
 }
 
 .mui-select .form-icon {
-  background-image: url(../public/images/icons/chevron-down.svg);
+  display: none;
 }
 
-.dark .mui-select .form-icon {
-  background-image: url(../public/images/icons/chevron-down-dark.svg);
+.success .mui-select .form-icon,
+.error .mui-select .form-icon {
+  display: block;
+}
+
+.success .mui-select .MuiSelect-icon,
+.error .mui-select .MuiSelect-icon {
+  display: none;
 }
