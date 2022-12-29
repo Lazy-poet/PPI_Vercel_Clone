@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 
 const ClaimNow = (props: any) => {
   const { data, handleFormChange } = props;
-  const [checked1, setChecked1] = useState<boolean>(true);
-  const [checked2, setChecked2] = useState<boolean>(true);
   const [companies, setCompanies] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -112,9 +110,9 @@ const ClaimNow = (props: any) => {
             <input
               type="checkbox"
               value=""
-              checked={checked1}
+              checked={data.claimChecked1}
               className="sr-only peer"
-              onChange={(e) => setChecked1(e.target.checked)}
+              onChange={(e) => handleFormChange('claimChecked1', e.target.checked)}
             />
             <div className="w-14 min-w-[56px] h-7 min-h-[28px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 my-auto">
@@ -127,9 +125,9 @@ const ClaimNow = (props: any) => {
             <input
               type="checkbox"
               value=""
-              checked={checked2}
+              checked={data.claimChecked2}
               className="sr-only peer"
-              onChange={(e) => setChecked2(e.target.checked)}
+              onChange={(e) => handleFormChange('claimChecked2', e.target.checked)}
             />
             <div className="w-14 min-w-[56px] h-7 min-h-[28px] bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 my-auto">
