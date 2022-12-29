@@ -50,10 +50,19 @@ export default function Claim() {
       // firstEvent: false,
       [key]: value
     });
-    setFdEvents1({
-      ...fdEvents1,
-      [key]: false
-    });
+    if (key === 'day' || key === 'month' || key === 'year') {
+      setFdEvents1({
+        ...fdEvents1,
+        'day': false,
+        'month': false,
+        'year': false
+      });
+    } else {
+      setFdEvents1({
+        ...fdEvents1,
+        [key]: false
+      });
+    }
   }
   // Step2
   const [formData2, setFormData2] = useState<any>({

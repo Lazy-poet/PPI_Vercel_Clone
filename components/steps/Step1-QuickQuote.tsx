@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import Utils from "../../libs/utils";
 import { postcodeValidator } from 'postcode-validator';
 import { FormControl, FormHelperText, MenuItem, Select } from "@mui/material";
@@ -44,17 +44,24 @@ const QuickQuote = (props: any) => {
         value = e.target.value;
         break;
       case 'postCode':
-        value = e.target.value.toUpperCase();
+        var valueStr = value.split(" ");
+        if (valueStr.length > 2) {
+          value = e.target.value.toUpperCase().trim();
+          if (valueStr[valueStr.length - 1] === '' && valueStr[valueStr.length - 2] === '') {
+            value = value + ' ';
+          }
+        } else {
+          if (value.charAt(0) === ' ') {
+            value = e.target.value.toUpperCase().trim();
+          } else {
+            value = e.target.value.toUpperCase();
+          }
+        }
         break;
       default:
         value = e.target.value;
         break;
     }
-    handleFormChange(e.target.name, value);
-  }
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let value = e.target.value;
     handleFormChange(e.target.name, value);
   }
 
