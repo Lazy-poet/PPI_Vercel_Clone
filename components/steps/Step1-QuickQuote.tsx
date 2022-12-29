@@ -3,6 +3,7 @@ import Utils from "../../libs/utils";
 import { postcodeValidator } from 'postcode-validator';
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
@@ -308,7 +309,7 @@ const QuickQuote = (props: any) => {
                     value={data.address}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
-                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                    IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
                       Please Select Your Address
@@ -355,7 +356,7 @@ const QuickQuote = (props: any) => {
                     value={data.day}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
-                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                    IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
                       DD
@@ -405,7 +406,7 @@ const QuickQuote = (props: any) => {
                     value={data.month}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
-                    inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                    IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
                       MM
@@ -457,7 +458,7 @@ const QuickQuote = (props: any) => {
                   value={data.year}
                   onChange={(e) => handleMUISelectChange(e)}
                   displayEmpty
-                  inputProps={{ 'aria-label': 'Without label', IconComponent: () => null }}
+                  IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
                     YYYY
