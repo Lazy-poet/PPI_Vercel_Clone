@@ -4,7 +4,7 @@ const LastThing = (props: any) => {
   const { data, handleFormChange } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.toUpperCase();
+    let value = e.target.value.toUpperCase().trim();
     handleFormChange(e.target.name, value);
   }
 
