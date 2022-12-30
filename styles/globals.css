@@ -265,7 +265,8 @@ select:focus+.form-icon {
 }
 
 .mui-select .MuiSelect-select {
-  padding: 0.5px 0;
+  padding: 1rem !important;
+  max-width: calc(100% - 2rem);
   font-style: normal;
   font-weight: 400;
   display: flex;
@@ -274,7 +275,6 @@ select:focus+.form-icon {
 
 @media (min-width: 480px) {
   .mui-select .MuiSelect-select {
-    padding: 1.1px 0;
     font-size: 1.125rem !important;
   }
 }
