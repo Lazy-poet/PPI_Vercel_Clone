@@ -45,19 +45,20 @@ const QuickQuote = (props: any) => {
         value = value.trim();
         break;
       case 'postCode':
-        var valueStr = value.split(" ");
-        if (valueStr.length > 2) {
-          value = e.target.value.toUpperCase().trim();
-          if (valueStr[valueStr.length - 1] === '' && valueStr[valueStr.length - 2] === '') {
-            value = value + ' ';
-          }
-        } else {
-          if (value.charAt(0) === ' ') {
-            value = e.target.value.toUpperCase().trim();
-          } else {
-            value = e.target.value.toUpperCase();
-          }
-        }
+        // var valueStr = value.split(" ");
+        // if (valueStr.length > 2) {
+        //   value = e.target.value.toUpperCase().trim();
+        //   if (valueStr[valueStr.length - 1] === '' && valueStr[valueStr.length - 2] === '') {
+        //     value = value + ' ';
+        //   }
+        // } else {
+        //   if (value.charAt(0) === ' ') {
+        //     value = e.target.value.toUpperCase().trim();
+        //   } else {
+        //     value = e.target.value.toUpperCase();
+        //   }
+        // }
+        value = e.target.value.toUpperCase().trim();
         break;
       default:
         value = e.target.value;
@@ -308,7 +309,7 @@ const QuickQuote = (props: any) => {
                   <Select
                     id="address"
                     name="address"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={data.address}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
@@ -355,7 +356,7 @@ const QuickQuote = (props: any) => {
                   <Select
                     id="day"
                     name="day"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={data.day}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
@@ -405,7 +406,7 @@ const QuickQuote = (props: any) => {
                   <Select
                     id="month"
                     name="month"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={data.month}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
@@ -457,7 +458,7 @@ const QuickQuote = (props: any) => {
                 <Select
                   id="year"
                   name="year"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value={data.year}
                   onChange={(e) => handleMUISelectChange(e)}
                   displayEmpty
