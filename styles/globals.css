@@ -288,6 +288,14 @@ select:focus+.form-icon {
   display: block;
 }
 
+.mui-select .MuiSelect-icon {
+  color: #6B7280 !important;
+}
+
+.dark .mui-select .MuiSelect-icon {
+  color: #9CA3AF !important;
+}
+
 .success .mui-select .MuiSelect-icon,
 .error .mui-select .MuiSelect-icon {
   display: none;
