@@ -14,7 +14,7 @@ const ThankYou = (props: any) => {
         value = value + "/";
       }
     }
-    handleFormChange(e.target.name, value);
+    handleFormChange(e.target.name, value.trim());
   };
 
   const onKeyDown = (type: string) => {

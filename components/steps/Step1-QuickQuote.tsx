@@ -42,7 +42,7 @@ const QuickQuote = (props: any) => {
         value = e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
         break;
       case 'email':
-        value = e.target.value;
+        value = value.trim();
         break;
       case 'postCode':
         var valueStr = value.split(" ");
@@ -110,6 +110,7 @@ const QuickQuote = (props: any) => {
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="First Name"
               required
+              maxLength={64}
               value={data.firstName}
               onChange={(e) => handleInputChange(e)}
             />
@@ -139,6 +140,7 @@ const QuickQuote = (props: any) => {
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               placeholder="Last Name"
               required
+              maxLength={64}
               value={data.lastName}
               onChange={(e) => handleInputChange(e)}
             />
@@ -179,12 +181,13 @@ const QuickQuote = (props: any) => {
             </span>
             <div className="icon-input w-full">
               <input
-                type="email"
+                type="text"
                 name="email"
                 id="email"
                 placeholder="Email Address"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 required
+                maxLength={64}
                 value={data.email}
                 onChange={(e) => handleInputChange(e)}
               />
