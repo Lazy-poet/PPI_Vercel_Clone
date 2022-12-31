@@ -12,7 +12,7 @@ const ClaimNow = (props: any) => {
 
   const search = (query: string) => {
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "5b4b9a72-2734-40e9-9df4-eee5a44391cf");
+    myHeaders.append("Authorization", "73b7acfe-d3e5-44ba-8f15-7974b1567cf7");
 
     var requestOptions: any = {
       method: 'GET',
