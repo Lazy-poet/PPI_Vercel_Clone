@@ -1,0 +1,161 @@
+import { useRef, useEffect, useState } from "react";
+
+interface SignatureCanvasProps {
+    sendRef: (result: string) => void;
+}
+
+const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+    const [isDrawing, setIsDrawing] = useState<boolean>(false);
+
+    const passRef = () => {
+        if (!canvasRef.current) return;
+        var toSave = canvasRef.current.toDataURL("image/png");
+        sendRef(toSave);
+    };
+
+    useEffect(() => {
+        if (!canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+
+        if (containerRef.current) {
+            canvas.width = containerRef.current.offsetWidth;
+            //canvas.height = containerRef.current.offsetHeight;
+            canvas.height = 320;
+        }
+
+        canvas.style.backgroundColor = "white";
+        canvas.style.border = "4px solid #1c64f2";
+        canvas.style.borderRadius = "18px";
+
+        const context = canvas.getContext("2d");
+        context!.scale(1, 1);
+        context!.lineCap = "round";
+        context!.lineJoin = "round";
+        context!.strokeStyle = "black";
+        context!.lineWidth = 1;
+
+        contextRef.current = context;
+    }, []);
+
+    useEffect(() => {
+        if (
+            typeof window === "undefined" ||
+            !containerRef.current ||
+            !canvasRef.current
+        )
+            return;
+
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("rezie", handleResize);
+    }, [containerRef.current]);
+
+    const handleResize = () => {
+        if (!containerRef.current || !canvasRef.current) return;
+        const canvas: HTMLCanvasElement = canvasRef.current;
+
+        canvas.width = containerRef.current.offsetWidth;
+        // canvas.height = containerRef.current.offsetHeight;
+        canvas.height = 320;
+    };
+
+    const startDrawing = ({ nativeEvent }: any) => {
+        if (!contextRef.current) return;
+        const { offsetX, offsetY } = nativeEvent;
+        contextRef.current.beginPath();
+        contextRef.current.moveTo(offsetX, offsetY);
+
+        setIsDrawing(true);
+    };
+
+    const startDrawingMobile = (e: any) => {
+        let currentTouch = e.touches[0];
+        if (!contextRef.current) return;
+
+        const rect = currentTouch.target.getBoundingClientRect();
+
+        contextRef.current.beginPath();
+        contextRef.current.moveTo(
+            currentTouch.clientX - rect.left,
+            currentTouch.clientY - rect.top
+        );
+        setIsDrawing(true);
+    };
+
+    const finishDrawing = () => {
+        if (!contextRef.current) return;
+
+        contextRef.current.closePath();
+        setIsDrawing(false);
+
+        passRef();
+    };
+
+    const draw = ({ nativeEvent }: any) => {
+        if (isDrawing && contextRef.current) {
+            const { offsetX, offsetY } = nativeEvent;
+
+            contextRef.current.lineCap = "round";
+            contextRef.current.lineWidth = 3;
+            contextRef.current.lineTo(offsetX, offsetY);
+            contextRef.current.stroke();
+        }
+    };
+
+    const drawMobile = (e: any) => {
+        if (isDrawing && contextRef.current) {
+            let currentTouch = e.touches[0];
+
+            const rect = currentTouch.target.getBoundingClientRect();
+
+            contextRef.current.lineCap = "round";
+            contextRef.current.lineWidth = 3;
+            contextRef.current.lineTo(
+                currentTouch.clientX - rect.left,
+                currentTouch.clientY - rect.top
+            );
+            contextRef.current.stroke();
+        }
+    };
+
+    const clear = ({ nativeEvent }: any) => {
+        if (!contextRef.current || !canvasRef.current) return;
+
+        contextRef.current.clearRect(
+            0,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height
+        );
+
+        passRef();
+    };
+
+    return (
+        <div ref={containerRef}>
+            <canvas
+                ref={canvasRef}
+                onMouseDown={startDrawing}
+                onTouchStart={startDrawingMobile}
+                onMouseUp={finishDrawing}
+                onTouchEnd={finishDrawing}
+                onMouseMove={draw}
+                onTouchMove={drawMobile}
+                style={{ touchAction: "none" }}
+            />
+
+            <button
+                type="button"
+                className="mt-10 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                onClick={clear}
+            >
+                Clear
+            </button>
+        </div>
+    );
+};
+
+export default SignatureCanvas;

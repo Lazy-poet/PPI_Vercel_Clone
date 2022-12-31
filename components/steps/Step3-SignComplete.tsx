@@ -1,6 +1,7 @@
 import { CONFIRMS } from "@/libs/doms";
+import SignatureCanvas from "../SignatureCanvas";
 
-const SignComplete = () => {
+const SignComplete = ({ data, handleFormChange }: any) => {
   return (
     <div className="mt-6 mb-5">
       <ul className="space-y-1 list-inside text-gray-500 dark:text-gray-400">
@@ -24,6 +25,20 @@ const SignComplete = () => {
           );
         })}
       </ul>
+
+
+      <div className="space-y-1">
+        <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-blue-600 dark:text-blue-500">
+          Your signature
+        </h1>
+        <p className="max-w-screen-xl mx-auto text-left text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
+          Please sign in the boundaries of the white box below
+        </p>
+
+        <div className="mt-5">
+          <SignatureCanvas sendRef={handleFormChange} />
+        </div>
+      </div>
     </div>
   );
 };

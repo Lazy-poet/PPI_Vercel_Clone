@@ -79,6 +79,14 @@ export default function Claim() {
     });
   }
 
+  // Step3
+  const [formData3, setFormData3] = useState<any>({
+    signatureData: null
+  });
+  const handleFormChange3 = (newSignatureData: string) => {
+    setFormData3({ signatureData: newSignatureData });
+  }
+
   // Step4
   const [formData4, setFormData4] = useState<any>({
     firstEvent: true,
@@ -184,7 +192,7 @@ export default function Claim() {
 
               {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
               {step == STEP.CLAIM_NOW && <ClaimNow data={formData2} handleFormChange={handleFormChange2} />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete />}
+              {step == STEP.SIGN_COMPLETE && <SignComplete data={formData3} handleFormChange={handleFormChange3} />}
               {step == STEP.LAST_THING && <LastThing data={formData4} handleFormChange={handleFormChange4} />}
               {step == STEP.THANK_YOU && <ThankYou data={formData5} handleFormChange={handleFormChange5} />}
               {step == STEP.ALL_DONE && <AllDone />}
