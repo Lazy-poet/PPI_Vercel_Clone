@@ -58,7 +58,7 @@ const SignatureCanvas = ({
 
         window.addEventListener("resize", handleResize);
 
-        return () => window.removeEventListener("rezie", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, [containerRef.current]);
 
     useEffect(() => {
@@ -162,7 +162,7 @@ const SignatureCanvas = ({
                 onMouseMove={draw}
                 onTouchMove={drawMobile}
                 onMouseLeave={finishDrawing}
-                onTouchCancel={finishDrawing}
+                // onTouchCancel={finishDrawing}
                 style={{ touchAction: "none" }}
             />
         </div>
