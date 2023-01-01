@@ -75,6 +75,7 @@ const SignatureCanvas = ({
         canvas.width = containerRef.current.offsetWidth;
         // canvas.height = containerRef.current.offsetHeight;
         canvas.height = canvasHeight;
+        canvas.style.mixBlendMode = "normal";
         clear();
         if (reset) debounceReset(false);
     };
