@@ -6,8 +6,6 @@ interface SignatureCanvasProps {
     debounceReset: Dispatch<SetStateAction<boolean>>;
 }
 
-let canvasHeight = 245;
-
 const SignatureCanvas = ({
     sendRef,
     reset,
@@ -31,7 +29,7 @@ const SignatureCanvas = ({
         if (containerRef.current) {
             canvas.width = containerRef.current.offsetWidth;
             //canvas.height = containerRef.current.offsetHeight;
-            canvas.height = canvasHeight;
+            canvas.height = containerRef.current.offsetWidth / 1.618;
         }
 
         canvas.style.borderTopLeftRadius = "0.5rem";
@@ -74,7 +72,7 @@ const SignatureCanvas = ({
 
         canvas.width = containerRef.current.offsetWidth;
         // canvas.height = containerRef.current.offsetHeight;
-        canvas.height = canvasHeight;
+        canvas.height = containerRef.current.offsetWidth / 1.618;
         canvas.style.mixBlendMode = "normal";
         clear();
         if (reset) debounceReset(false);
