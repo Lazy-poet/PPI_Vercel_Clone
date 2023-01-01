@@ -1,12 +1,18 @@
-import { useRef, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 interface SignatureCanvasProps {
     sendRef: (result: string) => void;
+    reset: boolean;
+    debounceReset: Dispatch<SetStateAction<boolean>>;
 }
 
 let canvasHeight = 245;
 
-const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
+const SignatureCanvas = ({
+    sendRef,
+    reset,
+    debounceReset,
+}: SignatureCanvasProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -28,15 +34,15 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
             canvas.height = canvasHeight;
         }
 
-        canvas.style.backgroundColor = "white";
-        canvas.style.border = "4px solid #1c64f2";
-        canvas.style.borderRadius = "18px";
+        canvas.style.borderTopLeftRadius = "0.5rem";
+        canvas.style.borderTopRightRadius = "0.5rem";
+        canvas.style.mixBlendMode = "exclusion";
 
         const context = canvas.getContext("2d");
         context!.scale(1, 1);
         context!.lineCap = "round";
         context!.lineJoin = "round";
-        context!.strokeStyle = "black";
+        context!.strokeStyle = "white";
         context!.lineWidth = 1;
 
         contextRef.current = context;
@@ -55,6 +61,13 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
         return () => window.removeEventListener("rezie", handleResize);
     }, [containerRef.current]);
 
+    useEffect(() => {
+        if (reset) {
+            clear();
+            debounceReset(false);
+        }
+    }, [reset]);
+
     const handleResize = () => {
         if (!containerRef.current || !canvasRef.current) return;
         const canvas: HTMLCanvasElement = canvasRef.current;
@@ -62,6 +75,8 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
         canvas.width = containerRef.current.offsetWidth;
         // canvas.height = containerRef.current.offsetHeight;
         canvas.height = canvasHeight;
+        clear();
+        if (reset) debounceReset(false);
     };
 
     const startDrawing = ({ nativeEvent }: any) => {
@@ -123,7 +138,7 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
         }
     };
 
-    const clear = ({ nativeEvent }: any) => {
+    const clear = () => {
         if (!contextRef.current || !canvasRef.current) return;
 
         contextRef.current.clearRect(
@@ -146,19 +161,10 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
                 onTouchEnd={finishDrawing}
                 onMouseMove={draw}
                 onTouchMove={drawMobile}
-
                 onMouseLeave={finishDrawing}
                 onTouchCancel={finishDrawing}
                 style={{ touchAction: "none" }}
             />
-
-            <button
-                type="button"
-                className="mt-10 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-                onClick={clear}
-            >
-                Clear
-            </button>
         </div>
     );
 };
