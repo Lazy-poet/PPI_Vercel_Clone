@@ -1,4 +1,5 @@
 import { CONFIRMS } from "@/libs/doms";
+import { Card } from "flowbite-react";
 import SignatureCanvas from "../SignatureCanvas";
 
 const SignComplete = ({ data, handleFormChange }: any) => {
@@ -26,7 +27,6 @@ const SignComplete = ({ data, handleFormChange }: any) => {
         })}
       </ul>
 
-
       <div className="space-y-1">
         <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-blue-600 dark:text-blue-500">
           Your signature
@@ -34,10 +34,9 @@ const SignComplete = ({ data, handleFormChange }: any) => {
         <p className="max-w-screen-xl mx-auto text-left text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
           Please sign in the boundaries of the white box below
         </p>
-
-        <div className="mt-5">
+        <Card>
           <SignatureCanvas sendRef={handleFormChange} />
-        </div>
+        </Card>
       </div>
     </div>
   );

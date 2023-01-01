@@ -4,6 +4,8 @@ interface SignatureCanvasProps {
     sendRef: (result: string) => void;
 }
 
+let canvasHeight = 245;
+
 const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -23,7 +25,7 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
         if (containerRef.current) {
             canvas.width = containerRef.current.offsetWidth;
             //canvas.height = containerRef.current.offsetHeight;
-            canvas.height = 320;
+            canvas.height = canvasHeight;
         }
 
         canvas.style.backgroundColor = "white";
@@ -59,7 +61,7 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
 
         canvas.width = containerRef.current.offsetWidth;
         // canvas.height = containerRef.current.offsetHeight;
-        canvas.height = 320;
+        canvas.height = canvasHeight;
     };
 
     const startDrawing = ({ nativeEvent }: any) => {
@@ -135,7 +137,7 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
     };
 
     return (
-        <div ref={containerRef}>
+        <div className="w-full" ref={containerRef}>
             <canvas
                 ref={canvasRef}
                 onMouseDown={startDrawing}
@@ -144,6 +146,9 @@ const SignatureCanvas = ({ sendRef }: SignatureCanvasProps) => {
                 onTouchEnd={finishDrawing}
                 onMouseMove={draw}
                 onTouchMove={drawMobile}
+
+                onMouseLeave={finishDrawing}
+                onTouchCancel={finishDrawing}
                 style={{ touchAction: "none" }}
             />
 
