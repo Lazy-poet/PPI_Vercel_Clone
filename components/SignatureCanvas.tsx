@@ -29,7 +29,7 @@ const SignatureCanvas = ({
         if (containerRef.current) {
             canvas.width = containerRef.current.offsetWidth;
             //canvas.height = containerRef.current.offsetHeight;
-            canvas.height = containerRef.current.offsetWidth / 1.618;
+            canvas.height = (containerRef.current.offsetWidth / 1.618) - 55;
         }
 
         canvas.style.borderTopLeftRadius = "0.5rem";
@@ -72,7 +72,7 @@ const SignatureCanvas = ({
 
         canvas.width = containerRef.current.offsetWidth;
         // canvas.height = containerRef.current.offsetHeight;
-        canvas.height = containerRef.current.offsetWidth / 1.618;
+        canvas.height = (containerRef.current.offsetWidth / 1.618) - 55;
         canvas.style.mixBlendMode = "normal";
         clear();
         if (reset) debounceReset(false);
