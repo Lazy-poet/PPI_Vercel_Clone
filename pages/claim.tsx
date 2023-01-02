@@ -209,7 +209,7 @@ export default function Claim() {
             </div>
           </div>
 
-          <SidePanel step={step} />
+          <SidePanel amount={router.query.amount} step={step} />
         </div>
       </section>
 
