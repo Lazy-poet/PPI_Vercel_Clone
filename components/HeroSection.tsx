@@ -51,7 +51,7 @@ const HeroSection = () => {
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
-                Your&nbsp;
+                Claim Your&nbsp;
                 <span className="text-primary-600 dark:text-primary-500">
                   £
                 </span>
@@ -64,11 +64,10 @@ const HeroSection = () => {
                     ]}
                   ></Animated>
                 </span>
-                &nbsp;tax claim starts here
+                &nbsp;Tax Refund Today
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Have you worked from home for a single day or more during the
-                pandemic?
+                You’re eligible even if you worked from home for only a single day due to Covid-19?
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2 ? (checked1 ? 'success' : '') : 'error'}`}>
@@ -113,8 +112,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <p className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2 ? 'text-gray-500 dark:text-gray-400' : 'text-red-600 dark:text-red-500'}`}>
-                Select which year you worked a day or more from home. If you
-                worked from home during both years, select &apos;Both&apos;
+                Select the year(s) you worked from home
               </p>
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
@@ -136,7 +134,7 @@ const HeroSection = () => {
                     >
                       <div className="flex-grow">
                         <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
-                          <span>Check my claim</span>
+                          <span>Get Started</span>
                         </div>
                       </div>
                       <svg
