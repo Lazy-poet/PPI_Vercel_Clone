@@ -226,7 +226,7 @@ const QuickQuote = (props: any) => {
               )
           }
         </div>
-        <div className={`form-group sm:col-span-2 ${fdEvents.postCode ? '' : ((data.postCode && postcodeValidator(data.postCode, 'GB') && data.address) ? 'success' : 'error')}`}>
+        <div className={`form-group sm:col-span-2 ${fdEvents.postCode ? '' : ((data.postCode && postcodeValidator(data.postCode, 'GB')) ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -285,19 +285,13 @@ const QuickQuote = (props: any) => {
                   Please provide a valid UK postcode
                 </p>
                 :
-                !data.address
-                  ?
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                    You must search by postcode and choose the address
-                  </p>
-                  :
-                  <p
-                    id="helper-text-explanation"
-                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                  >
-                    Enter your postcode, then click &apos;Search&apos; to find your
-                    address and proceed
-                  </p>
+                <p
+                  id="helper-text-explanation"
+                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                >
+                  Enter your postcode, then click &apos;Search&apos; to find your
+                  address and proceed
+                </p>
           }
         </div>
         {
