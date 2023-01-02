@@ -16,8 +16,9 @@ import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import Layout from "@/components/Layout";
 import Utils from "../libs/utils";
-const isNino = require('is-national-insurance-number');
-import { postcodeValidator } from 'postcode-validator';
+const isNino = require("is-national-insurance-number");
+import { postcodeValidator } from "postcode-validator";
+import supabase from "utils/client";
 
 export default function Claim() {
   const router = useRouter();
@@ -25,14 +26,14 @@ export default function Claim() {
   // Step1
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
-    firstName: '',
-    lastName: '',
-    email: '',
-    postCode: '',
-    address: '',
-    day: '',
-    month: '',
-    year: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    postCode: "",
+    address: "",
+    day: "",
+    month: "",
+    year: "",
   });
   const [fdEvents1, setFdEvents1] = useState<any>({
     firstName: true,
@@ -42,76 +43,108 @@ export default function Claim() {
     address: true,
     day: true,
     month: true,
-    year: true
+    year: true,
   });
   const handleFormChange1 = (key: string, value: string) => {
     setFormData1({
       ...formData1,
       // firstEvent: false,
-      [key]: value
+      [key]: value,
     });
-    if (key === 'day' || key === 'month' || key === 'year') {
+    if (key === "day" || key === "month" || key === "year") {
       setFdEvents1({
         ...fdEvents1,
-        'day': false,
-        'month': false,
-        'year': false
+        day: false,
+        month: false,
+        year: false,
       });
     } else {
       setFdEvents1({
         ...fdEvents1,
-        [key]: false
+        [key]: false,
       });
     }
-  }
+  };
   // Step2
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
     employerName: null,
     claimChecked1: true,
-    claimChecked2: true
+    claimChecked2: true,
   });
   const handleFormChange2 = (key: string, value: any) => {
     setFormData2({
       ...formData2,
       firstEvent: false,
-      [key]: value
+      [key]: value,
     });
-  }
+  };
 
   // Step3
   const [formData3, setFormData3] = useState<any>({
-    signatureData: null
+    signatureData: null,
   });
   const handleFormChange3 = (newSignatureData: string) => {
     setFormData3({ signatureData: newSignatureData });
-  }
+  };
 
   // Step4
   const [formData4, setFormData4] = useState<any>({
     firstEvent: true,
-    insurance: ''
+    insurance: "",
   });
   const handleFormChange4 = (key: string, value: string) => {
     setFormData4({
       ...formData4,
       firstEvent: false,
-      [key]: value
+      [key]: value,
     });
-  }
+  };
 
   // Step5
   const [formData5, setFormData5] = useState<any>({
     firstEvent: true,
-    paye: ''
+    paye: "",
   });
   const handleFormChange5 = (key: string, value: string) => {
     setFormData5({
       ...formData5,
       firstEvent: false,
-      [key]: value
+      [key]: value,
     });
-  }
+  };
+
+  // Submit Function
+  const handleFormSubmit = async (callback: () => void) => {
+    let { day, month, year, ...otherFormData1 } = formData1;
+    let dataToSend = {
+      ...otherFormData1,
+      ...formData2,
+      ...formData3,
+      ...formData4,
+      ...formData5,
+      employerName: formData2.employerName?.label,
+      birthdate: JSON.stringify({
+        day,
+        month,
+        year,
+      }),
+    };
+
+    delete dataToSend.firstEvent;
+
+    let endpoint = `/api/claim-form`;
+    let requestOptions: any = {
+      method: "POST",
+      body: JSON.stringify(dataToSend),
+    };
+    await fetch(endpoint, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.status) callback();
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -133,9 +166,20 @@ export default function Claim() {
           address: false,
           day: false,
           month: false,
-          year: false
+          year: false,
         });
-        if (formData1.firstName !== '' && formData1.lastName !== '' && formData1.email !== '' && Utils.validateEmail(formData1.email) && formData1.postCode !== '' && postcodeValidator(formData1.postCode, 'GB') && formData1.address !== '' && formData1.day !== '' && formData1.month !== '' && formData1.year !== '') {
+        if (
+          formData1.firstName !== "" &&
+          formData1.lastName !== "" &&
+          formData1.email !== "" &&
+          Utils.validateEmail(formData1.email) &&
+          formData1.postCode !== "" &&
+          postcodeValidator(formData1.postCode, "GB") &&
+          formData1.address !== "" &&
+          formData1.day !== "" &&
+          formData1.month !== "" &&
+          formData1.year !== ""
+        ) {
           setStep((step) => step + 1);
         }
         break;
@@ -143,7 +187,7 @@ export default function Claim() {
         setFormData2({ ...formData2, firstEvent: false });
         if (formData2.employerName !== null) {
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
-            router.push('/error');
+            router.push("/error");
           } else {
             setStep((step) => step + 1);
           }
@@ -156,14 +200,14 @@ export default function Claim() {
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance !== '' && isNino(formData4.insurance)) {
+        if (formData4.insurance !== "" && isNino(formData4.insurance)) {
           setStep((step) => step + 1);
         }
         break;
       case STEP.THANK_YOU:
         setFormData5({ ...formData5, firstEvent: false });
-        if (formData5.paye !== '' && Utils.validatePAYE(formData5.paye)) {
-          setStep((step) => step + 1);
+        if (formData5.paye !== "" && Utils.validatePAYE(formData5.paye)) {
+          handleFormSubmit(() => setStep((step) => step + 1));
         }
         break;
       case STEP.ALL_DONE:
@@ -172,9 +216,9 @@ export default function Claim() {
       default:
         break;
     }
-    // 
-    document.getElementById('btnNext')?.blur();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    //
+    document.getElementById("btnNext")?.blur();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -192,11 +236,37 @@ export default function Claim() {
 
               <Title step={step} />
 
-              {step == STEP.QUICK_QUOTE && <QuickQuote data={formData1} fdEvents={fdEvents1} handleFormChange={handleFormChange1} />}
-              {step == STEP.CLAIM_NOW && <ClaimNow data={formData2} handleFormChange={handleFormChange2} />}
-              {step == STEP.SIGN_COMPLETE && <SignComplete data={formData3} handleFormChange={handleFormChange3} />}
-              {step == STEP.LAST_THING && <LastThing data={formData4} handleFormChange={handleFormChange4} />}
-              {step == STEP.THANK_YOU && <ThankYou data={formData5} handleFormChange={handleFormChange5} />}
+              {step == STEP.QUICK_QUOTE && (
+                <QuickQuote
+                  data={formData1}
+                  fdEvents={fdEvents1}
+                  handleFormChange={handleFormChange1}
+                />
+              )}
+              {step == STEP.CLAIM_NOW && (
+                <ClaimNow
+                  data={formData2}
+                  handleFormChange={handleFormChange2}
+                />
+              )}
+              {step == STEP.SIGN_COMPLETE && (
+                <SignComplete
+                  data={formData3}
+                  handleFormChange={handleFormChange3}
+                />
+              )}
+              {step == STEP.LAST_THING && (
+                <LastThing
+                  data={formData4}
+                  handleFormChange={handleFormChange4}
+                />
+              )}
+              {step == STEP.THANK_YOU && (
+                <ThankYou
+                  data={formData5}
+                  handleFormChange={handleFormChange5}
+                />
+              )}
               {step == STEP.ALL_DONE && <AllDone />}
 
               {step != STEP.ALL_DONE && (
