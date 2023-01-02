@@ -147,7 +147,7 @@ const SignatureCanvas = ({
             canvasRef.current.height
         );
 
-        passRef();
+        sendRef(null as any);
     };
 
     return (

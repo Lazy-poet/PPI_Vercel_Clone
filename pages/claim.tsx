@@ -150,7 +150,9 @@ export default function Claim() {
         }
         break;
       case STEP.SIGN_COMPLETE:
-        setStep((step) => step + 1);
+        if (formData3.signatureData !== null) {
+          setStep((step) => step + 1);
+        }
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
