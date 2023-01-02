@@ -28,7 +28,6 @@ const SignatureCanvas = ({
 
         if (containerRef.current) {
             canvas.width = containerRef.current.offsetWidth;
-            //canvas.height = containerRef.current.offsetHeight;
             canvas.height = (containerRef.current.offsetWidth / 1.618) - 55;
         }
 
@@ -71,7 +70,6 @@ const SignatureCanvas = ({
         const canvas: HTMLCanvasElement = canvasRef.current;
 
         canvas.width = containerRef.current.offsetWidth;
-        // canvas.height = containerRef.current.offsetHeight;
         canvas.height = (containerRef.current.offsetWidth / 1.618) - 55;
         canvas.style.mixBlendMode = "normal";
         clear();
@@ -103,6 +101,7 @@ const SignatureCanvas = ({
 
     const finishDrawing = () => {
         if (!contextRef.current) return;
+        if (!isDrawing) return;
 
         contextRef.current.closePath();
         setIsDrawing(false);
