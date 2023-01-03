@@ -122,7 +122,7 @@ export default function Claim() {
   };
 
   // old Submit Function
- /*  const handleFormSubmit = async (callback: () => void) => {
+  /*  const handleFormSubmit = async (callback: () => void) => {
     let { day, month, year, ...otherFormData1 } = formData1;
     let dataToSend = {
       claimValue,
@@ -195,6 +195,8 @@ export default function Claim() {
             let { data, error } = await supabase
               .from("claim-form-submissions")
               .insert({
+                claimValue,
+                checkedYears,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -305,8 +307,6 @@ export default function Claim() {
       router.replace("/claim");
     }
   }, [router.query]);
-
-  console.log(checkedYears, claimValue);
 
   return (
     <Layout>
