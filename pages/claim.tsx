@@ -24,6 +24,7 @@ export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
+  const [utmParams, setUtmParams] = useState<any>([]);
   const [claimValue, setClaimValue] = useState<any>(624);
 
   const [theEmail, setTheEmail] = useState<any>("");
@@ -195,6 +196,7 @@ export default function Claim() {
             let { data, error } = await supabase
               .from("claim-form-submissions")
               .insert({
+                ...utmParams,
                 claimValue,
                 checkedYears,
                 firstName: otherFormData1.firstName,
@@ -305,6 +307,16 @@ export default function Claim() {
       setClaimValue(router.query.claimValue);
 
       router.replace("/claim");
+    }
+
+    if (!!router.query) {
+      let utmParams: any = {};
+      Object.keys(router.query).forEach((key) => {
+        if (key.startsWith("utm_")) {
+          utmParams[key] = router.query[key];
+        }
+        setUtmParams(utmParams);
+      });
     }
   }, [router.query]);
 
