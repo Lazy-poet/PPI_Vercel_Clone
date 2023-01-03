@@ -12,8 +12,17 @@ const HeroSection = () => {
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(false);
   const [checked2, setChecked2] = useState<boolean>(false);
+  const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<number>(624);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
+
+  const toggleCheckedYear = (year: string) => {
+    if (checkedYears.includes(year)) {
+      setCheckedYears((curr) => curr.filter((val) => val !== year));
+    } else {
+      setCheckedYears((curr) => [...curr, year]);
+    }
+  };
 
   useEffect(() => {
     if (checked1 && checked2) {
@@ -70,7 +79,15 @@ const HeroSection = () => {
                 You’re eligible even if you worked from home for only a single day due to Covid-19?
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
-                <div className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2 ? (checked1 ? 'success' : '') : 'error'}`}>
+                <div
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
+                    firstEvent || checked1 || checked2
+                      ? checked1
+                        ? "success"
+                        : ""
+                      : "error"
+                  }`}
+                >
                   <input
                     id="bordered-checkbox-1"
                     type="checkbox"
@@ -80,17 +97,30 @@ const HeroSection = () => {
                     onChange={(e) => {
                       setFirstEvent(false);
                       setChecked1(e.target.checked);
+                      toggleCheckedYear("2020-21");
                     }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-1"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2 ? 'text-gray-900 dark:text-gray-300' : 'text-red-700 dark:text-red-500'}`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
+                      firstEvent || checked1 || checked2
+                        ? "text-gray-900 dark:text-gray-300"
+                        : "text-red-700 dark:text-red-500"
+                    }`}
                   >
                     2020 - 21
                   </label>
                 </div>
-                <div className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2 ? (checked2 ? 'success' : '') : 'error'}`}>
+                <div
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
+                    firstEvent || checked1 || checked2
+                      ? checked2
+                        ? "success"
+                        : ""
+                      : "error"
+                  }`}
+                >
                   <input
                     id="bordered-checkbox-2"
                     type="checkbox"
@@ -100,12 +130,17 @@ const HeroSection = () => {
                     onChange={(e) => {
                       setFirstEvent(false);
                       setChecked2(e.target.checked);
+                      toggleCheckedYear("2021-22");
                     }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-2"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2 ? 'text-gray-900 dark:text-gray-300' : 'text-red-700 dark:text-red-500'}`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
+                      firstEvent || checked1 || checked2
+                        ? "text-gray-900 dark:text-gray-300"
+                        : "text-red-700 dark:text-red-500"
+                    }`}
                   >
                     2021 - 22
                   </label>
@@ -117,7 +152,8 @@ const HeroSection = () => {
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
-                    <button className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                    <button
+                      className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={() => {
                         setFirstEvent(false);
                         (checked1 || checked2) ? router.push(
@@ -125,6 +161,8 @@ const HeroSection = () => {
                             pathname: '/claim',
                             query: {
                               amount: amount,
+                              years: checkedYears,
+                              claimValue: amount,
                             },
                           },
                           '/claim',

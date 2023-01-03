@@ -24,6 +24,18 @@ const nextConfig = {
       "www.gravatar.com",
     ],
   },
+  rewrites: [
+    {
+      source: "/:path*",
+      has: [
+        {
+          type: "host",
+          value: "workfromhome.claimingmadeeasy.com",
+        },
+      ],
+      destination: "/claim",
+    },
+  ],
 };
 
 module.exports = nextConfig;

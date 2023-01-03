@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
@@ -23,6 +23,8 @@ import supabase from "utils/client";
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [checkedYears, setCheckedYears] = useState<string[]>([]);
+  const [claimValue, setClaimValue] = useState<any>();
 
   const [theEmail, setTheEmail] = useState<any>("");
 
@@ -120,9 +122,11 @@ export default function Claim() {
   };
 
   // old Submit Function
- /*  const handleFormSubmit = async (callback: () => void) => {
+  /*  const handleFormSubmit = async (callback: () => void) => {
     let { day, month, year, ...otherFormData1 } = formData1;
     let dataToSend = {
+      claimValue,
+      checkedYears,
       ...otherFormData1,
       ...formData2,
       ...formData3,
@@ -191,6 +195,8 @@ export default function Claim() {
             let { data, error } = await supabase
               .from("claim-form-submissions")
               .insert({
+                claimValue,
+                checkedYears,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -287,6 +293,20 @@ export default function Claim() {
     document.getElementById("btnNext")?.blur();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    if (!!router.query?.years && !!router.query?.claimValue) {
+      setCheckedYears(
+        // @ts-ignore
+        Array.isArray(router.query.years)
+          ? router.query.years
+          : [router.query.years]
+      );
+      setClaimValue(router.query.claimValue);
+
+      router.replace("/claim");
+    }
+  }, [router.query]);
 
   return (
     <Layout>
