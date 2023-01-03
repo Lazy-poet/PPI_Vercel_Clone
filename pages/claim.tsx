@@ -26,6 +26,10 @@ export default function Claim() {
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
+
+  
+
+  const [utmParams, setUtmParams] = useState<any>([]);
   const [claimValue, setClaimValue] = useState<any>(624);
 
 
@@ -149,6 +153,7 @@ export default function Claim() {
       const birthdate = JSON.parse(data?.[0]?.birthdate);
       
       /* update the form data white existed user data */
+   
       setClaimValue(data?.[0]?.claimValue)
       setFormData1({
         firstEvent: true,
@@ -235,9 +240,10 @@ export default function Claim() {
 
           if (!theEmail) {
             let { data, error } = await supabase
-            .from("claim-form-submissions")
-            .insert({
-              claimValue,
+              .from("claim-form-submissions")
+              .insert({
+                ...utmParams,
+                claimValue,
                 checkedYears,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
@@ -374,6 +380,17 @@ export default function Claim() {
 
       router.replace("/claim");
     }
+
+
+    if (!!router.query) {
+      let utmParams: any = {};
+      Object.keys(router.query).forEach((key) => {
+        if (key.startsWith("utm_")) {
+          utmParams[key] = router.query[key];
+        }
+        setUtmParams(utmParams);
+      });
+
   }, [router.query]);
 
   return (
