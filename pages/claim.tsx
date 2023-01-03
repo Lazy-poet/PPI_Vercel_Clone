@@ -278,7 +278,7 @@ export default function Claim() {
                 })
               })
               .eq("email", otherFormData1.email  );
-              console.log("🚀 ~ file: claim.tsx:275 ~ nextStep ~ error", error)
+      
             }
           setStep((step) => step + 1);
 
