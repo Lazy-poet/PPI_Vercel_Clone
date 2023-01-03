@@ -24,7 +24,7 @@ export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
-  const [claimValue, setClaimValue] = useState<any>();
+  const [claimValue, setClaimValue] = useState<any>(624);
 
   const [theEmail, setTheEmail] = useState<any>("");
 
@@ -295,7 +295,7 @@ export default function Claim() {
   };
 
   useEffect(() => {
-    if (!!router.query?.years && !!router.query?.claimValue) {
+    if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
         Array.isArray(router.query.years)
@@ -366,7 +366,7 @@ export default function Claim() {
             </div>
           </div>
 
-          <SidePanel amount={router.query.amount} step={step} />
+          <SidePanel amount={claimValue} step={step} />
         </div>
       </section>
 

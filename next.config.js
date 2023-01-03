@@ -24,30 +24,6 @@ const nextConfig = {
       "www.gravatar.com",
     ],
   },
-  rewrites: [
-    {
-      source: "/:path*",
-      has: [
-        {
-          type: "host",
-          value: "workfromhome.claimingmadeeasy.com",
-        },
-      ],
-      destination: "/claim/:path*",
-    },
-  ],
-  redirects: [
-    {
-      source: "/:path*",
-      has: [
-        {
-          type: "host",
-          value: "workfromhome.claimingmadeeasy.com",
-        },
-      ],
-      destination: "/claim/:path*",
-    },
-  ],
 };
 
 module.exports = nextConfig;
