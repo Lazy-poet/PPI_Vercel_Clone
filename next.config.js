@@ -33,7 +33,19 @@ const nextConfig = {
           value: "workfromhome.claimingmadeeasy.com",
         },
       ],
-      destination: "/claim",
+      destination: "/claim/:path*",
+    },
+  ],
+  redirects: [
+    {
+      source: "/:path*",
+      has: [
+        {
+          type: "host",
+          value: "workfromhome.claimingmadeeasy.com",
+        },
+      ],
+      destination: "/claim/:path*",
     },
   ],
 };
