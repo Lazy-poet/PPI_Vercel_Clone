@@ -25,6 +25,9 @@ export default function Claim() {
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [claimValue, setClaimValue] = useState<any>();
+
+  const [theEmail, setTheEmail] = useState<any>("");
+
   // Step1
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -37,6 +40,7 @@ export default function Claim() {
     month: "",
     year: "",
   });
+
   const [fdEvents1, setFdEvents1] = useState<any>({
     firstName: true,
     lastName: true,
@@ -47,7 +51,8 @@ export default function Claim() {
     month: true,
     year: true,
   });
-  const handleFormChange1 = (key: string, value: string) => {
+
+  const handleFormChange1 = async (key: string, value: string) => {
     setFormData1({
       ...formData1,
       // firstEvent: false,
@@ -116,8 +121,8 @@ export default function Claim() {
     });
   };
 
-  // Submit Function
-  const handleFormSubmit = async (callback: () => void) => {
+  // old Submit Function
+ /*  const handleFormSubmit = async (callback: () => void) => {
     let { day, month, year, ...otherFormData1 } = formData1;
     let dataToSend = {
       claimValue,
@@ -148,7 +153,7 @@ export default function Claim() {
         if (res.status) callback();
       })
       .catch((error) => console.log("error", error));
-  };
+  }; */
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -158,7 +163,9 @@ export default function Claim() {
     }
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
+    let { day, month, year, ...otherFormData1 } = formData1;
+
     switch (step) {
       case STEP.QUICK_QUOTE:
         setFormData1({ ...formData1, firstEvent: false });
@@ -184,6 +191,44 @@ export default function Claim() {
           formData1.month !== "" &&
           formData1.year !== ""
         ) {
+          if (!theEmail) {
+            let { data, error } = await supabase
+              .from("claim-form-submissions")
+              .insert({
+                firstName: otherFormData1.firstName,
+                lastName: otherFormData1.lastName,
+                email: otherFormData1.email,
+                postCode: otherFormData1.postCode,
+                address: otherFormData1.address,
+                birthdate: JSON.stringify({
+                  day,
+                  month,
+                  year,
+                }),
+              })
+              .select("email");
+            setTheEmail(data?.[0].email);
+          }
+
+          if (theEmail) {
+            const { error } = await supabase
+              .from("claim-form-submissions")
+              .update({
+                firstName: otherFormData1.firstName,
+                lastName: otherFormData1.lastName,
+                email: otherFormData1.email,
+                postCode: otherFormData1.postCode,
+                address: otherFormData1.address,
+                birthdate: JSON.stringify({
+                  day,
+                  month,
+                  year,
+                }),
+              })
+              .eq("email", theEmail);
+            setTheEmail(otherFormData1.email);
+          }
+
           setStep((step) => step + 1);
         }
         break;
@@ -193,25 +238,47 @@ export default function Claim() {
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
           } else {
+            const { error } = await supabase
+              .from("claim-form-submissions")
+              .update({
+                claimChecked1: formData2.claimChecked1,
+                claimChecked2: formData2.claimChecked2,
+                employerName: formData2.employerName?.label,
+              })
+              .eq("email", theEmail);
             setStep((step) => step + 1);
           }
         }
         break;
       case STEP.SIGN_COMPLETE:
         if (formData3.signatureData !== null) {
+          console.log(formData3);
+          const { error } = await supabase
+            .from("claim-form-submissions")
+            .update({ ...formData3 })
+            .eq("email", theEmail);
           setStep((step) => step + 1);
         }
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance !== "" && isNino(formData4.insurance)) {
+          const { error } = await supabase
+            .from("claim-form-submissions")
+            .update({ insurance: formData4.insurance })
+            .eq("email", theEmail);
           setStep((step) => step + 1);
         }
         break;
       case STEP.THANK_YOU:
         setFormData5({ ...formData5, firstEvent: false });
         if (formData5.paye !== "" && Utils.validatePAYE(formData5.paye)) {
-          handleFormSubmit(() => setStep((step) => step + 1));
+          const { error } = await supabase
+            .from("claim-form-submissions")
+            .update({ paye: formData5.paye })
+            .eq("email", theEmail);
+          setStep((step) => step + 1);
+          // handleFormSubmit(() => setStep((step) => step + 1));
         }
         break;
       case STEP.ALL_DONE:
@@ -299,7 +366,7 @@ export default function Claim() {
             </div>
           </div>
 
-          <SidePanel step={step} />
+          <SidePanel amount={router.query.amount} step={step} />
         </div>
       </section>
 

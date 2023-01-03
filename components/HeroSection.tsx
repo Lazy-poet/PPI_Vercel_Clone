@@ -60,7 +60,7 @@ const HeroSection = () => {
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
-                Your&nbsp;
+                Claim Your&nbsp;
                 <span className="text-primary-600 dark:text-primary-500">
                   £
                 </span>
@@ -73,11 +73,10 @@ const HeroSection = () => {
                     ]}
                   ></Animated>
                 </span>
-                &nbsp;tax claim starts here
+                &nbsp;Tax Refund Today
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Have you worked from home for a single day or more during the
-                pandemic?
+                You’re eligible even if you worked from home for only a single day due to Covid-19?
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div
@@ -147,15 +146,8 @@ const HeroSection = () => {
                   </label>
                 </div>
               </div>
-              <p
-                className={`max-w-2xl mt-2 mb-10 text-sm ${
-                  firstEvent || checked1 || checked2
-                    ? "text-gray-500 dark:text-gray-400"
-                    : "text-red-600 dark:text-red-500"
-                }`}
-              >
-                Select which year you worked a day or more from home. If you
-                worked from home during both years, select &apos;Both&apos;
+              <p className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2 ? 'text-gray-500 dark:text-gray-400' : 'text-red-600 dark:text-red-500'}`}>
+                Select the year(s) you worked from home
               </p>
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
@@ -164,19 +156,23 @@ const HeroSection = () => {
                       className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={() => {
                         setFirstEvent(false);
-                        checked1 || checked2
-                          ? router.push("/claim", {
-                              query: {
-                                years: checkedYears,
-                                claimValue: amount,
-                              },
-                            })
-                          : window.scrollTo({ top: 0, behavior: "smooth" });
+                        (checked1 || checked2) ? router.push(
+                          {
+                            pathname: '/claim',
+                            query: {
+                              amount: amount,
+                              years: checkedYears,
+                              claimValue: amount,
+                            },
+                          },
+                          '/claim',
+                        )
+                          : window.scrollTo({ top: 0, behavior: 'smooth' })
                       }}
                     >
                       <div className="flex-grow">
                         <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
-                          <span>Check my claim</span>
+                          <span>Get Started</span>
                         </div>
                       </div>
                       <svg

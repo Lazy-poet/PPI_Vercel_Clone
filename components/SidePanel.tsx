@@ -25,11 +25,11 @@ const SideItem = ({ info }: { info: string }) => {
   );
 };
 
-const SidePanel = ({ step }: Props) => {
+const SidePanel = ({ step, amount }: any) => {
   return (
     <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block bg-primary-600">
       <div className="block p-8 text-white rounded-lg bg-primary-500">
-        <h3 className="mb-1 text-2xl font-semibold">Your £624 tax refund</h3>
+        <h3 className="mb-1 text-2xl font-semibold">Your £{amount ? amount : 0}  tax refund</h3>
 
         <p className="inline-flex justify-center items-center space-x-1.5 mb-4 font-light text-primary-100 sm:text-lg">
           {step != STEP.ALL_DONE && (
