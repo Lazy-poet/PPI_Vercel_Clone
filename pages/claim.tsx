@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
@@ -22,9 +22,15 @@ import supabase from "utils/client";
 
 export default function Claim() {
   const router = useRouter();
+  
+  const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [checkedYears, setCheckedYears] = useState<string[]>([]);
+  const [claimValue, setClaimValue] = useState<any>(624);
+
 
   const [theEmail, setTheEmail] = useState<any>("");
+  const [prevData, setPrevData] = useState<any>("");
 
   // Step1
   const [formData1, setFormData1] = useState<any>({
@@ -119,37 +125,75 @@ export default function Claim() {
     });
   };
 
-  // old Submit Function
- /*  const handleFormSubmit = async (callback: () => void) => {
-    let { day, month, year, ...otherFormData1 } = formData1;
-    let dataToSend = {
-      ...otherFormData1,
-      ...formData2,
-      ...formData3,
-      ...formData4,
-      ...formData5,
-      employerName: formData2.employerName?.label,
-      birthdate: JSON.stringify({
-        day,
-        month,
-        year,
-      }),
-    };
 
-    delete dataToSend.firstEvent;
 
-    let endpoint = `/api/claim-form`;
-    let requestOptions: any = {
-      method: "POST",
-      body: JSON.stringify(dataToSend),
-    };
-    await fetch(endpoint, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.status) callback();
+  useEffect(() => {
+    /* to check where the user should continue in the form */
+    const formPageHandler = (data)  => {
+      if(data.paye) return setStep(5)
+      if(data.insurance) return setStep(4)
+      if(data.signatureData) return setStep(3)
+      if(data.employerName) return setStep(2)
+      if(data.email) return setStep(1); 
+    }
+    
+    /* get existed user data */
+    const getPrevData = async () => {
+      const { data, error } = await supabase
+        .from("claim-form-submissions")
+        .select()
+        .eq("email", urlEmail)
+        .select();
+      setPrevData(data?.[0]);
+
+      const birthdate = JSON.parse(data?.[0]?.birthdate);
+      
+      /* update the form data white existed user data */
+      setClaimValue(data?.[0]?.claimValue)
+      setFormData1({
+        firstEvent: true,
+        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
+        lastName: data?.[0].lastName ? data?.[0].lastName : "",
+        email: data?.[0].email ? data?.[0].email : "",
+        postCode: data?.[0].postCode ? data?.[0].postCode : "",
+        address: data?.[0].address ? data?.[0].address : "",
+        day: data?.[0].birthdate ? birthdate.day : "",
+        month: data?.[0].birthdate ? birthdate.month : "",
+        year: data?.[0].birthdate ? birthdate.year : "",
+      });
+
+      setFormData2({
+        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
+        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+      });
+
+      setFormData3({
+        signatureData : data?.[0]?.signatureData ? data?.[0].signatureData : ""
       })
-      .catch((error) => console.log("error", error));
-  }; */
+
+      setFormData4({
+        insurance : data?.[0]?.insurance ? data?.[0].insurance : ""
+      })
+
+      setFormData5({
+        paye: data?.[0]?.paye ? data?.[0].paye : "",
+      })
+
+      formPageHandler(data?.[0])
+    };
+
+    /* if existed user */
+    if (urlEmail) {
+      getPrevData();
+    }
+
+  }, [urlEmail]);
+
+
+    
+
+
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -158,6 +202,7 @@ export default function Claim() {
       setStep((step) => step - 1);
     }
   };
+
 
   const nextStep = async () => {
     let { day, month, year, ...otherFormData1 } = formData1;
@@ -187,13 +232,16 @@ export default function Claim() {
           formData1.month !== "" &&
           formData1.year !== ""
         ) {
+
           if (!theEmail) {
             let { data, error } = await supabase
-              .from("claim-form-submissions")
-              .insert({
+            .from("claim-form-submissions")
+            .insert({
+              claimValue,
+                checkedYears,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
-                email: otherFormData1.email,
+                email: otherFormData1.email.toLowerCase(),
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
                 birthdate: JSON.stringify({
@@ -203,13 +251,39 @@ export default function Claim() {
                 }),
               })
               .select("email");
+
             setTheEmail(data?.[0].email);
+
+            if (error?.message === 'duplicate key value violates unique constraint \"claim-form-submissions_email_key\"' ) {
+              const { error } = await supabase
+              .from("claim-form-submissions")
+              .update({
+                claimValue,
+                checkedYears,
+                firstName: otherFormData1.firstName,
+                lastName: otherFormData1.lastName,
+                email: otherFormData1.email.toLowerCase(),
+                postCode: otherFormData1.postCode,
+                address: otherFormData1.address,
+                birthdate: JSON.stringify({
+                  day,
+                  month,
+                  year,
+                })
+              })
+              .eq("email", otherFormData1.email  );
+              console.log("🚀 ~ file: claim.tsx:275 ~ nextStep ~ error", error)
+            }
+          setStep((step) => step + 1);
+
           }
 
           if (theEmail) {
             const { error } = await supabase
               .from("claim-form-submissions")
               .update({
+                claimValue,
+                checkedYears,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -225,7 +299,6 @@ export default function Claim() {
             setTheEmail(otherFormData1.email);
           }
 
-          setStep((step) => step + 1);
         }
         break;
       case STEP.CLAIM_NOW:
@@ -241,7 +314,7 @@ export default function Claim() {
                 claimChecked2: formData2.claimChecked2,
                 employerName: formData2.employerName?.label,
               })
-              .eq("email", theEmail);
+              .eq("email", theEmail ? theEmail : urlEmail  );
             setStep((step) => step + 1);
           }
         }
@@ -252,7 +325,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ ...formData3 })
-            .eq("email", theEmail);
+            .eq("email",  theEmail ? theEmail : urlEmail );
           setStep((step) => step + 1);
         }
         break;
@@ -262,7 +335,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
-            .eq("email", theEmail);
+            .eq("email",  theEmail ? theEmail : urlEmail );
           setStep((step) => step + 1);
         }
         break;
@@ -272,9 +345,9 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
-            .eq("email", theEmail);
+            .eq("email",  theEmail ? theEmail : urlEmail );
           setStep((step) => step + 1);
-          // handleFormSubmit(() => setStep((step) => step + 1));
+  
         }
         break;
       case STEP.ALL_DONE:
@@ -287,6 +360,21 @@ export default function Claim() {
     document.getElementById("btnNext")?.blur();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+
+  useEffect(() => {
+    if (!!router.query?.years || !!router.query?.claimValue) {
+      setCheckedYears(
+        // @ts-ignore
+        Array.isArray(router.query.years)
+          ? router.query.years
+          : [router.query.years]
+      );
+      setClaimValue(router.query.claimValue);
+
+      router.replace("/claim");
+    }
+  }, [router.query]);
 
   return (
     <Layout>
@@ -346,7 +434,7 @@ export default function Claim() {
             </div>
           </div>
 
-          <SidePanel amount={router.query.amount} step={step} />
+          <SidePanel amount={claimValue} step={step} />
         </div>
       </section>
 
