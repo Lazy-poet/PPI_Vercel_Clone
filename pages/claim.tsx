@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
@@ -23,6 +23,8 @@ import supabase from "utils/client";
 export default function Claim() {
   const router = useRouter();
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [checkedYears, setCheckedYears] = useState<string[]>([]);
+  const [claimValue, setClaimValue] = useState<any>();
   // Step1
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -118,6 +120,8 @@ export default function Claim() {
   const handleFormSubmit = async (callback: () => void) => {
     let { day, month, year, ...otherFormData1 } = formData1;
     let dataToSend = {
+      claimValue,
+      checkedYears,
       ...otherFormData1,
       ...formData2,
       ...formData3,
@@ -220,6 +224,22 @@ export default function Claim() {
     document.getElementById("btnNext")?.blur();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    if (!!router.query?.years && !!router.query?.claimValue) {
+      setCheckedYears(
+        // @ts-ignore
+        Array.isArray(router.query.years)
+          ? router.query.years
+          : [router.query.years]
+      );
+      setClaimValue(router.query.claimValue);
+
+      router.replace("/claim");
+    }
+  }, [router.query]);
+
+  console.log(checkedYears, claimValue);
 
   return (
     <Layout>
