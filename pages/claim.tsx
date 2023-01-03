@@ -133,7 +133,7 @@ export default function Claim() {
 
   useEffect(() => {
     /* to check where the user should continue in the form */
-    const formPageHandler = (data)  => {
+    const formPageHandler = (data : any)  => {
       if(data.paye) return setStep(5)
       if(data.insurance) return setStep(4)
       if(data.signatureData) return setStep(3)
@@ -390,6 +390,8 @@ export default function Claim() {
         }
         setUtmParams(utmParams);
       });
+
+    }
 
   }, [router.query]);
 
