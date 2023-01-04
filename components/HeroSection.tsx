@@ -163,20 +163,21 @@ const HeroSection = () => {
                       className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={() => {
                         setFirstEvent(false);
-                        checked1 || checked2
-                          ? router.push(
-                              {
-                                pathname: "/claim",
-                                query: {
-                                  ...router.query,
-                                  amount: amount,
-                                  years: checkedYears,
-                                  claimValue: amount,
-                                },
-                              },
-                              "/claim"
-                            )
-                          : window.scrollTo({ top: 0, behavior: "smooth" });
+
+                        (checked1 || checked2) ? router.push(
+                          {
+                            pathname: '/claim',
+                            query: {
+                              ...router.query,
+                              amount: amount,
+                              years: checkedYears,
+                              claimValue: amount,
+                            },
+                          },
+                          '/claim',
+                        )
+                          : window.scrollTo({ top: 0, behavior: 'smooth' })
+        
                       }}
                     >
                       <div className="flex-grow">

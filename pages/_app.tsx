@@ -8,16 +8,16 @@ import { useRouter } from "next/router";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  useEffect(() => {
+/*   useEffect(() => {
     let redirect = {
-      source: "workfromhome.claimingmadeeasy.com",
+      source: "localhost:3000",
       destination: "/claim",
     };
 
     if (!!window && window.location.host.includes(redirect.source)) {
       router.replace(redirect.destination, { query: router.query });
     }
-  }, []);
+  }, []); */
 
   return (
     <ThemeProvider>
