@@ -38,18 +38,24 @@ const SignComplete = ({ data, handleFormChange }: any) => {
           Please sign in the boundaries of the white box below
         </p>
 
-        <div className="w-full mt-10 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-          <div className="bg-white rounded-t-lg dark:bg-gray-800">
+        <div className="w-full mt-10 mb-4 border border-gray-200 rounded-lg bg-[#F9FAFB] dark:bg-gray-700 dark:border-gray-600">
+          <div className="bg-white rounded-t-lg dark:bg-gray-800 relative">
+            <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-1 rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas sendRef={handleFormChange} reset={reset} debounceReset={setReset} />
           </div>
           <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
-            <button onClick={() => setReset(true)} className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-              Clear
+            <button onClick={() => setReset(true)} className="inline-flex items-center gap-2 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 darkring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 darktext-white darkbg-gray-700">
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-backspace" width="24" height="24" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z"></path>
+                <path d="M12 10l4 4m0 -4l-4 4"></path>
+              </svg>
+              CLEAR
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
