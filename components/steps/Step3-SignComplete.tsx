@@ -38,8 +38,8 @@ const SignComplete = ({ data, handleFormChange }: any) => {
           Please sign in the boundaries of the white box below
         </p>
 
-        <div className="w-full mt-10 mb-4 border border-gray-200 rounded-lg bg-[#F9FAFB] dark:bg-gray-700 dark:border-gray-600">
-          <div className="bg-white rounded-t-lg dark:bg-gray-800 relative">
+        <div className="w-full mt-10 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-1 rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas sendRef={handleFormChange} reset={reset} debounceReset={setReset} />
           </div>
