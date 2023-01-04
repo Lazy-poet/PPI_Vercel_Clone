@@ -22,14 +22,12 @@ import supabase from "utils/client";
 
 export default function Claim() {
   const router = useRouter();
-  console.log("🚀 ~ file: claim.tsx:25 ~ Claim ~ router", router)
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState<any>([]);
-  console.log("🚀 ~ file: claim.tsx:33 ~ Claim ~ utmParams", utmParams);
   const [claimValue, setClaimValue] = useState<any>(624);
 
   const [theEmail, setTheEmail] = useState<any>("");
@@ -234,7 +232,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
-                link: `https://claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
+                link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email.toLowerCase(),
@@ -358,6 +356,12 @@ export default function Claim() {
   };
 
   useEffect(() => {
+
+    if (!router.query?.claimValue) {
+      router.push("/")
+    }
+
+
     if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
@@ -379,7 +383,6 @@ export default function Claim() {
     }
   }, [router.query]);
 
-  console.log(router.query);
 
   return (
     <Layout>
