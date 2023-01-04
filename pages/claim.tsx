@@ -356,6 +356,12 @@ export default function Claim() {
   };
 
   useEffect(() => {
+
+    if (!router.query?.claimValue) {
+       router.push("/")
+    } 
+      
+
     if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
@@ -377,7 +383,6 @@ export default function Claim() {
     }
   }, [router.query]);
 
-  console.log(router.query);
 
   return (
     <Layout>
