@@ -22,14 +22,12 @@ import supabase from "utils/client";
 
 export default function Claim() {
   const router = useRouter();
-  console.log("🚀 ~ file: claim.tsx:25 ~ Claim ~ router", router)
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState<any>([]);
-  console.log("🚀 ~ file: claim.tsx:33 ~ Claim ~ utmParams", utmParams);
   const [claimValue, setClaimValue] = useState<any>(624);
 
   const [theEmail, setTheEmail] = useState<any>("");
