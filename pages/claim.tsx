@@ -234,7 +234,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
-                link : `https://claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
+                link: `https://claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email.toLowerCase(),
@@ -387,9 +387,8 @@ export default function Claim() {
         <div className="max-w-screen-xl mx-auto lg:flex gap-2">
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
-              {step < STEP.LAST_THING && (
-                <ProgressBar step={step} prevStep={prevStep} />
-              )}
+              <ProgressBar step={step} prevStep={prevStep} />
+
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
               )}

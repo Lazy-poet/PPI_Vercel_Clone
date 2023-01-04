@@ -81,13 +81,12 @@ const HeroSection = () => {
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
-                    firstEvent || checked1 || checked2
-                      ? checked1
-                        ? "success"
-                        : ""
-                      : "error"
-                  }`}
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2
+                    ? checked1
+                      ? "success"
+                      : ""
+                    : "error"
+                    }`}
                 >
                   <input
                     id="bordered-checkbox-1"
@@ -104,23 +103,21 @@ const HeroSection = () => {
                   />
                   <label
                     htmlFor="bordered-checkbox-1"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
-                      firstEvent || checked1 || checked2
-                        ? "text-gray-900 dark:text-gray-300"
-                        : "text-red-700 dark:text-red-500"
-                    }`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2
+                      ? "text-gray-900 dark:text-gray-300"
+                      : "text-red-700 dark:text-red-500"
+                      }`}
                   >
                     2020 - 21
                   </label>
                 </div>
                 <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
-                    firstEvent || checked1 || checked2
-                      ? checked2
-                        ? "success"
-                        : ""
-                      : "error"
-                  }`}
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2
+                    ? checked2
+                      ? "success"
+                      : ""
+                    : "error"
+                    }`}
                 >
                   <input
                     id="bordered-checkbox-2"
@@ -137,68 +134,75 @@ const HeroSection = () => {
                   />
                   <label
                     htmlFor="bordered-checkbox-2"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
-                      firstEvent || checked1 || checked2
-                        ? "text-gray-900 dark:text-gray-300"
-                        : "text-red-700 dark:text-red-500"
-                    }`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2
+                      ? "text-gray-900 dark:text-gray-300"
+                      : "text-red-700 dark:text-red-500"
+                      }`}
                   >
                     2021 - 22
                   </label>
                 </div>
               </div>
               <p
-                className={`max-w-2xl mt-2 mb-10 text-sm ${
-                  firstEvent || checked1 || checked2
-                    ? "text-gray-500 dark:text-gray-400"
-                    : "text-red-600 dark:text-red-500"
-                }`}
+                className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2
+                  ? "text-gray-500 dark:text-gray-400"
+                  : "text-red-600 dark:text-red-500"
+                  }`}
               >
                 Select the year(s) you worked from home
               </p>
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
-                    <button
-                      className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                      onClick={() => {
-                        setFirstEvent(false);
+                    <div>
+                      <button
+                        className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        onClick={() => {
+                          setFirstEvent(false);
 
-                        (checked1 || checked2) ? router.push(
-                          {
-                            pathname: '/claim',
-                            query: {
-                              ...router.query,
-                              amount: amount,
-                              years: checkedYears,
-                              claimValue: amount,
+                          (checked1 || checked2) ? router.push(
+                            {
+                              pathname: '/claim',
+                              query: {
+                                ...router.query,
+                                amount: amount,
+                                years: checkedYears,
+                                claimValue: amount,
+                              },
                             },
-                          },
-                          '/claim',
-                        )
-                          : window.scrollTo({ top: 0, behavior: 'smooth' })
-        
-                      }}
-                    >
-                      <div className="flex-grow">
-                        <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
-                          <span>Get Started</span>
-                        </div>
-                      </div>
-                      <svg
-                        aria-hidden="true"
-                        className="ml-3 w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
+                            '/claim',
+                          )
+                            : window.scrollTo({ top: 0, behavior: 'smooth' })
+                        }}
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
+                        <div className="flex-grow">
+                          <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
+                            <span>Get Started</span>
+                          </div>
+                        </div>
+                        <svg
+                          aria-hidden="true"
+                          className="ml-3 w-6 h-6"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                      <img
+                        className="w-20 mt-4"
+                        src="/images/ssl-secure.svg"
+                        alt="Secure"
+                      />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Your information is 100% safe and secure on this website
+                      </p>
+                    </div>
                   </li>
                 </ul>
               </div>

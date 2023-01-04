@@ -284,14 +284,19 @@ const QuickQuote = (props: any) => {
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   Please provide a valid UK postcode
                 </p>
-                :
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Enter your postcode, then click &apos;Search&apos; to find your
-                  address and proceed
-                </p>
+                : !data.address ?
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    Click &apos;Search&apos; to find your
+                    address and proceed
+                  </p>
+                  :
+                  <p
+                    id="helper-text-explanation"
+                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
+                    Enter your postcode, then click &apos;Search&apos; to find your
+                    address and proceed
+                  </p>
           }
         </div>
         {
