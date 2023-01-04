@@ -31,7 +31,7 @@ const SignComplete = ({ data, handleFormChange }: any) => {
       </ul>
 
       <div>
-        <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white text-blue-600 dark:text-blue-500">
+        <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-blue-600 dark:text-blue-500">
           Your signature
         </h1>
         <p className="max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400">
