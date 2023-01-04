@@ -1,8 +1,13 @@
 import { CONFIRMS } from "@/libs/doms";
+import { Card } from "flowbite-react";
+import { useState } from "react";
+import SignatureCanvas from "../SignatureCanvas";
 
-const SignComplete = () => {
+const SignComplete = ({ data, handleFormChange }: any) => {
+  const [reset, setReset] = useState<boolean>(false);
+
   return (
-    <div className="mt-6 mb-5">
+    <div className="mt-6 mb-10">
       <ul className="space-y-1 list-inside text-gray-500 dark:text-gray-400">
         {CONFIRMS.map((confirm, index) => {
           return (
@@ -24,6 +29,26 @@ const SignComplete = () => {
           );
         })}
       </ul>
+
+      <div>
+        <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-gray-900 dark:text-white text-blue-600 dark:text-blue-500">
+          Your signature
+        </h1>
+        <p className="max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400">
+          Please sign in the boundaries of the white box below
+        </p>
+
+        <div className="w-full mt-10 mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+          <div className="bg-white rounded-t-lg dark:bg-gray-800">
+            <SignatureCanvas sendRef={handleFormChange} reset={reset} debounceReset={setReset} />
+          </div>
+          <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+            <button onClick={() => setReset(true)} className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+              Clear
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

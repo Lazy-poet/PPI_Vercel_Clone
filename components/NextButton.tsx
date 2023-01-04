@@ -41,7 +41,7 @@ const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {
             )}
             <img
               className="w-20 mt-4"
-              src="/images/ssl-secure.png"
+              src="/images/ssl-secure.svg"
               alt="Secure"
             />
             <p className="text-sm text-gray-500 dark:text-gray-400">
