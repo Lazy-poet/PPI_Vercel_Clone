@@ -160,6 +160,7 @@ const HeroSection = () => {
                           {
                             pathname: '/claim',
                             query: {
+                              ...router.query,
                               amount: amount,
                               years: checkedYears,
                               claimValue: amount,
