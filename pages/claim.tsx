@@ -22,16 +22,15 @@ import supabase from "utils/client";
 
 export default function Claim() {
   const router = useRouter();
-  
+  console.log("🚀 ~ file: claim.tsx:25 ~ Claim ~ router", router)
+
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
-  
-
   const [utmParams, setUtmParams] = useState<any>([]);
+  console.log("🚀 ~ file: claim.tsx:33 ~ Claim ~ utmParams", utmParams);
   const [claimValue, setClaimValue] = useState<any>(624);
-
 
   const [theEmail, setTheEmail] = useState<any>("");
   const [prevData, setPrevData] = useState<any>("");
@@ -129,18 +128,16 @@ export default function Claim() {
     });
   };
 
-
-
   useEffect(() => {
     /* to check where the user should continue in the form */
-    const formPageHandler = (data : any)  => {
-      if(data.paye) return setStep(5)
-      if(data.insurance) return setStep(4)
-      if(data.signatureData) return setStep(3)
-      if(data.employerName) return setStep(2)
-      if(data.email) return setStep(1); 
-    }
-    
+    const formPageHandler = (data: any) => {
+      if (data.paye) return setStep(5);
+      if (data.insurance) return setStep(4);
+      if (data.signatureData) return setStep(3);
+      if (data.employerName) return setStep(2);
+      if (data.email) return setStep(1);
+    };
+
     /* get existed user data */
     const getPrevData = async () => {
       const { data, error } = await supabase
@@ -151,10 +148,10 @@ export default function Claim() {
       setPrevData(data?.[0]);
 
       const birthdate = JSON.parse(data?.[0]?.birthdate);
-      
+
       /* update the form data white existed user data */
-   
-      setClaimValue(data?.[0]?.claimValue)
+
+      setClaimValue(data?.[0]?.claimValue);
       setFormData1({
         firstEvent: true,
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
@@ -174,31 +171,25 @@ export default function Claim() {
       });
 
       setFormData3({
-        signatureData : data?.[0]?.signatureData ? data?.[0].signatureData : ""
-      })
+        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
+      });
 
       setFormData4({
-        insurance : data?.[0]?.insurance ? data?.[0].insurance : ""
-      })
+        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
+      });
 
       setFormData5({
         paye: data?.[0]?.paye ? data?.[0].paye : "",
-      })
+      });
 
-      formPageHandler(data?.[0])
+      formPageHandler(data?.[0]);
     };
 
     /* if existed user */
     if (urlEmail) {
       getPrevData();
     }
-
   }, [urlEmail]);
-
-
-    
-
-
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -207,7 +198,6 @@ export default function Claim() {
       setStep((step) => step - 1);
     }
   };
-
 
   const nextStep = async () => {
     let { day, month, year, ...otherFormData1 } = formData1;
@@ -237,7 +227,6 @@ export default function Claim() {
           formData1.month !== "" &&
           formData1.year !== ""
         ) {
-
           if (!theEmail) {
             let { data, error } = await supabase
               .from("claim-form-submissions")
@@ -245,6 +234,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
+                link : `https://claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email.toLowerCase(),
@@ -260,28 +250,29 @@ export default function Claim() {
 
             setTheEmail(data?.[0].email);
 
-            if (error?.message === 'duplicate key value violates unique constraint \"claim-form-submissions_email_key\"' ) {
+            if (
+              error?.message ===
+              'duplicate key value violates unique constraint "claim-form-submissions_email_key"'
+            ) {
               const { error } = await supabase
-              .from("claim-form-submissions")
-              .update({
-                claimValue,
-                checkedYears,
-                firstName: otherFormData1.firstName,
-                lastName: otherFormData1.lastName,
-                email: otherFormData1.email.toLowerCase(),
-                postCode: otherFormData1.postCode,
-                address: otherFormData1.address,
-                birthdate: JSON.stringify({
-                  day,
-                  month,
-                  year,
+                .from("claim-form-submissions")
+                .update({
+                  claimValue,
+                  checkedYears,
+                  firstName: otherFormData1.firstName,
+                  lastName: otherFormData1.lastName,
+                  email: otherFormData1.email.toLowerCase(),
+                  postCode: otherFormData1.postCode,
+                  address: otherFormData1.address,
+                  birthdate: JSON.stringify({
+                    day,
+                    month,
+                    year,
+                  }),
                 })
-              })
-              .eq("email", otherFormData1.email  );
-      
+                .eq("email", otherFormData1.email);
             }
-          setStep((step) => step + 1);
-
+            setStep((step) => step + 1);
           }
 
           if (theEmail) {
@@ -303,8 +294,8 @@ export default function Claim() {
               })
               .eq("email", theEmail);
             setTheEmail(otherFormData1.email);
+            setStep((step) => step + 1);
           }
-
         }
         break;
       case STEP.CLAIM_NOW:
@@ -320,7 +311,7 @@ export default function Claim() {
                 claimChecked2: formData2.claimChecked2,
                 employerName: formData2.employerName?.label,
               })
-              .eq("email", theEmail ? theEmail : urlEmail  );
+              .eq("email", theEmail ? theEmail : urlEmail);
             setStep((step) => step + 1);
           }
         }
@@ -331,7 +322,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ ...formData3 })
-            .eq("email",  theEmail ? theEmail : urlEmail );
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
         }
         break;
@@ -341,7 +332,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
-            .eq("email",  theEmail ? theEmail : urlEmail );
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
         }
         break;
@@ -351,9 +342,8 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
-            .eq("email",  theEmail ? theEmail : urlEmail );
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
-  
         }
         break;
       case STEP.ALL_DONE:
@@ -366,7 +356,6 @@ export default function Claim() {
     document.getElementById("btnNext")?.blur();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
 
   useEffect(() => {
     if (!!router.query?.years || !!router.query?.claimValue) {
@@ -381,7 +370,6 @@ export default function Claim() {
       router.replace("/claim");
     }
 
-
     if (!!router.query) {
       let utmParams: any = {};
       Object.keys(router.query).forEach((key) => {
@@ -390,9 +378,7 @@ export default function Claim() {
         }
         setUtmParams(utmParams);
       });
-
     }
-
   }, [router.query]);
 
   return (
