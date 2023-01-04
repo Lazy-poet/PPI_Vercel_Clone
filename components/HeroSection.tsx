@@ -76,7 +76,8 @@ const HeroSection = () => {
                 &nbsp;Tax Refund Today
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                You’re eligible even if you worked from home for only a single day due to Covid-19?
+                You’re eligible even if you worked from home for only a single
+                day due to Covid-19?
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div
@@ -146,7 +147,13 @@ const HeroSection = () => {
                   </label>
                 </div>
               </div>
-              <p className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2 ? 'text-gray-500 dark:text-gray-400' : 'text-red-600 dark:text-red-500'}`}>
+              <p
+                className={`max-w-2xl mt-2 mb-10 text-sm ${
+                  firstEvent || checked1 || checked2
+                    ? "text-gray-500 dark:text-gray-400"
+                    : "text-red-600 dark:text-red-500"
+                }`}
+              >
                 Select the year(s) you worked from home
               </p>
               <div className="max-w-2xl text-sm text-gray-500">
@@ -156,6 +163,7 @@ const HeroSection = () => {
                       className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={() => {
                         setFirstEvent(false);
+
                         (checked1 || checked2) ? router.push(
                           {
                             pathname: '/claim',
@@ -169,6 +177,7 @@ const HeroSection = () => {
                           '/claim',
                         )
                           : window.scrollTo({ top: 0, behavior: 'smooth' })
+        
                       }}
                     >
                       <div className="flex-grow">

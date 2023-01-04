@@ -366,8 +366,6 @@ export default function Claim() {
           : [router.query.years]
       );
       setClaimValue(router.query.claimValue);
-
-      router.replace("/claim");
     }
 
     if (!!router.query) {
@@ -380,6 +378,8 @@ export default function Claim() {
       });
     }
   }, [router.query]);
+
+  console.log(router.query);
 
   return (
     <Layout>
