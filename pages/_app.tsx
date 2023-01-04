@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     };
 
     if (!!window && window.location.host.includes(redirect.source)) {
-      router.replace(redirect.destination);
+      router.replace(redirect.destination, { query: router.query });
     }
   }, []);
 
