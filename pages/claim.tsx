@@ -234,7 +234,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
-                link : `https://claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
+                link : `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email.toLowerCase(),
