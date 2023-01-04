@@ -226,7 +226,7 @@ const QuickQuote = (props: any) => {
               )
           }
         </div>
-        <div className={`form-group sm:col-span-2 ${fdEvents.postCode ? '' : ((data.postCode && postcodeValidator(data.postCode, 'GB')) ? 'success' : 'error')}`}>
+        <div className={`form-group sm:col-span-2 ${fdEvents.postCode ? '' : ((data.address && data.postCode && postcodeValidator(data.postCode, 'GB')) ? 'success' : 'error')}`}>
           <label
             htmlFor="address"
             className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
