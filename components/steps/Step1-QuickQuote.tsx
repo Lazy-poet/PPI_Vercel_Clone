@@ -30,6 +30,10 @@ const QuickQuote = (props: any) => {
       _years.push(y.toString());
     }
     setYears(_years);
+
+    if (data && data.postCode) {
+      searchAddressByPostcode(data.postCode)
+    }
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
