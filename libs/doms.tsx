@@ -5,7 +5,7 @@ export const PERCENTS = [70, 80, 90, 100, 100, 100];
 export const TITLES = [
   "Quick quote",
   "Claim now",
-  "Sign here",
+  "Sign & complete",
   "One more thing!",
   "Lastly!",
   "Thank you! You're all done",
@@ -15,7 +15,17 @@ export const TITLES = [
 export const SUB_TITLES = [
   "Enter your details to receive your estimated tax claim quote",
   "Tell us about your employment so that we can process your claim",
-  "",
+  <span>
+    Please carefully read the&nbsp;
+    <Link
+      href="/"
+      target="_blank"
+      className="border-b border-gray-500 dark:border-gray-400"
+    >
+      tax claim documentations
+    </Link>
+    &nbsp;and the following statements, before Signing
+  </span>,
   "We need your National Insurance (NI) number to submit your claim",
   "We also need your Employers PAYE Number to submit your claim",
   "We will be in touch with updates on your claim as soon as we hear anything. All you have to do is sit back, relax and wait until then!",
