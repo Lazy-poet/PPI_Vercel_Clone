@@ -355,7 +355,7 @@ export default function Claim() {
           : [router.query.years]
       );
       setClaimValue(router.query.claimValue);
-    } 
+    }
 
     if (!!router.query) {
       let utmParams: any = {};
@@ -368,25 +368,25 @@ export default function Claim() {
     }
 
 
-  }, [router.query,router]);
+  }, [router.query, router]);
 
   useEffect(() => {
 
-    if(!router.isReady) return;
-    if(!router.query?.years && !router.query?.email) {
+    if (!router.isReady) return;
+    if (!router.query?.years && !router.query?.email) {
       router.push("/")
     }
 
 
-  }, [router.isReady,router]);
+  }, [router.isReady, router]);
 
 
-  
+
 
   return (
     <Layout>
       <section className="bg-white dark:bg-gray-900">
-        <div className="max-w-screen-xl mx-auto lg:flex gap-2">
+        <div className="mx-auto lg:flex">
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
               <ProgressBar step={step} prevStep={prevStep} />
