@@ -6,10 +6,6 @@ const ClaimNow = (props: any) => {
   const [companies, setCompanies] = useState<any>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  useEffect(() => {
-    search('a');
-  }, []);
-
   const search = (query: string) => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "73b7acfe-d3e5-44ba-8f15-7974b1567cf7");
@@ -36,6 +32,10 @@ const ClaimNow = (props: any) => {
       })
       .catch(error => console.log('error', error));
   }
+
+  useEffect(() => {
+    search('a');
+  }, []);
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
