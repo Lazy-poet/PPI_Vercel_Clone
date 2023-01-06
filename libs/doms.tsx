@@ -19,14 +19,14 @@ export const SUB_TITLES = (step: any, onClick: any) => {
     <span>
       We will submit these&nbsp;
       <button
-        onClick={()=>onClick('P87+64-8+R38.pdf')}
+        onClick={() => onClick("P87+64-8+R38.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
         official documents
       </button>
       &nbsp;on your behalf. Please read our
       <button
-        onClick={()=>onClick('terms-of-service.pdf')}
+        onClick={() => onClick("terms-of-service.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
         terms & conditions
@@ -64,12 +64,27 @@ export const SIDE_INFO = [
   "Your employer ref",
 ];
 
-export const NEXT_BUTTON_HELPERS = [
-  "Your personal information will be treated carefully in accordance with our Privacy Policy. We will contact you about claim opportunities using the contact details you provide. You can opt out of receiving communications from us at any time by sending us an email to support@claimingmadeeasy.co.uk",
-  "",
-  "",
-  "",
-  "When you click submit, we will receive your personal information and claim documents, to begin processing your tax refund claims. We will handle your data in accordance with our Privacy Policy.",
-  "",
-  "",
-];
+export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
+  const nextButtonHelpers = [
+    <span>
+      Your personal information will be treated carefully in accordance with
+      our&nbsp;
+      <button
+        onClick={() => onClick("privacy-policy.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        Privacy Policy
+      </button>
+      . We will contact you about claim opportunities using the contact
+      details you provide. You can opt out of receiving communications from us
+      at any time by sending us an email to support@claimingmadeeasy.co.uk
+    </span>,
+    "",
+    "",
+    "",
+    "When you click submit, we will receive your personal information and claim documents, to begin processing your tax refund claims. We will handle your data in accordance with our Privacy Policy.",
+    "",
+    "",
+  ];
+  return nextButtonHelpers[step];
+};
