@@ -34,7 +34,7 @@ export default function Claim() {
     formData4,
     setFormData4,
     formData5,
-    setFormData5
+    setFormData5,
   } = useSystemValues();
 
   const urlEmail = router.query.email;
@@ -176,6 +176,11 @@ export default function Claim() {
     }
   }, [urlEmail]);
 
+  const calculateOurFee = (value: number) => {
+    let feePercentage = 48;
+    return (value / 100) * feePercentage;
+  };
+
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
       if (urlEmail) {
@@ -222,6 +227,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
+                ourFee: calculateOurFee(+claimValue),
                 link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
@@ -247,6 +253,7 @@ export default function Claim() {
                 .update({
                   claimValue,
                   checkedYears,
+                  ourFee: calculateOurFee(+claimValue),
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
                   email: otherFormData1.email.toLowerCase(),
@@ -269,6 +276,7 @@ export default function Claim() {
               .update({
                 claimValue,
                 checkedYears,
+                ourFee: calculateOurFee(+claimValue),
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -346,7 +354,6 @@ export default function Claim() {
   };
 
   useEffect(() => {
-
     if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
