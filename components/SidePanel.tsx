@@ -1,10 +1,6 @@
 import { STEP } from "@/libs/constants";
 import { SIDE_INFO } from "@/libs/doms";
 
-type Props = {
-  step: STEP;
-};
-
 const SideItem = ({ info }: { info: string }) => {
   return (
     <li className="flex items-center space-x-3">

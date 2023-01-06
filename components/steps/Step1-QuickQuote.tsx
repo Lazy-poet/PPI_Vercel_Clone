@@ -12,30 +12,6 @@ const QuickQuote = (props: any) => {
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
 
-  useEffect(() => {
-    var _dates = [];
-    for (var d = 1; d <= 31; d++) {
-      _dates.push(('0' + d).slice(-2));
-    }
-    setDates(_dates);
-    // 
-    var _months = [];
-    for (var m = 1; m <= 12; m++) {
-      _months.push(('0' + m).slice(-2));
-    }
-    setMonths(_months);
-    // 
-    var _years = [];
-    for (var y = 1950; y <= 2005; y++) {
-      _years.push(y.toString());
-    }
-    setYears(_years);
-
-    if (data && data.postCode) {
-      searchAddressByPostcode(data.postCode)
-    }
-  }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
     switch (e.target.name) {
@@ -49,19 +25,6 @@ const QuickQuote = (props: any) => {
         value = value.trim();
         break;
       case 'postCode':
-        // var valueStr = value.split(" ");
-        // if (valueStr.length > 2) {
-        //   value = e.target.value.toUpperCase().trim();
-        //   if (valueStr[valueStr.length - 1] === '' && valueStr[valueStr.length - 2] === '') {
-        //     value = value + ' ';
-        //   }
-        // } else {
-        //   if (value.charAt(0) === ' ') {
-        //     value = e.target.value.toUpperCase().trim();
-        //   } else {
-        //     value = e.target.value.toUpperCase();
-        //   }
-        // }
         value = e.target.value.toUpperCase().trim();
         break;
       default:
@@ -96,6 +59,30 @@ const QuickQuote = (props: any) => {
       })
       .catch(error => console.log('error', error));
   }
+
+  useEffect(() => {
+    var _dates = [];
+    for (var d = 1; d <= 31; d++) {
+      _dates.push(('0' + d).slice(-2));
+    }
+    setDates(_dates);
+    // 
+    var _months = [];
+    for (var m = 1; m <= 12; m++) {
+      _months.push(('0' + m).slice(-2));
+    }
+    setMonths(_months);
+    // 
+    var _years = [];
+    for (var y = 1950; y <= 2005; y++) {
+      _years.push(y.toString());
+    }
+    setYears(_years);
+
+    if (data && data.postCode) {
+      searchAddressByPostcode(data.postCode);
+    }
+  }, []);
 
   return (
     <>
