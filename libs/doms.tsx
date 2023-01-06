@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const PERCENTS = [70, 80, 90, 100, 100, 100];
+export const PERCENTS = [70, 80, 90, 95, 100, 100, 100];
 
 export const TITLES = [
   "Quick quote",

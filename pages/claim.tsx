@@ -24,30 +24,37 @@ interface ViewerWrapperProps {
   fileUrl: string;
 }
 import supabase from "utils/client";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 export default function Claim() {
   const router = useRouter();
+
+  const {
+    formData1,
+    setFormData1,
+    formData2,
+    setFormData2,
+    formData3,
+    setFormData3,
+    formData4,
+    setFormData4,
+    formData5,
+    setFormData5
+  } = useSystemValues();
+
+  const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>('terms-of-service.pdf');
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
-  const [claimValue, setClaimValue] = useState<any>(624);
+
+  const [utmParams, setUtmParams] = useState<any>([]);
+  const [claimValue, setClaimValue] = useState<any>(false);
 
   const [theEmail, setTheEmail] = useState<any>("");
+  const [prevData, setPrevData] = useState<any>("");
 
   // Step1
-  const [formData1, setFormData1] = useState<any>({
-    firstEvent: true,
-    firstName: "",
-    lastName: "",
-    email: "",
-    postCode: "",
-    address: "",
-    day: "",
-    month: "",
-    year: "",
-  });
-
   const [fdEvents1, setFdEvents1] = useState<any>({
     firstName: true,
     lastName: true,
@@ -84,13 +91,8 @@ export default function Claim() {
       });
     }
   };
+
   // Step2
-  const [formData2, setFormData2] = useState<any>({
-    firstEvent: true,
-    employerName: null,
-    claimChecked1: true,
-    claimChecked2: true,
-  });
   const handleFormChange2 = (key: string, value: any) => {
     setFormData2({
       ...formData2,
@@ -100,18 +102,11 @@ export default function Claim() {
   };
 
   // Step3
-  const [formData3, setFormData3] = useState<any>({
-    signatureData: null,
-  });
   const handleFormChange3 = (newSignatureData: string) => {
     setFormData3({ signatureData: newSignatureData });
   };
 
   // Step4
-  const [formData4, setFormData4] = useState<any>({
-    firstEvent: true,
-    insurance: "",
-  });
   const handleFormChange4 = (key: string, value: string) => {
     setFormData4({
       ...formData4,
@@ -121,10 +116,6 @@ export default function Claim() {
   };
 
   // Step5
-  const [formData5, setFormData5] = useState<any>({
-    firstEvent: true,
-    paye: "",
-  });
   const handleFormChange5 = (key: string, value: string) => {
     setFormData5({
       ...formData5,
@@ -133,43 +124,76 @@ export default function Claim() {
     });
   };
 
-  // old Submit Function
-  /*  const handleFormSubmit = async (callback: () => void) => {
-    let { day, month, year, ...otherFormData1 } = formData1;
-    let dataToSend = {
-      claimValue,
-      checkedYears,
-      ...otherFormData1,
-      ...formData2,
-      ...formData3,
-      ...formData4,
-      ...formData5,
-      employerName: formData2.employerName?.label,
-      birthdate: JSON.stringify({
-        day,
-        month,
-        year,
-      }),
+  useEffect(() => {
+    /* to check where the user should continue in the form */
+    const formPageHandler = (data: any) => {
+      if (router.query.step === "1") return setStep(0);
+      if (data.paye) return setStep(5);
+      if (data.insurance) return setStep(4);
+      if (data.signatureData) return setStep(3);
+      if (data.employerName) return setStep(2);
+      if (data.email) return setStep(1);
     };
 
-    delete dataToSend.firstEvent;
+    /* get existed user data */
+    const getPrevData = async () => {
+      const { data, error } = await supabase
+        .from("claim-form-submissions")
+        .select()
+        .eq("email", urlEmail)
+        .select();
+      setPrevData(data?.[0]);
 
-    let endpoint = `/api/claim-form`;
-    let requestOptions: any = {
-      method: "POST",
-      body: JSON.stringify(dataToSend),
+      const birthdate = JSON.parse(data?.[0]?.birthdate);
+
+      /* update the form data white existed user data */
+
+      setClaimValue(data?.[0]?.claimValue);
+      setFormData1({
+        firstEvent: true,
+        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
+        lastName: data?.[0].lastName ? data?.[0].lastName : "",
+        email: data?.[0].email ? data?.[0].email : "",
+        postCode: data?.[0].postCode ? data?.[0].postCode : "",
+        address: data?.[0].address ? data?.[0].address : "",
+        day: data?.[0].birthdate ? birthdate.day : "",
+        month: data?.[0].birthdate ? birthdate.month : "",
+        year: data?.[0].birthdate ? birthdate.year : "",
+      });
+
+      setFormData2({
+        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
+        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+      });
+
+      setFormData3({
+        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
+      });
+
+      setFormData4({
+        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
+      });
+
+      setFormData5({
+        paye: data?.[0]?.paye ? data?.[0].paye : "",
+      });
+
+      formPageHandler(data?.[0]);
     };
-    await fetch(endpoint, requestOptions)
-      .then((response) => response.json())
-      .then((res) => {
-        if (res.status) callback();
-      })
-      .catch((error) => console.log("error", error));
-  }; */
+
+    /* if existed user */
+    if (urlEmail) {
+      getPrevData();
+    }
+  }, [urlEmail]);
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
-      router.push("/");
+      if (urlEmail) {
+        return router.push(`/?email=${urlEmail}`);
+      }
+      router.push(`/`);
     } else {
       setStep((step) => step - 1);
     }
@@ -207,6 +231,54 @@ export default function Claim() {
             let { data, error } = await supabase
               .from("claim-form-submissions")
               .insert({
+                ...utmParams,
+                claimValue,
+                checkedYears,
+                link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
+                firstName: otherFormData1.firstName,
+                lastName: otherFormData1.lastName,
+                email: otherFormData1.email.toLowerCase(),
+                postCode: otherFormData1.postCode,
+                address: otherFormData1.address,
+                birthdate: JSON.stringify({
+                  day,
+                  month,
+                  year,
+                }),
+              })
+              .select("email");
+
+            setTheEmail(data?.[0].email);
+
+            if (
+              error?.message ===
+              'duplicate key value violates unique constraint "claim-form-submissions_email_key"'
+            ) {
+              const { error } = await supabase
+                .from("claim-form-submissions")
+                .update({
+                  claimValue,
+                  checkedYears,
+                  firstName: otherFormData1.firstName,
+                  lastName: otherFormData1.lastName,
+                  email: otherFormData1.email.toLowerCase(),
+                  postCode: otherFormData1.postCode,
+                  address: otherFormData1.address,
+                  birthdate: JSON.stringify({
+                    day,
+                    month,
+                    year,
+                  }),
+                })
+                .eq("email", otherFormData1.email);
+            }
+            setStep((step) => step + 1);
+          }
+
+          if (theEmail) {
+            const { error } = await supabase
+              .from("claim-form-submissions")
+              .update({
                 claimValue,
                 checkedYears,
                 firstName: otherFormData1.firstName,
@@ -220,30 +292,10 @@ export default function Claim() {
                   year,
                 }),
               })
-              .select("email");
-            setTheEmail(data?.[0].email);
-          }
-
-          if (theEmail) {
-            const { error } = await supabase
-              .from("claim-form-submissions")
-              .update({
-                firstName: otherFormData1.firstName,
-                lastName: otherFormData1.lastName,
-                email: otherFormData1.email,
-                postCode: otherFormData1.postCode,
-                address: otherFormData1.address,
-                birthdate: JSON.stringify({
-                  day,
-                  month,
-                  year,
-                }),
-              })
               .eq("email", theEmail);
             setTheEmail(otherFormData1.email);
+            setStep((step) => step + 1);
           }
-
-          setStep((step) => step + 1);
         }
         break;
       case STEP.CLAIM_NOW:
@@ -259,7 +311,7 @@ export default function Claim() {
                 claimChecked2: formData2.claimChecked2,
                 employerName: formData2.employerName?.label,
               })
-              .eq("email", theEmail);
+              .eq("email", theEmail ? theEmail : urlEmail);
             setStep((step) => step + 1);
           }
         }
@@ -270,7 +322,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ ...formData3 })
-            .eq("email", theEmail);
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
         }
         break;
@@ -280,7 +332,7 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
-            .eq("email", theEmail);
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
         }
         break;
@@ -290,9 +342,8 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
-            .eq("email", theEmail);
+            .eq("email", theEmail ? theEmail : urlEmail);
           setStep((step) => step + 1);
-          // handleFormSubmit(() => setStep((step) => step + 1));
         }
         break;
       case STEP.ALL_DONE:
@@ -307,6 +358,7 @@ export default function Claim() {
   };
 
   useEffect(() => {
+
     if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
@@ -315,10 +367,33 @@ export default function Claim() {
           : [router.query.years]
       );
       setClaimValue(router.query.claimValue);
+    } 
 
-      router.replace("/claim");
+    if (!!router.query) {
+      let utmParams: any = {};
+      Object.keys(router.query).forEach((key) => {
+        if (key.startsWith("utm_")) {
+          utmParams[key] = router.query[key];
+        }
+        setUtmParams(utmParams);
+      });
     }
-  }, [router.query]);
+
+
+  }, [router.query,router]);
+
+  useEffect(() => {
+
+    if(!router.isReady) return;
+    if(!router.query?.years && !router.query?.email) {
+      router.push("/")
+    }
+
+
+  }, [router.isReady,router]);
+
+
+  
 
   return (
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.1.81/build/pdf.worker.min.js">
@@ -327,9 +402,7 @@ export default function Claim() {
           <div className="max-w-screen-xl mx-auto lg:flex gap-2">
             <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
               <div className="w-full">
-                {step < STEP.LAST_THING && (
-                  <ProgressBar step={step} prevStep={prevStep} />
-                )}
+                <ProgressBar step={step} prevStep={prevStep} />
                 {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                   <StepAlert step={step} />
                 )}
@@ -361,6 +434,10 @@ export default function Claim() {
                   />
                 )}
                 {step == STEP.ALL_DONE && <AllDone />}
+         
+              {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
+                <StepAlert step={step} />
+              )}
 
                 {step != STEP.ALL_DONE && (
                   <NextButton
