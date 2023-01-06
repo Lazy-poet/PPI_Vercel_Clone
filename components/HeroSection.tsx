@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSystemValues } from "@/contexts/ValueContext";
+import supabase from "utils/client";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -12,6 +13,7 @@ const HeroSection = () => {
   const router = useRouter();
   const { amount, setAmount, checkedYears, setCheckedYears } = useSystemValues();
 
+  const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(false);
   const [checked2, setChecked2] = useState<boolean>(false);
@@ -25,6 +27,34 @@ const HeroSection = () => {
       setCheckedYears([...checkedYears, year]);
     }
   };
+
+
+  useEffect(() => {
+    const getPrevData = async () => {
+      const { data, error } = await supabase
+        .from("claim-form-submissions")
+        .select("checkedYears")
+        .eq("email", fromEmail)
+
+      if (data?.[0]?.checkedYears.includes("2020-21")) {
+        setCheckedYears(["2020-21"])
+        setChecked1(true)
+      }
+
+      if (data?.[0]?.checkedYears.includes("2021-22")) {
+        setCheckedYears(["2021-22"])
+        setChecked2(true)
+      }
+
+      if (data?.[0]?.checkedYears.includes("2020-21") && data?.[0]?.checkedYears.includes("2021-22")) {
+        setCheckedYears(["2020-21", "2021-22"])
+        setChecked2(true)
+      }
+    }
+
+    getPrevData();
+  }, [fromEmail])
+
 
   useEffect(() => {
     if (checked1 && checked2) {
@@ -178,9 +208,11 @@ const HeroSection = () => {
                                 amount: amount,
                                 years: checkedYears,
                                 claimValue: amount,
+                                step: fromEmail ? 1 : false
                               },
                             },
-                            '/claim',
+                            `${fromEmail ? `/claim?email=${fromEmail}` : '/claim'}`
+
                           )
                             : window.scrollTo({ top: 0, behavior: 'smooth' })
                         }}

@@ -42,7 +42,7 @@ export default function Claim() {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState<any>([]);
-  const [claimValue, setClaimValue] = useState<any>(624);
+  const [claimValue, setClaimValue] = useState<any>(false);
 
   const [theEmail, setTheEmail] = useState<any>("");
   const [prevData, setPrevData] = useState<any>("");
@@ -115,6 +115,7 @@ export default function Claim() {
   useEffect(() => {
     /* to check where the user should continue in the form */
     const formPageHandler = (data: any) => {
+      if (router.query.step === "1") return setStep(0);
       if (data.paye) return setStep(5);
       if (data.insurance) return setStep(4);
       if (data.signatureData) return setStep(3);
@@ -177,7 +178,10 @@ export default function Claim() {
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
-      router.push("/");
+      if (urlEmail) {
+        return router.push(`/?email=${urlEmail}`);
+      }
+      router.push(`/`);
     } else {
       setStep((step) => step - 1);
     }
@@ -343,11 +347,6 @@ export default function Claim() {
 
   useEffect(() => {
 
-    if (!router.query?.claimValue) {
-      router.push("/")
-    }
-
-
     if (!!router.query?.years || !!router.query?.claimValue) {
       setCheckedYears(
         // @ts-ignore
@@ -356,7 +355,7 @@ export default function Claim() {
           : [router.query.years]
       );
       setClaimValue(router.query.claimValue);
-    }
+    } 
 
     if (!!router.query) {
       let utmParams: any = {};
@@ -367,8 +366,22 @@ export default function Claim() {
         setUtmParams(utmParams);
       });
     }
-  }, [router.query]);
 
+
+  }, [router.query,router]);
+
+  useEffect(() => {
+
+    if(!router.isReady) return;
+    if(!router.query?.years && !router.query?.email) {
+      router.push("/")
+    }
+
+
+  }, [router.isReady,router]);
+
+
+  
 
   return (
     <Layout>
