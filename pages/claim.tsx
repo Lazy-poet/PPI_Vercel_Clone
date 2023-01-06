@@ -34,7 +34,7 @@ export default function Claim() {
     formData4,
     setFormData4,
     formData5,
-    setFormData5
+    setFormData5,
   } = useSystemValues();
 
   const urlEmail = router.query.email;
@@ -112,6 +112,11 @@ export default function Claim() {
     });
   };
 
+  const calculateOurFee = (value: number) => {
+    let feePercentage = 48;
+    return (value / 100) * feePercentage;
+  };
+
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
       if (urlEmail) {
@@ -158,6 +163,7 @@ export default function Claim() {
                 ...utmParams,
                 claimValue,
                 checkedYears,
+                ourFee: calculateOurFee(+claimValue),
                 link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
@@ -183,6 +189,7 @@ export default function Claim() {
                 .update({
                   claimValue,
                   checkedYears,
+                  ourFee: calculateOurFee(+claimValue),
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
                   email: otherFormData1.email.toLowerCase(),
@@ -205,6 +212,7 @@ export default function Claim() {
               .update({
                 claimValue,
                 checkedYears,
+                ourFee: calculateOurFee(+claimValue),
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -303,6 +311,7 @@ export default function Claim() {
       const birthdate = JSON.parse(data?.[0]?.birthdate);
 
       /* update the form data white existed user data */
+
       setClaimValue(data?.[0]?.claimValue);
       setFormData1({
         firstEvent: true,
@@ -395,6 +404,10 @@ export default function Claim() {
         month: false,
         year: false,
       });
+    }
+    if (!router.isReady) return;
+    if (!router.query?.years && !router.query?.email) {
+      router.push("/");
     }
   }, [router.isReady, router]);
 
