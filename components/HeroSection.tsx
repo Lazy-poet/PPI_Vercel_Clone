@@ -28,7 +28,6 @@ const HeroSection = () => {
     }
   };
 
-
   useEffect(() => {
     const getPrevData = async () => {
       const { data, error } = await supabase
@@ -54,7 +53,6 @@ const HeroSection = () => {
 
     getPrevData();
   }, [fromEmail])
-
 
   useEffect(() => {
     if (checked1 && checked2) {
