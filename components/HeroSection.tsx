@@ -2,6 +2,7 @@ import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -9,18 +10,19 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 
 const HeroSection = () => {
   const router = useRouter();
+  const { amount, setAmount, checkedYears, setCheckedYears } = useSystemValues();
+
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [checked1, setChecked1] = useState<boolean>(false);
   const [checked2, setChecked2] = useState<boolean>(false);
-  const [checkedYears, setCheckedYears] = useState<string[]>([]);
-  const [amount, setAmount] = useState<number>(624);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
   const toggleCheckedYear = (year: string) => {
     if (checkedYears.includes(year)) {
-      setCheckedYears((curr) => curr.filter((val) => val !== year));
+      const years = checkedYears.filter((val) => val !== year);
+      setCheckedYears(years);
     } else {
-      setCheckedYears((curr) => [...curr, year]);
+      setCheckedYears([...checkedYears, year]);
     }
   };
 
@@ -52,6 +54,15 @@ const HeroSection = () => {
         break;
     }
   }, [type]);
+
+  useEffect(() => {
+    if (checkedYears.includes("2020-21")) {
+      setChecked1(true);
+    }
+    if (checkedYears.includes("2021-22")) {
+      setChecked2(true);
+    }
+  }, [])
 
   return (
     <>

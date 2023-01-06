@@ -19,9 +19,23 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 export default function Claim() {
   const router = useRouter();
+
+  const {
+    formData1,
+    setFormData1,
+    formData2,
+    setFormData2,
+    formData3,
+    setFormData3,
+    formData4,
+    setFormData4,
+    formData5,
+    setFormData5
+  } = useSystemValues();
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
@@ -34,18 +48,6 @@ export default function Claim() {
   const [prevData, setPrevData] = useState<any>("");
 
   // Step1
-  const [formData1, setFormData1] = useState<any>({
-    firstEvent: true,
-    firstName: "",
-    lastName: "",
-    email: "",
-    postCode: "",
-    address: "",
-    day: "",
-    month: "",
-    year: "",
-  });
-
   const [fdEvents1, setFdEvents1] = useState<any>({
     firstName: true,
     lastName: true,
@@ -77,13 +79,8 @@ export default function Claim() {
       });
     }
   };
+
   // Step2
-  const [formData2, setFormData2] = useState<any>({
-    firstEvent: true,
-    employerName: null,
-    claimChecked1: true,
-    claimChecked2: true,
-  });
   const handleFormChange2 = (key: string, value: any) => {
     setFormData2({
       ...formData2,
@@ -93,18 +90,11 @@ export default function Claim() {
   };
 
   // Step3
-  const [formData3, setFormData3] = useState<any>({
-    signatureData: null,
-  });
   const handleFormChange3 = (newSignatureData: string) => {
     setFormData3({ signatureData: newSignatureData });
   };
 
   // Step4
-  const [formData4, setFormData4] = useState<any>({
-    firstEvent: true,
-    insurance: "",
-  });
   const handleFormChange4 = (key: string, value: string) => {
     setFormData4({
       ...formData4,
@@ -114,10 +104,6 @@ export default function Claim() {
   };
 
   // Step5
-  const [formData5, setFormData5] = useState<any>({
-    firstEvent: true,
-    paye: "",
-  });
   const handleFormChange5 = (key: string, value: string) => {
     setFormData5({
       ...formData5,
