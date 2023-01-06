@@ -178,12 +178,12 @@ export default function Claim() {
 
   const calculateCustomerValue = (value: number) => {
     let percentage = 20;
-    return ((value / 100) * percentage).toFixed(2);
+    return (value / 100) * percentage;
   };
 
   const calculateOurFee = (value: number) => {
     let feePercentage = 48;
-    return ((calculateCustomerValue(value) / 100) * feePercentage).toFixed(2);
+    return (calculateCustomerValue(value) / 100) * feePercentage;
   };
 
   const prevStep = () => {
