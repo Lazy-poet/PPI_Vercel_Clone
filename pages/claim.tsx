@@ -19,7 +19,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
-import { useValue } from "@/components/hooks/useValue";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 export default function Claim() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function Claim() {
     setFormData4,
     formData5,
     setFormData5,
-  } = useValue();
+  } = useSystemValues();
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
