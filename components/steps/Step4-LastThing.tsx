@@ -1,16 +1,27 @@
-const isNino = require('is-national-insurance-number');
+const isNino = require("is-national-insurance-number");
 
-const LastThing = (props: any) => {
+const LastThing = (props: {
+  data: any;
+  handleFormChange: (field: string, value: string) => void;
+}) => {
   const { data, handleFormChange } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.toUpperCase().trim();
     handleFormChange(e.target.name, value);
-  }
+  };
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={`form-group sm:col-span-2 ${data.firstEvent ? '' : (data.insurance && isNino(data.insurance) ? 'success' : 'error')}`}>
+      <div
+        className={`form-group sm:col-span-2 ${
+          data.firstEvent
+            ? ""
+            : data.insurance && isNino(data.insurance)
+            ? "success"
+            : "error"
+        }`}
+      >
         <label
           htmlFor="insurance"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -49,43 +60,35 @@ const LastThing = (props: any) => {
             <span className="form-icon"></span>
           </div>
         </div>
-        {
-          data.firstEvent
-            ?
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              You can find your NI number on your payslip, P60, or any letters sent
-              to you by HMRC relating to tax and benefits.
-            </p>
-            :
-            !data.insurance
-              ?
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-red-600 dark:text-red-500"
-              >
-                You can find your NI number on your payslip, P60, or any letters sent
-                to you by HMRC relating to tax and benefits.
-              </p>
-              :
-              (
-                !isNino(data.insurance)
-                  ?
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                    Please provide a valid National Insurance (NI) number
-                  </p>
-                  :
-                  <p
-                    id="helper-text-explanation"
-                    className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                  >
-                    You can find your NI number on your payslip, P60, or any letters sent
-                    to you by HMRC relating to tax and benefits.
-                  </p>
-              )
-        }
+        {data.firstEvent ? (
+          <p
+            id="helper-text-explanation"
+            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+          >
+            You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits.
+          </p>
+        ) : !data.insurance ? (
+          <p
+            id="helper-text-explanation"
+            className="mt-2 text-sm text-red-600 dark:text-red-500"
+          >
+            You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits.
+          </p>
+        ) : !isNino(data.insurance) ? (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            Please provide a valid National Insurance (NI) number
+          </p>
+        ) : (
+          <p
+            id="helper-text-explanation"
+            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+          >
+            You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits.
+          </p>
+        )}
       </div>
     </div>
   );

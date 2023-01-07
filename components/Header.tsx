@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { THEME, useThemeValue } from "@/contexts/ThemeContext";
 import Head from "next/head";
 import Image from "next/image";
+import { THEME, useTheme } from "./hooks/useTheme";
 
 const Header = () => {
-  const { theme, changeTheme } = useThemeValue();
+  const { theme, changeTheme } = useTheme();
 
   const toggleTheme = () => {
     if (theme == THEME.LIGHT) {

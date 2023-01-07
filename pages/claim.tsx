@@ -19,7 +19,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
-import { useSystemValues } from "@/contexts/ValueContext";
+import { useValue } from "@/components/hooks/useValue";
 
 export default function Claim() {
   const router = useRouter();
@@ -35,20 +35,20 @@ export default function Claim() {
     setFormData4,
     formData5,
     setFormData5,
-  } = useSystemValues();
+  } = useValue();
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
-  const [utmParams, setUtmParams] = useState<any>([]);
-  const [claimValue, setClaimValue] = useState<any>(false);
+  const [utmParams, setUtmParams] = useState({});
+  const [claimValue, setClaimValue] = useState<number>(0);
 
-  const [theEmail, setTheEmail] = useState<any>("");
-  const [prevData, setPrevData] = useState<any>("");
+  const [theEmail, setTheEmail] = useState("");
+  const [prevData, setPrevData] = useState("");
 
   // Step1
-  const [fdEvents1, setFdEvents1] = useState<any>({
+  const [fdEvents1, setFdEvents1] = useState({
     firstName: true,
     lastName: true,
     email: true,
@@ -81,7 +81,7 @@ export default function Claim() {
   };
 
   // Step2
-  const handleFormChange2 = (key: string, value: any) => {
+  const handleFormChange2 = (key: string, value: string) => {
     setFormData2({
       ...formData2,
       firstEvent: false,
@@ -329,6 +329,7 @@ export default function Claim() {
         employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
         claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
         claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        firstEvent: formData2.firstEvent,
       });
 
       setFormData3({
@@ -336,10 +337,12 @@ export default function Claim() {
       });
 
       setFormData4({
+        ...formData4,
         insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
       });
 
       setFormData5({
+        ...formData5,
         paye: data?.[0]?.paye ? data?.[0].paye : "",
       });
 
@@ -360,7 +363,13 @@ export default function Claim() {
           ? router.query.years
           : [router.query.years]
       );
-      setClaimValue(router.query.claimValue);
+      // only set claim value if it is not empty and also convert it to number
+      if (
+        router.query.claimValue &&
+        typeof router.query.claimValue === "string"
+      ) {
+        setClaimValue(parseInt(router.query.claimValue));
+      }
     }
 
     if (!!router.query) {
@@ -372,14 +381,12 @@ export default function Claim() {
         setUtmParams(utmParams);
       });
     }
-
-
   }, [router.query, router]);
 
   useEffect(() => {
     if (!router.isReady) return;
     if (!router.query?.years && !router.query?.email) {
-      router.push("/")
+      router.push("/");
     }
 
     // Initiate validation for doing backup
@@ -409,14 +416,9 @@ export default function Claim() {
     }
     if (!router.isReady) return;
     if (!router.query?.years && !router.query?.email) {
-      router.push("/")
+      router.push("/");
     }
-
-
   }, [router.isReady, router]);
-
-
-
 
   return (
     <Layout>
@@ -424,7 +426,7 @@ export default function Claim() {
         <div className="mx-auto lg:flex">
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
-              <ProgressBar step={step} prevStep={prevStep} />
+              <ProgressBar step={step} goToPrevStep={prevStep} />
 
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
@@ -446,10 +448,7 @@ export default function Claim() {
                 />
               )}
               {step == STEP.SIGN_COMPLETE && (
-                <SignComplete
-                  data={formData3}
-                  handleFormChange={handleFormChange3}
-                />
+                <SignComplete handleFormChange={handleFormChange3} />
               )}
               {step == STEP.LAST_THING && (
                 <LastThing
