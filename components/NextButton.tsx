@@ -3,7 +3,7 @@ import Image from "next/image";
 type Props = {
   onClick: VoidFunction;
   label?: string;
-  helper?: string;
+  helper?: string | any;
 };
 
 const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {

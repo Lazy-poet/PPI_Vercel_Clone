@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
 import Title from "@/components/Title";
+import TermsOfService from "@/components/TermsOfService";
 import QuickQuote from "@/components/steps/Step1-QuickQuote";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
@@ -18,6 +19,10 @@ import Layout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
+import { Worker } from "@react-pdf-viewer/core";
+interface ViewerWrapperProps {
+  fileUrl: string;
+}
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 
@@ -39,6 +44,8 @@ export default function Claim() {
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [open, setOpen] = useState<Boolean>(false);
+  const [fileURL, setFileURL] = useState<String>('terms-of-service.pdf');
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState({});
@@ -59,7 +66,12 @@ export default function Claim() {
     year: true,
   });
 
-  const handleFormChange1 = async (key: string, value: string) => {
+  const handleOpen = (type:String) => {
+    setFileURL(type);
+    setOpen(!open);
+  };
+
+  const handleFormChange1 = (key: string, value: string) => {
     setFormData1({
       ...formData1,
       firstEvent: false,
@@ -452,58 +464,64 @@ export default function Claim() {
   }, [router.isReady, router]);
 
   return (
-    <Layout>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.1.81/build/pdf.worker.min.js">
+      <Layout>
       <section className="bg-white dark:bg-gray-900">
         <div className="mx-auto lg:flex">
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
               <ProgressBar step={step} goToPrevStep={prevStep} />
-
+                {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
+                  <StepAlert step={step} />
+                )}
+                <TermsOfService fileURL={fileURL} open={open} handleOpen={handleOpen} />
+                <Title step={step} onClick={handleOpen} />
+                {step == STEP.QUICK_QUOTE && (
+                  <QuickQuote
+                    data={formData1}
+                    fdEvents={fdEvents1}
+                    handleFormChange={handleFormChange1}
+                  />
+                )}
+                {step == STEP.CLAIM_NOW && (
+                  <ClaimNow
+                    data={formData2}
+                    handleFormChange={handleFormChange2}
+                  />
+                )}
+                {step == STEP.LAST_THING && (
+                  <LastThing
+                    data={formData4}
+                    handleFormChange={handleFormChange4}
+                  />
+                )}
+                {step == STEP.THANK_YOU && (
+                  <ThankYou
+                    data={formData5}
+                    handleFormChange={handleFormChange5}
+                  />
+                )}
+                {step == STEP.ALL_DONE && <AllDone />}
+         
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
               )}
 
-              <Title step={step} />
-
-              {step == STEP.QUICK_QUOTE && (
-                <QuickQuote
-                  data={formData1}
-                  fdEvents={fdEvents1}
-                  handleFormChange={handleFormChange1}
-                />
-              )}
-              {step == STEP.CLAIM_NOW && (
-                <ClaimNow
-                  data={formData2}
-                  handleFormChange={handleFormChange2}
-                />
-              )}
+                {step != STEP.ALL_DONE && (
+                  <NextButton
+                    onClick={nextStep}
+                    label={step == STEP.THANK_YOU ? "Submit" : "Next"}
+                    helper={NEXT_BUTTON_HELPERS(step,handleOpen)}
+                  />
+                )}
+              </div>
+              
               {step == STEP.SIGN_COMPLETE && (
                 <SignComplete handleFormChange={handleFormChange3} />
               )}
-              {step == STEP.LAST_THING && (
-                <LastThing
-                  data={formData4}
-                  handleFormChange={handleFormChange4}
-                />
-              )}
-              {step == STEP.THANK_YOU && (
-                <ThankYou
-                  data={formData5}
-                  handleFormChange={handleFormChange5}
-                />
-              )}
-              {step == STEP.ALL_DONE && <AllDone />}
-
-              {step != STEP.ALL_DONE && (
-                <NextButton
-                  onClick={nextStep}
-                  label={step == STEP.THANK_YOU ? "Submit" : "Next"}
-                  helper={NEXT_BUTTON_HELPERS[step]}
-                />
-              )}
+              
             </div>
-          </div>
+
 
           <SidePanel amount={claimValue} step={step} />
         </div>
@@ -511,5 +529,7 @@ export default function Claim() {
 
       <ReviewSection />
     </Layout>
+  </Worker>
+
   );
 }

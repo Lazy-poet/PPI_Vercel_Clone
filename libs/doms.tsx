@@ -12,15 +12,34 @@ export const TITLES = [
   "Apologies, we are unable to proceed",
 ];
 
-export const SUB_TITLES = [
-  "Enter your details to receive your estimated tax claim quote",
-  "Tell us about your employment so that we can process your claim",
-  "Please read the claim documents, terms of engagement and the following statements before signing",
-  "We need your National Insurance (NI) number to submit your claim",
-  "We also need your Employers PAYE Number to submit your claim",
-  "We will be in touch with updates on your claim as soon as we hear anything. All you have to do is sit back, relax and wait until then!",
-  "Due to the Pandemic, the government asked the workforce to work from home (WFH) whenever possible. All UK taxpayers may be eligible to claim the full £312 WFH allowance since 6 April 2020, provided they have worked a minimum of one day from home (per year).",
-];
+export const SUB_TITLES = (step: any, onClick: any) => {
+  const subtitles = [
+    "Enter your details to receive your estimated tax claim quote",
+    "Tell us about your employment so that we can process your claim",
+    <span>
+      We will submit these&nbsp;
+      <button
+        onClick={() => onClick("P87+64-8+R38.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        official documents
+      </button>
+      &nbsp;on your behalf. Please read our
+      <button
+        onClick={() => onClick("terms-of-service.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        terms & conditions
+      </button>
+      &nbsp;before proceeding.
+    </span>,
+    "We need your National Insurance (NI) number to submit your claim",
+    "We also need your Employers PAYE Number to submit your claim",
+    "We will be in touch with updates on your claim as soon as we hear anything. All you have to do is sit back, relax and wait until then!",
+    "Due to the Pandemic, the government asked the workforce to work from home (WFH) whenever possible. All UK taxpayers may be eligible to claim the full £312 WFH allowance since 6 April 2020, provided they have worked a minimum of one day from home (per year).",
+  ];
+  return <>{subtitles[step]}</>;
+};
 
 export const CONFIRMS = [
   "ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim",
@@ -45,12 +64,27 @@ export const SIDE_INFO = [
   "Your employer ref",
 ];
 
-export const NEXT_BUTTON_HELPERS = [
-  "Your personal information will be treated carefully in accordance with our Privacy Policy. We will contact you about claim opportunities using the contact details you provide. You can opt out of receiving communications from us at any time by sending us an email to support@claimingmadeeasy.co.uk",
-  "",
-  "",
-  "",
-  "When you click submit, we will receive your personal information and claim documents, to begin processing your tax refund claims. We will handle your data in accordance with our Privacy Policy.",
-  "",
-  "",
-];
+export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
+  const nextButtonHelpers = [
+    <span>
+      Your personal information will be treated carefully in accordance with
+      our&nbsp;
+      <button
+        onClick={() => onClick("privacy-policy.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        Privacy Policy
+      </button>
+      . We will contact you about claim opportunities using the contact
+      details you provide. You can opt out of receiving communications from us
+      at any time by sending us an email to support@claimingmadeeasy.co.uk
+    </span>,
+    "",
+    "",
+    "",
+    "When you click submit, we will receive your personal information and claim documents, to begin processing your tax refund claims. We will handle your data in accordance with our Privacy Policy.",
+    "",
+    "",
+  ];
+  return nextButtonHelpers[step];
+};
