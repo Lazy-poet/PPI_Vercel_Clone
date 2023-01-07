@@ -3,7 +3,7 @@ import { SUB_TITLES, TITLES } from "@/libs/doms";
 
 type Props = {
   step: STEP;
-  onClick:any
+  onClick?:any
 };
 
 const Title = ({ step,onClick }: Props) => {
