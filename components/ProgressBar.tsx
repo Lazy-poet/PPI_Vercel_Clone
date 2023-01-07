@@ -3,16 +3,16 @@ import { PERCENTS } from "@/libs/doms";
 
 type Props = {
   step: STEP;
-  prevStep: any;
+  goToPrevStep: VoidFunction;
 };
 
-const ProgressBar = ({ step, prevStep }: Props) => {
+const ProgressBar = ({ step, goToPrevStep }: Props) => {
   return (
     <div className="w-full pt-4 mx-auto text-center lg:pt-8">
       <div className="flex justify-between items-center mb-1">
         <button
           className="inline-flex items-center text-sm font-medium text-blue-700 dark:text-white"
-          onClick={() => prevStep()}
+          onClick={() => goToPrevStep()}
         >
           <svg
             className="w-5 h-5 mr-1"

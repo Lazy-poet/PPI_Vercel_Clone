@@ -11,23 +11,23 @@
 }
 
 .checkbox-item.success {
-  background: #F3FAF7;
-  border: 1px solid #0E9F6E;
+  background: #f3faf7;
+  border: 1px solid #0e9f6e;
 }
 
 .checkbox-item.error {
-  background: #FDF2F2;
-  border: 1px solid #F05252;
+  background: #fdf2f2;
+  border: 1px solid #f05252;
 }
 
 .dark .checkbox-item.success {
   background: #374151;
-  border: 1px solid #0E9F6E;
+  border: 1px solid #0e9f6e;
 }
 
 .dark .checkbox-item.error {
   background: #374151;
-  border: 1px solid #F05252;
+  border: 1px solid #f05252;
 }
 
 /* Form Validation */
@@ -36,21 +36,21 @@
   color: #111928;
 }
 
-input:focus:not([type='checkbox']),
+input:focus:not([type="checkbox"]),
 select:focus,
-.success input:focus:not([type='checkbox']),
+.success input:focus:not([type="checkbox"]),
 .success select:focus,
 .success .mui-select .MuiInputBase-root:focus,
-.error input:focus:not([type='checkbox']),
+.error input:focus:not([type="checkbox"]),
 .error select:focus,
 .error .mui-select .MuiInputBase-root:focus {
-  background: #F9FAFB !important;
-  border: 1px solid #1C64F2 !important;
+  background: #f9fafb !important;
+  border: 1px solid #1c64f2 !important;
   font-style: normal;
   font-weight: 400;
   color: #111928 !important;
   -webkit-text-fill-color: #111928 !important;
-  -webkit-box-shadow: 0 0 0 30px #F9FAFB inset !important;
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
 input::placeholder,
@@ -60,109 +60,109 @@ input::placeholder,
 
 .dark input::placeholder,
 .dark .mui-select .MuiInputBase-root {
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
-input:focus+.form-icon,
-select:focus+.form-icon {
+input:focus + .form-icon,
+select:focus + .form-icon {
   display: none;
 }
 
 /* success */
 .success label,
 .dark .success label {
-  color: #057A55;
+  color: #057a55;
 }
 
-.success input:not([type='checkbox']),
-.success input:-webkit-autofill:not([type='checkbox']),
+.success input:not([type="checkbox"]),
+.success input:-webkit-autofill:not([type="checkbox"]),
 .success select,
 .success .mui-select .MuiInputBase-root {
-  background-color: #F3FAF7 !important;
-  border: 1px solid #0E9F6E !important;
+  background-color: #f3faf7 !important;
+  border: 1px solid #0e9f6e !important;
   box-shadow: none !important;
   font-style: normal;
   font-weight: 400;
-  color: #046C4E !important;
-  -webkit-text-fill-color: #046C4E !important;
-  -webkit-box-shadow: 0 0 0 30px #F3FAF7 inset !important;
+  color: #046c4e !important;
+  -webkit-text-fill-color: #046c4e !important;
+  -webkit-box-shadow: 0 0 0 30px #f3faf7 inset !important;
 }
 
 .success input::placeholder {
-  color: #046C4E !important;
+  color: #046c4e !important;
 }
 
 .dark .form-group:has(input:focus) label,
 .dark .form-group:has(select:focus) label {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-.dark input:focus:not([type='checkbox']),
+.dark input:focus:not([type="checkbox"]),
 .dark select:focus,
 .dark .mui-select .MuiInputBase-root:focus,
-.dark .success input:focus:not([type='checkbox']),
+.dark .success input:focus:not([type="checkbox"]),
 .dark .success select:focus,
 .dark .success .mui-select .MuiInputBase-root:focus,
-.dark .error input:focus:not([type='checkbox']),
+.dark .error input:focus:not([type="checkbox"]),
 .dark .error select:focus,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
-  border: 1px solid #3F83F8 !important;
-  color: #FFFFFF !important;
-  -webkit-text-fill-color: #FFFFFF !important;
+  border: 1px solid #3f83f8 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
-.dark .success input:not([type='checkbox']),
+.dark .success input:not([type="checkbox"]),
 .dark .success select,
 .dark .success .mui-select .MuiInputBase-root {
   background: #374151 !important;
-  border: 1px solid #0E9F6E !important;
-  color: #0E9F6E !important;
-  -webkit-text-fill-color: #0E9F6E !important;
+  border: 1px solid #0e9f6e !important;
+  color: #0e9f6e !important;
+  -webkit-text-fill-color: #0e9f6e !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .success input::placeholder {
-  color: #0E9F6E !important;
+  color: #0e9f6e !important;
 }
 
 /* error */
 
 .error {
-  color: #E02424 !important;
+  color: #e02424 !important;
 }
 
 .error label,
 .dark .error label {
-  color: #E02424;
+  color: #e02424;
 }
 
-.error input:not([type='checkbox']),
+.error input:not([type="checkbox"]),
 .error select,
 .error .mui-select .MuiInputBase-root {
-  background: #FDF2F2 !important;
-  border: 1px solid #F05252 !important;
+  background: #fdf2f2 !important;
+  border: 1px solid #f05252 !important;
   box-shadow: none !important;
   font-style: normal;
   font-weight: 400;
   color: #111928 !important;
   -webkit-text-fill-color: #111928 !important;
-  -webkit-box-shadow: 0 0 0 30px #FDF2F2 inset !important;
+  -webkit-box-shadow: 0 0 0 30px #fdf2f2 inset !important;
 }
 
-.dark .error input:not([type='checkbox']),
+.dark .error input:not([type="checkbox"]),
 .dark .error select,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
-  border: 1px solid #F05252 !important;
-  color: #F05252 !important;
-  -webkit-text-fill-color: #F05252 !important;
+  border: 1px solid #f05252 !important;
+  color: #f05252 !important;
+  -webkit-text-fill-color: #f05252 !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .error input::placeholder {
-  color: #F05252 !important;
+  color: #f05252 !important;
 }
 
 /* ./Form Validation */
@@ -186,9 +186,10 @@ select:focus+.form-icon {
   background-repeat: no-repeat;
   background-position: center center;
 }
-
+img {
+  max-width: none;
+}
 @media (min-width: 640px) {
-
   .form-icon,
   .input-icon {
     width: 16px;
@@ -198,7 +199,6 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 768px) {
-
   .form-icon,
   .input-icon {
     width: 18px;
@@ -208,7 +208,6 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 1024px) {
-
   .form-icon,
   .input-icon {
     width: 24px;
@@ -255,12 +254,12 @@ select:focus+.form-icon {
 }
 
 .mui-select .MuiInputBase-root:focus {
-  border-color: #1C64F2;
+  border-color: #1c64f2;
   border-width: 0px;
 }
 
 .dark .mui-select .MuiInputBase-root:focus {
-  border-color: #3F83F8;
+  border-color: #3f83f8;
   border-width: 0px;
 }
 
@@ -289,11 +288,11 @@ select:focus+.form-icon {
 }
 
 .mui-select .MuiSelect-icon {
-  color: #6B7280 !important;
+  color: #6b7280 !important;
 }
 
 .dark .mui-select .MuiSelect-icon {
-  color: #9CA3AF !important;
+  color: #9ca3af !important;
 }
 
 .success .mui-select .MuiSelect-icon,

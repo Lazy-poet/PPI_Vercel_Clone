@@ -1,14 +1,19 @@
+import Image from "next/image";
+
 const ReviewSection = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6">
         <figure className="max-w-screen-md mx-auto">
-          <img
-            className="mx-auto p-2 w-36 h-36 rounded-full ring-4 ring-gray-300 dark:ring-gray-500 mb-3 lg:mb-5"
+          <Image
+            className="mx-auto p-2 rounded-full ring-4 ring-gray-300 dark:ring-gray-500 mb-3 lg:mb-5"
             src="/images/reviewer-photo.jpg"
             alt="profile picture"
+            width={144}
+            height={144}
           />
           <div
+            className="text-white"
             // @ts-ignore
             src="https://cdn.trustindex.io/loader.js?1b5197711c6c13477e760d58dd2"
           ></div>
@@ -20,10 +25,12 @@ const ReviewSection = () => {
             </p>
           </blockquote>
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
-            <img
-              className="p-1 w-10 h-10 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
+            <Image
+              className="p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
               src="/images/reviewer-photo.jpg"
               alt="profile picture"
+              width={40}
+              height={40}
             />
             <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
               <div className="pr-3 font-medium text-gray-900 dark:text-white">

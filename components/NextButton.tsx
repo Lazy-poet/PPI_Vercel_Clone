@@ -1,5 +1,7 @@
+import Image from "next/image";
+
 type Props = {
-  onClick: any;
+  onClick: VoidFunction;
   label?: string;
   helper?: string;
 };
@@ -13,7 +15,7 @@ const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {
             <button
               id="btnNext"
               className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-              onClick={() => onClick()}
+              onClick={onClick}
             >
               <div className="flex-grow">
                 <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
@@ -39,10 +41,12 @@ const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {
                 {helper}
               </p>
             )}
-            <img
-              className="w-20 mt-4"
+            <Image
+              className="mt-4"
               src="/images/ssl-secure.svg"
               alt="Secure"
+              width={80}
+              height={20}
             />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Your information is 100% safe and secure on this website
