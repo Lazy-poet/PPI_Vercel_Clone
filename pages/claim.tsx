@@ -114,13 +114,19 @@ export default function Claim() {
 
   const calculateCustomerValue = (value: number) => {
     let percentage = 20;
-    return (value / 100) * percentage;
+    return +((value / 100) * percentage).toFixed(2);
   };
 
   const calculateOurFee = (value: number) => {
     let feePercentage = 48;
-    return (calculateCustomerValue(value) / 100) * feePercentage;
+    return +((calculateCustomerValue(value) / 100) * feePercentage).toFixed;
   };
+
+  const base64ToFile = async (base64String: string) =>
+    new File(
+      [await fetch(base64String).then((res) => res.blob())],
+      `${+new Date()}.png`
+    );
 
   const prevStep = () => {
     if (step == STEP.QUICK_QUOTE) {
@@ -208,7 +214,7 @@ export default function Claim() {
                     year,
                   }),
                 })
-                .eq("email", otherFormData1.email);
+                .match({ email: otherFormData1.email });
             }
             setStep((step) => step + 1);
           }
@@ -232,7 +238,7 @@ export default function Claim() {
                   year,
                 }),
               })
-              .eq("email", theEmail);
+              .match({ email: theEmail });
             setTheEmail(otherFormData1.email);
             setStep((step) => step + 1);
           }
@@ -251,7 +257,8 @@ export default function Claim() {
                 claimChecked2: formData2.claimChecked2,
                 employerName: formData2.employerName?.label,
               })
-              .eq("email", theEmail ? theEmail : urlEmail);
+              .match({ email: theEmail ?? urlEmail });
+
             setStep((step) => step + 1);
           }
         }
@@ -259,10 +266,24 @@ export default function Claim() {
       case STEP.SIGN_COMPLETE:
         if (formData3.signatureData !== null) {
           console.log(formData3);
+
+          const signatureUrlPrefix =
+            "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
+
+          const { data } = await supabase.storage
+            .from("signatures")
+            .upload(
+              `claim-form/${+new Date()}.png`,
+              await base64ToFile(formData3.signatureData)
+            );
+
           const { error } = await supabase
             .from("claim-form-submissions")
-            .update({ ...formData3 })
-            .eq("email", theEmail ? theEmail : urlEmail);
+            .update({
+              ...formData3,
+              signatureUrl: signatureUrlPrefix + data?.path,
+            })
+            .match({ email: theEmail ?? urlEmail });
           setStep((step) => step + 1);
         }
         break;
@@ -272,7 +293,8 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
-            .eq("email", theEmail ? theEmail : urlEmail);
+            .match({ email: theEmail ?? urlEmail });
+
           setStep((step) => step + 1);
         }
         break;
@@ -282,7 +304,8 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
-            .eq("email", theEmail ? theEmail : urlEmail);
+            .match({ email: theEmail ?? urlEmail });
+
           setStep((step) => step + 1);
         }
         break;
@@ -312,7 +335,7 @@ export default function Claim() {
       const { data, error } = await supabase
         .from("claim-form-submissions")
         .select()
-        .eq("email", urlEmail)
+        .match({ email: urlEmail })
         .select();
       setPrevData(data?.[0]);
 
