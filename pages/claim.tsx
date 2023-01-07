@@ -119,7 +119,7 @@ export default function Claim() {
 
   const calculateOurFee = (value: number) => {
     let feePercentage = 48;
-    return +((calculateCustomerValue(value) / 100) * feePercentage).toFixed;
+    return +((calculateCustomerValue(value) / 100) * feePercentage).toFixed(2);
   };
 
   const base64ToFile = async (base64String: string) =>
