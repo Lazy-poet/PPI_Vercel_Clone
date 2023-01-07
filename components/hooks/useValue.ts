@@ -16,7 +16,7 @@ export const useValue = () => {
   });
   const [formData2, setFormData2] = useState({
     firstEvent: true,
-    employerName: { label: "" },
+    employerName: { label: "", address: "" },
     claimChecked1: true,
     claimChecked2: true,
   });

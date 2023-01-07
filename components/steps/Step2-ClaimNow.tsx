@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 interface Company {
   label: string;
+  address: string;
   key: number;
 }
 
@@ -33,6 +34,7 @@ const ClaimNow = (props: any) => {
         for (var i = 0; i < items.length; i++) {
           _companies.push({
             label: items[i].title as string,
+            address: items[i].address_snippet as string,
             key: i,
           });
         }

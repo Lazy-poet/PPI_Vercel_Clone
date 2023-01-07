@@ -250,12 +250,14 @@ export default function Claim() {
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
           } else {
+            console.log(formData2.employerName?.address);
             const { error } = await supabase
               .from("claim-form-submissions")
               .update({
                 claimChecked1: formData2.claimChecked1,
                 claimChecked2: formData2.claimChecked2,
                 employerName: formData2.employerName?.label,
+                employerAddress: formData2.employerName?.address,
               })
               .match({ email: theEmail ?? urlEmail });
 
