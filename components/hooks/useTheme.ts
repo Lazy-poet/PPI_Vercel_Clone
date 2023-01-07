@@ -5,15 +5,16 @@ export enum THEME {
   DARK,
 }
 
-const useTheme = () => {
+export const useTheme = () => {
   const [theme, setTheme] = useState<THEME>(THEME.LIGHT);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("color-theme") === "dark" ||
-      (!("color-theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
+    const userPreference = localStorage.getItem("color-theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    if (userPreference === "dark" || (prefersDark && !userPreference)) {
       setTheme(THEME.DARK);
       document.documentElement.classList.add("dark");
       localStorage.setItem("color-theme", "dark");
@@ -38,5 +39,3 @@ const useTheme = () => {
 
   return { theme, changeTheme };
 };
-
-export default useTheme;

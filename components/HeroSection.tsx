@@ -2,8 +2,9 @@ import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSystemValues } from "@/contexts/ValueContext";
 import supabase from "utils/client";
+import Image from "next/image";
+import { useValue } from "./hooks/useValue";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -11,12 +12,12 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 
 const HeroSection = () => {
   const router = useRouter();
-  const { amount, setAmount, checkedYears, setCheckedYears } = useSystemValues();
+  const { amount, setAmount, checkedYears, setCheckedYears } = useValue();
 
   const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [checked1, setChecked1] = useState<boolean>(false);
-  const [checked2, setChecked2] = useState<boolean>(false);
+  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(false);
+  const [checkedSecondBox, setCheckedSecondBox] = useState<boolean>(false);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
   const toggleCheckedYear = (year: string) => {
@@ -33,40 +34,43 @@ const HeroSection = () => {
       const { data, error } = await supabase
         .from("claim-form-submissions")
         .select("checkedYears")
-        .eq("email", fromEmail)
+        .eq("email", fromEmail);
 
       if (data?.[0]?.checkedYears.includes("2020-21")) {
-        setCheckedYears(["2020-21"])
-        setChecked1(true)
+        setCheckedYears(["2020-21"]);
+        setCheckedFirstBox(true);
       }
 
       if (data?.[0]?.checkedYears.includes("2021-22")) {
-        setCheckedYears(["2021-22"])
-        setChecked2(true)
+        setCheckedYears(["2021-22"]);
+        setCheckedSecondBox(true);
       }
 
-      if (data?.[0]?.checkedYears.includes("2020-21") && data?.[0]?.checkedYears.includes("2021-22")) {
-        setCheckedYears(["2020-21", "2021-22"])
-        setChecked2(true)
+      if (
+        data?.[0]?.checkedYears.includes("2020-21") &&
+        data?.[0]?.checkedYears.includes("2021-22")
+      ) {
+        setCheckedYears(["2020-21", "2021-22"]);
+        setCheckedSecondBox(true);
       }
-    }
+    };
 
     getPrevData();
-  }, [fromEmail])
+  }, [fromEmail]);
 
   useEffect(() => {
-    if (checked1 && checked2) {
+    if (checkedFirstBox && checkedSecondBox) {
       setType(TAX_TYPE.BOTH);
     } else {
-      if (checked1) {
+      if (checkedFirstBox) {
         setType(TAX_TYPE.LAST_YEAR);
-      } else if (checked2) {
+      } else if (checkedSecondBox) {
         setType(TAX_TYPE.CURRENT_YEAR);
       } else {
         setType(TAX_TYPE.NONE);
       }
     }
-  }, [checked1, checked2]);
+  }, [checkedFirstBox, checkedSecondBox]);
 
   useEffect(() => {
     switch (type) {
@@ -85,12 +89,12 @@ const HeroSection = () => {
 
   useEffect(() => {
     if (checkedYears.includes("2020-21")) {
-      setChecked1(true);
+      setCheckedFirstBox(true);
     }
     if (checkedYears.includes("2021-22")) {
-      setChecked2(true);
+      setCheckedSecondBox(true);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -115,77 +119,83 @@ const HeroSection = () => {
                 &nbsp;Tax Refund Today
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Even if you worked from home for just a single day during the pandemic!
+                Even if you worked from home for just a single day during the
+                pandemic!
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2
-                    ? checked1
-                      ? "success"
-                      : ""
-                    : "error"
-                    }`}
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
+                    firstEvent || checkedFirstBox || checkedSecondBox
+                      ? checkedFirstBox
+                        ? "success"
+                        : ""
+                      : "error"
+                  }`}
                 >
                   <input
                     id="bordered-checkbox-1"
                     type="checkbox"
                     value=""
                     name="bordered-checkbox"
-                    checked={checked1}
+                    checked={checkedFirstBox}
                     onChange={(e) => {
                       setFirstEvent(false);
-                      setChecked1(e.target.checked);
+                      setCheckedFirstBox(e.target.checked);
                       toggleCheckedYear("2020-21");
                     }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-1"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2
-                      ? "text-gray-900 dark:text-gray-300"
-                      : "text-red-700 dark:text-red-500"
-                      }`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
+                      firstEvent || checkedFirstBox || checkedSecondBox
+                        ? "text-gray-900 dark:text-gray-300"
+                        : "text-red-700 dark:text-red-500"
+                    }`}
                   >
                     2020 - 21
                   </label>
                 </div>
                 <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${firstEvent || checked1 || checked2
-                    ? checked2
-                      ? "success"
-                      : ""
-                    : "error"
-                    }`}
+                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
+                    firstEvent || checkedFirstBox || checkedSecondBox
+                      ? checkedSecondBox
+                        ? "success"
+                        : ""
+                      : "error"
+                  }`}
                 >
                   <input
                     id="bordered-checkbox-2"
                     type="checkbox"
                     value=""
                     name="bordered-checkbox"
-                    checked={checked2}
+                    checked={checkedSecondBox}
                     onChange={(e) => {
                       setFirstEvent(false);
-                      setChecked2(e.target.checked);
+                      setCheckedSecondBox(e.target.checked);
                       toggleCheckedYear("2021-22");
                     }}
                     className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
                     htmlFor="bordered-checkbox-2"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${firstEvent || checked1 || checked2
-                      ? "text-gray-900 dark:text-gray-300"
-                      : "text-red-700 dark:text-red-500"
-                      }`}
+                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
+                      firstEvent || checkedFirstBox || checkedSecondBox
+                        ? "text-gray-900 dark:text-gray-300"
+                        : "text-red-700 dark:text-red-500"
+                    }`}
                   >
                     2021 - 22
                   </label>
                 </div>
               </div>
               <p
-                className={`max-w-2xl mt-2 mb-10 text-sm ${firstEvent || checked1 || checked2
-                  ? "text-gray-500 dark:text-gray-400"
-                  : "text-red-600 dark:text-red-500"
-                  }`}
+                className={`max-w-2xl mt-2 mb-10 text-sm ${
+                  firstEvent || checkedFirstBox || checkedSecondBox
+                    ? "text-gray-500 dark:text-gray-400"
+                    : "text-red-600 dark:text-red-500"
+                }`}
               >
                 Select the year(s) you worked from home
               </p>
@@ -198,21 +208,25 @@ const HeroSection = () => {
                         onClick={() => {
                           setFirstEvent(false);
 
-                          (checked1 || checked2) ? router.push(
-                            {
-                              pathname: '/claim',
-                              query: {
-                                ...router.query,
-                                amount: amount,
-                                years: checkedYears,
-                                claimValue: amount,
-                                step: fromEmail ? 1 : false
-                              },
-                            },
-                            `${fromEmail ? `/claim?email=${fromEmail}` : '/claim'}`
-
-                          )
-                            : window.scrollTo({ top: 0, behavior: 'smooth' })
+                          checkedFirstBox || checkedSecondBox
+                            ? router.push(
+                                {
+                                  pathname: "/claim",
+                                  query: {
+                                    ...router.query,
+                                    amount: amount,
+                                    years: checkedYears,
+                                    claimValue: amount,
+                                    step: fromEmail ? 1 : false,
+                                  },
+                                },
+                                `${
+                                  fromEmail
+                                    ? `/claim?email=${fromEmail}`
+                                    : "/claim"
+                                }`
+                              )
+                            : window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                       >
                         <div className="flex-grow">
@@ -234,10 +248,12 @@ const HeroSection = () => {
                           ></path>
                         </svg>
                       </button>
-                      <img
-                        className="w-20 mt-4"
+                      <Image
+                        className="mt-4"
                         src="/images/ssl-secure.svg"
                         alt="Secure"
+                        width={80}
+                        height={20}
                       />
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Your information is 100% safe and secure on this website
@@ -248,9 +264,12 @@ const HeroSection = () => {
               </div>
             </div>
             <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <img
+              <Image
                 src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png"
                 alt="mockup"
+                width={943}
+                height={706}
+                priority
               />
             </div>
           </div>

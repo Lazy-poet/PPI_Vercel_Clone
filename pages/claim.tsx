@@ -19,7 +19,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
-import { useSystemValues } from "@/contexts/ValueContext";
+import { useValue } from "@/components/hooks/useValue";
 
 export default function Claim() {
   const router = useRouter();
@@ -35,20 +35,20 @@ export default function Claim() {
     setFormData4,
     formData5,
     setFormData5,
-  } = useSystemValues();
+  } = useValue();
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
-  const [utmParams, setUtmParams] = useState<any>([]);
-  const [claimValue, setClaimValue] = useState<any>(false);
+  const [utmParams, setUtmParams] = useState({});
+  const [claimValue, setClaimValue] = useState<number>(0);
 
-  const [theEmail, setTheEmail] = useState<any>("");
-  const [prevData, setPrevData] = useState<any>("");
+  const [theEmail, setTheEmail] = useState("");
+  const [prevData, setPrevData] = useState("");
 
   // Step1
-  const [fdEvents1, setFdEvents1] = useState<any>({
+  const [fdEvents1, setFdEvents1] = useState({
     firstName: true,
     lastName: true,
     email: true,
@@ -62,7 +62,7 @@ export default function Claim() {
   const handleFormChange1 = async (key: string, value: string) => {
     setFormData1({
       ...formData1,
-      // firstEvent: false,
+      firstEvent: false,
       [key]: value,
     });
     if (key === "day" || key === "month" || key === "year") {
@@ -81,7 +81,7 @@ export default function Claim() {
   };
 
   // Step2
-  const handleFormChange2 = (key: string, value: any) => {
+  const handleFormChange2 = (key: string, value: string) => {
     setFormData2({
       ...formData2,
       firstEvent: false,
@@ -111,70 +111,6 @@ export default function Claim() {
       [key]: value,
     });
   };
-
-  useEffect(() => {
-    /* to check where the user should continue in the form */
-    const formPageHandler = (data: any) => {
-      if (router.query.step === "1") return setStep(0);
-      if (data.paye) return setStep(5);
-      if (data.insurance) return setStep(4);
-      if (data.signatureData) return setStep(3);
-      if (data.employerName) return setStep(2);
-      if (data.email) return setStep(1);
-    };
-
-    /* get existed user data */
-    const getPrevData = async () => {
-      const { data, error } = await supabase
-        .from("claim-form-submissions")
-        .select()
-        .eq("email", urlEmail)
-        .select();
-      setPrevData(data?.[0]);
-
-      const birthdate = JSON.parse(data?.[0]?.birthdate);
-
-      /* update the form data white existed user data */
-
-      setClaimValue(data?.[0]?.claimValue);
-      setFormData1({
-        firstEvent: true,
-        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
-        lastName: data?.[0].lastName ? data?.[0].lastName : "",
-        email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? data?.[0].postCode : "",
-        address: data?.[0].address ? data?.[0].address : "",
-        day: data?.[0].birthdate ? birthdate.day : "",
-        month: data?.[0].birthdate ? birthdate.month : "",
-        year: data?.[0].birthdate ? birthdate.year : "",
-      });
-
-      setFormData2({
-        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
-        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
-        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
-      });
-
-      setFormData3({
-        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
-      });
-
-      setFormData4({
-        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
-      });
-
-      setFormData5({
-        paye: data?.[0]?.paye ? data?.[0].paye : "",
-      });
-
-      formPageHandler(data?.[0]);
-    };
-
-    /* if existed user */
-    if (urlEmail) {
-      getPrevData();
-    }
-  }, [urlEmail]);
 
   const calculateCustomerValue = (value: number) => {
     let percentage = 20;
@@ -356,10 +292,76 @@ export default function Claim() {
       default:
         break;
     }
-    //
     document.getElementById("btnNext")?.blur();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    /* to check where the user should continue in the form */
+    const formPageHandler = (data: any) => {
+      if (router.query.step === "1") return setStep(0);
+      if (data.paye) return setStep(5);
+      if (data.insurance) return setStep(4);
+      if (data.signatureData) return setStep(3);
+      if (data.employerName) return setStep(2);
+      if (data.email) return setStep(1);
+    };
+
+    /* get existed user data */
+    const getPrevData = async () => {
+      const { data, error } = await supabase
+        .from("claim-form-submissions")
+        .select()
+        .eq("email", urlEmail)
+        .select();
+      setPrevData(data?.[0]);
+
+      const birthdate = JSON.parse(data?.[0]?.birthdate);
+
+      /* update the form data white existed user data */
+
+      setClaimValue(data?.[0]?.claimValue);
+      setFormData1({
+        firstEvent: true,
+        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
+        lastName: data?.[0].lastName ? data?.[0].lastName : "",
+        email: data?.[0].email ? data?.[0].email : "",
+        postCode: data?.[0].postCode ? data?.[0].postCode : "",
+        address: data?.[0].address ? data?.[0].address : "",
+        day: data?.[0].birthdate ? birthdate.day : "",
+        month: data?.[0].birthdate ? birthdate.month : "",
+        year: data?.[0].birthdate ? birthdate.year : "",
+      });
+
+      setFormData2({
+        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
+        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        firstEvent: formData2.firstEvent,
+      });
+
+      setFormData3({
+        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
+      });
+
+      setFormData4({
+        ...formData4,
+        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
+      });
+
+      setFormData5({
+        ...formData5,
+        paye: data?.[0]?.paye ? data?.[0].paye : "",
+      });
+
+      formPageHandler(data?.[0]);
+    };
+
+    /* if existed user */
+    if (urlEmail) {
+      getPrevData();
+    }
+  }, [urlEmail]);
 
   useEffect(() => {
     if (!!router.query?.years || !!router.query?.claimValue) {
@@ -369,7 +371,13 @@ export default function Claim() {
           ? router.query.years
           : [router.query.years]
       );
-      setClaimValue(router.query.claimValue);
+      // only set claim value if it is not empty and also convert it to number
+      if (
+        router.query.claimValue &&
+        typeof router.query.claimValue === "string"
+      ) {
+        setClaimValue(parseInt(router.query.claimValue));
+      }
     }
 
     if (!!router.query) {
@@ -388,15 +396,45 @@ export default function Claim() {
     if (!router.query?.years && !router.query?.email) {
       router.push("/");
     }
+
+    // Initiate validation for doing backup
+    if (
+      formData1.firstName !== "" &&
+      formData1.lastName !== "" &&
+      formData1.email !== "" &&
+      Utils.validateEmail(formData1.email) &&
+      formData1.postCode !== "" &&
+      postcodeValidator(formData1.postCode, "GB") &&
+      formData1.address !== "" &&
+      formData1.day !== "" &&
+      formData1.month !== "" &&
+      formData1.year !== ""
+    ) {
+      setFormData1({ ...formData1, firstEvent: false });
+      setFdEvents1({
+        firstName: false,
+        lastName: false,
+        email: false,
+        postCode: false,
+        address: false,
+        day: false,
+        month: false,
+        year: false,
+      });
+    }
+    if (!router.isReady) return;
+    if (!router.query?.years && !router.query?.email) {
+      router.push("/");
+    }
   }, [router.isReady, router]);
 
   return (
     <Layout>
       <section className="bg-white dark:bg-gray-900">
-        <div className="max-w-screen-xl mx-auto lg:flex gap-2">
+        <div className="mx-auto lg:flex">
           <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
             <div className="w-full">
-              <ProgressBar step={step} prevStep={prevStep} />
+              <ProgressBar step={step} goToPrevStep={prevStep} />
 
               {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
                 <StepAlert step={step} />
@@ -418,10 +456,7 @@ export default function Claim() {
                 />
               )}
               {step == STEP.SIGN_COMPLETE && (
-                <SignComplete
-                  data={formData3}
-                  handleFormChange={handleFormChange3}
-                />
+                <SignComplete handleFormChange={handleFormChange3} />
               )}
               {step == STEP.LAST_THING && (
                 <LastThing

@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
   publicRuntimeConfig: {
     site: {
       name: "Claiming Made Easy",
@@ -22,6 +26,13 @@ const nextConfig = {
       "www.claimingmadeeasy.com",
       "countryflagsapi.com",
       "www.gravatar.com",
+    ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "flowbite.s3.amazonaws.com",
+        pathname: "/**",
+      },
     ],
   },
 };

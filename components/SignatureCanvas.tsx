@@ -50,8 +50,7 @@ const SignatureCanvas = ({
             typeof window === "undefined" ||
             !containerRef.current ||
             !canvasRef.current
-        )
-            return;
+        ) return;
 
         window.addEventListener("resize", handleResize);
 
