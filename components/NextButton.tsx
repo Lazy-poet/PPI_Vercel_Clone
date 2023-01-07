@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Props = {
   onClick: any;
   label?: string;
@@ -39,10 +41,12 @@ const NextButton = ({ onClick, label = "Next", helper = "" }: Props) => {
                 {helper}
               </p>
             )}
-            <img
-              className="w-20 mt-4"
+            <Image
+              className="mt-4"
               src="/images/ssl-secure.svg"
               alt="Secure"
+              width={80}
+              height={20}
             />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Your information is 100% safe and secure on this website

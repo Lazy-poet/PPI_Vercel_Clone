@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
@@ -8,10 +9,12 @@ const Footer = () => {
           href="/"
           className="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
         >
-          <img
+          <Image
             src="/images/favicon.png"
             className="mr-3 h-6 sm:h-9"
             alt="Logo"
+            width={36}
+            height={36}
           />
           <span>ClaimingMadeEasy™</span>
         </Link>
