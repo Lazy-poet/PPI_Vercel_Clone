@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Utils from "../../libs/utils";
 
-const ThankYou = (props: any) => {
+const ThankYou = (props: {
+  data: any;
+  handleFormChange: (field: string, value: string) => void;
+}) => {
   const { data, handleFormChange } = props;
   const [isBackspacePressed, setIsBackspacePressed] = useState<boolean>(false);
 
@@ -27,7 +30,15 @@ const ThankYou = (props: any) => {
 
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
-      <div className={`form-group sm:col-span-2 ${data.firstEvent ? '' : (data.paye && Utils.validatePAYE(data.paye) ? 'success' : 'error')}`}>
+      <div
+        className={`form-group sm:col-span-2 ${
+          data.firstEvent
+            ? ""
+            : data.paye && Utils.validatePAYE(data.paye)
+            ? "success"
+            : "error"
+        }`}
+      >
         <label
           htmlFor="insurance"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
@@ -67,39 +78,31 @@ const ThankYou = (props: any) => {
             <span className="form-icon"></span>
           </div>
         </div>
-        {
-          data.firstEvent
-            ?
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Example format: &apos;123/AB456&apos;. You can find your PAYE number
-              on letters or emails about PAYE from HMRC, your P60, or your employer
-              may provide it on your payslip. It may be called &apos;Employer PAYE
-              reference&apos; or &apos;PAYE reference&apos;
-            </p>
-            :
-            (!data.paye || !Utils.validatePAYE(data.paye))
-              ?
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm"
-              >
-                Please provide a valid PAYE number
-              </p>
-              :
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Example format: &apos;123/AB456&apos;. You can find your PAYE number
-                on letters or emails about PAYE from HMRC, your P60, or your employer
-                may provide it on your payslip. It may be called &apos;Employer PAYE
-                reference&apos; or &apos;PAYE reference&apos;
-              </p>
-        }
-
+        {data.firstEvent ? (
+          <p
+            id="helper-text-explanation"
+            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+          >
+            Example format: &apos;123/AB456&apos;. You can find your PAYE number
+            on letters or emails about PAYE from HMRC, your P60, or your
+            employer may provide it on your payslip. It may be called
+            &apos;Employer PAYE reference&apos; or &apos;PAYE reference&apos;
+          </p>
+        ) : !data.paye || !Utils.validatePAYE(data.paye) ? (
+          <p id="helper-text-explanation" className="mt-2 text-sm">
+            Please provide a valid PAYE number
+          </p>
+        ) : (
+          <p
+            id="helper-text-explanation"
+            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+          >
+            Example format: &apos;123/AB456&apos;. You can find your PAYE number
+            on letters or emails about PAYE from HMRC, your P60, or your
+            employer may provide it on your payslip. It may be called
+            &apos;Employer PAYE reference&apos; or &apos;PAYE reference&apos;
+          </p>
+        )}
       </div>
     </div>
   );
