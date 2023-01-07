@@ -112,9 +112,14 @@ export default function Claim() {
     });
   };
 
+  const calculateCustomerValue = (value: number) => {
+    let percentage = 20;
+    return (value / 100) * percentage;
+  };
+
   const calculateOurFee = (value: number) => {
     let feePercentage = 48;
-    return (value / 100) * feePercentage;
+    return (calculateCustomerValue(value) / 100) * feePercentage;
   };
 
   const prevStep = () => {
@@ -164,6 +169,7 @@ export default function Claim() {
                 claimValue,
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
+                customerValue: calculateCustomerValue(+claimValue),
                 link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
@@ -190,6 +196,7 @@ export default function Claim() {
                   claimValue,
                   checkedYears,
                   ourFee: calculateOurFee(+claimValue),
+                  customerValue: calculateCustomerValue(+claimValue),
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
                   email: otherFormData1.email.toLowerCase(),
@@ -213,6 +220,7 @@ export default function Claim() {
                 claimValue,
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
+                customerValue: calculateCustomerValue(+claimValue),
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
