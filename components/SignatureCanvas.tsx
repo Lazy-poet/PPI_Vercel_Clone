@@ -158,7 +158,6 @@ const SignatureCanvas = ({
                 onTouchEnd={finishDrawing}
                 onMouseMove={draw}
                 onTouchMove={drawMobile}
-                onMouseLeave={finishDrawing}
                 // onTouchCancel={finishDrawing}
                 style={{ touchAction: "none" }}
             />

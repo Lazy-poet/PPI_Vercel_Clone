@@ -19,7 +19,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
-import { useValue } from "@/components/hooks/useValue";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 export default function Claim() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function Claim() {
     setFormData4,
     formData5,
     setFormData5,
-  } = useValue();
+  } = useSystemValues();
 
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
@@ -91,7 +91,7 @@ export default function Claim() {
 
   // Step3
   const handleFormChange3 = (newSignatureData: string) => {
-    setFormData3({ signatureData: newSignatureData });
+    setFormData3({ ...formData2, signatureData: newSignatureData, firstEvent: false });
   };
 
   // Step4
@@ -266,6 +266,7 @@ export default function Claim() {
         }
         break;
       case STEP.SIGN_COMPLETE:
+        setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData !== null) {
           console.log(formData3);
 
@@ -367,6 +368,7 @@ export default function Claim() {
 
       setFormData3({
         signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
+        firstEvent: formData2.firstEvent,
       });
 
       setFormData4({
@@ -461,8 +463,8 @@ export default function Claim() {
             <div className="w-full">
               <ProgressBar step={step} goToPrevStep={prevStep} />
 
-              {(step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
-                <StepAlert step={step} />
+              {(step == STEP.SIGN_COMPLETE || step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
+                <StepAlert step={step} data={formData3} />
               )}
 
               <Title step={step} />
@@ -481,7 +483,7 @@ export default function Claim() {
                 />
               )}
               {step == STEP.SIGN_COMPLETE && (
-                <SignComplete handleFormChange={handleFormChange3} />
+                <SignComplete data={formData3} handleFormChange={handleFormChange3} />
               )}
               {step == STEP.LAST_THING && (
                 <LastThing

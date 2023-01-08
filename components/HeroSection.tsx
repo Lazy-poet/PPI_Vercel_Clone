@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
 import Image from "next/image";
-import { useValue } from "./hooks/useValue";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -12,7 +12,8 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 
 const HeroSection = () => {
   const router = useRouter();
-  const { amount, setAmount, checkedYears, setCheckedYears } = useValue();
+  const { amount, setAmount, checkedYears, setCheckedYears } =
+    useSystemValues();
 
   const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
