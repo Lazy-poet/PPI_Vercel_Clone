@@ -91,7 +91,11 @@ export default function Claim() {
 
   // Step3
   const handleFormChange3 = (newSignatureData: string) => {
-    setFormData3({ ...formData2, signatureData: newSignatureData, firstEvent: false });
+    setFormData3({
+      ...formData2,
+      signatureData: newSignatureData,
+      firstEvent: false,
+    });
   };
 
   // Step4
@@ -281,7 +285,6 @@ export default function Claim() {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({
-              ...formData3,
               signatureUrl: signatureUrlPrefix + data?.path,
             })
             .match({ email: theEmail ?? urlEmail });
@@ -461,7 +464,9 @@ export default function Claim() {
             <div className="w-full">
               <ProgressBar step={step} goToPrevStep={prevStep} />
 
-              {(step == STEP.SIGN_COMPLETE || step == STEP.LAST_THING || step == STEP.THANK_YOU) && (
+              {(step == STEP.SIGN_COMPLETE ||
+                step == STEP.LAST_THING ||
+                step == STEP.THANK_YOU) && (
                 <StepAlert step={step} data={formData3} />
               )}
 
@@ -481,7 +486,10 @@ export default function Claim() {
                 />
               )}
               {step == STEP.SIGN_COMPLETE && (
-                <SignComplete data={formData3} handleFormChange={handleFormChange3} />
+                <SignComplete
+                  data={formData3}
+                  handleFormChange={handleFormChange3}
+                />
               )}
               {step == STEP.LAST_THING && (
                 <LastThing
