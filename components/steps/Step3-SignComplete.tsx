@@ -3,11 +3,8 @@ import { Card } from "flowbite-react";
 import { useState } from "react";
 import SignatureCanvas from "../SignatureCanvas";
 
-const SignComplete = ({
-  handleFormChange,
-}: {
-  handleFormChange: (signature: string) => void;
-}) => {
+const SignComplete = (props: any) => {
+  const { data, handleFormChange } = props;
   const [reset, setReset] = useState<boolean>(false);
 
   return (
@@ -34,15 +31,17 @@ const SignComplete = ({
         })}
       </ul>
 
+
       <div>
-        <h1 className="mt-10 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-blue-600 dark:text-blue-500">
+        <h1 className="mt-6 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-blue-600 dark:text-gray-500">
           Your signature
         </h1>
-        <p className="max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400">
+        <p className={`max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400
+          }`}>
           Please sign in the boundaries of the box below
         </p>
 
-        <div className="w-full mt-10 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        <div className="w-full mt-6 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
           <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-[1px] rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas
@@ -51,6 +50,7 @@ const SignComplete = ({
               debounceReset={setReset}
             />
           </div>
+
           <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
             <button
               onClick={() => setReset(true)}
@@ -76,6 +76,8 @@ const SignComplete = ({
             </button>
           </div>
         </div>
+
+
       </div>
     </div>
   );
