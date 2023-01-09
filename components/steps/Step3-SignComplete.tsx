@@ -1,5 +1,4 @@
 import { CONFIRMS } from "@/libs/doms";
-import { Card } from "flowbite-react";
 import { useState } from "react";
 import SignatureCanvas from "../SignatureCanvas";
 
@@ -31,13 +30,14 @@ const SignComplete = (props: any) => {
         })}
       </ul>
 
-
       <div>
         <h1 className="mt-6 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-gray-600 dark:text-gray-500">
           Draw your signature
         </h1>
-        <p className={`max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400
-          }`}>
+        <p
+          className={`max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400
+          }`}
+        >
           Please sign in the boundaries of the box below
         </p>
 
@@ -45,6 +45,7 @@ const SignComplete = (props: any) => {
           <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-[1px] rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas
+              signatureData={data.signatureData}
               sendRef={handleFormChange}
               reset={reset}
               debounceReset={setReset}
@@ -76,8 +77,6 @@ const SignComplete = (props: any) => {
             </button>
           </div>
         </div>
-
-
       </div>
     </div>
   );

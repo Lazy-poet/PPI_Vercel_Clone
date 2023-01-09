@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 interface SignatureCanvasProps {
+  signatureData: any;
   sendRef: (result: string) => void;
   reset: boolean;
   debounceReset: Dispatch<SetStateAction<boolean>>;
 }
 
 const SignatureCanvas = ({
+  signatureData,
   sendRef,
   reset,
   debounceReset,
@@ -43,6 +45,17 @@ const SignatureCanvas = ({
     context!.lineWidth = 1;
 
     contextRef.current = context;
+
+    if (signatureData && Object.keys(signatureData).length != 0) {
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      img.src = signatureData;
+      img.onload = () => {
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+      };
+    }
   }, []);
 
   useEffect(() => {
