@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
-import Image from "next/image";
 import { useSystemValues } from "@/contexts/ValueContext";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
@@ -249,12 +248,10 @@ const HeroSection = () => {
                           ></path>
                         </svg>
                       </button>
-                      <Image
-                        className="mt-4"
+                      <img
+                        className="w-20 mt-4"
                         src="/images/ssl-secure.svg"
                         alt="Secure"
-                        width={80}
-                        height={20}
                       />
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Your information is 100% safe and secure on this website
@@ -265,12 +262,10 @@ const HeroSection = () => {
               </div>
             </div>
             <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <Image
+              <img
+                className="object-contain"
                 src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png"
                 alt="mockup"
-                width={943}
-                height={706}
-                priority
               />
             </div>
           </div>

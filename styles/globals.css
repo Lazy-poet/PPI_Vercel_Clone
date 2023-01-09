@@ -187,10 +187,6 @@ select:focus+.form-icon {
   background-position: center center;
 }
 
-img {
-  max-width: none;
-}
-
 @media (min-width: 640px) {
 
   .form-icon,
