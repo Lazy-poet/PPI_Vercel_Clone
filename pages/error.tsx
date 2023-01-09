@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { STEP } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
-import ReviewSection from "@/components/ReviewSection";
 import ErrorContent from "@/components/steps/Step-Error";
 import Layout from "@/components/Layout";
 
@@ -28,8 +27,6 @@ export default function Error() {
           </div>
         </div>
       </section>
-
-      <ReviewSection />
     </Layout>
   );
 }
