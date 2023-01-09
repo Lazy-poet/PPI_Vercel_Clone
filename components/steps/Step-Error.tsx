@@ -8,7 +8,7 @@ const ErrorContent = () => {
           return (
             <li key={index} className="flex justify-start items-start">
               <svg
-                className="w-4 h-4 mt-[5px] mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                className="w-5 h-5 mt-[3px] mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
