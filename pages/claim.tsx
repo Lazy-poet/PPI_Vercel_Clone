@@ -222,6 +222,7 @@ export default function Claim() {
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
                   email: otherFormData1.email.toLowerCase(),
+                  link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                   postCode: otherFormData1.postCode,
                   address: otherFormData1.address,
                   birthdate: JSON.stringify({
@@ -246,6 +247,7 @@ export default function Claim() {
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
+                link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
                 birthdate: JSON.stringify({
@@ -395,6 +397,8 @@ export default function Claim() {
         ...formData5,
         paye: data?.[0]?.paye ? data?.[0].paye : "",
       });
+
+      setTheEmail(urlEmail);
 
       formPageHandler(data?.[0]);
     };
