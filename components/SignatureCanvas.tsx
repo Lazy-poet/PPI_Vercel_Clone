@@ -20,7 +20,9 @@ const SignatureCanvas = ({
 
   const passRef = () => {
     if (!canvasRef.current) return;
-    var toSave = canvasRef.current.toDataURL("image/png");
+    let canvasRefCopy = Object.assign({}, canvasRef);
+    canvasRefCopy.current!.getContext("2d")!.strokeStyle = "black";
+    let toSave = canvasRefCopy.current!.toDataURL("image/png");
     sendRef(toSave);
   };
 
