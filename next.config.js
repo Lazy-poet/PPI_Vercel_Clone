@@ -6,26 +6,25 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  assetPrefix: process.env.NODE_ENV === "development" ? "https://work-from-home-2.vercel.app" : 'https://workfromhome.claimingmadeeasy.com',
   publicRuntimeConfig: {
     site: {
       name: "Claiming Made Easy",
       url:
         process.env.NODE_ENV === "development"
-          ? "https://claimingmadeeasy.vercel.app"
-          : "https://claimingmadeeasy.vercel.app",
-      title: "ClaimingMadeEasy™ - Refund Tax Claim",
+          ? "https://work-from-home-2.vercel.app"
+          : "https://workfromhome.claimingmadeeasy.com",
+      title: "ClaimingMadeEasy™ - Refund Tax Claim Platform",
       description:
-        "ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim",
+        "ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim. National Insurance to submit your claim",
       socialPreview: "/images/logo.png",
     },
   },
   images: {
     domains: [
-      "claimingmadeeasy.vercel.app",
-      "work-from-home.vercel.app",
-      "www.claimingmadeeasy.com",
-      "countryflagsapi.com",
-      "www.gravatar.com",
+      "work-from-home-2.vercel.app",
+      "claimingmadeeasy.com",
+      "workfromhome.claimingmadeeasy.com",
     ],
     remotePatterns: [
       {
