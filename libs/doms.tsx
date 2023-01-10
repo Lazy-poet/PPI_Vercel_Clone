@@ -29,7 +29,7 @@ export const SUB_TITLES = (step: any, onClick: any) => {
         onClick={() => onClick("terms-of-service.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
-        terms & conditions
+        terms of service
       </button>
       &nbsp;before proceeding.
     </span>,
@@ -46,7 +46,7 @@ export const CONFIRMS = [
   "I confirm that I have paid taxes in the relevant years I am claiming for",
   "I understand that the information I have provided will be shared with HMRC and confirm that this is true and accurate",
   "I understand that ClaimingMadeEasy will be appointed as my tax agent to enable them to submit tax refund claims to HMRC on my behalf and re-claim any overpaid tax",
-  "I have read the tax claim documents, agree to the terms of engagement and understand that the information I have provided and my signature will be used to populate a claim form(s) to be sent to HMRC",
+  "I have read the tax claim documents, agree to the terms of service and understand that the information I have provided and my signature will be used to populate a claim form(s) to be sent to HMRC",
 ];
 
 export const ERRORS = [

@@ -15,12 +15,12 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header className="bg-white dark:bg-gray-800">
       <Head>
         {/* Review Script */}
         <script defer async src="https://cdn.trustindex.io/loader.js"></script>
       </Head>
-      <nav className="bg-white border-gray-200 px-4 md:px-6 py-2.5 dark:bg-gray-800">
+      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link href="/" className="flex items-center">
             <Image
