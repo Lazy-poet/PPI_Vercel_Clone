@@ -478,12 +478,14 @@ export default function Claim() {
             <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
               <div className="w-full">
                 <ProgressBar step={step} goToPrevStep={prevStep} />
+
                 <TermsOfService
                   fileURL={fileURL}
                   open={open}
                   handleOpen={handleOpen}
                 />
                 <Title step={step} onClick={handleOpen} />
+
                 {(step == STEP.SIGN_COMPLETE ||
                   step == STEP.LAST_THING ||
                   step == STEP.THANK_YOU) && (
