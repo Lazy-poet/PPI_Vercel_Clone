@@ -1,10 +1,31 @@
+import { useRef, useEffect } from "react";
+import SignatureCanvas from "react-signature-canvas";
 import { CONFIRMS } from "@/libs/doms";
-import { useState } from "react";
-import SignatureCanvas from "../SignatureCanvas";
 
 const SignComplete = (props: any) => {
   const { data, handleFormChange } = props;
-  const [reset, setReset] = useState<boolean>(false);
+  const canvasRef = useRef(null);
+
+  const clear = () => {
+    // @ts-ignore
+    canvasRef.current.clear();
+    handleFormChange(null);
+  };
+
+  const trim = () => {
+    handleFormChange(
+      // @ts-ignore
+      canvasRef.current.toDataURL("image/png")
+    );
+  };
+
+  useEffect(() => {
+    const signatureData = data.signatureData;
+    if (signatureData && Object.keys(signatureData).length != 0) {
+      // @ts-ignore
+      canvasRef.current.fromDataURL(signatureData);
+    }
+  }, []);
 
   return (
     <div className="mt-6">
@@ -45,16 +66,15 @@ const SignComplete = (props: any) => {
           <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-[1px] rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas
-              signatureData={data.signatureData}
-              sendRef={handleFormChange}
-              reset={reset}
-              debounceReset={setReset}
+              ref={canvasRef}
+              canvasProps={{ className: "w-full h-[200px]" }}
+              onEnd={() => trim()}
             />
           </div>
 
           <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
             <button
-              onClick={() => setReset(true)}
+              onClick={() => clear()}
               className="inline-flex items-center gap-2 py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 darkring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 darktext-white darkbg-gray-700"
             >
               <svg
@@ -63,11 +83,11 @@ const SignComplete = (props: any) => {
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                stroke-width="1"
+                strokeWidth="1"
                 stroke="currentColor"
                 fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M20 6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-11l-5 -5a1.5 1.5 0 0 1 0 -2l5 -5z"></path>
