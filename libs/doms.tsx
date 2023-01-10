@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export const PERCENTS = [9, 64, 73, 82, 91, 100, 100];
 
 export const TITLES = [
@@ -15,7 +13,17 @@ export const TITLES = [
 export const SUB_TITLES = [
   "Enter your details to receive your estimated tax claim quote",
   "Tell us about your employment so that we can process your claim",
-  "Please read the claim documents, terms of engagement and the following statements before signing",
+  <>
+    Please read the&nbsp;
+    <span id="claim-doc" className="underline cursor-pointer">
+      claim documents
+    </span>
+    ,&nbsp;
+    <span id="terms-engagement" className="underline cursor-pointer">
+      terms of engagement
+    </span>
+    &nbsp; and the following statements before signing
+  </>,
   "We need your National Insurance (NI) number to submit your claim",
   "We also need your Employers PAYE Number to submit your claim",
   "We will be in touch with updates on your claim as soon as we hear anything. All you have to do is sit back, relax and wait until then!",
@@ -46,11 +54,28 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_HELPERS = [
-  "Your personal information will be treated carefully in accordance with our Privacy Policy. We will contact you about claim opportunities using the contact details you provide. You can opt out of receiving communications from us at any time by sending us an email to support@claimingmadeeasy.co.uk",
+  <>
+    Your personal information will be treated carefully in accordance with
+    our&nbsp;
+    <span id="privacy-policy" className="underline cursor-pointer">
+      Privacy Policy
+    </span>
+    . We will contact you about claim opportunities using the contact details
+    you provide. You can opt out of receiving communications from us at any time
+    by sending us an email to support@claimingmadeeasy.co.uk
+  </>,
   "",
   "",
   "",
-  "When you click submit, we will receive your personal information and claim documents, to begin processing your tax refund claims. We will handle your data in accordance with our Privacy Policy.",
+  <>
+    When you click submit, we will receive your personal information and claim
+    documents, to begin processing your tax refund claims. We will handle your
+    data in accordance with our&nbsp;
+    <span id="privacy-policy" className="underline cursor-pointer">
+      Privacy Policy
+    </span>
+    .
+  </>,
   "",
   "",
 ];
