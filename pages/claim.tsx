@@ -45,7 +45,7 @@ export default function Claim() {
   const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [open, setOpen] = useState<Boolean>(false);
-  const [fileURL, setFileURL] = useState<String>('terms-of-service.pdf');
+  const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState({});
@@ -66,7 +66,7 @@ export default function Claim() {
     year: true,
   });
 
-  const handleOpen = (type:String) => {
+  const handleOpen = (type: String) => {
     setFileURL(type);
     setOpen(!open);
   };
@@ -471,14 +471,18 @@ export default function Claim() {
   }, [router.isReady, router]);
 
   return (
-    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.1.81/build/pdf.worker.min.js">
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
       <Layout>
         <section className="bg-white dark:bg-gray-900">
           <div className="max-w-screen-xl mx-auto lg:flex">
             <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
               <div className="w-full">
                 <ProgressBar step={step} goToPrevStep={prevStep} />
-                <TermsOfService fileURL={fileURL} open={open} handleOpen={handleOpen} />
+                <TermsOfService
+                  fileURL={fileURL}
+                  open={open}
+                  handleOpen={handleOpen}
+                />
                 <Title step={step} onClick={handleOpen} />
                 {(step == STEP.SIGN_COMPLETE ||
                   step == STEP.LAST_THING ||
@@ -523,7 +527,7 @@ export default function Claim() {
                   <NextButton
                     onClick={nextStep}
                     label={step == STEP.THANK_YOU ? "Submit" : "Next"}
-                    helper={NEXT_BUTTON_HELPERS(step,handleOpen)}
+                    helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
                 )}
               </div>
