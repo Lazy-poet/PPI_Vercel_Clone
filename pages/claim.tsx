@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
 import Title from "@/components/Title";
@@ -20,8 +21,15 @@ import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 
+const PDFViewer = dynamic(() => import("../components/PdfViewer"), {
+  ssr: false,
+});
+
 export default function Claim() {
   const router = useRouter();
+
+  const [isOpenPdfModal, setIsOpenPdfModal] = useState<boolean>(false);
+  const [pdfFilePath, setPdfFilePath] = useState<string>("");
 
   const {
     formData1,
@@ -457,6 +465,37 @@ export default function Claim() {
     }
   }, [router.isReady, router]);
 
+  useEffect(() => {
+    const privacyPolicyListener = () => {
+      setIsOpenPdfModal(true);
+      setPdfFilePath("/pdfs/PrivacyCookies.pdf");
+    };
+    const termsEngagementListener = () => {
+      setIsOpenPdfModal(true);
+      setPdfFilePath("/pdfs/TermsEngagement.pdf");
+    };
+    const claimDocListener = () => {
+      setIsOpenPdfModal(true);
+      setPdfFilePath("/pdfs/P87.pdf");
+    };
+
+    const privacyPolicyButton = document.getElementById("privacy-policy");
+    privacyPolicyButton?.addEventListener("click", privacyPolicyListener);
+    const termsEngagementButton = document.getElementById("terms-engagement");
+    termsEngagementButton?.addEventListener("click", termsEngagementListener);
+    const claimDocButton = document.getElementById("claim-doc");
+    claimDocButton?.addEventListener("click", claimDocListener);
+
+    return () => {
+      privacyPolicyButton?.removeEventListener("click", privacyPolicyListener);
+      termsEngagementButton?.removeEventListener(
+        "click",
+        termsEngagementListener
+      );
+      claimDocButton?.removeEventListener("click", claimDocListener);
+    };
+  }, [step]);
+
   return (
     <Layout>
       <section className="bg-white dark:bg-gray-900">
@@ -519,6 +558,13 @@ export default function Claim() {
           <SidePanel amount={claimValue} step={step} />
         </div>
       </section>
+
+      {isOpenPdfModal && (
+        <PDFViewer
+          filePath={pdfFilePath}
+          onClose={() => setIsOpenPdfModal(false)}
+        />
+      )}
     </Layout>
   );
 }
