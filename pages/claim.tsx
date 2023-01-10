@@ -22,10 +22,6 @@ import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
 
-interface ViewerWrapperProps {
-  fileUrl: string;
-}
-
 export default function Claim() {
   const router = useRouter();
 
