@@ -6,7 +6,7 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
-  assetPrefix: process.env.NODE_ENV === "development" ? "https://work-from-home-2.vercel.app" : 'https://workfromhome.claimingmadeeasy.com',
+  // assetPrefix: process.env.NODE_ENV === "development" ? "https://work-from-home-2.vercel.app" : 'https://workfromhome.claimingmadeeasy.com',
   publicRuntimeConfig: {
     site: {
       name: "Claiming Made Easy",

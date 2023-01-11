@@ -64,6 +64,16 @@ export const SIDE_INFO = [
   "Your employer ref",
 ];
 
+export const NEXT_BUTTON_TIMERS = [
+  "It only takes a minute!",
+  "55 seconds left...",
+  "22 seconds left...",
+  "16 seconds left...",
+  "11 seconds left...",
+  "",
+  "",
+];
+
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
     <span>

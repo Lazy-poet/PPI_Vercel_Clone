@@ -10,7 +10,7 @@ import SidePanel from "@/components/SidePanel";
 import ClaimNow from "@/components/steps/Step2-ClaimNow";
 import SignComplete from "@/components/steps/Step3-SignComplete";
 import LastThing from "@/components/steps/Step4-LastThing";
-import { NEXT_BUTTON_HELPERS } from "@/libs/doms";
+import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import ThankYou from "@/components/steps/Step5-ThankYou";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
@@ -524,6 +524,7 @@ export default function Claim() {
                 {step != STEP.ALL_DONE && (
                   <NextButton
                     onClick={nextStep}
+                    timer={NEXT_BUTTON_TIMERS[step]}
                     label={step == STEP.THANK_YOU ? "Submit" : "Next"}
                     helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
