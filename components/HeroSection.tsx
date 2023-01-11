@@ -191,7 +191,7 @@ const HeroSection = () => {
                 </div>
               </div>
               <p
-                className={`max-w-2xl mt-2 mb-5 text-sm ${
+                className={`max-w-2xl mt-2 text-sm ${
                   firstEvent || checkedFirstBox || checkedSecondBox
                     ? "text-gray-500 dark:text-gray-400"
                     : "text-red-600 dark:text-red-500"
@@ -203,7 +203,7 @@ const HeroSection = () => {
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
                     <div>
-                      <div className="flex justify-center items-center mt-5 mb-10 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
+                      <div className="flex justify-center items-center mt-10 mb-5 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
                         <svg
                           width="14"
                           height="14"

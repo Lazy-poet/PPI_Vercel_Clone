@@ -19,7 +19,7 @@ const NextButton = ({
         <li className="md:col-span-2">
           <div>
             {timer && (
-              <div className="flex justify-center items-center mb-10 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
+              <div className="flex justify-center items-center mb-5 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
                 <svg
                   width="14"
                   height="14"
