@@ -480,13 +480,14 @@ export default function Claim() {
                   open={open}
                   handleOpen={handleOpen}
                 />
-                <Title step={step} onClick={handleOpen} />
 
                 {(step == STEP.SIGN_COMPLETE ||
                   step == STEP.LAST_THING ||
                   step == STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
+
+                <Title step={step} onClick={handleOpen} />
 
                 {step == STEP.QUICK_QUOTE && (
                   <QuickQuote
