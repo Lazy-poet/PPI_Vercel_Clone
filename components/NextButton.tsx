@@ -14,12 +14,16 @@ const NextButton = ({
   helper = "",
 }: Props) => {
   return (
-    <div className="w-full text-gray-500 mt-10 mb-8 md:mb-24">
+    <div
+      className={`w-full text-gray-500 ${
+        timer ? "mt-5" : "mt-10"
+      } mb-8 md:mb-24`}
+    >
       <ul className="grid gap-6 w-full md:grid-cols-2">
         <li className="md:col-span-2">
           <div>
             {timer && (
-              <div className="flex justify-center items-center mb-5 space-x-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex justify-center items-center mb-5 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
                 <svg
                   width="14"
                   height="14"
