@@ -1,10 +1,12 @@
 import { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { CONFIRMS } from "@/libs/doms";
+import { THEME, useTheme } from "../hooks/useTheme";
 
 const SignComplete = (props: any) => {
   const { data, handleFormChange } = props;
   const canvasRef = useRef(null);
+  const { theme } = useTheme();
 
   const clear = () => {
     // @ts-ignore
@@ -67,7 +69,10 @@ const SignComplete = (props: any) => {
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-[1px] rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas
               ref={canvasRef}
-              canvasProps={{ className: "w-full h-[200px]" }}
+              canvasProps={{
+                className: "w-full h-[200px]",
+              }}
+              penColor={theme == THEME.DARK ? "gray" : "black"}
               onEnd={() => trim()}
             />
           </div>
