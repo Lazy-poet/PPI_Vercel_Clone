@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export const PERCENTS = [9, 64, 73, 82, 91, 100, 100];
 
 export const TITLES = [
@@ -65,11 +63,11 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TIMERS = [
-  "It only takes a minute!",
   "55 seconds left...",
   "22 seconds left...",
   "16 seconds left...",
   "11 seconds left...",
+  "",
   "",
   "",
 ];
