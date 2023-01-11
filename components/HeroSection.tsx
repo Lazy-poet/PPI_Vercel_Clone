@@ -119,8 +119,8 @@ const HeroSection = () => {
                 &nbsp;Tax Refund Today
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Even if you worked from home for just a single day during the
-                pandemic!
+                Now you can claim, even if you had to work from home for just a
+                single day during the pandemic!
               </p>
               <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
                 <div
