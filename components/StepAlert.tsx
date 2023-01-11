@@ -15,7 +15,7 @@ const StepAlert = (props: any) => {
             <></>
           ) : !data.signatureData ? (
             <div
-              className="w-full mx-auto flex p-4 mt-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-gray-800 dark:text-red-400"
+              className="w-full mx-auto flex p-4 mt-4 lg:mt-8 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-gray-800 dark:text-red-400"
               role="alert"
             >
               <svg
