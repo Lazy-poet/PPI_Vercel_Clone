@@ -7,9 +7,9 @@ const Header = () => {
   const { theme, changeTheme } = useTheme();
 
   const toggleTheme = () => {
-    if (theme == THEME.LIGHT) {
+    if (theme === THEME.LIGHT) {
       changeTheme(THEME.DARK);
-    } else if (theme == THEME.DARK) {
+    } else if (theme === THEME.DARK) {
       changeTheme(THEME.LIGHT);
     }
   };
@@ -41,7 +41,7 @@ const Header = () => {
               onClick={() => toggleTheme()}
               aria-label="Toggle between Dark Mode and Light mode"
             >
-              {theme == THEME.LIGHT && (
+              {theme === THEME.LIGHT && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"
@@ -51,7 +51,7 @@ const Header = () => {
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
               )}
-              {theme == THEME.DARK && (
+              {theme === THEME.DARK && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"

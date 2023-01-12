@@ -141,7 +141,7 @@ export default function Claim() {
     );
 
   const prevStep = () => {
-    if (step == STEP.QUICK_QUOTE) {
+    if (step === STEP.QUICK_QUOTE) {
       if (urlEmail) {
         return router.push(`/?email=${urlEmail}`);
       }
@@ -481,52 +481,52 @@ export default function Claim() {
                   handleOpen={handleOpen}
                 />
 
-                {(step == STEP.SIGN_COMPLETE ||
-                  step == STEP.LAST_THING ||
-                  step == STEP.THANK_YOU) && (
+                {(step === STEP.SIGN_COMPLETE ||
+                  step === STEP.LAST_THING ||
+                  step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
 
                 <Title step={step} onClick={handleOpen} />
 
-                {step == STEP.QUICK_QUOTE && (
+                {step === STEP.QUICK_QUOTE && (
                   <QuickQuote
                     data={formData1}
                     fdEvents={fdEvents1}
                     handleFormChange={handleFormChange1}
                   />
                 )}
-                {step == STEP.CLAIM_NOW && (
+                {step === STEP.CLAIM_NOW && (
                   <ClaimNow
                     data={formData2}
                     handleFormChange={handleFormChange2}
                   />
                 )}
-                {step == STEP.SIGN_COMPLETE && (
+                {step === STEP.SIGN_COMPLETE && (
                   <SignComplete
                     data={formData3}
                     handleFormChange={handleFormChange3}
                   />
                 )}
-                {step == STEP.LAST_THING && (
+                {step === STEP.LAST_THING && (
                   <LastThing
                     data={formData4}
                     handleFormChange={handleFormChange4}
                   />
                 )}
-                {step == STEP.THANK_YOU && (
+                {step === STEP.THANK_YOU && (
                   <ThankYou
                     data={formData5}
                     handleFormChange={handleFormChange5}
                   />
                 )}
-                {step == STEP.ALL_DONE && <AllDone />}
+                {step === STEP.ALL_DONE && <AllDone />}
 
-                {step != STEP.ALL_DONE && (
+                {step !== STEP.ALL_DONE && (
                   <NextButton
                     onClick={nextStep}
                     timer={NEXT_BUTTON_TIMERS[step]}
-                    label={step == STEP.THANK_YOU ? "Submit" : "Next"}
+                    label={step === STEP.THANK_YOU ? "Submit" : "Next"}
                     helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
                 )}

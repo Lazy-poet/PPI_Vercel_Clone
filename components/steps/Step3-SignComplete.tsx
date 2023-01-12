@@ -23,7 +23,7 @@ const SignComplete = (props: any) => {
 
   useEffect(() => {
     const signatureData = data.signatureData;
-    if (signatureData && Object.keys(signatureData).length != 0) {
+    if (signatureData && Object.keys(signatureData).length !== 0) {
       // @ts-ignore
       canvasRef.current.fromDataURL(signatureData);
     }
@@ -72,7 +72,7 @@ const SignComplete = (props: any) => {
               canvasProps={{
                 className: "w-full h-[200px]",
               }}
-              penColor={theme == THEME.DARK ? "gray" : "black"}
+              penColor={theme === THEME.DARK ? "gray" : "black"}
               onEnd={() => trim()}
             />
           </div>

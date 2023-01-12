@@ -13,7 +13,7 @@ const ThankYou = (props: {
     if (isBackspacePressed) {
       value = value.substring(0, value.length);
     } else {
-      if (value.length == 3) {
+      if (value.length === 3) {
         value = value + "/";
       }
     }
@@ -21,7 +21,7 @@ const ThankYou = (props: {
   };
 
   const onKeyDown = (type: string) => {
-    if (type == "Backspace") {
+    if (type === "Backspace") {
       setIsBackspacePressed(true);
     } else {
       setIsBackspacePressed(false);

@@ -9,7 +9,7 @@ const StepAlert = (props: any) => {
 
   return (
     <>
-      {step == STEP.SIGN_COMPLETE && (
+      {step === STEP.SIGN_COMPLETE && (
         <>
           {data.firstEvent ? (
             <></>
@@ -43,7 +43,7 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {step == STEP.LAST_THING && (
+      {step === STEP.LAST_THING && (
         <div className="w-full pt-4 mx-auto lg:pt-10">
           <div
             className="p-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
@@ -53,7 +53,7 @@ const StepAlert = (props: any) => {
           </div>
         </div>
       )}
-      {step == STEP.THANK_YOU && (
+      {step === STEP.THANK_YOU && (
         <div className="w-full pt-4 mx-auto lg:pt-10">
           <div
             className="p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
