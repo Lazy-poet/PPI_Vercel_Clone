@@ -66,7 +66,7 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
               return <SideItem key={index} info={info} />;
             })}
           {step === STEP.THANK_YOU &&
-            SIDE_INFO.map((info, index) => {
+            SIDE_INFO.slice(0, 5).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
           {step === STEP.ALL_DONE &&
