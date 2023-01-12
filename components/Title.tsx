@@ -3,7 +3,7 @@ import { SUB_TITLES, TITLES } from "@/libs/doms";
 
 type Props = {
   step: STEP;
-  onClick?:any
+  onClick?: any;
 };
 
 const Title = ({ step, onClick }: Props) => {
@@ -13,7 +13,7 @@ const Title = ({ step, onClick }: Props) => {
         <span className="text-blue-600 dark:text-blue-500">{TITLES[step]}</span>
       </h1>
       <p className="max-w-screen-xl mx-auto text-left text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-        {SUB_TITLES(step,onClick)}
+        {SUB_TITLES(step, onClick)}
       </p>
     </div>
   );

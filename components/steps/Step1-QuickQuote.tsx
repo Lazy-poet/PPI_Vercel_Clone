@@ -73,7 +73,7 @@ const QuickQuote = (props: any) => {
     setMonths(_months);
     //
     const _years = [];
-    for (let y = 1950; y <= 2005; y++) {
+    for (let y = 2005; y >= 1950; y--) {
       _years.push(y.toString());
     }
     setYears(_years);
@@ -283,7 +283,7 @@ const QuickQuote = (props: any) => {
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               Please provide a valid UK postcode
             </p>
-          ) : addressList.length == 0 ? (
+          ) : addressList.length === 0 ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               Click &apos;Search&apos; to find your address and proceed
             </p>

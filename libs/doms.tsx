@@ -1,7 +1,7 @@
 export const PERCENTS = [9, 64, 73, 82, 91, 100, 100];
 
 export const TITLES = [
-  "Quick quote",
+  "Your details",
   "Claim now",
   "Sign & complete",
   "One more thing!",
@@ -12,7 +12,7 @@ export const TITLES = [
 
 export const SUB_TITLES = (step: any, onClick: any) => {
   const subtitles = [
-    "Enter your details to receive your estimated tax claim quote",
+    "If you want to claim your tax refund you must provide your details below",
     "Tell us about your employment so that we can process your claim",
     <span>
       We will submit these&nbsp;
@@ -60,13 +60,14 @@ export const SIDE_INFO = [
   "Your signature",
   "Your (NI) number",
   "Your employer ref",
+  "Thank you",
 ];
 
 export const NEXT_BUTTON_TIMERS = [
-  "55 seconds left...",
   "22 seconds left...",
   "16 seconds left...",
   "11 seconds left...",
+  "5 seconds left...",
   "",
   "",
   "",
