@@ -1,7 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import supabase from "utils/client";
 
-export default async function (req: NextApiRequest, res: NextApiResponse<any>) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
   if (!!!req.body) return res.status(400).end();
 
   let { data, error } = await supabase

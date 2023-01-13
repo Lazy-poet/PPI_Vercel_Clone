@@ -54,9 +54,9 @@ const useValue = () => {
 
 export const ValueContext = createContext({
   amount: 0,
-  setAmount: (value: number) => { },
+  setAmount: (value: number) => {},
   checkedYears: [""],
-  setCheckedYears: (value: string[]) => { },
+  setCheckedYears: (value: string[]) => {},
   formData1: {
     firstEvent: true,
     firstName: "",
@@ -68,28 +68,28 @@ export const ValueContext = createContext({
     month: "",
     year: "",
   },
-  setFormData1: (value: any) => { },
+  setFormData1: (value: any) => {},
   formData2: {
     firstEvent: true,
     employerName: {} as any,
     claimChecked1: true,
     claimChecked2: true,
   },
-  setFormData2: (value: any) => { },
+  setFormData2: (value: any) => {},
   formData3: {
     signatureData: {} as any,
   },
-  setFormData3: (value: any) => { },
+  setFormData3: (value: any) => {},
   formData4: {
     firstEvent: true,
     insurance: "",
   },
-  setFormData4: (value: any) => { },
+  setFormData4: (value: any) => {},
   formData5: {
     firstEvent: true,
     paye: "",
   },
-  setFormData5: (value: any) => { },
+  setFormData5: (value: any) => {},
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {

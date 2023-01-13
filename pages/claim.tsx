@@ -10,7 +10,7 @@ import SidePanel from "@/components/SidePanel";
 import ClaimNow from "@/components/steps/Step2-ClaimNow";
 import SignComplete from "@/components/steps/Step3-SignComplete";
 import LastThing from "@/components/steps/Step4-LastThing";
-import { NEXT_BUTTON_HELPERS } from "@/libs/doms";
+import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import ThankYou from "@/components/steps/Step5-ThankYou";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
@@ -21,10 +21,6 @@ import { postcodeValidator } from "postcode-validator";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
-
-interface ViewerWrapperProps {
-  fileUrl: string;
-}
 
 export default function Claim() {
   const router = useRouter();
@@ -145,7 +141,7 @@ export default function Claim() {
     );
 
   const prevStep = () => {
-    if (step == STEP.QUICK_QUOTE) {
+    if (step === STEP.QUICK_QUOTE) {
       if (urlEmail) {
         return router.push(`/?email=${urlEmail}`);
       }
@@ -482,55 +478,59 @@ export default function Claim() {
             <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
               <div className="w-full">
                 <ProgressBar step={step} goToPrevStep={prevStep} />
+
                 <TermsOfService
                   fileURL={fileURL}
                   open={open}
                   handleOpen={handleOpen}
                 />
-                <Title step={step} onClick={handleOpen} />
-                {(step == STEP.SIGN_COMPLETE ||
-                  step == STEP.LAST_THING ||
-                  step == STEP.THANK_YOU) && (
+
+                {(step === STEP.SIGN_COMPLETE ||
+                  step === STEP.LAST_THING ||
+                  step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
 
-                {step == STEP.QUICK_QUOTE && (
+                <Title step={step} onClick={handleOpen} />
+
+                {step === STEP.QUICK_QUOTE && (
                   <QuickQuote
                     data={formData1}
                     fdEvents={fdEvents1}
                     handleFormChange={handleFormChange1}
                   />
                 )}
-                {step == STEP.CLAIM_NOW && (
+                {step === STEP.CLAIM_NOW && (
                   <ClaimNow
                     data={formData2}
                     handleFormChange={handleFormChange2}
                   />
                 )}
-                {step == STEP.SIGN_COMPLETE && (
+                {step === STEP.SIGN_COMPLETE && (
                   <SignComplete
                     data={formData3}
                     handleFormChange={handleFormChange3}
                   />
                 )}
-                {step == STEP.LAST_THING && (
+                {step === STEP.LAST_THING && (
                   <LastThing
                     data={formData4}
                     handleFormChange={handleFormChange4}
                   />
                 )}
-                {step == STEP.THANK_YOU && (
+                {step === STEP.THANK_YOU && (
                   <ThankYou
                     data={formData5}
                     handleFormChange={handleFormChange5}
                   />
                 )}
-                {step == STEP.ALL_DONE && <AllDone />}
+                {step === STEP.ALL_DONE && <AllDone />}
 
-                {step != STEP.ALL_DONE && (
+                {step !== STEP.ALL_DONE && (
                   <NextButton
                     onClick={nextStep}
-                    label={step == STEP.THANK_YOU ? "Submit" : "Next"}
+                    timer={NEXT_BUTTON_TIMERS[step]}
+                    label={step === STEP.THANK_YOU ? "Submit" : "Next"}
                     helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
                 )}

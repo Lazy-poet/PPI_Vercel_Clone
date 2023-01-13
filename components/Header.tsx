@@ -7,20 +7,20 @@ const Header = () => {
   const { theme, changeTheme } = useTheme();
 
   const toggleTheme = () => {
-    if (theme == THEME.LIGHT) {
+    if (theme === THEME.LIGHT) {
       changeTheme(THEME.DARK);
-    } else if (theme == THEME.DARK) {
+    } else if (theme === THEME.DARK) {
       changeTheme(THEME.LIGHT);
     }
   };
 
   return (
-    <header>
+    <header className="bg-white dark:bg-gray-800">
       <Head>
         {/* Review Script */}
         <script defer async src="https://cdn.trustindex.io/loader.js"></script>
       </Head>
-      <nav className="bg-white border-gray-200 px-4 md:px-6 py-2.5 dark:bg-gray-800">
+      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link href="/" className="flex items-center">
             <Image
@@ -41,7 +41,7 @@ const Header = () => {
               onClick={() => toggleTheme()}
               aria-label="Toggle between Dark Mode and Light mode"
             >
-              {theme == THEME.LIGHT && (
+              {theme === THEME.LIGHT && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"
@@ -51,7 +51,7 @@ const Header = () => {
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                 </svg>
               )}
-              {theme == THEME.DARK && (
+              {theme === THEME.DARK && (
                 <svg
                   className="w-5 h-5"
                   fill="currentColor"

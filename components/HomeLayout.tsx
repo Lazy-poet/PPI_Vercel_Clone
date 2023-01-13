@@ -39,7 +39,16 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
       <Head>
         <link rel="icon" href="/images/favicon.png" key="favicon" />
         <link rel="canonical" href={`${url}${asPath}`} key="canonical" />
-
+        <link
+          rel="apple-touch-icon"
+          sizes="120x120"
+          href="/images/favicon120.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="152x152"
+          href="/images/favicon152.png"
+        />
         {/* Twitter */}
         <meta
           name="twitter:card"
@@ -57,7 +66,6 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
           content={`${url}${socialPreview}`}
           key="twitter_image"
         />
-
         {/* Open Graph */}
         <meta property="og:url" content={`${url}${asPath}`} key="og_url" />
         <meta property="og:site_name" content={meta.name} key="og_site_name" />
@@ -78,7 +86,6 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
           content={`630`}
           key="og_image_height"
         />
-
         <meta name="description" content={meta.description} key="description" />
         {meta.date && (
           <meta property="article:published_time" content={meta.date} />

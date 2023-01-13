@@ -28,10 +28,10 @@ export const useTheme = () => {
   const changeTheme = (theme: THEME) => {
     setTheme(theme);
 
-    if (theme == THEME.LIGHT) {
+    if (theme === THEME.LIGHT) {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("color-theme", "light");
-    } else if (theme == THEME.DARK) {
+    } else if (theme === THEME.DARK) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("color-theme", "dark");
     }

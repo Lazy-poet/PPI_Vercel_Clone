@@ -30,7 +30,7 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
         </h3>
 
         <p className="inline-flex justify-center items-center space-x-1.5 mb-4 font-light text-primary-100 sm:text-lg">
-          {step != STEP.ALL_DONE && (
+          {step !== STEP.ALL_DONE && (
             <>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -49,27 +49,27 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
         </p>
 
         <ul role="list" className="space-y-4 text-left">
-          {step == STEP.QUICK_QUOTE &&
+          {step === STEP.QUICK_QUOTE &&
             SIDE_INFO.slice(0, 1).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step == STEP.CLAIM_NOW &&
+          {step === STEP.CLAIM_NOW &&
             SIDE_INFO.slice(0, 2).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step == STEP.SIGN_COMPLETE &&
+          {step === STEP.SIGN_COMPLETE &&
             SIDE_INFO.slice(0, 3).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step == STEP.LAST_THING &&
+          {step === STEP.LAST_THING &&
             SIDE_INFO.slice(0, 4).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step == STEP.THANK_YOU &&
-            SIDE_INFO.map((info, index) => {
+          {step === STEP.THANK_YOU &&
+            SIDE_INFO.slice(0, 5).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step == STEP.ALL_DONE &&
+          {step === STEP.ALL_DONE &&
             SIDE_INFO.map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
