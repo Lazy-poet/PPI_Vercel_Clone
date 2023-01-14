@@ -15,7 +15,7 @@ const StepAlert = (props: any) => {
             <></>
           ) : !data.signatureData ? (
             <div
-              className="w-full mx-auto flex p-4 mt-4 lg:mt-10 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-gray-800 dark:text-red-400"
+              className="w-full mx-auto flex p-4 mt-4 lg:mt-5 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-gray-800 dark:text-red-400"
               role="alert"
             >
               <svg
@@ -44,7 +44,7 @@ const StepAlert = (props: any) => {
         </>
       )}
       {step === STEP.LAST_THING && (
-        <div className="w-full pt-4 mx-auto lg:pt-10">
+        <div className="w-full mt-4 mx-auto lg:mt-5">
           <div
             className="p-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800"
             role="alert"
@@ -54,7 +54,7 @@ const StepAlert = (props: any) => {
         </div>
       )}
       {step === STEP.THANK_YOU && (
-        <div className="w-full pt-4 mx-auto lg:pt-10">
+        <div className="w-full mt-4 mx-auto lg:mt-5">
           <div
             className="p-4 text-sm text-yellow-700 bg-yellow-100 rounded-lg dark:bg-yellow-200 dark:text-yellow-800"
             role="alert"
