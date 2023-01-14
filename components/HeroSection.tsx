@@ -102,19 +102,22 @@ const HeroSection = () => {
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
-              <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
+              <h1 className="max-w-2xl mb-4 text-4xl font-bold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
-                <span className="text-primary-600 dark:text-primary-500">
-                  £
-                </span>
-                <span className="text-primary-600 dark:text-primary-500">
-                  <Animated
-                    animateToNumber={amount}
-                    configs={[
-                      { mass: 1, tension: 220, friction: 90 },
-                      { mass: 1, tension: 280, friction: 90 },
-                    ]}
-                  ></Animated>
+                <span
+                  className="anim-circle align-top inline-flex gap-1 items-center justify-center">
+                  <span className="text-[#FFEC51] font-semibold text-2xl md:text-3xl xl:text-4xl ">
+                    £
+                  </span>
+                  <span className="text-[#FFEC51] font-bold">
+                    <Animated
+                      animateToNumber={amount}
+                      configs={[
+                        { mass: 1, tension: 220, friction: 90 },
+                        { mass: 1, tension: 280, friction: 90 },
+                      ]}
+                    ></Animated>
+                  </span>
                 </span>
                 &nbsp;Tax Refund Today
               </h1>
