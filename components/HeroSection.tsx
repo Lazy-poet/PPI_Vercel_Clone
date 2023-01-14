@@ -105,7 +105,7 @@ const HeroSection = () => {
               <h1 className="max-w-2xl mb-4 text-4xl font-bold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
                 <span
-                  className="anim-circle align-top inline-flex items-center justify-center">
+                  className="anim-circle align-top inline-flex gap-1 items-center justify-center">
                   <span className="text-[#FFEC51] font-semibold text-2xl md:text-3xl xl:text-4xl ">
                     £
                   </span>
