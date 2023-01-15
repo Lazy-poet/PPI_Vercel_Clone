@@ -143,12 +143,10 @@ select:focus + .form-icon {
 .error .mui-select .MuiInputBase-root {
   background: #fdf2f2 !important;
   border: 1px solid #f05252 !important;
-  box-shadow: none !important;
   font-style: normal;
   font-weight: 400;
   color: #111928 !important;
   -webkit-text-fill-color: #111928 !important;
-  -webkit-box-shadow: 0 0 0 30px #fdf2f2 inset !important;
 }
 
 .dark .error input:not([type="checkbox"]),
@@ -158,7 +156,6 @@ select:focus + .form-icon {
   border: 1px solid #f05252 !important;
   color: #f05252 !important;
   -webkit-text-fill-color: #f05252 !important;
-  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .error input::placeholder {
@@ -305,8 +302,7 @@ select:focus + .form-icon {
 .anim-circle:before {
   content: "";
   z-index: -1;
-  left: 50%;
-  top: 50%;
+  margin: auto;
   border-width: 0.45rem;
   border-style: solid;
   border-color: #ffec51;
@@ -314,8 +310,6 @@ select:focus + .form-icon {
   border-right-color: transparent;
   width: 140%;
   height: 160%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   opacity: 0.5;
   border-radius: 50%;
   padding: 0.1em 0.25em;
@@ -324,8 +318,7 @@ select:focus + .form-icon {
 }
 .anim-circle:after {
   content: "";
-  left: 50%;
-  top: calc(50% + 4px);
+  margin-top: 4px;
   padding: 0.1em 0.25em;
   border-width: 0.45rem;
   border-style: solid;
@@ -335,8 +328,6 @@ select:focus + .form-icon {
   position: absolute;
   width: 140%;
   height: 160%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   opacity: 0.5;
   border-radius: 50%;
   -webkit-animation: in-out 1.5s infinite alternate;
@@ -348,14 +339,16 @@ select:focus + .form-icon {
 }
 @keyframes in-out {
   0% {
-    transform: translate(-50%, -50%) scale(1.1);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
   }
   100% {
-    transform: translate(-50%, -50%) scale(0.95);
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
   }
 }
 
-.error.search-pulse .address-input-wrapper:has(input:not(:focus)) {
+.error input.search-pulse:not(:focus) {
   border-radius: 0.5rem;
   animation: pulse 1.5s infinite;
   -webkit-animation: pulse 1.5s infinite;
@@ -366,13 +359,12 @@ select:focus + .form-icon {
     -webkit-box-shadow: 0 0 0 0 rgba(240, 82, 82, 1);
   }
   70% {
-    -webkit-box-shadow: 0 0 0 20px rgba(240, 82, 82, 0);
+    -webkit-box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
   }
   100% {
     -webkit-box-shadow: 0 0 0 0 rgba(240, 82, 82, 0);
   }
 }
-
 
 @keyframes pulse {
   0% {
@@ -380,8 +372,8 @@ select:focus + .form-icon {
     box-shadow: 0 0 0 0 rgba(240, 82, 82, 1);
   }
   70% {
-    -moz-box-shadow: 0 0 0 20px rgba(240, 82, 82, 0);
-    box-shadow: 0 0 0 20px rgba(240, 82, 82, 0);
+    -moz-box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
+    box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
   }
   100% {
     -moz-box-shadow: 0 0 0 0 rgba(240, 82, 82, 0);
