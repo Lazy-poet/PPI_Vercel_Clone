@@ -50,6 +50,7 @@ select:focus,
   font-weight: 400;
   color: #111928 !important;
   -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
 input::placeholder,
@@ -79,10 +80,12 @@ select:focus + .form-icon {
 .success .mui-select .MuiInputBase-root {
   background-color: #f3faf7 !important;
   border: 1px solid #0e9f6e !important;
+  box-shadow: none !important;
   font-style: normal;
   font-weight: 400;
   color: #046c4e !important;
   -webkit-text-fill-color: #046c4e !important;
+  -webkit-box-shadow: 0 0 0 30px #f3faf7 inset !important;
 }
 
 .success input::placeholder {
@@ -107,6 +110,7 @@ select:focus + .form-icon {
   border: 1px solid #3f83f8 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .success input:not([type="checkbox"]),
@@ -116,6 +120,7 @@ select:focus + .form-icon {
   border: 1px solid #0e9f6e !important;
   color: #0e9f6e !important;
   -webkit-text-fill-color: #0e9f6e !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .success input::placeholder {
@@ -343,7 +348,7 @@ select:focus + .form-icon {
   }
 }
 
-.error input.search-pulse:not(:focus) {
+.error .search-pulse {
   border-radius: 0.5rem;
   animation: pulse 1.5s infinite;
   -webkit-animation: pulse 1.5s infinite;
