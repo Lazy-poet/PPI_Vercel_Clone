@@ -1,6 +1,6 @@
 import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
@@ -8,17 +8,17 @@ import { useSystemValues } from "@/contexts/ValueContext";
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
 });
-
-const HeroSection: React.FC<{ handleStart: () => void }> = ({
-  handleStart,
-}) => {
+const HeroSection: React.FC<{
+  handleStart: () => void;
+  setClaimValue: Dispatch<SetStateAction<number>>;
+}> = ({ handleStart, setClaimValue }) => {
   const router = useRouter();
   const { amount, setAmount, checkedYears, setCheckedYears } =
     useSystemValues();
 
   const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(false);
+  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(true);
   const [checkedSecondBox, setCheckedSecondBox] = useState<boolean>(false);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
@@ -88,6 +88,10 @@ const HeroSection: React.FC<{ handleStart: () => void }> = ({
         break;
     }
   }, [type]);
+
+  useEffect(() => {
+    setClaimValue(amount);
+  }, [amount]);
 
   useEffect(() => {
     if (checkedYears.includes("2020-21")) {

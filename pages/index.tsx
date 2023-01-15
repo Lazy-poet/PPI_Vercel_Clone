@@ -25,7 +25,12 @@ import { Worker } from "@react-pdf-viewer/core";
 import HeroSection from "@/components/HeroSection";
 import ReviewSection from "@/components/ReviewSection";
 
-function Claim({ setReady }: { setReady: Dispatch<SetStateAction<boolean>> }) {
+type ClaimProps = {
+  setReady: Dispatch<SetStateAction<boolean>>;
+  setClaimValue: Dispatch<SetStateAction<number>>;
+  claimValue: number;
+};
+function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
   const router = useRouter();
 
   const {
@@ -48,7 +53,6 @@ function Claim({ setReady }: { setReady: Dispatch<SetStateAction<boolean>> }) {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
 
   const [utmParams, setUtmParams] = useState({});
-  const [claimValue, setClaimValue] = useState<number>(0);
 
   const [theEmail, setTheEmail] = useState("");
   const [prevData, setPrevData] = useState("");
@@ -539,13 +543,23 @@ function Claim({ setReady }: { setReady: Dispatch<SetStateAction<boolean>> }) {
 
 export default function Home() {
   const [ready, setReady] = useState(false);
+  const [claimValue, setClaimValue] = useState(0);
   return (
     <>
       {ready ? (
-        <Claim setReady={setReady} />
+        <Claim
+          setReady={setReady}
+          claimValue={claimValue}
+          setClaimValue={setClaimValue}
+        />
       ) : (
         <HomeLayout>
-          <HeroSection handleStart={() => setReady(true)} />
+          <HeroSection
+            handleStart={() => {
+              setReady(true);
+            }}
+            setClaimValue={setClaimValue}
+          />
           <ReviewSection />
         </HomeLayout>
       )}
