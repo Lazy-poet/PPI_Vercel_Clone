@@ -18,7 +18,7 @@ const HeroSection: React.FC<{
 
   const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(true);
+  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(false);
   const [checkedSecondBox, setCheckedSecondBox] = useState<boolean>(false);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
