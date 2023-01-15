@@ -156,6 +156,8 @@ select:focus + .form-icon {
   border: 1px solid #f05252 !important;
   color: #f05252 !important;
   -webkit-text-fill-color: #f05252 !important;
+  box-shadow: 0 0 0 30px #374151 inset !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
 .dark .error input::placeholder {
