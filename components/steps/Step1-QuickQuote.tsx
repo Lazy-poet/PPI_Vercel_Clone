@@ -226,7 +226,7 @@ const QuickQuote = (props: any) => {
                 data.postCode &&
                 postcodeValidator(data.postCode, "GB")
               ? "success"
-              : "error"
+              : "error search-pulse"
           }`}
         >
           <label
@@ -235,7 +235,7 @@ const QuickQuote = (props: any) => {
           >
             Postcode
           </label>
-          <div className="relative">
+          <div className="relative address-input-wrapper">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 aria-hidden="true"
