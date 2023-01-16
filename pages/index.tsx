@@ -61,7 +61,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
 
   // Step1
 
-
   const handleOpen = (type: String) => {
     setFileURL(type);
     setOpen(!open);
@@ -479,7 +478,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
-                {step === STEP.CLAIM_NOW && <ClaimNowAlert />}
+                {step === STEP.QUICK_QUOTE && <ClaimNowAlert />}
 
                 <Title step={step} onClick={handleOpen} />
 
