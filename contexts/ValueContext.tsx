@@ -15,6 +15,16 @@ const useValue = () => {
     month: "",
     year: "",
   });
+  const [fdEvents1, setFdEvents1] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    day: true,
+    month: true,
+    year: true,
+  });
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
     employerName: null,
@@ -49,6 +59,8 @@ const useValue = () => {
     setFormData4,
     formData5,
     setFormData5,
+    fdEvents1,
+    setFdEvents1,
   };
 };
 
@@ -67,6 +79,17 @@ export const ValueContext = createContext({
     day: "",
     month: "",
     year: "",
+  },
+  setFdEvents1: (value: any) => {},
+  fdEvents1: {
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    day: true,
+    month: true,
+    year: true,
   },
   setFormData1: (value: any) => {},
   formData2: {
@@ -108,6 +131,8 @@ export const ValueProvider = ({ children }: React.PropsWithChildren) => {
     setFormData4,
     formData5,
     setFormData5,
+    fdEvents1,
+    setFdEvents1,
   } = useValue();
 
   return (
@@ -127,6 +152,8 @@ export const ValueProvider = ({ children }: React.PropsWithChildren) => {
         setFormData4,
         formData5,
         setFormData5,
+        fdEvents1,
+        setFdEvents1,
       }}
     >
       {children}

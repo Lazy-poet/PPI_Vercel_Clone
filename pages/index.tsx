@@ -44,6 +44,8 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setFormData4,
     formData5,
     setFormData5,
+    fdEvents1,
+    setFdEvents1,
   } = useSystemValues();
 
   const urlEmail = router.query.email;
@@ -58,16 +60,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
   const [prevData, setPrevData] = useState("");
 
   // Step1
-  const [fdEvents1, setFdEvents1] = useState({
-    firstName: true,
-    lastName: true,
-    email: true,
-    postCode: true,
-    address: true,
-    day: true,
-    month: true,
-    year: true,
-  });
+
 
   const handleOpen = (type: String) => {
     setFileURL(type);
