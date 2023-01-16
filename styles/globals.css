@@ -36,6 +36,8 @@
   color: #111928;
 }
 
+input:not([type="checkbox"]),
+input:focus:not([type="checkbox"]),
 input:focus:not([type="checkbox"]),
 select:focus,
 .success input:focus:not([type="checkbox"]),
@@ -97,6 +99,7 @@ select:focus + .form-icon {
   color: #ffffff;
 }
 
+.dark input:not([type="checkbox"]),
 .dark input:focus:not([type="checkbox"]),
 .dark select:focus,
 .dark .mui-select .MuiInputBase-root:focus,
