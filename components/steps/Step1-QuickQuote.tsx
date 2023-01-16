@@ -14,6 +14,11 @@ const QuickQuote = (props: any) => {
   const [Years, setYears] = useState<string[]>([]);
   const { showPulse, setShowPulse } = useSystemValues();
   const mountCount = useRef<number>(0);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   /**
    * show pulse animation when postcode is valid
    */
