@@ -36,7 +36,16 @@
   color: #111928;
 }
 
-input:not([type="checkbox"]),
+input:not([type="checkbox"]) {
+  -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
+}
+
+.dark input:not([type="checkbox"]) {
+  -webkit-text-fill-color: #9ca3af !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+}
+
 input:focus:not([type="checkbox"]),
 input:focus:not([type="checkbox"]),
 select:focus,
@@ -99,7 +108,6 @@ select:focus + .form-icon {
   color: #ffffff;
 }
 
-.dark input:not([type="checkbox"]),
 .dark input:focus:not([type="checkbox"]),
 .dark select:focus,
 .dark .mui-select .MuiInputBase-root:focus,
@@ -107,6 +115,7 @@ select:focus + .form-icon {
 .dark .success select:focus,
 .dark .success .mui-select .MuiInputBase-root:focus,
 .dark .error input:focus:not([type="checkbox"]),
+.dark .error input:active:not([type="checkbox"]),
 .dark .error select:focus,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
