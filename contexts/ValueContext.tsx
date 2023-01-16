@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<number>(624);
+  const [showPulse, setShowPulse] = useState<boolean>(false);
+
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
     firstName: "",
@@ -61,11 +63,15 @@ const useValue = () => {
     setFormData5,
     fdEvents1,
     setFdEvents1,
+    showPulse,
+    setShowPulse,
   };
 };
 
 export const ValueContext = createContext({
   amount: 0,
+  showPulse: false,
+  setShowPulse: (value: boolean) => {},
   setAmount: (value: number) => {},
   checkedYears: [""],
   setCheckedYears: (value: string[]) => {},
@@ -116,48 +122,10 @@ export const ValueContext = createContext({
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {
-  const {
-    checkedYears,
-    amount,
-    setCheckedYears,
-    setAmount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-    fdEvents1,
-    setFdEvents1,
-  } = useValue();
+  const value = useValue();
 
   return (
-    <ValueContext.Provider
-      value={{
-        amount,
-        setAmount,
-        checkedYears,
-        setCheckedYears,
-        formData1,
-        setFormData1,
-        formData2,
-        setFormData2,
-        formData3,
-        setFormData3,
-        formData4,
-        setFormData4,
-        formData5,
-        setFormData5,
-        fdEvents1,
-        setFdEvents1,
-      }}
-    >
-      {children}
-    </ValueContext.Provider>
+    <ValueContext.Provider value={value}>{children}</ValueContext.Provider>
   );
 };
 

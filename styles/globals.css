@@ -363,7 +363,7 @@ select:focus + .form-icon {
   }
 }
 
-.error .search-pulse {
+.search-pulse {
   border-radius: 0.5rem;
   animation: pulse 1.5s infinite;
   -webkit-animation: pulse 1.5s infinite;

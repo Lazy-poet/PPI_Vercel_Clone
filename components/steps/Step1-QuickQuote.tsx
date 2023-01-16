@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
 import { postcodeValidator } from "postcode-validator";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useSystemValues } from "@/contexts/ValueContext";
+import { log } from "console";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
@@ -11,6 +13,28 @@ const QuickQuote = (props: any) => {
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const { showPulse, setShowPulse } = useSystemValues();
+  const mountCount = useRef<number>(0);
+  /**
+   * show pulse animation when postcode is valid
+   */
+  useEffect(() => {
+    // because of React Strictode, components are mounted twice in development mode.
+    // thus, we need to set mountCount to 2 in development mode after component has mounted for the first time
+    const env = process.env.NODE_ENV;
+    if (mountCount.current === 0) {
+      if (env === "development" || env === "test") {
+        mountCount.current = 2;
+      } else {
+        mountCount.current = 1;
+      }
+      return;
+    }
+
+    const show = !!data.postCode && !!postcodeValidator(data.postCode, "GB");
+    setShowPulse(show);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.postCode]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -265,8 +289,16 @@ const QuickQuote = (props: any) => {
             />
             <button
               type="button"
-              className="search-pulse text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() => searchAddressByPostcode(data.postCode)}
+              className={`${
+                showPulse ? "search-pulse" : ""
+              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              onClick={() => {
+                if (showPulse) {
+                  // pulse should disappear after addresses have been fetched
+                  setShowPulse(false);
+                }
+                searchAddressByPostcode(data.postCode);
+              }}
             >
               Search
             </button>
