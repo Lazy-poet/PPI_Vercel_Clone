@@ -24,7 +24,7 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
 import HeroSection from "@/components/HeroSection";
 import ReviewSection from "@/components/ReviewSection";
-
+import ClaimNowAlert from "@/components/ClaimNowAlert";
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
   setClaimValue: Dispatch<SetStateAction<number>>;
@@ -479,6 +479,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
+                {step === STEP.CLAIM_NOW && <ClaimNowAlert />}
 
                 <Title step={step} onClick={handleOpen} />
 

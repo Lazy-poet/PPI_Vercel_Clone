@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
 import { postcodeValidator } from "postcode-validator";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useSystemValues } from "@/contexts/ValueContext";
+import { log } from "console";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
@@ -11,6 +13,28 @@ const QuickQuote = (props: any) => {
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const { showPulse, setShowPulse } = useSystemValues();
+  const mountCount = useRef<number>(0);
+  /**
+   * show pulse animation when postcode is valid
+   */
+  useEffect(() => {
+    // because of React Strictode, components are mounted twice in development mode.
+    // thus, we need to set mountCount to 2 in development mode after component has mounted for the first time
+    const env = process.env.NODE_ENV;
+    if (mountCount.current === 0) {
+      if (env === "development" || env === "test") {
+        mountCount.current = 2;
+      } else {
+        mountCount.current = 1;
+      }
+      return;
+    }
+
+    const show = !!data.postCode && !!postcodeValidator(data.postCode, "GB");
+    setShowPulse(show);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.postCode]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -102,7 +126,7 @@ const QuickQuote = (props: any) => {
               type="text"
               name="firstName"
               id="first-name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white"
               placeholder="First Name"
               required
               maxLength={64}
@@ -133,7 +157,7 @@ const QuickQuote = (props: any) => {
               type="text"
               name="lastName"
               id="last-name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white"
               placeholder="Last Name"
               required
               maxLength={64}
@@ -188,7 +212,7 @@ const QuickQuote = (props: any) => {
                 name="email"
                 id="email"
                 placeholder="Email Address"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-tr-lg rounded-br-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white"
                 required
                 maxLength={64}
                 value={data.email}
@@ -257,7 +281,7 @@ const QuickQuote = (props: any) => {
               type="search"
               id="postCode"
               name="postCode"
-              className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Postcode"
               required
               value={data.postCode}
@@ -265,8 +289,16 @@ const QuickQuote = (props: any) => {
             />
             <button
               type="button"
-              className="search-pulse text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() => searchAddressByPostcode(data.postCode)}
+              className={`${
+                showPulse ? "search-pulse" : ""
+              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              onClick={() => {
+                if (showPulse) {
+                  // pulse should disappear after addresses have been fetched
+                  setShowPulse(false);
+                }
+                searchAddressByPostcode(data.postCode);
+              }}
             >
               Search
             </button>
@@ -314,7 +346,7 @@ const QuickQuote = (props: any) => {
                 <Select
                   id="address"
                   name="address"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value={data.address}
                   onChange={(e) => handleMUISelectChange(e)}
                   displayEmpty
@@ -376,7 +408,7 @@ const QuickQuote = (props: any) => {
                   <Select
                     id="day"
                     name="day"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={data.day}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
@@ -421,7 +453,7 @@ const QuickQuote = (props: any) => {
                   <Select
                     id="month"
                     name="month"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     value={data.month}
                     onChange={(e) => handleMUISelectChange(e)}
                     displayEmpty
@@ -465,7 +497,7 @@ const QuickQuote = (props: any) => {
                 <Select
                   id="year"
                   name="year"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-25 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   value={data.year}
                   onChange={(e) => handleMUISelectChange(e)}
                   displayEmpty

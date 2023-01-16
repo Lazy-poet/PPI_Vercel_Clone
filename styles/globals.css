@@ -41,6 +41,10 @@ input:not([type="checkbox"]) {
   -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
+input:not([type="checkbox"])::placeholder {
+  -webkit-text-fill-color: #6b7280 !important;
+}
+
 .dark input:not([type="checkbox"]) {
   -webkit-text-fill-color: #9ca3af !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
@@ -59,14 +63,19 @@ select:focus,
   border: 1px solid #1c64f2 !important;
   font-style: normal;
   font-weight: 400;
-  color: #111928 !important;
-  -webkit-text-fill-color: #111928 !important;
+  color: #6b7280 !important;
+  -webkit-text-fill-color: #6b7280 !important;
   -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
 input::placeholder,
-.mui-select .MuiInputBase-root {
-  color: #111928;
+.MuiSelect-select {
+  opacity: 0.25 !important;
+  color: #6b7280 !important;
+}
+.success .MuiSelect-select,
+.error .MuiSelect-select {
+  opacity: 1 !important;
 }
 
 .dark input::placeholder,
@@ -101,6 +110,7 @@ select:focus + .form-icon {
 
 .success input::placeholder {
   color: #046c4e !important;
+  opacity: 1 !important;
 }
 
 .dark .form-group:has(input:focus) label,
@@ -123,6 +133,7 @@ select:focus + .form-icon {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+  opacity: 1 !important;
 }
 
 .dark .success input:not([type="checkbox"]),
@@ -137,6 +148,7 @@ select:focus + .form-icon {
 
 .dark .success input::placeholder {
   color: #0e9f6e !important;
+  opacity: 1 !important;
 }
 
 /* error */
@@ -363,7 +375,7 @@ select:focus + .form-icon {
   }
 }
 
-.error .search-pulse {
+.search-pulse {
   border-radius: 0.5rem;
   animation: pulse 1.5s infinite;
   -webkit-animation: pulse 1.5s infinite;
