@@ -5,7 +5,6 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
-import { log } from "console";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
@@ -51,7 +50,7 @@ const QuickQuote = (props: any) => {
         value = value.trim();
         break;
       case "postCode":
-        value = e.target.value.toUpperCase().trim();
+        value = e.target.value.toUpperCase().trim().substr(0, 8);
         break;
       default:
         value = e.target.value;
