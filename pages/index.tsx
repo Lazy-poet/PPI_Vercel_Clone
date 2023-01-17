@@ -52,8 +52,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
-  const [checkedYears, setCheckedYears] = useState<string[]>([]);
-
+  const { checkedYears } = useSystemValues();
   const [utmParams, setUtmParams] = useState({});
 
   const [theEmail, setTheEmail] = useState("");
@@ -187,7 +186,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
                 customerValue: calculateCustomerValue(+claimValue),
-                link: `https://workfromhome.claimingmadeeasy.com/claim?email=${otherFormData1.email.toLowerCase()}`,
+                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email.toLowerCase()}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email.toLowerCase(),
@@ -401,22 +400,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
   }, [urlEmail]);
 
   useEffect(() => {
-    if (!!router.query?.years || !!router.query?.claimValue) {
-      setCheckedYears(
-        // @ts-ignore
-        Array.isArray(router.query.years)
-          ? router.query.years
-          : [router.query.years]
-      );
-      // only set claim value if it is not empty and also convert it to number
-      if (
-        router.query.claimValue &&
-        typeof router.query.claimValue === "string"
-      ) {
-        setClaimValue(parseInt(router.query.claimValue));
-      }
-    }
-
     if (!!router.query) {
       let utmParams: any = {};
       Object.keys(router.query).forEach((key) => {
