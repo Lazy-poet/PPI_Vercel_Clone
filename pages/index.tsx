@@ -24,7 +24,7 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
 import HeroSection from "@/components/HeroSection";
 import ReviewSection from "@/components/ReviewSection";
-import ClaimNowAlert from "@/components/ClaimNowAlert";
+import CustomAlert from "@/components/CustomAlert";
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
   setClaimValue: Dispatch<SetStateAction<number>>;
@@ -478,7 +478,12 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
-                {step === STEP.QUICK_QUOTE && <ClaimNowAlert />}
+                {step === STEP.QUICK_QUOTE && (
+                  <CustomAlert
+                    color="green"
+                    body="Great news! You are entitled to claim a tax refund"
+                  />
+                )}
 
                 <Title step={step} onClick={handleOpen} />
 
