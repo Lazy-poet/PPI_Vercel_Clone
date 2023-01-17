@@ -293,6 +293,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({
+              signatureData: formData3.signatureData,
               signatureUrl: signatureUrlPrefix + data?.path,
             })
             .match({ email: theEmail ?? urlEmail });
