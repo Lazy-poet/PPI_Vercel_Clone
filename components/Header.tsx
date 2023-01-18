@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
-import Image from "next/image";
 import { THEME, useTheme } from "./hooks/useTheme";
+import { Logo } from "./svgs/logo";
 
 const Header = () => {
   const { theme, changeTheme } = useTheme();
@@ -23,16 +23,7 @@ const Header = () => {
       <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link href="/" className="flex items-center">
-            <Image
-              src="/images/favicon.png"
-              className="mr-3 h-6 sm:h-9"
-              alt="Logo"
-              width={36}
-              height={36}
-            />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-              ClaimingMadeEasy™
-            </span>
+            <Logo dark={theme === THEME.DARK} />
           </Link>
           <div className="flex items-center md:order-2">
             <button
