@@ -3,7 +3,7 @@ export const PERCENTS = [9, 64, 73, 82, 91, 100, 100];
 export const TITLES = [
   "Your details",
   "Claim now",
-  "Sign & complete",
+  "Your signature",
   "One more thing!",
   "Lastly!",
   "Thank you! You're all done",
@@ -14,7 +14,7 @@ export const SUB_TITLES = (step: any, onClick: any) => {
   const subtitles = [
     "If you want to claim your tax refund you must provide your details below",
     "Tell us about your employment so that we can process your claim",
-    <span>
+    <span key="tos">
       We will submit these&nbsp;
       <button
         onClick={() => onClick("P87+64-8+R38.pdf")}
@@ -31,9 +31,13 @@ export const SUB_TITLES = (step: any, onClick: any) => {
       </button>
       &nbsp;before proceeding.
     </span>,
-    "We need your National Insurance (NI) number to submit your claim",
-    "We also need your Employers PAYE Number to submit your claim",
-    "We will be in touch with updates on your claim as soon as we hear anything. All you have to do is sit back, relax and wait until then!",
+    "We need your National Insurance (NI) number to find your records",
+    "We need your Employers PAYE Number to submit your claim",
+    <span key="what-happens-next">
+      <strong>What happens next?</strong> We will be in touch with updates on
+      your claim as soon as we hear anything. All you have to do is sit back,
+      relax and wait until then!
+    </span>,
     "Due to the Pandemic, the government asked the workforce to work from home (WFH) whenever possible. All UK taxpayers may be eligible to claim the full £312 WFH allowance since 6 April 2020, provided they have worked a minimum of one day from home (per year).",
   ];
   return <>{subtitles[step]}</>;
