@@ -111,10 +111,10 @@ const HeroSection: React.FC<{
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
                 <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
-                  <span className="text-[#FFEC51] font-bold text-2xl md:text-3xl xl:text-4xl ">
+                  <span className="text-blue-500 font-bold text-2xl md:text-3xl xl:text-4xl ">
                     £
                   </span>
-                  <span className="text-[#FFEC51] font-extrabold">
+                  <span className="text-blue-500 font-extrabold">
                     <Animated
                       animateToNumber={amount}
                       configs={[

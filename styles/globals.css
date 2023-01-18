@@ -340,7 +340,7 @@ select:focus + .form-icon {
   margin: auto;
   border-width: 0.45rem;
   border-style: solid;
-  border-color: #ffec51;
+  border-color: #3f83f8;
   position: absolute;
   border-right-color: transparent;
   width: 140%;
@@ -357,7 +357,7 @@ select:focus + .form-icon {
   padding: 0.1em 0.25em;
   border-width: 0.45rem;
   border-style: solid;
-  border-color: #ffec51;
+  border-color: #3f83f8;
   border-left-color: transparent;
   border-top-color: transparent;
   position: absolute;
