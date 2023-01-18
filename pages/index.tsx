@@ -256,7 +256,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.employerName !== null) {
+        if (formData2.employerName) {
           console.log(formData2.employerName?.address);
           const { error } = await supabase
             .from("claim-form-submissions")
@@ -277,7 +277,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.SIGN_COMPLETE:
         setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData !== null) {
+        if (formData3.signatureData) {
           console.log(formData3);
 
           const signatureUrlPrefix =
@@ -302,7 +302,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance !== "" && isNino(formData4.insurance)) {
+        if (formData4.insurance && isNino(formData4.insurance)) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
@@ -315,7 +315,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.THANK_YOU:
         setFormData5({ ...formData5, firstEvent: false });
-        if (formData5.paye !== "" && Utils.validatePAYE(formData5.paye)) {
+        if (formData5.paye && Utils.validatePAYE(formData5.paye)) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
@@ -383,31 +383,27 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         month: false,
         year: false,
       });
-
       setFormData2({
-        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
-        claimChecked1: data?.[0]?.claimChecked1
-          ? data?.[0].claimChecked1
-          : false,
-        claimChecked2: data?.[0]?.claimChecked1
-          ? data?.[0].claimChecked2
-          : false,
-        firstEvent: formData2.firstEvent,
+        employerName: data?.[0]?.employerName || "",
+        claimChecked1: data?.[0]?.claimChecked1 ?? true,
+        claimChecked2: data?.[0]?.claimChecked1 ?? true,
+        firstEvent: !data?.[0]?.employerName,
       });
 
       setFormData3({
-        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
-        firstEvent: formData2.firstEvent,
+        signatureData: data?.[0]?.signatureData || "",
+        firstEvent: !data?.[0]?.signatureData,
       });
 
       setFormData4({
         ...formData4,
-        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
+        insurance: data?.[0]?.insurance || "",
+        firstEvent: !data?.[0]?.insurance,
       });
 
       setFormData5({
-        ...formData5,
         paye: data?.[0]?.paye ? data?.[0].paye : "",
+        firstEvent: !data?.[0]?.paye,
       });
 
       formPageHandler(data?.[0]);
