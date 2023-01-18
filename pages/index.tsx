@@ -48,14 +48,14 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setFdEvents1,
   } = useSystemValues();
 
-  const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const { checkedYears } = useSystemValues();
   const [utmParams, setUtmParams] = useState({});
 
-  const [theEmail, setTheEmail] = useState("");
+  const [theEmail, setTheEmail] = useState<string | null>(null);
+  const [urlEmail, setUrlEmail] = useState<string | null>(null);
   const [prevData, setPrevData] = useState("");
 
   // Step1
@@ -183,12 +183,13 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
                 customerValue: calculateCustomerValue(+claimValue),
-                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email.toLowerCase()}`,
+                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
-                email: otherFormData1.email.toLowerCase(),
+                email: otherFormData1.email,
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
+                birthdate_str: `${day}/${month}/${year}`,
                 birthdate: JSON.stringify({
                   day,
                   month,
@@ -212,9 +213,10 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   customerValue: calculateCustomerValue(+claimValue),
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
-                  email: otherFormData1.email.toLowerCase(),
+                  email: otherFormData1.email,
                   postCode: otherFormData1.postCode,
                   address: otherFormData1.address,
+                  birthdate_str: `${day}/${month}/${year}`,
                   birthdate: JSON.stringify({
                     day,
                     month,
@@ -239,6 +241,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                 email: otherFormData1.email,
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
+                birthdate_str: `${day}/${month}/${year}`,
                 birthdate: JSON.stringify({
                   day,
                   month,
@@ -253,20 +256,21 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.employerName !== null) {
+        if (formData2.employerName) {
+          console.log(formData2.employerName?.address);
+          const { error } = await supabase
+            .from("claim-form-submissions")
+            .update({
+              claimChecked1: formData2.claimChecked1 ?? false,
+              claimChecked2: formData2.claimChecked2 ?? false,
+              employerName: formData2.employerName?.label,
+              employerAddress: formData2.employerName?.address,
+            })
+            .match({ email: theEmail ?? urlEmail });
+
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
           } else {
-            const { error } = await supabase
-              .from("claim-form-submissions")
-              .update({
-                claimChecked1: formData2.claimChecked1,
-                claimChecked2: formData2.claimChecked2,
-                employerName: formData2.employerName?.label,
-                employerAddress: formData2.employerName?.address,
-              })
-              .match({ email: theEmail ?? urlEmail });
-
             setStep((step) => step + 1);
           }
         }
@@ -298,18 +302,20 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.LAST_THING:
         setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance !== "" && isNino(formData4.insurance)) {
+        if (formData4.insurance && isNino(formData4.insurance)) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
             .match({ email: theEmail ?? urlEmail });
+
+          console.log(error, theEmail ?? urlEmail);
 
           setStep((step) => step + 1);
         }
         break;
       case STEP.THANK_YOU:
         setFormData5({ ...formData5, firstEvent: false });
-        if (formData5.paye !== "" && Utils.validatePAYE(formData5.paye)) {
+        if (formData5.paye && Utils.validatePAYE(formData5.paye)) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({ paye: formData5.paye })
@@ -396,8 +402,8 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
       });
 
       setFormData5({
-        ...formData5,
         paye: data?.[0]?.paye ? data?.[0].paye : "",
+        firstEvent: !data?.[0]?.paye,
       });
 
       formPageHandler(data?.[0]);
@@ -418,6 +424,11 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         }
         setUtmParams(utmParams);
       });
+
+      if (!!router.query.email) {
+        // @ts-ignore
+        setUrlEmail(router.query.email);
+      }
     }
   }, [router.query, router]);
 
