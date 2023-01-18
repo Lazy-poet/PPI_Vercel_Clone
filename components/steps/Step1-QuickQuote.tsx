@@ -213,11 +213,11 @@ const QuickQuote = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              We need your email so we can keep you updated on your claim
+              We need your email to keep you updated on your claim
             </p>
           ) : !data.email ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              We need your email so we can keep you updated on your claim
+              We need your email to keep you updated on your claim
             </p>
           ) : !Utils.validateEmail(data.email) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -225,7 +225,7 @@ const QuickQuote = (props: any) => {
             </p>
           ) : (
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              We need your email so we can keep you updated on your claim
+              We need your email to keep you updated on your claim
             </p>
           )}
         </div>
@@ -296,7 +296,7 @@ const QuickQuote = (props: any) => {
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
               Enter your postcode, then click &apos;Search&apos; to find your
-              address and proceed
+              address
             </p>
           ) : !(data.postCode && postcodeValidator(data.postCode, "GB")) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -304,7 +304,7 @@ const QuickQuote = (props: any) => {
             </p>
           ) : addressList.length === 0 ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Click &apos;Search&apos; to find your address and proceed
+              Click &apos;Search&apos; to find your address
             </p>
           ) : (
             <p
@@ -312,7 +312,7 @@ const QuickQuote = (props: any) => {
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
               Enter your postcode, then click &apos;Search&apos; to find your
-              address and proceed
+              address
             </p>
           )}
         </div>

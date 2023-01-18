@@ -54,7 +54,7 @@ const SignComplete = (props: any) => {
       </ul>
 
       <div>
-        <h1 className="mt-6 max-w-screen-xl mx-auto text-left mb-4 text-3xl font-extrabold tracking-tight leading-none text-gray-600 dark:text-gray-500">
+        <h1 className="mt-6 max-w-screen-xl mx-auto text-left mb-4 text-lg lg:text-xl font-extrabold tracking-tight leading-none text-gray-600 dark:text-gray-500">
           Draw your signature
         </h1>
         <p
