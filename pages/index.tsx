@@ -257,7 +257,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
           } else {
-            console.log(formData2.employerName?.address);
             const { error } = await supabase
               .from("claim-form-submissions")
               .update({
@@ -274,7 +273,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.SIGN_COMPLETE:
         setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData !== null) {
+        if (formData3.signatureData) {
           console.log(formData3);
 
           const signatureUrlPrefix =
@@ -378,22 +377,22 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         month: false,
         year: false,
       });
-
       setFormData2({
-        employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
-        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
-        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
-        firstEvent: formData2.firstEvent,
+        employerName: data?.[0]?.employerName || "",
+        claimChecked1: data?.[0]?.claimChecked1 ?? true,
+        claimChecked2: data?.[0]?.claimChecked1 ?? true,
+        firstEvent: !data?.[0]?.employerName,
       });
 
       setFormData3({
-        signatureData: data?.[0]?.signatureData ? data?.[0].signatureData : "",
-        firstEvent: formData2.firstEvent,
+        signatureData: data?.[0]?.signatureData || "",
+        firstEvent: !data?.[0]?.signatureData,
       });
 
       setFormData4({
         ...formData4,
-        insurance: data?.[0]?.insurance ? data?.[0].insurance : "",
+        insurance: data?.[0]?.insurance || "",
+        firstEvent: !data?.[0]?.insurance,
       });
 
       setFormData5({
