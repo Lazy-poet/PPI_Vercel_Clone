@@ -36,6 +36,25 @@
   color: #111928;
 }
 
+input:not([type="checkbox"]) {
+  -webkit-text-fill-color: #111928 !important;
+  -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
+}
+
+input:not([type="checkbox"])::placeholder {
+  -webkit-text-fill-color: #6b7280 !important;
+}
+.error input:not([type="checkbox"], :focus)::placeholder {
+  -webkit-text-fill-color: #f05252 !important;
+  opacity: 1 !important;
+}
+
+.dark input:not([type="checkbox"]) {
+  -webkit-text-fill-color: #9ca3af !important;
+  -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+}
+
+input:focus:not([type="checkbox"]),
 input:focus:not([type="checkbox"]),
 select:focus,
 .success input:focus:not([type="checkbox"]),
@@ -48,14 +67,23 @@ select:focus,
   border: 1px solid #1c64f2 !important;
   font-style: normal;
   font-weight: 400;
-  color: #111928 !important;
-  -webkit-text-fill-color: #111928 !important;
+  color: #6b7280 !important;
+  -webkit-text-fill-color: #6b7280 !important;
   -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
 input::placeholder,
-.mui-select .MuiInputBase-root {
-  color: #111928;
+.MuiSelect-select {
+  opacity: 0.25 !important;
+  color: #6b7280 !important;
+}
+.dark input::placeholder,
+.dark .MuiSelect-select {
+  opacity: 0.75 !important;
+}
+.success .MuiSelect-select,
+.error .MuiSelect-select {
+  opacity: 1 !important;
 }
 
 .dark input::placeholder,
@@ -63,8 +91,8 @@ input::placeholder,
   color: #9ca3af;
 }
 
-input:focus+.form-icon,
-select:focus+.form-icon {
+input:focus + .form-icon,
+select:focus + .form-icon {
   display: none;
 }
 
@@ -90,6 +118,7 @@ select:focus+.form-icon {
 
 .success input::placeholder {
   color: #046c4e !important;
+  opacity: 1 !important;
 }
 
 .dark .form-group:has(input:focus) label,
@@ -104,6 +133,7 @@ select:focus+.form-icon {
 .dark .success select:focus,
 .dark .success .mui-select .MuiInputBase-root:focus,
 .dark .error input:focus:not([type="checkbox"]),
+.dark .error input:active:not([type="checkbox"]),
 .dark .error select:focus,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
@@ -111,6 +141,7 @@ select:focus+.form-icon {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
+  opacity: 1 !important;
 }
 
 .dark .success input:not([type="checkbox"]),
@@ -125,6 +156,7 @@ select:focus+.form-icon {
 
 .dark .success input::placeholder {
   color: #0e9f6e !important;
+  opacity: 1 !important;
 }
 
 /* error */
@@ -146,8 +178,8 @@ select:focus+.form-icon {
   box-shadow: none !important;
   font-style: normal;
   font-weight: 400;
-  color: #111928 !important;
-  -webkit-text-fill-color: #111928 !important;
+  color: #f05252 !important;
+  -webkit-text-fill-color: #f05252 !important;
   -webkit-box-shadow: 0 0 0 30px #fdf2f2 inset !important;
 }
 
@@ -188,7 +220,6 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 640px) {
-
   .form-icon,
   .input-icon {
     width: 16px;
@@ -198,7 +229,6 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 768px) {
-
   .form-icon,
   .input-icon {
     width: 18px;
@@ -208,7 +238,6 @@ select:focus+.form-icon {
 }
 
 @media (min-width: 1024px) {
-
   .form-icon,
   .input-icon {
     width: 24px;
@@ -299,4 +328,88 @@ select:focus+.form-icon {
 .success .mui-select .MuiSelect-icon,
 .error .mui-select .MuiSelect-icon {
   display: none;
+}
+
+.anim-circle {
+  z-index: 5;
+  position: relative;
+}
+.anim-circle:before {
+  content: "";
+  z-index: -1;
+  margin: auto;
+  border-width: 0.45rem;
+  border-style: solid;
+  border-color: #ffec51;
+  position: absolute;
+  border-right-color: transparent;
+  width: 140%;
+  height: 160%;
+  opacity: 0.5;
+  border-radius: 50%;
+  padding: 0.1em 0.25em;
+  -webkit-animation: in-out 1.5s infinite alternate;
+  animation: in-out 1.5s infinite alternate;
+}
+.anim-circle:after {
+  content: "";
+  margin-top: 4px;
+  padding: 0.1em 0.25em;
+  border-width: 0.45rem;
+  border-style: solid;
+  border-color: #ffec51;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  position: absolute;
+  width: 140%;
+  height: 160%;
+  opacity: 0.5;
+  border-radius: 50%;
+  -webkit-animation: in-out 1.5s infinite alternate;
+  animation: in-out 1.5s infinite alternate;
+}
+.in-out {
+  -webkit-animation: in-out 1s infinite alternate;
+  animation: in-out 1s infinite alternate;
+}
+@keyframes in-out {
+  0% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95);
+  }
+}
+
+.search-pulse {
+  border-radius: 0.5rem;
+  animation: pulse 1.5s infinite;
+  -webkit-animation: pulse 1.5s infinite;
+}
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(240, 82, 82, 1);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(240, 82, 82, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(240, 82, 82, 1);
+    box-shadow: 0 0 0 0 rgba(240, 82, 82, 1);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
+    box-shadow: 0 0 0 18px rgba(240, 82, 82, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(240, 82, 82, 0);
+    box-shadow: 0 0 0 0 rgba(240, 82, 82, 0);
+  }
 }

@@ -1,6 +1,6 @@
 import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
@@ -8,8 +8,10 @@ import { useSystemValues } from "@/contexts/ValueContext";
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
 });
-
-const HeroSection = () => {
+const HeroSection: React.FC<{
+  handleStart: () => void;
+  setClaimValue: Dispatch<SetStateAction<number>>;
+}> = ({ handleStart, setClaimValue }) => {
   const router = useRouter();
   const { amount, setAmount, checkedYears, setCheckedYears } =
     useSystemValues();
@@ -88,6 +90,10 @@ const HeroSection = () => {
   }, [type]);
 
   useEffect(() => {
+    setClaimValue(amount);
+  }, [amount]);
+
+  useEffect(() => {
     if (checkedYears.includes("2020-21")) {
       setCheckedFirstBox(true);
     }
@@ -104,17 +110,19 @@ const HeroSection = () => {
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
-                <span className="text-primary-600 dark:text-primary-500">
-                  £
-                </span>
-                <span className="text-primary-600 dark:text-primary-500">
-                  <Animated
-                    animateToNumber={amount}
-                    configs={[
-                      { mass: 1, tension: 220, friction: 90 },
-                      { mass: 1, tension: 280, friction: 90 },
-                    ]}
-                  ></Animated>
+                <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
+                  <span className="text-[#FFEC51] font-bold text-2xl md:text-3xl xl:text-4xl ">
+                    £
+                  </span>
+                  <span className="text-[#FFEC51] font-extrabold">
+                    <Animated
+                      animateToNumber={amount}
+                      configs={[
+                        { mass: 1, tension: 220, friction: 90 },
+                        { mass: 1, tension: 280, friction: 90 },
+                      ]}
+                    ></Animated>
+                  </span>
                 </span>
                 &nbsp;Tax Refund Today
               </h1>
@@ -225,23 +233,7 @@ const HeroSection = () => {
                           setFirstEvent(false);
 
                           checkedFirstBox || checkedSecondBox
-                            ? router.push(
-                                {
-                                  pathname: "/claim",
-                                  query: {
-                                    ...router.query,
-                                    amount: amount,
-                                    years: checkedYears,
-                                    claimValue: amount,
-                                    step: fromEmail ? 1 : false,
-                                  },
-                                },
-                                `${
-                                  fromEmail
-                                    ? `/claim?email=${fromEmail}`
-                                    : "/claim"
-                                }`
-                              )
+                            ? handleStart()
                             : window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                       >

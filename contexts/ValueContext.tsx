@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<number>(624);
+  const [showPulse, setShowPulse] = useState<boolean>(false);
+
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
     firstName: "",
@@ -14,6 +16,16 @@ const useValue = () => {
     day: "",
     month: "",
     year: "",
+  });
+  const [fdEvents1, setFdEvents1] = useState<any>({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    day: true,
+    month: true,
+    year: true,
   });
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
@@ -49,11 +61,17 @@ const useValue = () => {
     setFormData4,
     formData5,
     setFormData5,
+    fdEvents1,
+    setFdEvents1,
+    showPulse,
+    setShowPulse,
   };
 };
 
 export const ValueContext = createContext({
   amount: 0,
+  showPulse: false,
+  setShowPulse: (value: boolean) => {},
   setAmount: (value: number) => {},
   checkedYears: [""],
   setCheckedYears: (value: string[]) => {},
@@ -67,6 +85,17 @@ export const ValueContext = createContext({
     day: "",
     month: "",
     year: "",
+  },
+  setFdEvents1: (value: any) => {},
+  fdEvents1: {
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    day: true,
+    month: true,
+    year: true,
   },
   setFormData1: (value: any) => {},
   formData2: {
@@ -93,44 +122,10 @@ export const ValueContext = createContext({
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {
-  const {
-    checkedYears,
-    amount,
-    setCheckedYears,
-    setAmount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-  } = useValue();
+  const value = useValue();
 
   return (
-    <ValueContext.Provider
-      value={{
-        amount,
-        setAmount,
-        checkedYears,
-        setCheckedYears,
-        formData1,
-        setFormData1,
-        formData2,
-        setFormData2,
-        formData3,
-        setFormData3,
-        formData4,
-        setFormData4,
-        formData5,
-        setFormData5,
-      }}
-    >
-      {children}
-    </ValueContext.Provider>
+    <ValueContext.Provider value={value}>{children}</ValueContext.Provider>
   );
 };
 
