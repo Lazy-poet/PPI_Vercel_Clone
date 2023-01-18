@@ -261,8 +261,8 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({
-              claimChecked1: formData2.claimChecked1,
-              claimChecked2: formData2.claimChecked2,
+              claimChecked1: formData2.claimChecked1 ?? false,
+              claimChecked2: formData2.claimChecked2 ?? false,
               employerName: formData2.employerName?.label,
               employerAddress: formData2.employerName?.address,
             })
@@ -386,8 +386,12 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
 
       setFormData2({
         employerName: data?.[0]?.employerName ? data?.[0].employerName : "",
-        claimChecked1: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
-        claimChecked2: data?.[0]?.claimChecked1 ? data?.[0].claimChecked1 : "",
+        claimChecked1: data?.[0]?.claimChecked1
+          ? data?.[0].claimChecked1
+          : false,
+        claimChecked2: data?.[0]?.claimChecked1
+          ? data?.[0].claimChecked2
+          : false,
         firstEvent: formData2.firstEvent,
       });
 
