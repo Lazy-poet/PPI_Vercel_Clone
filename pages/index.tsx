@@ -257,20 +257,20 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
         if (formData2.employerName !== null) {
+          console.log(formData2.employerName?.address);
+          const { error } = await supabase
+            .from("claim-form-submissions")
+            .update({
+              claimChecked1: formData2.claimChecked1,
+              claimChecked2: formData2.claimChecked2,
+              employerName: formData2.employerName?.label,
+              employerAddress: formData2.employerName?.address,
+            })
+            .match({ email: theEmail ?? urlEmail });
+
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
           } else {
-            console.log(formData2.employerName?.address);
-            const { error } = await supabase
-              .from("claim-form-submissions")
-              .update({
-                claimChecked1: formData2.claimChecked1,
-                claimChecked2: formData2.claimChecked2,
-                employerName: formData2.employerName?.label,
-                employerAddress: formData2.employerName?.address,
-              })
-              .match({ email: theEmail ?? urlEmail });
-
             setStep((step) => step + 1);
           }
         }
