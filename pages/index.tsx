@@ -48,14 +48,14 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setFdEvents1,
   } = useSystemValues();
 
-  const urlEmail = router.query.email;
   const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const { checkedYears } = useSystemValues();
   const [utmParams, setUtmParams] = useState({});
 
-  const [theEmail, setTheEmail] = useState("");
+  const [theEmail, setTheEmail] = useState<string | null>(null);
+  const [urlEmail, setUrlEmail] = useState<string | null>(null);
   const [prevData, setPrevData] = useState("");
 
   // Step1
@@ -183,12 +183,13 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
                 customerValue: calculateCustomerValue(+claimValue),
-                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email.toLowerCase()}`,
+                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email}`,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
-                email: otherFormData1.email.toLowerCase(),
+                email: otherFormData1.email,
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
+                birthdate_str: `${day}/${month}/${year}`,
                 birthdate: JSON.stringify({
                   day,
                   month,
@@ -212,9 +213,10 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   customerValue: calculateCustomerValue(+claimValue),
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
-                  email: otherFormData1.email.toLowerCase(),
+                  email: otherFormData1.email,
                   postCode: otherFormData1.postCode,
                   address: otherFormData1.address,
+                  birthdate_str: `${day}/${month}/${year}`,
                   birthdate: JSON.stringify({
                     day,
                     month,
@@ -239,6 +241,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                 email: otherFormData1.email,
                 postCode: otherFormData1.postCode,
                 address: otherFormData1.address,
+                birthdate_str: `${day}/${month}/${year}`,
                 birthdate: JSON.stringify({
                   day,
                   month,
@@ -304,6 +307,8 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
             .from("claim-form-submissions")
             .update({ insurance: formData4.insurance })
             .match({ email: theEmail ?? urlEmail });
+
+          console.log(error, theEmail ?? urlEmail);
 
           setStep((step) => step + 1);
         }
@@ -419,6 +424,11 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         }
         setUtmParams(utmParams);
       });
+
+      if (!!router.query.email) {
+        // @ts-ignore
+        setUrlEmail(router.query.email);
+      }
     }
   }, [router.query, router]);
 
