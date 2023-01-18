@@ -65,7 +65,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setOpen(!open);
   };
 
-  const handleFormChange1 = async (key: string, value: string) => {
+  const handleFormChange1 = (key: string, value: string) => {
     setFormData1({
       ...formData1,
       firstEvent: false,
@@ -140,9 +140,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
 
   const prevStep = () => {
     if (step === STEP.QUICK_QUOTE) {
-      if (urlEmail) {
-        return router.push(`/?email=${urlEmail}`);
-      }
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -350,11 +347,14 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         .select()
         .match({ email: urlEmail })
         .select();
+      if (!data?.length) {
+        return;
+      }
       setPrevData(data?.[0]);
 
       const birthdate = JSON.parse(data?.[0]?.birthdate);
 
-      /* update the form data white existed user data */
+      /* update the form data with existing user data */
 
       setClaimValue(data?.[0]?.claimValue);
       setFormData1({
@@ -367,6 +367,16 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         day: data?.[0].birthdate ? birthdate.day : "",
         month: data?.[0].birthdate ? birthdate.month : "",
         year: data?.[0].birthdate ? birthdate.year : "",
+      });
+      setFdEvents1({
+        firstName: false,
+        lastName: false,
+        email: false,
+        postCode: false,
+        address: false,
+        day: false,
+        month: false,
+        year: false,
       });
 
       setFormData2({
