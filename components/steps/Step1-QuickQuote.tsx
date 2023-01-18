@@ -13,55 +13,37 @@ const QuickQuote = (props: any) => {
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
   const { showPulse, setShowPulse } = useSystemValues();
-  const mountCount = useRef<number>(0);
 
+  // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
+  const currnetAddressListPostCode = useRef<string>("");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  /**
-   * show pulse animation when postcode is valid
-   */
-  useEffect(() => {
-    // because of React Strictode, components are mounted twice in development mode.
-    // thus, we need to set mountCount to 2 in development mode after component has mounted for the first time
-    const env = process.env.NODE_ENV;
-    if (mountCount.current === 0) {
-      if (env === "development" || env === "test") {
-        mountCount.current = 2;
-      } else {
-        mountCount.current = 1;
-      }
-      return;
-    }
-
-    const show = !!data.postCode && !!postcodeValidator(data.postCode, "GB");
-    setShowPulse(show);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.postCode]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    switch (e.target.name) {
+    let { name, value } = e.target;
+    switch (name) {
       case "firstName":
-        value =
-          e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+        value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "lastName":
-        value =
-          e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1);
+        value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
         value = value.trim();
         break;
       case "postCode":
-        value = e.target.value.toUpperCase().trim().substr(0, 8);
-        break;
-      default:
-        value = e.target.value;
+        value = value.toUpperCase().trim().substr(0, 8);
+        if (
+          name === "postCode" &&
+          value !== currnetAddressListPostCode.current
+        ) {
+          const show = !!value && !!postcodeValidator(value, "GB");
+          setShowPulse(show);
+        }
         break;
     }
-    handleFormChange(e.target.name, value);
+    handleFormChange(name, value);
   };
 
   const handleMUISelectChange = (e: SelectChangeEvent) => {
@@ -80,6 +62,7 @@ const QuickQuote = (props: any) => {
       .then((res) => {
         if (res.result && res.result.hits) {
           setAddressList(res.result.hits);
+          currnetAddressListPostCode.current = e;
         } else {
           setAddressList([]);
         }
