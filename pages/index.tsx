@@ -331,6 +331,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
     }
     document.getElementById("btnNext")?.blur();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   useEffect(() => {
     // always scroll to top on step change
