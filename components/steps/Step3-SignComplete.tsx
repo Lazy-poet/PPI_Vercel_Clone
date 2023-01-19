@@ -72,6 +72,7 @@ const SignComplete = (props: any) => {
               canvasProps={{
                 className: "w-full h-[200px]",
               }}
+              clearOnResize={false}
               penColor={theme === THEME.DARK ? "gray" : "black"}
               onEnd={() => trim()}
             />
