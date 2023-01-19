@@ -23,7 +23,7 @@ const Footer = () => {
           Company Number: 12552579 | Address: 20-22 Wenlock Road, London N1 7GU
         </p>
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-          © 2021-2022&nbsp;
+          © 2023&nbsp;
           <Link href="/" className="hover:underline">
             ClaimingMadeEasy™
           </Link>

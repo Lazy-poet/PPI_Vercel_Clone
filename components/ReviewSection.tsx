@@ -19,9 +19,9 @@ const ReviewSection = () => {
           ></div>
           <blockquote>
             <p className="text-2xl font-medium text-gray-900 dark:text-white">
-              &quot;Very speedy response & questions easy to answer; form really
-              did take just 3 minutes to complete which won&apos;t break the
-              bank but might just earn you some cash to put in it.&quot;
+              &quot;Quick and easy form, and it took just a minute to complete.
+              I was delighted to get a tax refund for something I didn&apos;t even
+              know I was entitled to!&quot;
             </p>
           </blockquote>
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
@@ -37,7 +37,7 @@ const ReviewSection = () => {
                 Sanya
               </div>
               <div className="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">
-                from reviews.io
+                Google rating
               </div>
             </div>
           </figcaption>

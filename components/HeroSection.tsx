@@ -4,6 +4,9 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
+import Image from "next/image";
+import SslImg from "../public/images/ssl-secure.svg";
+import HeroImg from "../public/images/hero.png";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -256,11 +259,7 @@ const HeroSection: React.FC<{
                           ></path>
                         </svg>
                       </button>
-                      <img
-                        className="w-20 mt-4"
-                        src="/images/ssl-secure.svg"
-                        alt="Secure"
-                      />
+                      <Image className="w-20 mt-4" src={SslImg} alt="Secure" />
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Your information is 100% safe and secure on this website
                       </p>
@@ -270,10 +269,12 @@ const HeroSection: React.FC<{
               </div>
             </div>
             <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <img
-                className="object-contain"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png"
+              <Image
+                className="object-cover"
+                src={HeroImg}
                 alt="mockup"
+                quality={100}
+                priority
               />
             </div>
           </div>
