@@ -109,8 +109,24 @@ const HeroSection: React.FC<{
     <>
       <style>
         {`
-          .anim-circle:before, .anim-circle:after {
-            border-color:#0E9F6E;
+          .anim-circle:before {
+    border-width: 8px;
+    border-color: rgb(4 108 78);
+    border-right-color: transparent;
+    width: 140%;
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
+    opacity: 0.5;
+          }
+          .anim-circle:after {
+            border-width: 8px;
+            border-color: rgb(4 108 78);
+            border-left-color: transparent;
+            border-top-color: transparent;
+            width: 140%;
+            -webkit-transform: rotate(-1deg);
+            transform: rotate(-1deg);
+            opacity: 0.5;
           }
         `}
       </style>
@@ -118,13 +134,16 @@ const HeroSection: React.FC<{
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
-              <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
+              <h1
+                className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight inline bg-[#E5E7EB] pr-3 dark:bg-transparent md:text-5xl xl:text-6xl dark:text-white"
+                style={{ lineHeight: 1.3 }}
+              >
                 Claim Your&nbsp;
                 <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
-                  <span className="text-[#0E9F6E] font-bold text-2xl md:text-3xl xl:text-4xl ">
+                  <span className="text-green-700 font-bold text-2xl md:text-3xl xl:text-4xl ">
                     £
                   </span>
-                  <span className="text-[#0E9F6E] font-extrabold">
+                  <span className="text-green-700 font-extrabold">
                     <Animated
                       animateToNumber={amount}
                       configs={[
