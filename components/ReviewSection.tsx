@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const ReviewSection = () => {
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section className="bg-gray-50 dark:bg-gray-900">
       <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6">
         <figure className="max-w-screen-md mx-auto">
           <Image
@@ -20,8 +20,8 @@ const ReviewSection = () => {
           <blockquote>
             <p className="text-2xl font-medium text-gray-900 dark:text-white">
               &quot;Quick and easy form, and it took just a minute to complete.
-              I was delighted to get a tax refund for something I didn&apos;t even
-              know I was entitled to!&quot;
+              I was delighted to get a tax refund for something I didn&apos;t
+              even know I was entitled to!&quot;
             </p>
           </blockquote>
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
