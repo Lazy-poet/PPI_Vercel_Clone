@@ -11,7 +11,8 @@ const Footer = () => {
         >
           <Image
             src="/images/favicon.png"
-            className="mr-3 h-6 sm:h-9"
+            className="mr-3 h-8 sm:h-9"
+            style={{ objectFit: "contain" }}
             alt="Logo"
             width={36}
             height={36}
