@@ -107,29 +107,7 @@ const HeroSection: React.FC<{
 
   return (
     <>
-      <style>
-        {`
-          .anim-circle:before {
-    border-width: 8px;
-    border-color: rgb(4 108 78);
-    border-right-color: transparent;
-    width: 140%;
-    -webkit-transform: rotate(2deg);
-    transform: rotate(2deg);
-    opacity: 0.5;
-          }
-          .anim-circle:after {
-            border-width: 8px;
-            border-color: rgb(4 108 78);
-            border-left-color: transparent;
-            border-top-color: transparent;
-            width: 140%;
-            -webkit-transform: rotate(-1deg);
-            transform: rotate(-1deg);
-            opacity: 0.5;
-          }
-        `}
-      </style>
+
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
@@ -140,10 +118,10 @@ const HeroSection: React.FC<{
               >
                 Claim Your&nbsp;
                 <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
-                  <span className="text-green-700 font-bold text-2xl md:text-3xl xl:text-4xl ">
+                  <span className="text-blue-600 font-bold text-2xl md:text-3xl xl:text-4xl ">
                     £
                   </span>
-                  <span className="text-green-700 font-extrabold">
+                  <span className="text-blue-600 font-extrabold">
                     <Animated
                       animateToNumber={amount}
                       configs={[
