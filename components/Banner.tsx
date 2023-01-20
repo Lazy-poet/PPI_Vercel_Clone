@@ -59,7 +59,7 @@ const Banner = (props: Props) => {
             {/* <span className="hidden md:inline-flex bg-primary-100 text-primary-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-primary-200 dark:text-primary-800">
               New
             </span> */}
-            You Must Claim Now To Beat The April Deadline!
+            Claim Now To Beat The April Deadline!
           </p>
         </div>
         <button
