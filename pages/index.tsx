@@ -482,18 +482,12 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   handleOpen={handleOpen}
                 />
 
-                {(step === STEP.SIGN_COMPLETE ||
+                {/* {(step === STEP.SIGN_COMPLETE ||
                   step === STEP.LAST_THING ||
                   step === STEP.THANK_YOU) && (
-                  <StepAlert step={step} data={formData3} />
-                )}
-                {step === STEP.QUICK_QUOTE && (
-                  <CustomAlert
-                    color="green"
-                    body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
-                  />
-                )}
-
+                    )} */}
+                <StepAlert step={step} data={formData3} claimValue={claimValue} />
+            
                 <Title step={step} onClick={handleOpen} />
 
                 {step === STEP.QUICK_QUOTE && (

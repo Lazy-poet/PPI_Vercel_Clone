@@ -8,7 +8,7 @@ type Props = {
 
 const ProgressBar = ({ step, goToPrevStep }: Props) => {
   return (
-    <div className="w-full pt-4 mx-auto text-center lg:pt-8">
+    <div className="w-full mt-5 mx-auto text-center lg:mt-10">
       <div className="flex justify-between items-center mb-1">
         <button
           className="inline-flex items-center text-sm font-medium text-blue-700 dark:text-white"
@@ -33,7 +33,7 @@ const ProgressBar = ({ step, goToPrevStep }: Props) => {
           {PERCENTS[step]}% completed
         </span>
       </div>
-      <div className="mb-4 w-full h-2.5 bg-gray-200 rounded-full dark:bg-gray-700">
+      <div className="my-4 md:my-5 w-full h-2.5 bg-gray-200 rounded-full dark:bg-gray-700">
         <div
           className="bg-green-500 h-2.5 rounded-full transition-all duration-500"
           style={{ width: `${PERCENTS[step]}%` }}
