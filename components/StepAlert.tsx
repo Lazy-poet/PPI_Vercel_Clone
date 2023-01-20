@@ -6,30 +6,47 @@ type Props = {
 };
 
 const StepAlert = (props: any) => {
-  const { step, data } = props;
+  const { step, data, claimValue } = props;
 
   return (
     <>
       {step === STEP.SIGN_COMPLETE && (
         <>
-          {data.firstEvent ? (
-            <></>
-          ) : !data.signatureData ? (
+          {data.firstEvent ||
+            (data.signatureData && (
+              <CustomAlertBanner
+                color="green"
+                body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+              />
+            ))}
+          {!(data.signatureData || data.firstEvent) && (
             <CustomAlertBanner
               closable={false}
               body="Please provide your signature to proceed"
               color="red"
             />
-          ) : (
-            <></>
           )}
         </>
+      )}
+      {[STEP.QUICK_QUOTE, STEP.CLAIM_NOW].includes(step) && (
+        <CustomAlertBanner
+          color="green"
+          body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+        />
       )}
       {step === STEP.LAST_THING && (
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
+
       {step === STEP.THANK_YOU && (
         <CustomAlertBanner body="This is the last question" color="yellow" />
+      )}
+
+      {step === STEP.ALL_DONE && (
+        <CustomAlertBanner
+          color="green"
+          body={`Your tax claim information has been received`}
+        />
       )}
     </>
   );
