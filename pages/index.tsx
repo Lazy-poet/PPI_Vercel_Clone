@@ -25,6 +25,7 @@ import { Worker } from "@react-pdf-viewer/core";
 import HeroSection from "@/components/HeroSection";
 import ReviewSection from "@/components/ReviewSection";
 import CustomAlert from "@/components/CustomAlert";
+import Banner from "@/components/Banner";
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
   setClaimValue: Dispatch<SetStateAction<number>>;
@@ -551,7 +552,8 @@ export default function Home() {
   const [ready, setReady] = useState(false);
   const [claimValue, setClaimValue] = useState(0);
   return (
-    <>
+    <div className="relative">
+      <Banner />
       {ready ? (
         <Claim
           setReady={setReady}
@@ -569,6 +571,6 @@ export default function Home() {
           <ReviewSection />
         </HomeLayout>
       )}
-    </>
+    </div>
   );
 }

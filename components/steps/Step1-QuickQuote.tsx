@@ -195,7 +195,7 @@ const QuickQuote = (props: any) => {
             </span>
             <div className="icon-input w-full">
               <input
-                type="text"
+                type="email"
                 name="email"
                 id="email"
                 placeholder="Email Address"
