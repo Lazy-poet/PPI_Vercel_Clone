@@ -25,7 +25,7 @@ const Header = () => {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link
             href="/"
-            className="py-5 flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
+            className="py-2 flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <Image
               src="/images/favicon.png"
