@@ -107,6 +107,13 @@ const HeroSection: React.FC<{
 
   return (
     <>
+      <style>
+        {`
+          .anim-circle:before, .anim-circle:after {
+            border-color:#0E9F6E;
+          }
+        `}
+      </style>
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
@@ -114,10 +121,10 @@ const HeroSection: React.FC<{
               <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
                 <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
-                  <span className="text-blue-500 font-bold text-2xl md:text-3xl xl:text-4xl ">
+                  <span className="text-[#0E9F6E] font-bold text-2xl md:text-3xl xl:text-4xl ">
                     £
                   </span>
-                  <span className="text-blue-500 font-extrabold">
+                  <span className="text-[#0E9F6E] font-extrabold">
                     <Animated
                       animateToNumber={amount}
                       configs={[
