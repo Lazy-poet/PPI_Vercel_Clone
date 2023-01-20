@@ -13,12 +13,14 @@ const CustomAlert = ({ body, color, closable = true }: Props) => {
       className={
         hideAlert
           ? "hidden"
-          : `flex p-4 mb-2 mt-5 text-${color}-700 bg-${color}-100 border-t-4 border-${color}-500 dark:text-${color}-400 dark:bg-gray-800`
+          : `flex p-4 mb-2 mt-5 text-${color}-700 bg-${color}-100 border-t-4 border-${color}-500 dark:text-${color}-300 dark:bg-gray-800`
       }
       role="alert"
       id="banner-alert"
       hidden={hideAlert}
     >
+      {/* ADDING THIS EMPTY DIV WITH DYNAMIC TO BE USED TO PREVENT TAILWIND FROM PURGING THEM */}
+      <div className="text-blue-700 dark:text-blue-300 text-green-700 dark:text-green-300 text-yellow-700 dark:text-yellow-300 text-red-700 dark:text-red-300" />
       <svg
         className="flex-shrink-0 w-5 h-5"
         fill="currentColor"
