@@ -15,7 +15,7 @@ const QuickQuote = (props: any) => {
   const { showPulse, setShowPulse } = useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currnetAddressListPostCode = useRef<string>("");
+  const currentAddressListPostCode = useRef<string>("");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -36,7 +36,7 @@ const QuickQuote = (props: any) => {
         value = value.toUpperCase().trim().substr(0, 8);
         if (
           name === "postCode" &&
-          value !== currnetAddressListPostCode.current
+          value !== currentAddressListPostCode.current
         ) {
           const show = !!value && !!postcodeValidator(value, "GB");
           setShowPulse(show);
@@ -62,7 +62,7 @@ const QuickQuote = (props: any) => {
       .then((res) => {
         if (res.result && res.result.hits) {
           setAddressList(res.result.hits);
-          currnetAddressListPostCode.current = e;
+          currentAddressListPostCode.current = e;
         } else {
           setAddressList([]);
         }
