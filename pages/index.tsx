@@ -487,7 +487,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   step === STEP.THANK_YOU) && (
                   <StepAlert step={step} data={formData3} />
                 )}
-                {step === STEP.QUICK_QUOTE && (
+                {(step === STEP.QUICK_QUOTE || step === STEP.CLAIM_NOW) && (
                   <CustomAlert
                     color="green"
                     body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
