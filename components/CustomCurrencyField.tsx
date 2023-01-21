@@ -22,7 +22,9 @@ const CurrencyTextField = (props: Props) => {
       watchExternalChanges: true,
       unformatOnHover: false,
       // allowDecimalPadding: false,
-      minimumValue: "0",
+      modifyValueOnWheel: false,
+      selectOnFocus: false,
+      caretPositionOnFocus: "decimalLeft",
     });
 
     return () => {
@@ -54,6 +56,12 @@ const CurrencyTextField = (props: Props) => {
         ${props.claimValue ? "success" : props.firstEvent ? "" : "error"}
         `}
       >
+        <label
+          htmlFor="email"
+          className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+        >
+          How much PPI did you get back?
+        </label>
         <div className="flex relative">
           <div
             className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-xl text-gray-400 dark:text-gray-400
@@ -69,7 +77,7 @@ const CurrencyTextField = (props: Props) => {
               £
             </span>
           </div>
-          <div className="w-full md-w-full md:max-w-60">
+          <div className="icon-input w-full md-w-full md:max-w-60">
             <input
               type="text"
               name="currency"
@@ -89,11 +97,13 @@ const CurrencyTextField = (props: Props) => {
               ref={input}
               value={props.amount}
               onChange={(e) => callEventHandler(e, "onChange")}
+              // onChange={(e) => console.log(e.target.value)}
               onFocus={(e) => callEventHandler(e, "onFocus")}
               onBlur={(e) => callEventHandler(e, "onBlur")}
               onKeyPress={(e) => callEventHandler(e, "onKeyPress")}
               onKeyUp={(e) => callEventHandler(e, "onKeyUp")}
             />
+            <span className="form-icon"></span>
           </div>
         </div>
       </div>
