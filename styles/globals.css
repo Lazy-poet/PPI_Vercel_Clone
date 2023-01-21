@@ -36,31 +36,31 @@
   color: #111928;
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"], [type="radio"]) {
   -webkit-text-fill-color: #111928 !important;
   -webkit-box-shadow: 0 0 0 30px #f9fafb inset !important;
 }
 
-input:not([type="checkbox"])::placeholder {
+input:not([type="checkbox"], [type="radio"])::placeholder {
   -webkit-text-fill-color: #6b7280 !important;
 }
-.error input:not([type="checkbox"], :focus)::placeholder {
+.error input:not([type="checkbox"], [type="radio"], :focus)::placeholder {
   -webkit-text-fill-color: #f05252 !important;
   opacity: 1 !important;
 }
 
-.dark input:not([type="checkbox"]) {
+.dark input:not([type="checkbox"], [type="radio"]) {
   -webkit-text-fill-color: #9ca3af !important;
   -webkit-box-shadow: 0 0 0 30px #374151 inset !important;
 }
 
-input:focus:not([type="checkbox"]),
-input:focus:not([type="checkbox"]),
+input:focus:not([type="checkbox"], [type="radio"]),
+input:focus:not([type="checkbox"], [type="radio"]),
 select:focus,
-.success input:focus:not([type="checkbox"]),
+.success input:focus:not([type="checkbox"], [type="radio"]),
 .success select:focus,
 .success .mui-select .MuiInputBase-root:focus,
-.error input:focus:not([type="checkbox"]),
+.error input:focus:not([type="checkbox"], [type="radio"]),
 .error select:focus,
 .error .mui-select .MuiInputBase-root:focus {
   background: #f9fafb !important;
@@ -102,8 +102,8 @@ select:focus + .form-icon {
   color: #057a55;
 }
 
-.success input:not([type="checkbox"]),
-.success input:-webkit-autofill:not([type="checkbox"]),
+.success input:not([type="checkbox"], [type="radio"]),
+.success input:-webkit-autofill:not([type="checkbox"], [type="radio"]),
 .success select,
 .success .mui-select .MuiInputBase-root {
   background-color: #f3faf7 !important;
@@ -126,14 +126,14 @@ select:focus + .form-icon {
   color: #ffffff;
 }
 
-.dark input:focus:not([type="checkbox"]),
+.dark input:focus:not([type="checkbox"], [type="radio"]),
 .dark select:focus,
 .dark .mui-select .MuiInputBase-root:focus,
-.dark .success input:focus:not([type="checkbox"]),
+.dark .success input:focus:not([type="checkbox"], [type="radio"]),
 .dark .success select:focus,
 .dark .success .mui-select .MuiInputBase-root:focus,
-.dark .error input:focus:not([type="checkbox"]),
-.dark .error input:active:not([type="checkbox"]),
+.dark .error input:focus:not([type="checkbox"], [type="radio"]),
+.dark .error input:active:not([type="checkbox"], [type="radio"]),
 .dark .error select:focus,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
@@ -144,7 +144,7 @@ select:focus + .form-icon {
   opacity: 1 !important;
 }
 
-.dark .success input:not([type="checkbox"]),
+.dark .success input:not([type="checkbox"], [type="radio"]),
 .dark .success select,
 .dark .success .mui-select .MuiInputBase-root {
   background: #374151 !important;
@@ -170,7 +170,7 @@ select:focus + .form-icon {
   color: #e02424;
 }
 
-.error input:not([type="checkbox"]),
+.error input:not([type="checkbox"], [type="radio"]),
 .error select,
 .error .mui-select .MuiInputBase-root {
   background: #fdf2f2 !important;
@@ -183,7 +183,7 @@ select:focus + .form-icon {
   -webkit-box-shadow: 0 0 0 30px #fdf2f2 inset !important;
 }
 
-.dark .error input:not([type="checkbox"]),
+.dark .error input:not([type="checkbox"], [type="radio"]),
 .dark .error select,
 .dark .error .mui-select .MuiInputBase-root {
   background: #374151 !important;
@@ -429,6 +429,6 @@ select:focus + .form-icon {
   text-align: right;
   padding: 18px;
 }
-.currency input:focus:not([type="checkbox"]) {
+.currency input:focus:not([type="checkbox"], [type="radio"]) {
   border: none !important;
 }

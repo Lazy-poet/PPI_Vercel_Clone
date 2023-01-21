@@ -44,14 +44,14 @@ const ClaimNow = (props: any) => {
   };
 
   useEffect(() => {
-    search("a");
+    // search("a");
   }, []);
 
   return (
     <div className="grid gap-[40px] mt-6 mb-5 sm:grid-cols-2">
       <div
         className={`form-group sm:col-span-2 ${
-          data.firstEvent ? "" : data.employerName ? "success" : "error"
+          data.firstEvent ? "" : !!data.earnings ? "success" : "error"
         }`}
       >
         <label
@@ -62,51 +62,50 @@ const ClaimNow = (props: any) => {
         </label>
 
         <div className="grid w-50 gap-3">
-          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
             <input
               id="bordered-radio-1"
               type="radio"
-              name="bordered-radio"
+              name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "Less than £12,500"}
               onClick={() => handleFormChange("earnings", "Less than £12,500")}
             />
             <label
               htmlFor="bordered-radio-1"
-              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="py-4 ml-4 w-full sm:text-lg font-medium cursor-pointer"
             >
               Less than £12,500
             </label>
           </div>
-          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
             <input
-              defaultChecked
               id="bordered-radio-2"
               type="radio"
-              name="bordered-radio"
+              name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "£12,501 to £50,000"}
               onClick={() => handleFormChange("earnings", "£12,501 to £50,000")}
             />
             <label
               htmlFor="bordered-radio-2"
-              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="py-4 ml-4 w-full sm:text-lg font-medium cursor-pointer"
             >
               £12,501 to £50,000
             </label>
           </div>
-          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
             <input
-              id="bordered-radio-2"
+              id="bordered-radio-3"
               type="radio"
-              name="bordered-radio"
+              name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "More than £50,001"}
               onClick={() => handleFormChange("earnings", "More than £50,001")}
             />
             <label
-              htmlFor="bordered-radio-2"
-              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              htmlFor="bordered-radio-3"
+              className="py-4 ml-4 w-full sm:text-lg font-medium cursor-pointer"
             >
               More than £50,001
             </label>

@@ -49,7 +49,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setFdEvents1,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.QUICK_QUOTE);
+  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const { checkedYears } = useSystemValues();
@@ -346,7 +346,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
       if (data.paye) return setStep(5);
       if (data.insurance) return setStep(4);
       if (data.signatureData) return setStep(3);
-      if (data.employerName) return setStep(2);
+      if (data.earnings) return setStep(2);
       if (data.email) return setStep(1);
     };
 
@@ -390,6 +390,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
       });
       setFormData2({
         employerName: data?.[0]?.employerName || "",
+        earnings: data?.[0]?.earnings || "",
         claimChecked1: data?.[0]?.claimChecked1 ?? true,
         claimChecked2: data?.[0]?.claimChecked1 ?? true,
         firstEvent: !data?.[0]?.employerName,
