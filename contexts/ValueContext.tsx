@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
-  const [amount, setAmount] = useState<string>('0');
+  const [amount, setAmount] = useState<string>("");
   const [claimValue, setClaimValue] = useState<number>(0);
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
@@ -70,12 +70,12 @@ const useValue = () => {
     addressList,
     setAddressList,
     claimValue,
-    setClaimValue
+    setClaimValue,
   };
 };
 
 export const ValueContext = createContext({
-  amount: '0',
+  amount: "",
   showPulse: false,
   setShowPulse: (value: boolean) => {},
   setAmount: (value: string) => {},
