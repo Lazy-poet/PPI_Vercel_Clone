@@ -28,10 +28,8 @@ import CustomAlert from "@/components/CustomAlert";
 import Banner from "@/components/Banner";
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
-  setClaimValue: Dispatch<SetStateAction<number>>;
-  claimValue: number;
 };
-function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
+function Claim({ setReady }: ClaimProps) {
   const router = useRouter();
 
   const {
@@ -47,6 +45,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
     setFormData5,
     fdEvents1,
     setFdEvents1,
+    claimValue,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -366,7 +365,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
 
       /* update the form data with existing user data */
 
-      setClaimValue(data?.[0]?.claimValue);
       setFormData1({
         firstEvent: true,
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
@@ -483,10 +481,6 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   handleOpen={handleOpen}
                 />
 
-                {/* {(step === STEP.SIGN_COMPLETE ||
-                  step === STEP.LAST_THING ||
-                  step === STEP.THANK_YOU) && (
-                    )} */}
                 <StepAlert
                   step={step}
                   data={formData3}
@@ -549,23 +543,17 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
 
 export default function Home() {
   const [ready, setReady] = useState(false);
-  const [claimValue, setClaimValue] = useState(0);
   return (
     <div className="relative">
       <Banner />
       {ready ? (
-        <Claim
-          setReady={setReady}
-          claimValue={claimValue}
-          setClaimValue={setClaimValue}
-        />
+        <Claim setReady={setReady} />
       ) : (
         <HomeLayout>
           <HeroSection
             handleStart={() => {
               setReady(true);
             }}
-            setClaimValue={setClaimValue}
           />
           <ReviewSection />
         </HomeLayout>

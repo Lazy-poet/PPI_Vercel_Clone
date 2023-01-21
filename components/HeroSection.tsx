@@ -1,28 +1,32 @@
 import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslImg from "../public/images/ssl-secure.svg";
 import HeroImg from "../public/images/hero.png";
+import CustomCurrencyField from "./CustomCurrencyField";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
 });
 const HeroSection: React.FC<{
   handleStart: () => void;
-  setClaimValue: Dispatch<SetStateAction<number>>;
-}> = ({ handleStart, setClaimValue }) => {
+}> = ({ handleStart }) => {
   const router = useRouter();
-  const { amount, setAmount, checkedYears, setCheckedYears } =
-    useSystemValues();
+  const {
+    amount,
+    setAmount,
+    checkedYears,
+    setCheckedYears,
+    claimValue,
+    setClaimValue,
+  } = useSystemValues();
 
   const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [checkedFirstBox, setCheckedFirstBox] = useState<boolean>(false);
-  const [checkedSecondBox, setCheckedSecondBox] = useState<boolean>(false);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
   const toggleCheckedYear = (year: string) => {
@@ -34,80 +38,55 @@ const HeroSection: React.FC<{
     }
   };
 
+  const calculateClaimFromAmount = (value: string) => {
+    value = value.replace(/,/g, "");
+    const claim = Math.round(Number(value) * 0.0952);
+    setClaimValue(claim);
+  };
+
+  const handleClick = async () => {
+    setFirstEvent(false);
+    if (!claimValue) {
+      return window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+    if (fromEmail) {
+      try {
+        await supabase
+          .from("claim-form-submissions")
+          .update({ estimated_total: amount })
+          .match({ email: fromEmail });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    handleStart();
+  };
+
   useEffect(() => {
-    const getPrevData = async () => {
-      const { data, error } = await supabase
-        .from("claim-form-submissions")
-        .select("checkedYears")
-        .eq("email", fromEmail);
-
-      if (data?.[0]?.checkedYears.includes("2020-21")) {
-        setCheckedYears(["2020-21"]);
-        setCheckedFirstBox(true);
-      }
-
-      if (data?.[0]?.checkedYears.includes("2021-22")) {
-        setCheckedYears(["2021-22"]);
-        setCheckedSecondBox(true);
-      }
-
-      if (
-        data?.[0]?.checkedYears.includes("2020-21") &&
-        data?.[0]?.checkedYears.includes("2021-22")
-      ) {
-        setCheckedYears(["2020-21", "2021-22"]);
-        setCheckedSecondBox(true);
+    if (!fromEmail) return;
+    const getPrevAmount = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("claim-form-submissions")
+          .select("estimated_total")
+          .eq("email", fromEmail);
+        if (data?.[0]?.estimated_total) {
+          setAmount(data[0].estimated_total);
+          calculateClaimFromAmount(data[0].estimated_total);
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
 
-    getPrevData();
+    getPrevAmount();
   }, [fromEmail]);
-
-  useEffect(() => {
-    if (checkedFirstBox && checkedSecondBox) {
-      setType(TAX_TYPE.BOTH);
-    } else {
-      if (checkedFirstBox) {
-        setType(TAX_TYPE.LAST_YEAR);
-      } else if (checkedSecondBox) {
-        setType(TAX_TYPE.CURRENT_YEAR);
-      } else {
-        setType(TAX_TYPE.NONE);
-      }
-    }
-  }, [checkedFirstBox, checkedSecondBox]);
-
-  useEffect(() => {
-    switch (type) {
-      case TAX_TYPE.NONE:
-        setAmount(624);
-        break;
-      case TAX_TYPE.CURRENT_YEAR:
-      case TAX_TYPE.LAST_YEAR:
-        setAmount(312);
-        break;
-      case TAX_TYPE.BOTH:
-        setAmount(624);
-        break;
-    }
-  }, [type]);
-
-  useEffect(() => {
-    setClaimValue(amount);
-  }, [amount]);
-
-  useEffect(() => {
-    if (checkedYears.includes("2020-21")) {
-      setCheckedFirstBox(true);
-    }
-    if (checkedYears.includes("2021-22")) {
-      setCheckedSecondBox(true);
-    }
-  }, []);
 
   return (
     <>
-
       <section className="bg-white dark:bg-gray-900">
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
@@ -123,12 +102,13 @@ const HeroSection: React.FC<{
                   </span>
                   <span className="text-blue-600 font-extrabold">
                     <Animated
-                      animateToNumber={amount}
+                      animateToNumber={claimValue || 200}
                       configs={[
                         { mass: 1, tension: 220, friction: 90 },
                         { mass: 1, tension: 280, friction: 90 },
                       ]}
                     ></Animated>
+                    <sup>*</sup>
                   </span>
                 </span>
                 &nbsp;Tax Refund Today
@@ -137,83 +117,18 @@ const HeroSection: React.FC<{
                 Now you can claim even if you had to work from home for just a
                 single day during the pandemic!
               </p>
-              <div className={`grid gap-5 sm:grid-cols-2 select-none`}>
-                <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
-                    firstEvent || checkedFirstBox || checkedSecondBox
-                      ? checkedFirstBox
-                        ? "success"
-                        : ""
-                      : "error"
-                  }`}
-                >
-                  <input
-                    id="bordered-checkbox-1"
-                    type="checkbox"
-                    value=""
-                    name="bordered-checkbox"
-                    checked={checkedFirstBox}
-                    onChange={(e) => {
-                      setFirstEvent(false);
-                      setCheckedFirstBox(e.target.checked);
-                      toggleCheckedYear("2020-21");
-                    }}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-1"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
-                      firstEvent || checkedFirstBox || checkedSecondBox
-                        ? "text-gray-900 dark:text-gray-300"
-                        : "text-red-700 dark:text-red-500"
-                    }`}
-                  >
-                    2020 - 21
-                  </label>
-                </div>
-                <div
-                  className={`checkbox-item flex items-center px-4 rounded border cursor-pointer border-gray-200 dark:border-gray-700 ${
-                    firstEvent || checkedFirstBox || checkedSecondBox
-                      ? checkedSecondBox
-                        ? "success"
-                        : ""
-                      : "error"
-                  }`}
-                >
-                  <input
-                    id="bordered-checkbox-2"
-                    type="checkbox"
-                    value=""
-                    name="bordered-checkbox"
-                    checked={checkedSecondBox}
-                    onChange={(e) => {
-                      setFirstEvent(false);
-                      setCheckedSecondBox(e.target.checked);
-                      toggleCheckedYear("2021-22");
-                    }}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-2"
-                    className={`py-4 ml-2 w-full sm:text-lg font-medium cursor-pointer ${
-                      firstEvent || checkedFirstBox || checkedSecondBox
-                        ? "text-gray-900 dark:text-gray-300"
-                        : "text-red-700 dark:text-red-500"
-                    }`}
-                  >
-                    2021 - 22
-                  </label>
-                </div>
+              <div className="max-w-2xl ">
+                <CustomCurrencyField
+                  firstEvent={firstEvent}
+                  amount={amount}
+                  claimValue={claimValue}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setFirstEvent(false);
+                    setAmount(e.target.value);
+                    calculateClaimFromAmount(e.target.value);
+                  }}
+                />
               </div>
-              <p
-                className={`max-w-2xl mt-2 text-sm ${
-                  firstEvent || checkedFirstBox || checkedSecondBox
-                    ? "text-gray-500 dark:text-gray-400"
-                    : "text-red-600 dark:text-red-500"
-                }`}
-              >
-                Select the year(s) you worked from home
-              </p>
               <div className="max-w-2xl text-sm text-gray-500">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
@@ -236,13 +151,7 @@ const HeroSection: React.FC<{
                       </div>
                       <button
                         className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                        onClick={() => {
-                          setFirstEvent(false);
-
-                          checkedFirstBox || checkedSecondBox
-                            ? handleStart()
-                            : window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
+                        onClick={handleClick}
                       >
                         <div className="flex-grow">
                           <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
