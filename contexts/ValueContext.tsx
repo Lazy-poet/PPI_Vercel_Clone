@@ -5,6 +5,7 @@ const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<number>(624);
   const [showPulse, setShowPulse] = useState<boolean>(false);
+  const [addressList, setAddressList] = useState([] as object[]);
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -65,6 +66,8 @@ const useValue = () => {
     setFdEvents1,
     showPulse,
     setShowPulse,
+    addressList,
+    setAddressList,
   };
 };
 
@@ -119,6 +122,8 @@ export const ValueContext = createContext({
     paye: "",
   },
   setFormData5: (value: any) => {},
+  addressList: [] as object[],
+  setAddressList: (value: any) => {},
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {

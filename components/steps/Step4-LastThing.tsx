@@ -34,8 +34,7 @@ const LastThing = (props: {
               xmlns="http://www.w3.org/2000/svg"
               width="18"
               height="18"
-              fill="currentColor"
-              className="bi bi-shield-fill-check text-[#25D0BC] mb-1"
+              className="bi bi-shield-fill-check text-[#25D0BC] mb-1 fill-green-700 dark:fill-green-600"
               viewBox="0 0 16 16"
             >
               <path

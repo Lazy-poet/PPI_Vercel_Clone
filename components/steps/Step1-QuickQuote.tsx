@@ -8,14 +8,14 @@ import { useSystemValues } from "@/contexts/ValueContext";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
-  const [addressList, setAddressList] = useState([]);
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
-  const { showPulse, setShowPulse } = useSystemValues();
+  const { showPulse, setShowPulse, addressList, setAddressList } =
+    useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currnetAddressListPostCode = useRef<string>("");
+  const currentAddressListPostCode = useRef<string>(data.postCode || "");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -36,7 +36,7 @@ const QuickQuote = (props: any) => {
         value = value.toUpperCase().trim().substr(0, 8);
         if (
           name === "postCode" &&
-          value !== currnetAddressListPostCode.current
+          value !== currentAddressListPostCode.current
         ) {
           const show = !!value && !!postcodeValidator(value, "GB");
           setShowPulse(show);
@@ -62,7 +62,7 @@ const QuickQuote = (props: any) => {
       .then((res) => {
         if (res.result && res.result.hits) {
           setAddressList(res.result.hits);
-          currnetAddressListPostCode.current = e;
+          currentAddressListPostCode.current = e;
         } else {
           setAddressList([]);
         }
@@ -90,7 +90,9 @@ const QuickQuote = (props: any) => {
     setYears(_years);
 
     if (data && data.postCode) {
-      searchAddressByPostcode(data.postCode);
+      if (!addressList.length) {
+        searchAddressByPostcode(data.postCode);
+      }
     }
   }, []);
 
@@ -182,8 +184,7 @@ const QuickQuote = (props: any) => {
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
                 height="18"
-                fill="currentColor"
-                className="bi bi-shield-fill-check text-[#25D0BC] mb-1"
+                className="bi bi-shield-fill-check text-[#25D0BC] mb-1 fill-green-700 dark:fill-green-600"
                 viewBox="0 0 16 16"
               >
                 <path
@@ -316,7 +317,7 @@ const QuickQuote = (props: any) => {
             </p>
           )}
         </div>
-        {addressList.length > 0 ? (
+        {addressList?.length > 0 ? (
           <div
             className={`form-group max-w-full sm:col-span-2 ${
               fdEvents.address ? "" : data.address ? "success" : "error"
@@ -342,25 +343,24 @@ const QuickQuote = (props: any) => {
                   <MenuItem value="" disabled>
                     Please Select Your Address
                   </MenuItem>
-                  {addressList &&
-                    addressList.map((item: any, index: number) => (
-                      <MenuItem
-                        key={index}
-                        value={`${item.suggestion.split(
-                          ", " +
-                            item.suggestion.split(", ")[
-                              item.suggestion.split(", ").length - 1
-                            ]
-                        )}`}
-                      >
-                        {item.suggestion.split(
-                          ", " +
-                            item.suggestion.split(", ")[
-                              item.suggestion.split(", ").length - 1
-                            ]
-                        )}
-                      </MenuItem>
-                    ))}
+                  {addressList.map((item: any, index: number) => (
+                    <MenuItem
+                      key={index}
+                      value={`${item.suggestion.split(
+                        ", " +
+                          item.suggestion.split(", ")[
+                            item.suggestion.split(", ").length - 1
+                          ]
+                      )}`}
+                    >
+                      {item.suggestion.split(
+                        ", " +
+                          item.suggestion.split(", ")[
+                            item.suggestion.split(", ").length - 1
+                          ]
+                      )}
+                    </MenuItem>
+                  ))}
                 </Select>
                 <span className="form-icon"></span>
               </FormControl>
