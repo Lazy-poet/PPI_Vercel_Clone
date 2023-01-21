@@ -8,14 +8,14 @@ import { useSystemValues } from "@/contexts/ValueContext";
 
 const QuickQuote = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
-  const [addressList, setAddressList] = useState([]);
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
-  const { showPulse, setShowPulse } = useSystemValues();
+  const { showPulse, setShowPulse, addressList, setAddressList } =
+    useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currentAddressListPostCode = useRef<string>("");
+  const currentAddressListPostCode = useRef<string>(data.postCode || "");
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -90,7 +90,9 @@ const QuickQuote = (props: any) => {
     setYears(_years);
 
     if (data && data.postCode) {
-      searchAddressByPostcode(data.postCode);
+      if (!addressList.length) {
+        searchAddressByPostcode(data.postCode);
+      }
     }
   }, []);
 
@@ -315,7 +317,7 @@ const QuickQuote = (props: any) => {
             </p>
           )}
         </div>
-        {addressList.length > 0 ? (
+        {addressList?.length > 0 ? (
           <div
             className={`form-group max-w-full sm:col-span-2 ${
               fdEvents.address ? "" : data.address ? "success" : "error"
@@ -341,25 +343,24 @@ const QuickQuote = (props: any) => {
                   <MenuItem value="" disabled>
                     Please Select Your Address
                   </MenuItem>
-                  {addressList &&
-                    addressList.map((item: any, index: number) => (
-                      <MenuItem
-                        key={index}
-                        value={`${item.suggestion.split(
-                          ", " +
-                            item.suggestion.split(", ")[
-                              item.suggestion.split(", ").length - 1
-                            ]
-                        )}`}
-                      >
-                        {item.suggestion.split(
-                          ", " +
-                            item.suggestion.split(", ")[
-                              item.suggestion.split(", ").length - 1
-                            ]
-                        )}
-                      </MenuItem>
-                    ))}
+                  {addressList.map((item: any, index: number) => (
+                    <MenuItem
+                      key={index}
+                      value={`${item.suggestion.split(
+                        ", " +
+                          item.suggestion.split(", ")[
+                            item.suggestion.split(", ").length - 1
+                          ]
+                      )}`}
+                    >
+                      {item.suggestion.split(
+                        ", " +
+                          item.suggestion.split(", ")[
+                            item.suggestion.split(", ").length - 1
+                          ]
+                      )}
+                    </MenuItem>
+                  ))}
                 </Select>
                 <span className="form-icon"></span>
               </FormControl>
