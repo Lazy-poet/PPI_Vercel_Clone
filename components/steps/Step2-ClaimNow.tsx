@@ -48,7 +48,7 @@ const ClaimNow = (props: any) => {
   }, []);
 
   return (
-    <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+    <div className="grid gap-[40px] mt-6 mb-5 sm:grid-cols-2">
       <div
         className={`form-group sm:col-span-2 ${
           data.firstEvent ? "" : data.employerName ? "success" : "error"
@@ -58,74 +58,63 @@ const ClaimNow = (props: any) => {
           htmlFor="employer"
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
         >
-          What was the name of your employer?
+          How much did you earn?
         </label>
-        <div className="icon-input">
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            className="w-full"
-            freeSolo={false}
-            popupIcon={""}
-            options={companies}
-            renderOption={(props, option: any) => (
-              <li {...props} key={option.key}>
-                {option.label.trim('"')}
-              </li>
-            )}
-            value={data.employerName}
-            onChange={(e: any, newValue: string) => {
-              handleFormChange("employerName", newValue);
-            }}
-            inputValue={searchQuery}
-            onInputChange={(e, newInputValue) => {
-              setSearchQuery(newInputValue);
-              search(newInputValue);
-            }}
-            renderInput={(params) => (
-              <div ref={params.InputProps.ref}>
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <svg
-                    aria-hidden="true"
-                    className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  {...params.inputProps}
-                  name="employerName"
-                  placeholder="Name Of Employer"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                />
-              </div>
-            )}
-          />
-          <span className="form-icon"></span>
+
+        <div className="grid w-50 gap-3">
+          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+            <input
+              id="bordered-radio-1"
+              type="radio"
+              name="bordered-radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              checked={data.earnings === "Less than £12,500"}
+              onClick={() => handleFormChange("earnings", "Less than £12,500")}
+            />
+            <label
+              htmlFor="bordered-radio-1"
+              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Less than £12,500
+            </label>
+          </div>
+          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+            <input
+              defaultChecked
+              id="bordered-radio-2"
+              type="radio"
+              name="bordered-radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              checked={data.earnings === "£12,501 to £50,000"}
+              onClick={() => handleFormChange("earnings", "£12,501 to £50,000")}
+            />
+            <label
+              htmlFor="bordered-radio-2"
+              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              £12,501 to £50,000
+            </label>
+          </div>
+          <div className="flex items-center pl-4 border border-gray-200 rounded dark:border-gray-700">
+            <input
+              id="bordered-radio-2"
+              type="radio"
+              name="bordered-radio"
+              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              checked={data.earnings === "More than £50,001"}
+              onClick={() => handleFormChange("earnings", "More than £50,001")}
+            />
+            <label
+              htmlFor="bordered-radio-2"
+              className="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              More than £50,001
+            </label>
+          </div>
         </div>
-        {data.firstEvent ? (
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Please write your employer&apos;s name as it appears on your payslip
-          </p>
-        ) : !data.employerName ? (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            Please write your employer&apos;s name as it appears on your payslip
-          </p>
-        ) : (
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Please write your employer&apos;s name as it appears on your payslip
-          </p>
-        )}
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          Select your annual income
+        </p>
       </div>
       <div className="sm:col-span-2">
         <label
