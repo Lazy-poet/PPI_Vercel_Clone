@@ -104,6 +104,7 @@ export const ValueContext = createContext({
   formData2: {
     firstEvent: true,
     employerName: {} as any,
+    earnings: "",
     claimChecked1: true,
     claimChecked2: true,
   },

@@ -257,7 +257,7 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.employerName) {
+        if (formData2.earnings) {
           console.log(formData2.employerName?.address);
           const { error } = await supabase
             .from("claim-form-submissions")
@@ -486,8 +486,12 @@ function Claim({ setReady, setClaimValue, claimValue }: ClaimProps) {
                   step === STEP.LAST_THING ||
                   step === STEP.THANK_YOU) && (
                     )} */}
-                <StepAlert step={step} data={formData3} claimValue={claimValue} />
-            
+                <StepAlert
+                  step={step}
+                  data={formData3}
+                  claimValue={claimValue}
+                />
+
                 <Title step={step} onClick={handleOpen} />
 
                 {step === STEP.QUICK_QUOTE && (
