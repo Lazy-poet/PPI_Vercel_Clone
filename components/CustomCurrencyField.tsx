@@ -15,7 +15,7 @@ const CurrencyTextField = (props: Props) => {
 
   useEffect(() => {
     if (!input.current) return;
-    autonumeric.current = new AutoNumeric(input.current, props.value, {
+    autonumeric.current = new AutoNumeric(input.current, null,{
       ...props.preDefined,
       onChange: undefined,
       onFocus: undefined,
