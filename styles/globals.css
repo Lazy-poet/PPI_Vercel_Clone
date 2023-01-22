@@ -448,3 +448,26 @@ select:focus + .form-icon {
   border: 1px solid #0e9f6e !important;
   color: #0e9f6e !important;
 }
+
+.error .radio-wrapper input {
+  border: 1px solid #f05252 !important;
+  background: transparent !important;
+}
+.error .radio-wrapper {
+  background: #fdf2f2 !important;
+  border: 1px solid #f05252 !important;
+  box-shadow: none !important;
+  font-style: normal;
+  font-weight: 400;
+  color: #f05252 !important;
+  -webkit-text-fill-color: #f05252 !important;
+  -webkit-box-shadow: 0 0 0 40px #fdf2f2 inset !important;
+}
+
+.dark .error .radio-wrapper {
+  background: #374151 !important;
+  border: 1px solid #f05252 !important;
+  color: #f05252 !important;
+  -webkit-text-fill-color: #f05252 !important;
+  -webkit-box-shadow: 0 0 0 40px #374151 inset !important;
+}
