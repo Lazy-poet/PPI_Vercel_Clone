@@ -48,7 +48,7 @@ function Claim({ setReady }: ClaimProps) {
     claimValue,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
+  const [step, setStep] = useState<STEP>(STEP.DETAILS);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const { checkedYears } = useSystemValues();
@@ -267,8 +267,7 @@ function Claim({ setReady }: ClaimProps) {
             .update({
               claimChecked1: formData2.claimChecked1 ?? false,
               claimChecked2: formData2.claimChecked2 ?? false,
-              employerName: formData2.employerName?.label,
-              employerAddress: formData2.employerName?.address,
+              earnings: formData2.earnings,
             })
             .match({ email: theEmail ?? urlEmail });
 
@@ -282,7 +281,6 @@ function Claim({ setReady }: ClaimProps) {
       case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
-
           const signatureUrlPrefix =
             "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 

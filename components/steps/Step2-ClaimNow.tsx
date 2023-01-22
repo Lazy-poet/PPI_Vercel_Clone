@@ -43,15 +43,12 @@ const ClaimNow = (props: any) => {
       .catch((error) => console.log("error", error));
   };
 
-  useEffect(() => {
-    // search("a");
-  }, []);
 
   return (
     <div className="grid gap-[40px] mt-6 mb-5 sm:grid-cols-2">
       <div
         className={`form-group sm:col-span-2 ${
-          data.firstEvent ? "" : !!data.earnings ? "success" : "error"
+          data.firstEvent || !!data.earnings ? "" : "error"
         }`}
       >
         <label
@@ -61,16 +58,24 @@ const ClaimNow = (props: any) => {
           How much did you earn?
         </label>
 
-        <div className="grid w-50 gap-3">
-          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
+        <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
+          <div
+            className={` icon-input flex  items-center pl-5 border border-gray-200 rounded dark:border-gray-700 ${
+              data.earnings === "Less than £12,500" ? "success" : ""
+            }`}
+          >
             <input
               id="bordered-radio-1"
               type="radio"
               name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "Less than £12,500"}
-              onClick={() => handleFormChange("earnings", "Less than £12,500")}
+              onChange={(e) => {
+                if (!e.target.checked) return;
+                handleFormChange("earnings", "Less than £12,500");
+              }}
             />
+            <span className="form-icon"></span>
             <label
               htmlFor="bordered-radio-1"
               className="py-4 ml-4 w-full sm:text-lg font-medium cursor-pointer"
@@ -78,14 +83,21 @@ const ClaimNow = (props: any) => {
               Less than £12,500
             </label>
           </div>
-          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
+          <div
+            className={` icon-input flex  items-center pl-5 border border-gray-200 rounded dark:border-gray-700 ${
+              data.earnings === "£12,501 to £50,000" ? "success" : ""
+            }`}
+          >
             <input
               id="bordered-radio-2"
               type="radio"
               name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "£12,501 to £50,000"}
-              onClick={() => handleFormChange("earnings", "£12,501 to £50,000")}
+              onChange={(e) => {
+                if (!e.target.checked) return;
+                handleFormChange("earnings", "£12,501 to £50,000");
+              }}
             />
             <label
               htmlFor="bordered-radio-2"
@@ -93,15 +105,23 @@ const ClaimNow = (props: any) => {
             >
               £12,501 to £50,000
             </label>
+            <span className="form-icon"></span>
           </div>
-          <div className="flex items-center pl-5 border border-gray-200 rounded dark:border-gray-700">
+          <div
+            className={` icon-input flex  items-center pl-5 border border-gray-200 rounded dark:border-gray-700 ${
+              data.earnings === "More than £50,001" ? "success" : ""
+            }`}
+          >
             <input
               id="bordered-radio-3"
               type="radio"
               name="earnings"
               className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               checked={data.earnings === "More than £50,001"}
-              onClick={() => handleFormChange("earnings", "More than £50,001")}
+              onChange={(e) => {
+                if (!e.target.checked) return;
+                handleFormChange("earnings", "More than £50,001");
+              }}
             />
             <label
               htmlFor="bordered-radio-3"
@@ -109,9 +129,14 @@ const ClaimNow = (props: any) => {
             >
               More than £50,001
             </label>
+            <span className="form-icon"></span>
           </div>
         </div>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p
+          className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
+            data.firstEvent || !!data.earnings ? "" : "error"
+          }`}
+        >
           Select your annual income
         </p>
       </div>
