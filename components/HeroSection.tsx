@@ -55,7 +55,7 @@ const HeroSection: React.FC<{
     if (fromEmail) {
       try {
         await supabase
-          .from("claim-form-submissions")
+          .from("PPI_Claim_Form")
           .update({ estimated_total: amount })
           .match({ email: fromEmail });
       } catch (e) {
@@ -70,7 +70,7 @@ const HeroSection: React.FC<{
     const getPrevAmount = async () => {
       try {
         const { data, error } = await supabase
-          .from("claim-form-submissions")
+          .from("PPI_Claim_Form")
           .select("estimated_total")
           .eq("email", fromEmail);
         if (data?.[0]?.estimated_total) {

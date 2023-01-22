@@ -1,8 +1,8 @@
-export const PERCENTS = [9, 64, 73, 82, 91, 100, 100];
+export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 
 export const TITLES = [
-  "Your details",
   "Claim now",
+  "Your details",
   "Your signature",
   "One more thing!",
   "Lastly!",
@@ -12,8 +12,8 @@ export const TITLES = [
 
 export const SUB_TITLES = (step: any, onClick: any) => {
   const subtitles = [
-    "If you want to claim your tax refund you must provide your details below",
     "Tell us about your employment so that we can process your claim",
+    "If you want to claim your tax refund you must provide your details below",
     <span key="tos">
       We will submit these&nbsp;
       <button
@@ -59,8 +59,8 @@ export const ERRORS = [
 ];
 
 export const SIDE_INFO = [
-  "Your details",
   "Your employer",
+  "Your details",
   "Your signature",
   "Your (NI) number",
   "Your employer ref",

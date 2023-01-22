@@ -31,7 +31,7 @@ const useValue = () => {
   });
   const [formData2, setFormData2] = useState<any>({
     firstEvent: true,
-    employerName: null,
+    earnings: null,
     claimChecked1: true,
     claimChecked2: true,
   });
@@ -113,7 +113,6 @@ export const ValueContext = createContext({
   setFormData1: (value: any) => {},
   formData2: {
     firstEvent: true,
-    employerName: {} as any,
     earnings: "",
     claimChecked1: true,
     claimChecked2: true,
