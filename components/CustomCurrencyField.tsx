@@ -56,7 +56,7 @@ const CurrencyTextField = (props: Props) => {
   return (
     <>
       <div
-        className={`form-group sm:col-span-2 my-4
+        className={`form-group sm:col-span-2
         ${props.errorClass}
         `}
       >

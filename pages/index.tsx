@@ -11,7 +11,7 @@ import ClaimNow from "@/components/steps/Step1-ClaimNow";
 import SignComplete from "@/components/steps/Step3-Signature";
 import LastThing from "@/components/steps/Step4-OneMore";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
-import ThankYou, { TAX_YEARS } from "@/components/steps/Step5-Lastly";
+import ThankYou, { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import ClaimLayout from "@/components/Layout";
@@ -319,7 +319,7 @@ function Claim({ setReady }: ClaimProps) {
           setStep((step) => step + 1);
         }
         break;
-      case STEP.LASTLY:
+      case STEP.REFUNDS:
         setFormData5({
           ...formData5,
           firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
@@ -534,7 +534,7 @@ function Claim({ setReady }: ClaimProps) {
                     handleFormChange={handleFormChange4}
                   />
                 )}
-                {step === STEP.LASTLY && (
+                {step === STEP.REFUNDS && (
                   <ThankYou
                     data={formData5}
                     handleFormChange={handleFormChange5}
@@ -546,7 +546,7 @@ function Claim({ setReady }: ClaimProps) {
                   <NextButton
                     onClick={nextStep}
                     timer={NEXT_BUTTON_TIMERS[step]}
-                    label={step === STEP.LASTLY ? "Submit" : "Next"}
+                    label={step === STEP.REFUNDS ? "Submit" : "Next"}
                     helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
                 )}

@@ -38,7 +38,7 @@ const StepAlert = (props: any) => {
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
 
-      {step === STEP.LASTLY && (
+      {step === STEP.REFUNDS && (
         <CustomAlertBanner body="This is the last question" color="yellow" />
       )}
 

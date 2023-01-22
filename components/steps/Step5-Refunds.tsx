@@ -8,14 +8,14 @@ export enum TAX_YEARS {
   fourth = "6 April 2021 and 5 April 2022",
 }
 
-const Lastly = (props: {
+const Refunds = (props: {
   data: any;
   handleFormChange: (field: string, value: string) => void;
 }) => {
   const { data, handleFormChange } = props;
 
   return (
-    <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+    <div className="grid gap-5 mt-6 mb-5">
       {(Object.keys(TAX_YEARS) as (keyof typeof TAX_YEARS)[]).map((key) => {
         return (
           <CustomCurrencyField
@@ -41,4 +41,4 @@ const Lastly = (props: {
   );
 };
 
-export default Lastly;
+export default Refunds;
