@@ -21,10 +21,11 @@ const CurrencyTextField = (props: Props) => {
       onKeyDown: undefined,
       watchExternalChanges: true,
       unformatOnHover: false,
-      // allowDecimalPadding: false,
+      maximumValue: "100000",
       modifyValueOnWheel: false,
       selectOnFocus: false,
       caretPositionOnFocus: "decimalLeft",
+      emptyInputBehavior: "null",
     });
 
     return () => {
@@ -33,10 +34,9 @@ const CurrencyTextField = (props: Props) => {
       }
     };
   }, []);
-
   useEffect(() => {
-    if (autonumeric.current) {
-      autonumeric.current.set(props.value);
+    if (!props.value || Number(props.value) === 0) {
+      autonumeric.current.set("");
     }
   }, [props.value]);
 
@@ -64,7 +64,7 @@ const CurrencyTextField = (props: Props) => {
         </label>
         <div className="flex relative">
           <div
-            className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-xl text-gray-400 dark:text-gray-400
+            className="absolute z-10 inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-xl text-gray-400 dark:text-gray-400
            w-5"
           >
             <span
@@ -95,13 +95,13 @@ const CurrencyTextField = (props: Props) => {
               required
               maxLength={64}
               ref={input}
-              value={props.amount}
+              value={props.value}
               onChange={(e) => callEventHandler(e, "onChange")}
-              // onChange={(e) => console.log(e.target.value)}
               onFocus={(e) => callEventHandler(e, "onFocus")}
               onBlur={(e) => callEventHandler(e, "onBlur")}
               onKeyPress={(e) => callEventHandler(e, "onKeyPress")}
               onKeyUp={(e) => callEventHandler(e, "onKeyUp")}
+              autoComplete="off"
             />
             <span className="form-icon"></span>
           </div>
