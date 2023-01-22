@@ -39,8 +39,8 @@ const CurrencyTextField = (props: Props) => {
     };
   }, []);
   useEffect(() => {
-    if (!props.value || Number(props.value) === 0) {
-      autonumeric.current.set("");
+    if (!props.value) {
+      autonumeric.current.set(null);
     }
   }, [props.value]);
 
@@ -83,7 +83,7 @@ const CurrencyTextField = (props: Props) => {
           </div>
           <div className="icon-input w-full md-w-full md:max-w-60">
             <input
-              type="text"
+              type="tel"
               name="currency"
               id={props.id}
               placeholder={props.placeholder}
