@@ -39,8 +39,8 @@ const CurrencyTextField = (props: Props) => {
     };
   }, []);
   useEffect(() => {
-    if (!props.value || Number(props.value) === 0) {
-      autonumeric.current.set("");
+    if (!props.value) {
+      autonumeric.current.set(null);
     }
   }, [props.value]);
 
