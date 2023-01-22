@@ -120,6 +120,9 @@ const HeroSection: React.FC<{
               <div className="max-w-2xl ">
                 <CustomCurrencyField
                   value={amount}
+                  id="grand-total"
+                  label="How much PPI did you get back?"
+                  placeholder={"Estimated total"}
                   errorClass={` ${
                     claimValue ? "success" : firstEvent ? "" : "error"
                   }`}

@@ -11,7 +11,7 @@ import ClaimNow from "@/components/steps/Step2-ClaimNow";
 import SignComplete from "@/components/steps/Step3-Signature";
 import LastThing from "@/components/steps/Step4-OneMore";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
-import ThankYou from "@/components/steps/Step5-Lastly";
+import ThankYou, { TAX_YEARS } from "@/components/steps/Step5-Lastly";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import ClaimLayout from "@/components/Layout";
@@ -116,9 +116,14 @@ function Claim({ setReady }: ClaimProps) {
   // Step5
   const handleFormChange5 = (key: string, value: string) => {
     setFormData5({
-      ...formData5,
-      firstEvent: false,
-      [key]: value,
+      firstEvents: {
+        ...formData5.firstEvents,
+        [key]: false,
+      },
+      tax_years: {
+        ...formData5.tax_years,
+        [key]: value,
+      },
     });
   };
 
@@ -257,7 +262,6 @@ function Claim({ setReady }: ClaimProps) {
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
         if (formData2.earnings) {
-          console.log(formData2.employerName?.address);
           const { error } = await supabase
             .from("claim-form-submissions")
             .update({
@@ -278,7 +282,6 @@ function Claim({ setReady }: ClaimProps) {
       case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
-          console.log(formData3);
 
           const signatureUrlPrefix =
             "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
@@ -308,17 +311,25 @@ function Claim({ setReady }: ClaimProps) {
             .update({ insurance: formData4.insurance })
             .match({ email: theEmail ?? urlEmail });
 
-          console.log(error, theEmail ?? urlEmail);
-
           setStep((step) => step + 1);
         }
         break;
       case STEP.LASTLY:
-        setFormData5({ ...formData5, firstEvent: false });
-        if (formData5.paye && Utils.validatePAYE(formData5.paye)) {
+        setFormData5({
+          ...formData5,
+          firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
+            obj[key] = false;
+            return obj;
+          }, {} as Record<string, boolean>),
+        });
+        // check if all tax years are filled
+        const can_proceed = Object.keys(TAX_YEARS).every(
+          (key) => !!formData5.tax_years[key]
+        );
+        if (can_proceed) {
           const { error } = await supabase
             .from("claim-form-submissions")
-            .update({ paye: formData5.paye })
+            .update({ tax_years: formData5.tax_years })
             .match({ email: theEmail ?? urlEmail });
 
           setStep((step) => step + 1);
@@ -342,7 +353,7 @@ function Claim({ setReady }: ClaimProps) {
     /* to check where the user should continue in the form */
     const formPageHandler = (data: any) => {
       if (router.query.step === "1") return setStep(0);
-      if (data.paye) return setStep(5);
+      if (data.tax_years) return setStep(5);
       if (data.insurance) return setStep(4);
       if (data.signatureData) return setStep(3);
       if (data.earnings) return setStep(2);
@@ -406,8 +417,13 @@ function Claim({ setReady }: ClaimProps) {
       });
 
       setFormData5({
-        paye: data?.[0]?.paye ? data?.[0].paye : "",
-        firstEvent: !data?.[0]?.paye,
+        tax_years: data?.[0]?.tax_years ? data[0].tax_years : {},
+        // if a key in tax_years has been previously filled, set its firstEvent to false and vice-versa
+
+        firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
+          obj[key] = !data[0].tax_years[key];
+          return obj;
+        }, {} as Record<string, boolean>),
       });
 
       formPageHandler(data?.[0]);

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
@@ -44,8 +44,13 @@ const useValue = () => {
     insurance: "",
   });
   const [formData5, setFormData5] = useState<any>({
-    firstEvent: true,
-    paye: "",
+    firstEvents: {
+      first: true,
+      second: true,
+      third: true,
+      fourth: true,
+    },
+    tax_years: {},
   });
 
   return {
@@ -124,8 +129,13 @@ export const ValueContext = createContext({
   },
   setFormData4: (value: any) => {},
   formData5: {
-    firstEvent: true,
-    paye: "",
+    firstEvents: {
+      first: true,
+      second: true,
+      third: true,
+      fourth: true,
+    },
+    tax_years: {} as Record<string, string>,
   },
   setFormData5: (value: any) => {},
   addressList: [] as object[],
