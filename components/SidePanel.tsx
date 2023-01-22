@@ -49,7 +49,7 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
         </p>
 
         <ul role="list" className="space-y-4 text-left">
-          {step === STEP.QUICK_QUOTE &&
+          {step === STEP.DETAILS &&
             SIDE_INFO.slice(0, 1).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
@@ -57,15 +57,15 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
             SIDE_INFO.slice(0, 2).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step === STEP.SIGN_COMPLETE &&
+          {step === STEP.SIGNATURE &&
             SIDE_INFO.slice(0, 3).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step === STEP.LAST_THING &&
+          {step === STEP.ONE_MORE &&
             SIDE_INFO.slice(0, 4).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}
-          {step === STEP.THANK_YOU &&
+          {step === STEP.LASTLY &&
             SIDE_INFO.slice(0, 5).map((info, index) => {
               return <SideItem key={index} info={info} />;
             })}

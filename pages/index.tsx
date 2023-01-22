@@ -4,14 +4,14 @@ import ProgressBar from "@/components/ProgressBar";
 import { STEP } from "@/libs/constants";
 import Title from "@/components/Title";
 import TermsOfService from "@/components/TermsOfService";
-import QuickQuote from "@/components/steps/Step1-QuickQuote";
+import QuickQuote from "@/components/steps/Step1-Details";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
 import ClaimNow from "@/components/steps/Step2-ClaimNow";
-import SignComplete from "@/components/steps/Step3-SignComplete";
-import LastThing from "@/components/steps/Step4-LastThing";
+import SignComplete from "@/components/steps/Step3-Signature";
+import LastThing from "@/components/steps/Step4-OneMore";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
-import ThankYou from "@/components/steps/Step5-ThankYou";
+import ThankYou from "@/components/steps/Step5-Lastly";
 import StepAlert from "@/components/StepAlert";
 import AllDone from "@/components/steps/Step6-AllDone";
 import ClaimLayout from "@/components/Layout";
@@ -139,7 +139,7 @@ function Claim({ setReady }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.QUICK_QUOTE) {
+    if (step === STEP.DETAILS) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -150,7 +150,7 @@ function Claim({ setReady }: ClaimProps) {
     let { day, month, year, ...otherFormData1 } = formData1;
 
     switch (step) {
-      case STEP.QUICK_QUOTE:
+      case STEP.DETAILS:
         setFormData1({ ...formData1, firstEvent: false });
         setFdEvents1({
           firstName: false,
@@ -275,7 +275,7 @@ function Claim({ setReady }: ClaimProps) {
           }
         }
         break;
-      case STEP.SIGN_COMPLETE:
+      case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
           console.log(formData3);
@@ -300,7 +300,7 @@ function Claim({ setReady }: ClaimProps) {
           setStep((step) => step + 1);
         }
         break;
-      case STEP.LAST_THING:
+      case STEP.ONE_MORE:
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance && isNino(formData4.insurance)) {
           const { error } = await supabase
@@ -313,7 +313,7 @@ function Claim({ setReady }: ClaimProps) {
           setStep((step) => step + 1);
         }
         break;
-      case STEP.THANK_YOU:
+      case STEP.LASTLY:
         setFormData5({ ...formData5, firstEvent: false });
         if (formData5.paye && Utils.validatePAYE(formData5.paye)) {
           const { error } = await supabase
@@ -489,7 +489,7 @@ function Claim({ setReady }: ClaimProps) {
 
                 <Title step={step} onClick={handleOpen} />
 
-                {step === STEP.QUICK_QUOTE && (
+                {step === STEP.DETAILS && (
                   <QuickQuote
                     data={formData1}
                     fdEvents={fdEvents1}
@@ -502,19 +502,19 @@ function Claim({ setReady }: ClaimProps) {
                     handleFormChange={handleFormChange2}
                   />
                 )}
-                {step === STEP.SIGN_COMPLETE && (
+                {step === STEP.SIGNATURE && (
                   <SignComplete
                     data={formData3}
                     handleFormChange={handleFormChange3}
                   />
                 )}
-                {step === STEP.LAST_THING && (
+                {step === STEP.ONE_MORE && (
                   <LastThing
                     data={formData4}
                     handleFormChange={handleFormChange4}
                   />
                 )}
-                {step === STEP.THANK_YOU && (
+                {step === STEP.LASTLY && (
                   <ThankYou
                     data={formData5}
                     handleFormChange={handleFormChange5}
@@ -526,7 +526,7 @@ function Claim({ setReady }: ClaimProps) {
                   <NextButton
                     onClick={nextStep}
                     timer={NEXT_BUTTON_TIMERS[step]}
-                    label={step === STEP.THANK_YOU ? "Submit" : "Next"}
+                    label={step === STEP.LASTLY ? "Submit" : "Next"}
                     helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
                   />
                 )}
