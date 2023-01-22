@@ -108,6 +108,7 @@ const RadioInput: React.FC<{
         earnings === value ? "success" : ""
       }`}
     >
+      <span className="form-icon"></span>
       <input
         id={id}
         type="radio"
@@ -119,7 +120,6 @@ const RadioInput: React.FC<{
           handleFormChange("earnings", value);
         }}
       />
-      <span className="form-icon"></span>
       <label
         htmlFor={id}
         className="py-5 ml-4 w-full sm:text-lg font-medium cursor-pointer"
