@@ -10,7 +10,7 @@ export enum STEP {
   DETAILS,
   SIGNATURE,
   ONE_MORE,
-  LASTLY,
+  REFUNDS,
   ALL_DONE,
   ERROR,
 }

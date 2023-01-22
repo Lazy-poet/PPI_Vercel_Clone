@@ -108,10 +108,10 @@ const HeroSection: React.FC<{
                         { mass: 1, tension: 280, friction: 90 },
                       ]}
                     ></Animated>
-                    <sup>*</sup>
                   </span>
                 </span>
-                &nbsp;PPI Tax Refund Today*
+                &nbsp;PPI Tax Refund Today
+                <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
                 Now you can claim even if you had to work from home for just a

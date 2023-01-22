@@ -4,8 +4,8 @@ export const TITLES = [
   "Your employment",
   "Your details",
   "Your signature",
-  "One more thing!",
-  "Lastly!",
+  "Confirming your identity",
+  "Your PPI refunds!",
   "Thank you! You're all done",
   "Apologies, we are unable to proceed",
 ];
@@ -31,8 +31,8 @@ export const SUB_TITLES = (step: any, onClick: any) => {
       </button>
       &nbsp;before proceeding.
     </span>,
-    "We need your National Insurance (NI) number to find your records",
-    "We need your Employers PAYE Number to submit your claim",
+    "We need your National Insurance (NI) number to identify your tax account. Your refund cannot be issued without this",
+    "How much PPI did you receive in the following tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We will be in touch with updates on
       your claim as soon as we hear anything. All you have to do is sit back,
@@ -59,11 +59,11 @@ export const ERRORS = [
 ];
 
 export const SIDE_INFO = [
-  "Your employer",
+  "Your income",
   "Your details",
   "Your signature",
   "Your (NI) number",
-  "Your employer ref",
+  "Your PPI refunds",
   "Thank you",
 ];
 
