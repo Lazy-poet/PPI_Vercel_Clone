@@ -3,7 +3,7 @@ import SignatureCanvas from "react-signature-canvas";
 import { CONFIRMS } from "@/libs/doms";
 import { THEME, useTheme } from "../hooks/useTheme";
 
-const SignComplete = (props: any) => {
+const Signature = (props: any) => {
   const { data, handleFormChange } = props;
   const canvasRef = useRef(null);
   const { theme } = useTheme();
@@ -108,4 +108,4 @@ const SignComplete = (props: any) => {
   );
 };
 
-export default SignComplete;
+export default Signature;

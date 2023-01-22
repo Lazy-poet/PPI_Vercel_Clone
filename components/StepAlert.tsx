@@ -10,7 +10,7 @@ const StepAlert = (props: any) => {
 
   return (
     <>
-      {step === STEP.SIGN_COMPLETE && (
+      {step === STEP.SIGNATURE && (
         <>
           {data.firstEvent ||
             (data.signatureData && (
@@ -28,17 +28,17 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {[STEP.QUICK_QUOTE, STEP.CLAIM_NOW].includes(step) && (
+      {[STEP.DETAILS, STEP.CLAIM_NOW].includes(step) && (
         <CustomAlertBanner
           color="green"
           body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
         />
       )}
-      {step === STEP.LAST_THING && (
+      {step === STEP.ONE_MORE && (
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
 
-      {step === STEP.THANK_YOU && (
+      {step === STEP.LASTLY && (
         <CustomAlertBanner body="This is the last question" color="yellow" />
       )}
 

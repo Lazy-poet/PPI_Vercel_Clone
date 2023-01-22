@@ -6,7 +6,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
 
-const QuickQuote = (props: any) => {
+const Details = (props: any) => {
   const { data, fdEvents, handleFormChange } = props;
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
@@ -527,4 +527,4 @@ const QuickQuote = (props: any) => {
   );
 };
 
-export default QuickQuote;
+export default Details;

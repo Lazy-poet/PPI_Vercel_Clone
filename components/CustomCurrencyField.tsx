@@ -3,6 +3,10 @@ import AutoNumeric from "autonumeric";
 
 type Props = {
   [key: string]: any;
+  id: string;
+  placeholder: string;
+  label: string;
+  value: string;
 };
 
 const CurrencyTextField = (props: Props) => {
@@ -53,14 +57,14 @@ const CurrencyTextField = (props: Props) => {
     <>
       <div
         className={`form-group sm:col-span-2 my-4
-        ${props.claimValue ? "success" : props.firstEvent ? "" : "error"}
+        ${props.errorClass}
         `}
       >
         <label
-          htmlFor="email"
+          htmlFor={props.id}
           className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
         >
-          How much PPI did you get back?
+          {props.label}
         </label>
         <div className="flex relative">
           <div
@@ -81,8 +85,8 @@ const CurrencyTextField = (props: Props) => {
             <input
               type="text"
               name="currency"
-              id="grand-total"
-              placeholder="Estimated total"
+              id={props.id}
+              placeholder={props.placeholder}
               className="
               bg-gray-50 border border-gray-300 text-gray-900 
               sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 

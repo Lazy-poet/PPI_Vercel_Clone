@@ -119,9 +119,13 @@ const HeroSection: React.FC<{
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
-                  firstEvent={firstEvent}
                   value={amount}
-                  claimValue={claimValue}
+                  id="grand-total"
+                  label="How much PPI did you get back?"
+                  placeholder={"Estimated total"}
+                  errorClass={` ${
+                    claimValue ? "success" : firstEvent ? "" : "error"
+                  }`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
                     setAmount(e.target.value);

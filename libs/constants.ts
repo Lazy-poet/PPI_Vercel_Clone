@@ -6,11 +6,11 @@ export enum TAX_TYPE {
 }
 
 export enum STEP {
-  QUICK_QUOTE,
+  DETAILS,
   CLAIM_NOW,
-  SIGN_COMPLETE,
-  LAST_THING,
-  THANK_YOU,
+  SIGNATURE,
+  ONE_MORE,
+  LASTLY,
   ALL_DONE,
   ERROR,
 }
