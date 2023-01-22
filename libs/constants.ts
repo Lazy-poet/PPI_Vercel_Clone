@@ -6,8 +6,8 @@ export enum TAX_TYPE {
 }
 
 export enum STEP {
-  DETAILS,
   CLAIM_NOW,
+  DETAILS,
   SIGNATURE,
   ONE_MORE,
   LASTLY,

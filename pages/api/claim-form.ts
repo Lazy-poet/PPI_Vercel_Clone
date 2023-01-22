@@ -8,7 +8,7 @@ export default async function handler(
   if (!!!req.body) return res.status(400).end();
 
   let { data, error } = await supabase
-    .from("claim-form-submissions")
+    .from("PPI_Claim_Form")
     .insert(JSON.parse(req.body));
 
   if (!!error) {

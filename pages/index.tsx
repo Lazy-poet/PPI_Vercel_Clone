@@ -33,6 +33,7 @@ function Claim({ setReady }: ClaimProps) {
   const router = useRouter();
 
   const {
+    amount,
     formData1,
     setFormData1,
     formData2,
@@ -48,7 +49,7 @@ function Claim({ setReady }: ClaimProps) {
     claimValue,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.DETAILS);
+  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const { checkedYears } = useSystemValues();
@@ -144,7 +145,7 @@ function Claim({ setReady }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.DETAILS) {
+    if (step === STEP.CLAIM_NOW) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -181,14 +182,16 @@ function Claim({ setReady }: ClaimProps) {
         ) {
           if (!theEmail) {
             let { data, error } = await supabase
-              .from("claim-form-submissions")
+              .from("PPI_Claim_Form")
               .insert({
                 ...utmParams,
                 claimValue,
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
                 customerValue: calculateCustomerValue(+claimValue),
-                link: `https://workfromhome.claimingmadeeasy.com/?email=${otherFormData1.email}`,
+                link: `https://ppi.claimingmadeeasy.com/?email=${otherFormData1.email}`,
+                estimated_total: amount,
+                earnings: formData2.earnings,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -207,15 +210,17 @@ function Claim({ setReady }: ClaimProps) {
 
             if (
               error?.message ===
-              'duplicate key value violates unique constraint "claim-form-submissions_email_key"'
+              'duplicate key value violates unique constraint "PPI_Claim_Form_email_key"'
             ) {
               const { error } = await supabase
-                .from("claim-form-submissions")
+                .from("PPI_Claim_Form")
                 .update({
                   claimValue,
                   checkedYears,
                   ourFee: calculateOurFee(+claimValue),
                   customerValue: calculateCustomerValue(+claimValue),
+                  estimated_total: amount,
+                  earnings: formData2.earnings,
                   firstName: otherFormData1.firstName,
                   lastName: otherFormData1.lastName,
                   email: otherFormData1.email,
@@ -235,12 +240,14 @@ function Claim({ setReady }: ClaimProps) {
 
           if (theEmail) {
             const { error } = await supabase
-              .from("claim-form-submissions")
+              .from("PPI_Claim_Form")
               .update({
                 claimValue,
                 checkedYears,
                 ourFee: calculateOurFee(+claimValue),
                 customerValue: calculateCustomerValue(+claimValue),
+                estimated_total: amount,
+                earnings: formData2.earnings,
                 firstName: otherFormData1.firstName,
                 lastName: otherFormData1.lastName,
                 email: otherFormData1.email,
@@ -261,15 +268,15 @@ function Claim({ setReady }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.earnings) {
-          const { error } = await supabase
-            .from("claim-form-submissions")
-            .update({
-              claimChecked1: formData2.claimChecked1 ?? false,
-              claimChecked2: formData2.claimChecked2 ?? false,
-              earnings: formData2.earnings,
-            })
-            .match({ email: theEmail ?? urlEmail });
+        if (formData2.earnings?.length) {
+          // const { error } = await supabase
+          //   .from("PPI_Claim_Form")
+          //   .update({
+          //     claimChecked1: formData2.claimChecked1 ?? false,
+          //     claimChecked2: formData2.claimChecked2 ?? false,
+          //     earnings: formData2.earnings,
+          //   })
+          //   .match({ email: theEmail ?? urlEmail });
 
           if (!formData2.claimChecked1 || !formData2.claimChecked2) {
             router.push("/error");
@@ -292,7 +299,7 @@ function Claim({ setReady }: ClaimProps) {
             );
 
           const { error } = await supabase
-            .from("claim-form-submissions")
+            .from("PPI_Claim_Form")
             .update({
               signatureData: formData3.signatureData,
               signatureUrl: signatureUrlPrefix + data?.path,
@@ -305,7 +312,7 @@ function Claim({ setReady }: ClaimProps) {
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance && isNino(formData4.insurance)) {
           const { error } = await supabase
-            .from("claim-form-submissions")
+            .from("PPI_Claim_Form")
             .update({ insurance: formData4.insurance })
             .match({ email: theEmail ?? urlEmail });
 
@@ -326,7 +333,7 @@ function Claim({ setReady }: ClaimProps) {
         );
         if (can_proceed) {
           const { error } = await supabase
-            .from("claim-form-submissions")
+            .from("PPI_Claim_Form")
             .update({ tax_years: formData5.tax_years })
             .match({ email: theEmail ?? urlEmail });
 
@@ -361,7 +368,7 @@ function Claim({ setReady }: ClaimProps) {
     /* get existed user data */
     const getPrevData = async () => {
       const { data, error } = await supabase
-        .from("claim-form-submissions")
+        .from("PPI_Claim_Form")
         .select()
         .match({ email: urlEmail })
         .select();
@@ -396,11 +403,10 @@ function Claim({ setReady }: ClaimProps) {
         year: false,
       });
       setFormData2({
-        employerName: data?.[0]?.employerName || "",
         earnings: data?.[0]?.earnings || "",
         claimChecked1: data?.[0]?.claimChecked1 ?? true,
         claimChecked2: data?.[0]?.claimChecked1 ?? true,
-        firstEvent: !data?.[0]?.employerName,
+        firstEvent: !data?.[0]?.earnings,
       });
 
       setFormData3({
