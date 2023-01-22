@@ -111,7 +111,7 @@ const HeroSection: React.FC<{
                     <sup>*</sup>
                   </span>
                 </span>
-                &nbsp;Tax Refund Today
+                &nbsp;PPI Tax Refund Today*
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
                 Now you can claim even if you had to work from home for just a
