@@ -119,9 +119,10 @@ const HeroSection: React.FC<{
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
-                  firstEvent={firstEvent}
                   value={amount}
-                  claimValue={claimValue}
+                  errorClass={` ${
+                    claimValue ? "success" : firstEvent ? "" : "error"
+                  }`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
                     setAmount(e.target.value);

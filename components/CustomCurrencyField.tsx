@@ -53,7 +53,7 @@ const CurrencyTextField = (props: Props) => {
     <>
       <div
         className={`form-group sm:col-span-2 my-4
-        ${props.claimValue ? "success" : props.firstEvent ? "" : "error"}
+        ${props.errorClass}
         `}
       >
         <label
