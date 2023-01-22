@@ -419,7 +419,7 @@ function Claim({ setReady }: ClaimProps) {
         // if a key in tax_years has been previously filled, set its firstEvent to false and vice-versa
 
         firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
-          obj[key] = !data[0].tax_years[key];
+          obj[key] = !data?.[0]?.tax_years?.[key];
           return obj;
         }, {} as Record<string, boolean>),
       });
