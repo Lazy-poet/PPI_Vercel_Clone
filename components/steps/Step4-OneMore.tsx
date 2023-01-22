@@ -1,6 +1,6 @@
 const isNino = require("is-national-insurance-number");
 
-const LastThing = (props: {
+const OneMore = (props: {
   data: any;
   handleFormChange: (field: string, value: string) => void;
 }) => {
@@ -93,4 +93,4 @@ const LastThing = (props: {
   );
 };
 
-export default LastThing;
+export default OneMore;
