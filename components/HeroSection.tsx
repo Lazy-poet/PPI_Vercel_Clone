@@ -114,15 +114,15 @@ const HeroSection: React.FC<{
                 <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-10 font-light text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Now you can claim even if you had to work from home for just a
-                single day during the pandemic!
+                Now you can reclaim the tax your lender deducted at source from
+                your PPI payout in 60 Seconds...Guaranteed
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
                   value={amount}
                   id="grand-total"
                   label="How much PPI did you get back?"
-                  placeholder={"Estimated total"}
+                  placeholder={"Enter total amount"}
                   errorClass={` ${
                     claimValue ? "success" : firstEvent ? "" : "error"
                   }`}
