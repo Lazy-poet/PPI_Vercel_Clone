@@ -7,7 +7,7 @@ import TermsOfService from "@/components/TermsOfService";
 import QuickQuote from "@/components/steps/Step2-Details";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
-import ClaimNow from "@/components/steps/Step1-ClaimNow";
+import ClaimNow, { Earnings } from "@/components/steps/Step1-ClaimNow";
 import SignComplete from "@/components/steps/Step3-Signature";
 import LastThing from "@/components/steps/Step4-OneMore";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
@@ -264,7 +264,7 @@ function Claim({ setReady }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.earnings?.length) {
+        if (formData2.earnings?.length && formData2.earnings !== Earnings.MoreThan150001) {
           const email = theEmail ?? urlEmail;
           if (email) {
             await supabase
@@ -502,7 +502,8 @@ function Claim({ setReady }: ClaimProps) {
 
                 <StepAlert
                   step={step}
-                  data={formData3}
+                  signatureData={formData3}
+                  earningsData={formData2}
                   claimValue={claimValue}
                 />
 
