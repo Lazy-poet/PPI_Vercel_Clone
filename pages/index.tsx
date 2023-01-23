@@ -186,9 +186,7 @@ function Claim({ setReady }: ClaimProps) {
               .insert({
                 ...utmParams,
                 claimValue,
-                checkedYears,
                 ourFee: calculateOurFee(+claimValue),
-                customerValue: calculateCustomerValue(+claimValue),
                 link: `https://ppi.claimingmadeeasy.com/?email=${otherFormData1.email}`,
                 estimated_total: amount,
                 earnings: formData2.earnings,
@@ -216,9 +214,7 @@ function Claim({ setReady }: ClaimProps) {
                 .from("PPI_Claim_Form")
                 .update({
                   claimValue,
-                  checkedYears,
                   ourFee: calculateOurFee(+claimValue),
-                  customerValue: calculateCustomerValue(+claimValue),
                   estimated_total: amount,
                   earnings: formData2.earnings,
                   firstName: otherFormData1.firstName,
@@ -243,9 +239,7 @@ function Claim({ setReady }: ClaimProps) {
               .from("PPI_Claim_Form")
               .update({
                 claimValue,
-                checkedYears,
                 ourFee: calculateOurFee(+claimValue),
-                customerValue: calculateCustomerValue(+claimValue),
                 estimated_total: amount,
                 earnings: formData2.earnings,
                 firstName: otherFormData1.firstName,
@@ -327,14 +321,21 @@ function Claim({ setReady }: ClaimProps) {
             return obj;
           }, {} as Record<string, boolean>),
         });
-        // check if all tax years are filled
-        const can_proceed = Object.keys(TAX_YEARS).every(
+        // check if at least one tax year is filled
+        const can_proceed = Object.keys(TAX_YEARS).some(
           (key) => !!formData5.tax_years[key]
         );
         if (can_proceed) {
+          // default other fields to 0
+          const updatedTaxYears = Object.keys(TAX_YEARS).reduce((obj, key) => {
+            obj[key] = formData5.tax_years[key] || "0.00";
+            return obj;
+          }, {} as Record<string, string>);
+
+          setFormData5({ ...formData5, tax_years: updatedTaxYears });
           const { error } = await supabase
             .from("PPI_Claim_Form")
-            .update({ tax_years: formData5.tax_years })
+            .update({ tax_years: updatedTaxYears })
             .match({ email: theEmail ?? urlEmail });
 
           setStep((step) => step + 1);
