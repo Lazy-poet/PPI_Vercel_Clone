@@ -135,7 +135,7 @@ function Claim({ setReady }: ClaimProps) {
 
   const calculateOurFee = (value: number) => {
     let feePercentage = 48;
-    return +((calculateCustomerValue(value) / 100) * feePercentage).toFixed(2);
+    return +((value / 100) * feePercentage).toFixed(2);
   };
 
   const base64ToFile = async (base64String: string) =>
