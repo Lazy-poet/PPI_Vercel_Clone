@@ -263,20 +263,16 @@ function Claim({ setReady }: ClaimProps) {
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
         if (formData2.earnings?.length) {
-          // const { error } = await supabase
-          //   .from("PPI_Claim_Form")
-          //   .update({
-          //     claimChecked1: formData2.claimChecked1 ?? false,
-          //     claimChecked2: formData2.claimChecked2 ?? false,
-          //     earnings: formData2.earnings,
-          //   })
-          //   .match({ email: theEmail ?? urlEmail });
-
-          if (!formData2.claimChecked1 || !formData2.claimChecked2) {
-            router.push("/error");
-          } else {
-            setStep((step) => step + 1);
+          const email = theEmail ?? urlEmail;
+          if (email) {
+            await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                earnings: formData2.earnings,
+              })
+              .match({ email: email });
           }
+          setStep((step) => step + 1);
         }
         break;
       case STEP.SIGNATURE:
