@@ -187,7 +187,7 @@ function Claim({ setReady }: ClaimProps) {
                 ...utmParams,
                 claimValue,
                 ourFee: calculateOurFee(+claimValue),
-                link: `https://ppi.claimingmadeeasy.com/?email=${otherFormData1.email}`,
+                link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                 estimated_total: amount,
                 earnings: formData2.earnings,
                 firstName: otherFormData1.firstName,
@@ -215,6 +215,7 @@ function Claim({ setReady }: ClaimProps) {
                 .update({
                   claimValue,
                   ourFee: calculateOurFee(+claimValue),
+                  link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                   estimated_total: amount,
                   earnings: formData2.earnings,
                   firstName: otherFormData1.firstName,
@@ -240,6 +241,7 @@ function Claim({ setReady }: ClaimProps) {
               .update({
                 claimValue,
                 ourFee: calculateOurFee(+claimValue),
+                link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                 estimated_total: amount,
                 earnings: formData2.earnings,
                 firstName: otherFormData1.firstName,
@@ -446,9 +448,9 @@ function Claim({ setReady }: ClaimProps) {
         setUtmParams(utmParams);
       });
 
-      if (!!router.query.email) {
+      if (!!router.query.e ?? !!router.query.email) {
         // @ts-ignore
-        setUrlEmail(router.query.email);
+        setUrlEmail(router.query.e ?? router.query.email);
       }
     }
   }, [router.query, router]);
