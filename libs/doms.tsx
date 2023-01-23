@@ -1,7 +1,7 @@
 export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 
 export const TITLES = [
-  "Your employment",
+  "Your income",
   "Your details",
   "Your signature",
   "Confirming your identity",
@@ -12,7 +12,7 @@ export const TITLES = [
 
 export const SUB_TITLES = (step: any, onClick: any) => {
   const subtitles = [
-    "Tell us about your annual income to see if you qualify",
+    "Tell us about your annual income to see if you’re entitled to claim",
     "If you want to claim your tax refund you must provide your details below",
     <span key="tos">
       We will submit these&nbsp;

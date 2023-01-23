@@ -449,11 +449,11 @@ select:focus + .form-icon {
   color: #0e9f6e !important;
 }
 
-.error .radio-wrapper input {
+.radio-wrapper.error input {
   border: 1px solid #f05252 !important;
   background: transparent !important;
 }
-.error .radio-wrapper {
+.radio-wrapper.error {
   background: #fdf2f2 !important;
   border: 1px solid #f05252 !important;
   box-shadow: none !important;
@@ -464,7 +464,7 @@ select:focus + .form-icon {
   -webkit-box-shadow: 0 0 0 40px #fdf2f2 inset !important;
 }
 
-.dark .error .radio-wrapper {
+.dark  .radio-wrapper.error {
   background: #374151 !important;
   border: 1px solid #f05252 !important;
   color: #f05252 !important;

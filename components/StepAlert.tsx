@@ -1,25 +1,26 @@
 import { STEP } from "@/libs/constants";
 import CustomAlertBanner from "./CustomAlert";
+import { Earnings } from "./steps/Step1-ClaimNow";
 
 type Props = {
   step: STEP;
 };
 
 const StepAlert = (props: any) => {
-  const { step, data, claimValue } = props;
+  const { step, signatureData, earningsData, claimValue } = props;
 
   return (
     <>
       {step === STEP.SIGNATURE && (
         <>
-          {data.firstEvent ||
-            (data.signatureData && (
+          {signatureData.firstEvent ||
+            (signatureData.signatureData && (
               <CustomAlertBanner
                 color="green"
                 body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
               />
             ))}
-          {!(data.signatureData || data.firstEvent) && (
+          {!(signatureData.signatureData || signatureData.firstEvent) && (
             <CustomAlertBanner
               closable={false}
               body="Please provide your signature to proceed"
@@ -28,7 +29,25 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {[STEP.DETAILS, STEP.CLAIM_NOW].includes(step) && (
+      {step === STEP.CLAIM_NOW && (
+        <>
+          {
+              earningsData.earnings !== Earnings.MoreThan150001 && (
+            <CustomAlertBanner
+              color="green"
+              body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+            />
+          )}
+          {earningsData.earnings === Earnings.MoreThan150001 && (
+            <CustomAlertBanner
+              color="red"
+              body="Because you earn more than £150,001 you’re not eligible to claim. Sorry! 😔"
+              closable={false}
+            />
+          )}
+        </>
+      )}
+      {STEP.DETAILS === step && (
         <CustomAlertBanner
           color="green"
           body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
@@ -37,11 +56,9 @@ const StepAlert = (props: any) => {
       {step === STEP.ONE_MORE && (
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
-
       {step === STEP.REFUNDS && (
         <CustomAlertBanner body="This is the last question" color="yellow" />
       )}
-
       {step === STEP.ALL_DONE && (
         <CustomAlertBanner
           color="green"
