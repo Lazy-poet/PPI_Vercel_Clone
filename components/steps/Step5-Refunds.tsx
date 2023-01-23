@@ -16,27 +16,34 @@ const Refunds = (props: {
 
   return (
     <div className="grid gap-5 mt-6 mb-5">
-      {(Object.keys(TAX_YEARS) as (keyof typeof TAX_YEARS)[]).map((key) => {
-        return (
-          <CustomCurrencyField
-            key={key}
-            value={data.tax_years?.[key]}
-            id={`field-${key}`}
-            label={`Between ${TAX_YEARS[key]}`}
-            placeholder={"Estimated total"}
-            errorClass={` ${
-              data?.firstEvents?.[key]
-                ? ""
-                : data.tax_years?.[key]
-                ? "success"
-                : "error"
-            }`}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              handleFormChange(key, e.target.value);
-            }}
-          />
-        );
-      })}
+      {(Object.keys(TAX_YEARS) as (keyof typeof TAX_YEARS)[]).map(
+        (key, _, arr) => {
+          return (
+            <CustomCurrencyField
+              key={key}
+              value={data.tax_years?.[key]}
+              id={`field-${key}`}
+              label={`Between ${TAX_YEARS[key]}`}
+              placeholder={"Estimated total"}
+              errorClass={` ${
+                data.tax_years?.[key]
+                  ? "success"
+                  : data?.firstEvents?.[key] ||
+                    arr.some(
+                      (k) =>
+                        k !== key &&
+                        data.tax_years?.[k]
+                    )
+                  ? ""
+                  : "error"
+              }`}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleFormChange(key, e.target.value);
+              }}
+            />
+          );
+        }
+      )}
     </div>
   );
 };
