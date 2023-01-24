@@ -43,7 +43,7 @@ const HeroSection: React.FC<{
 
   const calculateClaimFromAmount = (value: string) => {
     value = value.replace(/,/g, "");
-    const claim = Math.round(Number(value) * 0.0952);
+    const claim = Math.round(Number(value) * 0.112);
     setClaimValue(claim);
   };
 
