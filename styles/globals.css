@@ -450,17 +450,20 @@ select:focus + .form-icon {
 }
 
 .radio-wrapper.error input {
-  border: 2px solid #f05252 !important;
+  border: 5px solid #f05252 !important;
   background: transparent !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.dark .radio-wrapper.error input {
+  background: #fff !important;
+}
 .radio-wrapper.error input:focus {
-  outline: 2px solid #fdf2f2;
+  outline: 2px solid #f05252;
 }
 .dark .radio-wrapper.error input:focus {
-  outline: 2px solid #374151;
+  outline: 2px solid #f05252;
 }
 
 .radio-wrapper.error {
