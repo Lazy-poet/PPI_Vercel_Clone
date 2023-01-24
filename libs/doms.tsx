@@ -79,19 +79,7 @@ export const NEXT_BUTTON_TIMERS = [
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
-    <span>
-      Your personal information will be treated carefully in accordance with
-      our&nbsp;
-      <button
-        onClick={() => onClick("privacy-policy.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        Privacy Policy
-      </button>
-      . We will contact you about claim opportunities using the contact details
-      you provide. You can opt out of receiving communications from us at any
-      time by sending us an email to support@claimingmadeeasy.co.uk
-    </span>,
+    "",
     "",
     "",
     "",
