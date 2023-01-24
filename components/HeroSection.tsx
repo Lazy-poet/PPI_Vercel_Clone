@@ -127,8 +127,8 @@ const HeroSection: React.FC<{
                 <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-10 leading-none mt-4 font-normal text-gray-500 md:text-lg lg:text-xl dark:text-gray-400">
-                Now you can reclaim the tax your lender deducted at source from
-                your PPI payout in 60 Seconds...Guaranteed
+                Now you can reclaim the tax deducted at source from your PPI
+                refund in 60 Seconds... Guaranteed!
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
