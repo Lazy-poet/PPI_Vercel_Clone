@@ -2,10 +2,10 @@ import { ChangeEvent } from "react";
 import CustomCurrencyField from "../CustomCurrencyField";
 
 export enum TAX_YEARS {
-  first = "6 April 2018 and 5 April 2019",
-  second = "6 April 2019 and 5 April 2020",
-  third = "6 April 2020 and 5 April 2021",
-  fourth = "6 April 2021 and 5 April 2022",
+  APR062018_APR052019 = "6 April 2018 and 5 April 2019",
+  APR062019_APR052020 = "6 April 2019 and 5 April 2020",
+  APR062020_APR052021 = "6 April 2020 and 5 April 2021",
+  APR062021_APR052022 = "6 April 2021 and 5 April 2022",
 }
 
 const Refunds = (props: {

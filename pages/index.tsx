@@ -47,6 +47,10 @@ function Claim({ setReady }: ClaimProps) {
     fdEvents1,
     setFdEvents1,
     claimValue,
+    urlEmail,
+    setUrlEmail,
+    urlPhone,
+    setUrlPhone,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -56,7 +60,7 @@ function Claim({ setReady }: ClaimProps) {
   const [utmParams, setUtmParams] = useState({});
 
   const [theEmail, setTheEmail] = useState<string | null>(null);
-  const [urlEmail, setUrlEmail] = useState<string | null>(null);
+
   const [prevData, setPrevData] = useState("");
 
   // Step1
@@ -300,7 +304,9 @@ function Claim({ setReady }: ClaimProps) {
               signatureData: formData3.signatureData,
               signatureUrl: signatureUrlPrefix + data?.path,
             })
-            .match({ email: theEmail ?? urlEmail });
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
           setStep(STEP.ONE_MORE);
         }
         break;
@@ -310,7 +316,9 @@ function Claim({ setReady }: ClaimProps) {
           const { error } = await supabase
             .from("PPI_Claim_Form")
             .update({ insurance: formData4.insurance })
-            .match({ email: theEmail ?? urlEmail });
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
 
           setStep(STEP.REFUNDS);
         }
@@ -333,12 +341,21 @@ function Claim({ setReady }: ClaimProps) {
             obj[key] = formData5.tax_years[key] || "0.00";
             return obj;
           }, {} as Record<string, string>);
+          const totalTaxYears = Object.keys(TAX_YEARS).reduce(
+            (sum, key) => sum + +updatedTaxYears[key],
+            0
+          );
 
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
           const { error } = await supabase
             .from("PPI_Claim_Form")
-            .update({ tax_years: updatedTaxYears })
-            .match({ email: theEmail ?? urlEmail });
+            .update({
+              ...updatedTaxYears,
+              estimated_total_difference: +amount - totalTaxYears ?? 0,
+            })
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
 
           setStep(STEP.ALL_DONE);
         }
@@ -373,7 +390,7 @@ function Claim({ setReady }: ClaimProps) {
       const { data, error } = await supabase
         .from("PPI_Claim_Form")
         .select()
-        .match({ email: urlEmail })
+        .match(urlPhone ? { phone: urlPhone } : { email: urlEmail })
         .select();
       if (!data?.length) {
         return;
@@ -424,7 +441,10 @@ function Claim({ setReady }: ClaimProps) {
       });
 
       setFormData5({
-        tax_years: data?.[0]?.tax_years ? data[0].tax_years : {},
+        tax_years: Object.keys(TAX_YEARS).reduce((obj, key) => {
+          obj[key] = data?.[0]?.tax_years?.[key];
+          return obj;
+        }, {} as Record<string, boolean>),
         // if a key in tax_years has been previously filled, set its firstEvent to false and vice-versa
 
         firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
@@ -437,10 +457,10 @@ function Claim({ setReady }: ClaimProps) {
     };
 
     /* if existed user */
-    if (urlEmail) {
+    if (urlEmail || urlPhone) {
       getPrevData();
     }
-  }, [urlEmail]);
+  }, [urlEmail, urlPhone]);
 
   useEffect(() => {
     if (!!router.query) {
@@ -451,11 +471,6 @@ function Claim({ setReady }: ClaimProps) {
         }
         setUtmParams(utmParams);
       });
-
-      if (!!router.query.e ?? !!router.query.email) {
-        // @ts-ignore
-        setUrlEmail(router.query.e ?? router.query.email);
-      }
     }
   }, [router.query, router]);
 

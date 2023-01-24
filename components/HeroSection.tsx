@@ -23,9 +23,12 @@ const HeroSection: React.FC<{
     setCheckedYears,
     claimValue,
     setClaimValue,
+    urlEmail,
+    setUrlEmail,
+    urlPhone,
+    setUrlPhone,
   } = useSystemValues();
 
-  const fromEmail = router.query.email;
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
   const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
 
@@ -52,12 +55,12 @@ const HeroSection: React.FC<{
         behavior: "smooth",
       });
     }
-    if (fromEmail) {
+    if (urlEmail || urlPhone) {
       try {
         await supabase
           .from("PPI_Claim_Form")
           .update({ estimated_total: amount })
-          .match({ email: fromEmail });
+          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
       } catch (e) {
         console.log(e);
       }
@@ -66,13 +69,13 @@ const HeroSection: React.FC<{
   };
 
   useEffect(() => {
-    if (!fromEmail) return;
     const getPrevAmount = async () => {
       try {
         const { data, error } = await supabase
           .from("PPI_Claim_Form")
           .select("estimated_total")
-          .eq("email", fromEmail);
+          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
+
         if (data?.[0]?.estimated_total) {
           setAmount(data[0].estimated_total);
           calculateClaimFromAmount(data[0].estimated_total);
@@ -82,8 +85,21 @@ const HeroSection: React.FC<{
       }
     };
 
-    getPrevAmount();
-  }, [fromEmail]);
+    if (urlPhone || urlEmail) {
+      getPrevAmount();
+    }
+  }, [urlEmail, urlPhone]);
+
+  useEffect(() => {
+    if (!!router.query.e ?? !!router.query.email) {
+      // @ts-ignore
+      setUrlEmail(router.query.e ?? router.query.email);
+    }
+    if (!!router.query.p) {
+      // @ts-ignore
+      setUrlPhone(router.query.p);
+    }
+  }, [router.query]);
 
   return (
     <>
