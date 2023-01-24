@@ -107,7 +107,7 @@ const HeroSection: React.FC<{
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
-              <h1 className="max-w-2xl text-4xl font-extrabold leading-none tracking-tight inline bg-[#E5E7EB]  dark:bg-transparent md:text-5xl xl:text-6xl dark:text-white">
+              <h1 className="max-w-2xl text-4xl font-extrabold leading-none tracking-tight inline md:text-5xl xl:text-6xl dark:text-white">
                 Claim Your&nbsp;
                 <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
                   <span className="text-blue-600 font-bold text-2xl md:text-3xl xl:text-4xl ">
