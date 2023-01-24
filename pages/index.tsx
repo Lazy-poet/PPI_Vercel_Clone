@@ -341,11 +341,18 @@ function Claim({ setReady }: ClaimProps) {
             obj[key] = formData5.tax_years[key] || "0.00";
             return obj;
           }, {} as Record<string, string>);
+          const totalTaxYears = Object.keys(TAX_YEARS).reduce(
+            (sum, key) => sum + +updatedTaxYears[key],
+            0
+          );
 
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
           const { error } = await supabase
             .from("PPI_Claim_Form")
-            .update({ tax_years: updatedTaxYears })
+            .update({
+              ...updatedTaxYears,
+              estimated_total_difference: +amount - totalTaxYears ?? 0,
+            })
             .match(
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
@@ -434,7 +441,10 @@ function Claim({ setReady }: ClaimProps) {
       });
 
       setFormData5({
-        tax_years: data?.[0]?.tax_years ? data[0].tax_years : {},
+        tax_years: Object.keys(TAX_YEARS).reduce((obj, key) => {
+          obj[key] = data?.[0]?.tax_years?.[key];
+          return obj;
+        }, {} as Record<string, boolean>),
         // if a key in tax_years has been previously filled, set its firstEvent to false and vice-versa
 
         firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
