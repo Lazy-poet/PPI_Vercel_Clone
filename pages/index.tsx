@@ -160,6 +160,24 @@ function Claim({ setReady }: ClaimProps) {
     let { day, month, year, ...otherFormData1 } = formData1;
 
     switch (step) {
+      case STEP.CLAIM_NOW:
+        setFormData2({ ...formData2, firstEvent: false });
+        if (
+          formData2.earnings?.length &&
+          formData2.earnings !== Earnings.MoreThan150001
+        ) {
+          const email = theEmail ?? urlEmail;
+          if (email) {
+            await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                earnings: formData2.earnings,
+              })
+              .match({ email: email });
+          }
+          setStep(STEP.DETAILS);
+        }
+        break;
       case STEP.DETAILS:
         setFormData1({ ...formData1, firstEvent: false });
         setFdEvents1({
@@ -236,7 +254,7 @@ function Claim({ setReady }: ClaimProps) {
                 })
                 .match({ email: otherFormData1.email });
             }
-            setStep((step) => step + 1);
+            setStep(STEP.SIGNATURE);
           }
 
           if (theEmail) {
@@ -262,28 +280,11 @@ function Claim({ setReady }: ClaimProps) {
               })
               .match({ email: theEmail });
             setTheEmail(otherFormData1.email);
-            setStep((step) => step + 1);
+            setStep(STEP.SIGNATURE);
           }
         }
         break;
-      case STEP.CLAIM_NOW:
-        setFormData2({ ...formData2, firstEvent: false });
-        if (
-          formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan150001
-        ) {
-          const email = theEmail ?? urlEmail;
-          if (email || urlPhone) {
-            await supabase
-              .from("PPI_Claim_Form")
-              .update({
-                earnings: formData2.earnings,
-              })
-              .match(urlPhone ? { phone: urlPhone } : { email: email });
-          }
-          setStep((step) => step + 1);
-        }
-        break;
+
       case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
@@ -306,8 +307,7 @@ function Claim({ setReady }: ClaimProps) {
             .match(
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
-
-          setStep((step) => step + 1);
+          setStep(STEP.ONE_MORE);
         }
         break;
       case STEP.ONE_MORE:
@@ -320,7 +320,7 @@ function Claim({ setReady }: ClaimProps) {
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
 
-          setStep((step) => step + 1);
+          setStep(STEP.REFUNDS);
         }
         break;
       case STEP.REFUNDS:
@@ -357,7 +357,7 @@ function Claim({ setReady }: ClaimProps) {
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
 
-          setStep((step) => step + 1);
+          setStep(STEP.ALL_DONE);
         }
         break;
       case STEP.ALL_DONE:
