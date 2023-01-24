@@ -26,6 +26,7 @@ const CurrencyTextField = (props: Props) => {
       watchExternalChanges: true,
       unformatOnHover: false,
       maximumValue: "100000",
+      minimumValue: "0",
       modifyValueOnWheel: false,
       selectOnFocus: false,
       caretPositionOnFocus: "decimalLeft",
