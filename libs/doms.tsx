@@ -4,7 +4,7 @@ export const TITLES = [
   "Your income",
   "Your details",
   "Your signature",
-  "Confirming your identity",
+  "Confirm your identity",
   "Your PPI refunds!",
   "Thank you! You're all done",
   "Apologies, we are unable to proceed",
@@ -12,7 +12,7 @@ export const TITLES = [
 
 export const SUB_TITLES = (step: any, onClick: any) => {
   const subtitles = [
-    "Tell us about your annual income to see if you’re entitled to claim",
+    "Tell us about your annual income to see if you qualify",
     "If you want to claim your tax refund you must provide your details below",
     <span key="tos">
       We will submit these&nbsp;
@@ -31,7 +31,7 @@ export const SUB_TITLES = (step: any, onClick: any) => {
       </button>
       &nbsp;before proceeding.
     </span>,
-    "We need your National Insurance (NI) number to identify your tax account. Your refund cannot be issued without this",
+    "We need your National Insurance (NI) number to identify your tax account. Your refund cannot be issued without it!",
     "How much PPI did you receive in the following tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We will be in touch with updates on
@@ -79,26 +79,14 @@ export const NEXT_BUTTON_TIMERS = [
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
-    <span>
-      Your personal information will be treated carefully in accordance with
-      our&nbsp;
-      <button
-        onClick={() => onClick("privacy-policy.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        Privacy Policy
-      </button>
-      . We will contact you about claim opportunities using the contact details
-      you provide. You can opt out of receiving communications from us at any
-      time by sending us an email to support@claimingmadeeasy.co.uk
-    </span>,
+    "",
     "",
     "",
     "",
     <span>
-      When you click submit, we will receive your personal information and claim
-      documents, to begin processing your tax refund claims. We will handle your
-      data in accordance with our&nbsp;
+      When you click submit, we will receive your personal information and begin
+      processing your tax refund claims. We will handle your data in accordance
+      with our &nbsp;
       <button
         onClick={() => onClick("privacy-policy.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
