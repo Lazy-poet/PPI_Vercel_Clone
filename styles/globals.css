@@ -450,9 +450,19 @@ select:focus + .form-icon {
 }
 
 .radio-wrapper.error input {
-  border: 1px solid #f05252 !important;
+  border: 2px solid #f05252 !important;
   background: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.radio-wrapper.error input:focus {
+  outline: 2px solid #fdf2f2;
+}
+.dark .radio-wrapper.error input:focus {
+  outline: 2px solid #374151;
+}
+
 .radio-wrapper.error {
   background: #fdf2f2 !important;
   border: 1px solid #f05252 !important;
@@ -464,9 +474,8 @@ select:focus + .form-icon {
   -webkit-box-shadow: 0 0 0 40px #fdf2f2 inset !important;
 }
 
-.dark  .radio-wrapper.error {
+.dark .radio-wrapper.error {
   background: #374151 !important;
-  border: 1px solid #f05252 !important;
   color: #f05252 !important;
   -webkit-text-fill-color: #f05252 !important;
   -webkit-box-shadow: 0 0 0 40px #374151 inset !important;

@@ -24,7 +24,7 @@ const OneMore = (props: {
       >
         <label
           htmlFor="insurance"
-          className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
           National Insurance (NI) number
         </label>

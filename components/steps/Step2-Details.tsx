@@ -106,7 +106,7 @@ const Details = (props: any) => {
         >
           <label
             htmlFor="first-name"
-            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
             First Name
           </label>
@@ -137,7 +137,7 @@ const Details = (props: any) => {
         >
           <label
             htmlFor="last-name"
-            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
             Last Name
           </label>
@@ -174,7 +174,7 @@ const Details = (props: any) => {
         >
           <label
             htmlFor="email"
-            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
             Email Address
           </label>
@@ -243,7 +243,7 @@ const Details = (props: any) => {
         >
           <label
             htmlFor="address"
-            className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
             Postcode
           </label>
@@ -325,7 +325,7 @@ const Details = (props: any) => {
           >
             <label
               htmlFor="address"
-              className="block mb-2 text-lg font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
             >
               Address
             </label>
@@ -381,7 +381,7 @@ const Details = (props: any) => {
         >
           <label
             htmlFor="birthday"
-            className="block text-lg font-medium text-gray-900 dark:text-white"
+            className="block text-lg font-bold text-gray-900 dark:text-white"
           >
             Date of Birth
           </label>
