@@ -29,11 +29,15 @@ const Refunds = (props: {
                 data.tax_years?.[key]
                   ? "success"
                   : data?.firstEvents?.[key] ||
-                    arr.some(
-                      (k) =>
-                        k !== key &&
-                        data.tax_years?.[k]
-                    )
+                    arr.some((k) => k !== key && data.tax_years?.[k])
+                  ? ""
+                  : "error"
+              }`}
+              helperClass={` ${
+                data.tax_years?.[key]
+                  ? "text-green-600 dark:text-green-600"
+                  : data?.firstEvents?.[key] ||
+                    arr.some((k) => k !== key && data.tax_years?.[k])
                   ? ""
                   : "error"
               }`}

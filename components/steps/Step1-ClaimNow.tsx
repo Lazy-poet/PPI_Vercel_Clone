@@ -13,7 +13,7 @@ const ClaimNow = (props: any) => {
       <div className={`form-group sm:col-span-2 `}>
         <label
           htmlFor="employer"
-          className={`block mb-2 text-lg font-medium text-gray-900 dark:text-white ${
+          className={`block mb-2 text-lg font-bold text-gray-900 dark:text-white ${
             data.firstEvent
               ? ""
               : data.earnings
@@ -61,11 +61,13 @@ const ClaimNow = (props: any) => {
             data.firstEvent
               ? ""
               : !!data.earnings && data.earnings !== Earnings.MoreThan150001
-              ? " text-green-700 dark:text-green-700"
+              ? "text-green-700 dark:text-green-700"
               : "error"
           }`}
         >
-          Select your annual income
+          {data.earnings === Earnings.MoreThan150001
+            ? "You're not eligible to claim"
+            : " Select your annual income"}
         </p>
       </div>
     </div>
