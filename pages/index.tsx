@@ -57,6 +57,7 @@ function Claim({ setReady }: ClaimProps) {
 
   const [theEmail, setTheEmail] = useState<string | null>(null);
   const [urlEmail, setUrlEmail] = useState<string | null>(null);
+  const [urlPhone, setUrlPhone] = useState<string | null>(null);
   const [prevData, setPrevData] = useState("");
 
   // Step1
@@ -264,15 +265,18 @@ function Claim({ setReady }: ClaimProps) {
         break;
       case STEP.CLAIM_NOW:
         setFormData2({ ...formData2, firstEvent: false });
-        if (formData2.earnings?.length && formData2.earnings !== Earnings.MoreThan150001) {
+        if (
+          formData2.earnings?.length &&
+          formData2.earnings !== Earnings.MoreThan150001
+        ) {
           const email = theEmail ?? urlEmail;
-          if (email) {
+          if (email || urlPhone) {
             await supabase
               .from("PPI_Claim_Form")
               .update({
                 earnings: formData2.earnings,
               })
-              .match({ email: email });
+              .match(urlPhone ? { phone: urlPhone } : { email: email });
           }
           setStep((step) => step + 1);
         }
@@ -296,7 +300,10 @@ function Claim({ setReady }: ClaimProps) {
               signatureData: formData3.signatureData,
               signatureUrl: signatureUrlPrefix + data?.path,
             })
-            .match({ email: theEmail ?? urlEmail });
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
+
           setStep((step) => step + 1);
         }
         break;
@@ -306,7 +313,9 @@ function Claim({ setReady }: ClaimProps) {
           const { error } = await supabase
             .from("PPI_Claim_Form")
             .update({ insurance: formData4.insurance })
-            .match({ email: theEmail ?? urlEmail });
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
 
           setStep((step) => step + 1);
         }
@@ -334,7 +343,9 @@ function Claim({ setReady }: ClaimProps) {
           const { error } = await supabase
             .from("PPI_Claim_Form")
             .update({ tax_years: updatedTaxYears })
-            .match({ email: theEmail ?? urlEmail });
+            .match(
+              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
+            );
 
           setStep((step) => step + 1);
         }
@@ -369,7 +380,7 @@ function Claim({ setReady }: ClaimProps) {
       const { data, error } = await supabase
         .from("PPI_Claim_Form")
         .select()
-        .match({ email: urlEmail })
+        .match(urlPhone ? { phone: urlPhone } : { email: urlEmail })
         .select();
       if (!data?.length) {
         return;
@@ -433,10 +444,10 @@ function Claim({ setReady }: ClaimProps) {
     };
 
     /* if existed user */
-    if (urlEmail) {
+    if (urlEmail || urlPhone) {
       getPrevData();
     }
-  }, [urlEmail]);
+  }, [urlEmail, urlPhone]);
 
   useEffect(() => {
     if (!!router.query) {
@@ -451,6 +462,10 @@ function Claim({ setReady }: ClaimProps) {
       if (!!router.query.e ?? !!router.query.email) {
         // @ts-ignore
         setUrlEmail(router.query.e ?? router.query.email);
+      }
+      if (!!router.query.p) {
+        // @ts-ignore
+        setUrlPhone(router.query.p);
       }
     }
   }, [router.query, router]);
