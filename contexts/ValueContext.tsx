@@ -7,6 +7,8 @@ const useValue = () => {
   const [claimValue, setClaimValue] = useState<number>(0);
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
+  const [urlEmail, setUrlEmail] = useState<any>(null);
+  const [urlPhone, setUrlPhone] = useState<any>(null);
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -76,6 +78,10 @@ const useValue = () => {
     setAddressList,
     claimValue,
     setClaimValue,
+    urlEmail,
+    setUrlEmail,
+    urlPhone,
+    setUrlPhone,
   };
 };
 
@@ -139,6 +145,10 @@ export const ValueContext = createContext({
   setFormData5: (value: any) => {},
   addressList: [] as object[],
   setAddressList: (value: any) => {},
+  urlEmail: null,
+  setUrlEmail: (val: any) => {},
+  urlPhone: null,
+  setUrlPhone: (val: any) => {},
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {

@@ -47,6 +47,10 @@ function Claim({ setReady }: ClaimProps) {
     fdEvents1,
     setFdEvents1,
     claimValue,
+    urlEmail,
+    setUrlEmail,
+    urlPhone,
+    setUrlPhone,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -56,8 +60,7 @@ function Claim({ setReady }: ClaimProps) {
   const [utmParams, setUtmParams] = useState({});
 
   const [theEmail, setTheEmail] = useState<string | null>(null);
-  const [urlEmail, setUrlEmail] = useState<string | null>(null);
-  const [urlPhone, setUrlPhone] = useState<string | null>(null);
+
   const [prevData, setPrevData] = useState("");
 
   // Step1
@@ -458,15 +461,6 @@ function Claim({ setReady }: ClaimProps) {
         }
         setUtmParams(utmParams);
       });
-
-      if (!!router.query.e ?? !!router.query.email) {
-        // @ts-ignore
-        setUrlEmail(router.query.e ?? router.query.email);
-      }
-      if (!!router.query.p) {
-        // @ts-ignore
-        setUrlPhone(router.query.p);
-      }
     }
   }, [router.query, router]);
 
