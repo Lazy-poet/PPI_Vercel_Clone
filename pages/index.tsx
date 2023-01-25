@@ -156,6 +156,17 @@ function Claim({ setReady }: ClaimProps) {
     }
   };
 
+  const handleAllDone = async () => {
+    const res = await supabase
+      .from("PPI_Claim_Form")
+      .select()
+      .match(urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail });
+
+    let newRes = await supabase
+      .from("PPI_Claim_Form_Completed")
+      .insert(res.data);
+  };
+
   const nextStep = async () => {
     let { day, month, year, ...otherFormData1 } = formData1;
 
@@ -358,6 +369,7 @@ function Claim({ setReady }: ClaimProps) {
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
 
+          await handleAllDone();
           setStep(STEP.ALL_DONE);
         }
         break;
