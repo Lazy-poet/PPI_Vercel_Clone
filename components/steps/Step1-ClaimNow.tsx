@@ -23,7 +23,7 @@ const ClaimNow = (props: any) => {
               : "error"
           }`}
         >
-          How much did you earn?
+          How much do you earn
         </label>
 
         <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
@@ -66,8 +66,8 @@ const ClaimNow = (props: any) => {
           }`}
         >
           {data.earnings === Earnings.MoreThan150001
-            ? "You're not eligible to claim"
-            : " Select your annual income"}
+            ? "Sorry! you're not eligible to claim"
+            : " Please select your annual income"}
         </p>
       </div>
     </div>

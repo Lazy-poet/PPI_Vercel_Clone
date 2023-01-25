@@ -108,7 +108,7 @@ const Details = (props: any) => {
             htmlFor="first-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            First Name
+            First name
           </label>
           <div className="icon-input">
             <input
@@ -116,7 +116,7 @@ const Details = (props: any) => {
               name="firstName"
               id="first-name"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="First Name"
+              placeholder="First name (e.g. Joe)"
               required
               maxLength={64}
               value={data.firstName}
@@ -127,7 +127,9 @@ const Details = (props: any) => {
           {fdEvents.firstName
             ? ""
             : !data.firstName && (
-                <p className="mt-2 text-sm">Type Your First Name</p>
+                <p className="mt-2 text-sm">
+                  Please let us know your first name
+                </p>
               )}
         </div>
         <div
@@ -139,7 +141,7 @@ const Details = (props: any) => {
             htmlFor="last-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            Last Name
+            Last name
           </label>
           <div className="icon-input">
             <input
@@ -147,7 +149,7 @@ const Details = (props: any) => {
               name="lastName"
               id="last-name"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="Last Name"
+              placeholder="Last name (e.g. Bloggs)"
               required
               maxLength={64}
               value={data.lastName}
@@ -159,7 +161,7 @@ const Details = (props: any) => {
             ? ""
             : !data.lastName && (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Type Your Last Name
+                  Please let us know your last name
                 </p>
               )}
         </div>
@@ -176,7 +178,7 @@ const Details = (props: any) => {
             htmlFor="email"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            Email Address
+            Email address
           </label>
           <div className="flex">
             <div className="icon-input w-full">
@@ -229,7 +231,7 @@ const Details = (props: any) => {
             </p>
           ) : (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid Email Address
+              Please provide a valid email address
             </p>
           )}
         </div>
@@ -245,7 +247,7 @@ const Details = (props: any) => {
           }`}
         >
           <label
-            htmlFor="address"
+            htmlFor="postCode"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
             Postcode
@@ -273,7 +275,7 @@ const Details = (props: any) => {
               id="postCode"
               name="postCode"
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Postcode"
+              placeholder="Postcode (e.g. CH5 3UZ)"
               required
               value={data.postCode}
               onChange={(e) => handleInputChange(e)}
@@ -291,7 +293,7 @@ const Details = (props: any) => {
                 searchAddressByPostcode(data.postCode);
               }}
             >
-              Search
+              Find address
             </button>
           </div>
           {fdEvents.postCode ? (
@@ -299,8 +301,7 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click &apos;Search&apos; to find your
-              address
+              Enter your postcode, then click the button to find your address
             </p>
           ) : !(data.postCode && postcodeValidator(data.postCode, "GB")) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -308,15 +309,14 @@ const Details = (props: any) => {
             </p>
           ) : addressList.length === 0 ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Click &apos;Search&apos; to find your address
+              Click the button to find your address
             </p>
           ) : (
             <p
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click &apos;Search&apos; to find your
-              address
+              Enter your postcode, then click the button to find your address
             </p>
           )}
         </div>
@@ -344,7 +344,7 @@ const Details = (props: any) => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    Please Select Your Address
+                    Please select your address
                   </MenuItem>
                   {addressList.map((item: any, index: number) => (
                     <MenuItem
@@ -386,7 +386,7 @@ const Details = (props: any) => {
             htmlFor="birthday"
             className="block text-lg font-bold text-gray-900 dark:text-white"
           >
-            Date of Birth
+            Date of birth
           </label>
         </div>
 
@@ -425,7 +425,7 @@ const Details = (props: any) => {
                   Day of birth
                 </p>
               ) : !data.day ? (
-                <p className="mt-2 text-sm">Select the Day of birth</p>
+                <p className="mt-2 text-sm">Select day of birth</p>
               ) : (
                 <p
                   id="helper-text-explanation"
@@ -470,7 +470,7 @@ const Details = (props: any) => {
                   Month of birth
                 </p>
               ) : !data.month ? (
-                <p className="mt-2 text-sm">Select the Month of birth</p>
+                <p className="mt-2 text-sm">Select month of birth</p>
               ) : (
                 <p
                   id="helper-text-explanation"
@@ -514,7 +514,7 @@ const Details = (props: any) => {
                 Year of birth
               </p>
             ) : !data.year ? (
-              <p className="mt-2 text-sm">Select the Year of birth</p>
+              <p className="mt-2 text-sm">Select year of birth</p>
             ) : (
               <p
                 id="helper-text-explanation"

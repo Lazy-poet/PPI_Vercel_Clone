@@ -89,9 +89,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       >
         Privacy Policy
       </button>
-      . We will contact you about claim opportunities using the contact details
-      you provide. You can opt out of receiving communications from us at any
-      time by sending us an email to support@claimingmadeeasy.co.uk
+      .
     </span>,
     "",
     "",
