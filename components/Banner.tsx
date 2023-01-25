@@ -35,7 +35,7 @@ const Banner = (props: Props) => {
         className={
           !showBanner
             ? "hidden"
-            : "flex z-50 fixed justify-between py-3 px-2 sm:px-4 w-full border-t-4 border-yellow-300 text-yellow-700 bg-yellow-50"
+            : "flex z-50 fixed justify-between py-3 px-2 sm:px-4 w-full text-yellow-700 bg-yellow-50"
         }
       >
         <div className="flex items-center mx-auto gap-2">
@@ -55,7 +55,7 @@ const Banner = (props: Props) => {
           </svg>
 
           <p className="text-sm font-medium md:my-0">
-            CLAIM NOW TO BEAT THE 5 APRIL DEADLINE!
+            CLAIM NOW TO BEAT THE APRIL DEADLINE
           </p>
         </div>
         <button
