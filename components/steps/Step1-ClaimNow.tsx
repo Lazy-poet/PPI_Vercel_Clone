@@ -23,7 +23,7 @@ const ClaimNow = (props: any) => {
               : "error"
           }`}
         >
-          How much do you earn
+          How much do you earn?
         </label>
 
         <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
