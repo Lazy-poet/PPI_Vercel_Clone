@@ -63,7 +63,7 @@ const CurrencyTextField = (props: Props) => {
       >
         <label
           htmlFor={props.id}
-          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white leading-none"
+          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           onClick={(e) => e.preventDefault()}
         >
           {props.label}

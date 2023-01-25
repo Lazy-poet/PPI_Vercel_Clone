@@ -33,7 +33,7 @@ const Details = (props: any) => {
         value = value.trim();
         break;
       case "postCode":
-        value = value.toUpperCase().trim().substr(0, 8);
+        value = value.toUpperCase().substr(0, 8);
         if (
           name === "postCode" &&
           value !== currentAddressListPostCode.current
@@ -116,7 +116,7 @@ const Details = (props: any) => {
               name="firstName"
               id="first-name"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="First name (e.g. Joe)"
+              placeholder="e.g. Joe"
               required
               maxLength={64}
               value={data.firstName}
@@ -149,7 +149,7 @@ const Details = (props: any) => {
               name="lastName"
               id="last-name"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="Last name (e.g. Bloggs)"
+              placeholder="e.g. Bloggs"
               required
               maxLength={64}
               value={data.lastName}
@@ -275,7 +275,7 @@ const Details = (props: any) => {
               id="postCode"
               name="postCode"
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Postcode (e.g. CH5 3UZ)"
+              placeholder="e.g. CH5 3UZ"
               required
               value={data.postCode}
               onChange={(e) => handleInputChange(e)}
