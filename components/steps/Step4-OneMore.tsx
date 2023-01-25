@@ -51,7 +51,7 @@ const OneMore = (props: {
               type="text"
               name="insurance"
               id="insurance"
-              placeholder="AB123456C"
+              placeholder="e.g. AB123456C"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
               maxLength={9}

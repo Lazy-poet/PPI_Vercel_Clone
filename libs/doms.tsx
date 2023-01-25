@@ -6,7 +6,7 @@ export const TITLES = [
   "Your signature",
   "Confirm your identity",
   "Your PPI refunds!",
-  "Thank you! You're all done",
+  "Thank you! You're all done 🎉",
   "Apologies, we are unable to proceed",
 ];
 
@@ -31,7 +31,7 @@ export const SUB_TITLES = (step: any, onClick: any) => {
       </button>
       &nbsp;before proceeding.
     </span>,
-    "We need your National Insurance (NI) number to identify your tax account. Your refund cannot be issued without it!",
+    "We need your National Insurance (NI) number to identify your tax account. Your refund can't be issued without it!",
     "How much PPI did you receive in the following tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We will be in touch with updates on
@@ -83,12 +83,16 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
     <span key="2">
       Your personal information will be treated carefully in accordance with
       our&nbsp;
-      <button
-        onClick={() => onClick("privacy-policy.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
+      <a
+        href="#"
+        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick("privacy-policy.pdf");
+        }}
       >
         Privacy Policy
-      </button>
+      </a>
       .
     </span>,
     "",
@@ -97,12 +101,16 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       When you click submit, we will receive your personal information and begin
       processing your tax refund claims. We will handle your data in accordance
       with our &nbsp;
-      <button
-        onClick={() => onClick("privacy-policy.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
+      <a
+        href="#"
+        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick("privacy-policy.pdf");
+        }}
       >
         Privacy Policy
-      </button>
+      </a>
       .
     </span>,
     "",
