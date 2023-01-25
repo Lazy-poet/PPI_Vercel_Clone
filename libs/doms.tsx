@@ -80,10 +80,22 @@ export const NEXT_BUTTON_TIMERS = [
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
     "",
+    <span key="2">
+      Your personal information will be treated carefully in accordance with
+      our&nbsp;
+      <button
+        onClick={() => onClick("privacy-policy.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        Privacy Policy
+      </button>
+      . We will contact you about claim opportunities using the contact details
+      you provide. You can opt out of receiving communications from us at any
+      time by sending us an email to support@claimingmadeeasy.co.uk
+    </span>,
     "",
     "",
-    "",
-    <span>
+    <span key="5">
       When you click submit, we will receive your personal information and begin
       processing your tax refund claims. We will handle your data in accordance
       with our &nbsp;

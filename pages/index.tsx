@@ -533,6 +533,7 @@ function Claim({ setReady }: ClaimProps) {
                     data={formData1}
                     fdEvents={fdEvents1}
                     handleFormChange={handleFormChange1}
+                    handleOpen={handleOpen}
                   />
                 )}
                 {step === STEP.CLAIM_NOW && (

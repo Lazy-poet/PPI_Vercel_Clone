@@ -1,5 +1,5 @@
 export const validateEmail = (e: string) => {
-  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(e) ? true : false;
+  return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i.test(e) ? true : false;
 };
 
 export const validatePAYE = (e: string) => {
