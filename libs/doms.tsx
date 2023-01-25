@@ -5,8 +5,8 @@ export const TITLES = [
   "Your details",
   "Your signature",
   "Confirm your identity",
-  "Your PPI refunds!",
-  "Thank you! You're all done 🎉",
+  "Your PPI refunds",
+  "Thank you! 🎉",
   "Apologies, we are unable to proceed",
 ];
 
@@ -98,9 +98,8 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
     "",
     "",
     <span key="5">
-      When you click submit, we will receive your personal information and begin
-      processing your tax refund claims. We will handle your data in accordance
-      with our &nbsp;
+      When you click submit, we&apos;ll begin processing your tax refund claims. We
+      will handle your data in accordance with our&nbsp;
       <a
         href="#"
         className="font-medium text-blue-600 hover:underline dark:text-blue-500"
