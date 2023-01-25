@@ -31,8 +31,7 @@ const StepAlert = (props: any) => {
       )}
       {step === STEP.CLAIM_NOW && (
         <>
-          {
-              earningsData.earnings !== Earnings.MoreThan150001 && (
+          {earningsData.earnings !== Earnings.MoreThan150001 && (
             <CustomAlertBanner
               color="green"
               body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
@@ -41,7 +40,7 @@ const StepAlert = (props: any) => {
           {earningsData.earnings === Earnings.MoreThan150001 && (
             <CustomAlertBanner
               color="red"
-              body="Because you earn more than £150,001 you’re not eligible to claim. Sorry! 😔"
+              body="Sorry! because you earn more than £150,001 you’re not eligible to claim 😔"
               closable={false}
             />
           )}
