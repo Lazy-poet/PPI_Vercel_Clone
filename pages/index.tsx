@@ -351,6 +351,7 @@ function Claim({ setReady }: ClaimProps) {
             .from("PPI_Claim_Form")
             .update({
               ...updatedTaxYears,
+              tax_years: updatedTaxYears,
               estimated_total_difference: +amount - totalTaxYears ?? 0,
             })
             .match(
