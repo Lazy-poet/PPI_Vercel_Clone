@@ -164,7 +164,7 @@ function Claim({ setReady }: ClaimProps) {
 
     let newRes = await supabase
       .from("PPI_Claim_Form_Completed")
-      .insert(res.data);
+      .upsert(res.data);
   };
 
   const nextStep = async () => {
@@ -318,6 +318,8 @@ function Claim({ setReady }: ClaimProps) {
             .match(
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
+          await handleAllDone();
+
           setStep(STEP.ONE_MORE);
         }
         break;
@@ -331,6 +333,7 @@ function Claim({ setReady }: ClaimProps) {
               urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
             );
 
+          await handleAllDone();
           setStep(STEP.REFUNDS);
         }
         break;
