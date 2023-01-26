@@ -15,14 +15,14 @@ export const SUB_TITLES = (step: any, onClick: any) => {
     "Tell us about your annual income to see if you qualify",
     "If you want to claim your tax refund you must provide your details below",
     <span key="tos">
-      We will submit these&nbsp;
+      Your signature will be applied to a&nbsp;
       <button
-        onClick={() => onClick("P87+64-8+R38.pdf")}
+        onClick={() => onClick("authorise_agent_64-8.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
-        official documents
+        64-8
       </button>
-      &nbsp;on your behalf. Please read our&nbsp;
+      &nbsp;form to authorise us as your agent. Please read our&nbsp;
       <button
         onClick={() => onClick("terms-of-service.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
@@ -44,10 +44,9 @@ export const SUB_TITLES = (step: any, onClick: any) => {
 };
 
 export const CONFIRMS = [
-  "ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim",
-  "I confirm that I have paid taxes in the relevant years I am claiming for",
+  "I understand that ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent",
   "I understand that the information I have provided will be shared with HMRC and confirm that this is true and accurate",
-  "I understand that ClaimingMadeEasy will be appointed as my tax agent to enable them to submit tax refund claims to HMRC on my behalf and re-claim any overpaid tax",
+  "I understand that ClaimingMadeEasy will be assigned as my nominee to enable them to submit tax refund claims to HMRC on my behalf and re-claim any overpaid tax",
   "I have read the tax claim documents, agree to the terms of service and understand that the information I have provided and my signature will be used to populate a claim form(s) to be sent to HMRC",
 ];
 
@@ -68,12 +67,11 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TIMERS = [
+  "It only takes a minute",
+  "52 seconds left...",
   "22 seconds left...",
-  "16 seconds left...",
-  "11 seconds left...",
-  "5 seconds left...",
-  "",
-  "",
+  "19 seconds left...",
+  "15 seconds left...",
   "",
 ];
 
