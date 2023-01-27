@@ -68,39 +68,6 @@ const HeroSection: React.FC<{
     handleStart();
   };
 
-  useEffect(() => {
-    const getPrevAmount = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("PPI_Claim_Form")
-          .select("estimated_total")
-          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
-
-        if (data?.[0]?.estimated_total) {
-          setAmount(data[0].estimated_total);
-          calculateClaimFromAmount(data[0].estimated_total);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    if (urlPhone || urlEmail) {
-      getPrevAmount();
-    }
-  }, [urlEmail, urlPhone]);
-
-  useEffect(() => {
-    if (!!router.query.e ?? !!router.query.email) {
-      // @ts-ignore
-      setUrlEmail(router.query.e ?? router.query.email);
-    }
-    if (!!router.query.p) {
-      // @ts-ignore
-      setUrlPhone(router.query.p);
-    }
-  }, [router.query]);
-
   return (
     <>
       <section className="bg-white dark:bg-gray-900">
