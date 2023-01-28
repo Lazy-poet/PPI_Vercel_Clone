@@ -82,3 +82,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
+
+// Workaround for issues with function size limit
+export const config = {
+  unstable_excludeFiles: ["public/**/*", "node_modules/canvas/**/*"],
+};
