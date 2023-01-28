@@ -1,13 +1,12 @@
-import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { ChangeEvent, useState } from "react";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslImg from "../public/images/ssl-secure.svg";
 import HeroImg from "../public/images/hero.png";
 import CustomCurrencyField from "./CustomCurrencyField";
+import { UserData } from "@/libs/constants";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -15,31 +14,18 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 const HeroSection: React.FC<{
   handleStart: () => void;
 }> = ({ handleStart }) => {
-  const router = useRouter();
   const {
     amount,
     setAmount,
-    checkedYears,
-    setCheckedYears,
     claimValue,
     setClaimValue,
     urlEmail,
-    setUrlEmail,
     urlPhone,
-    setUrlPhone,
+    dbData,
+    setDbData,
   } = useSystemValues();
 
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
-
-  const toggleCheckedYear = (year: string) => {
-    if (checkedYears.includes(year)) {
-      const years = checkedYears.filter((val) => val !== year);
-      setCheckedYears(years);
-    } else {
-      setCheckedYears([...checkedYears, year]);
-    }
-  };
 
   const calculateClaimFromAmount = (value: string) => {
     value = value.replace(/,/g, "");
@@ -56,13 +42,17 @@ const HeroSection: React.FC<{
       });
     }
     if (urlEmail || urlPhone) {
-      try {
-        await supabase
-          .from("PPI_Claim_Form")
-          .update({ estimated_total: amount })
-          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
-      } catch (e) {
-        console.log(e);
+      // only update db value when amount changes
+      if (amount !== dbData.estimated_total) {
+        try {
+          await supabase
+            .from("PPI_Claim_Form")
+            .update({ estimated_total: amount })
+            .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
+          setDbData((d: UserData) => ({ ...d, estimated_total: amount }));
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     handleStart();
