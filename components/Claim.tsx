@@ -20,7 +20,6 @@ import { Worker } from "@react-pdf-viewer/core";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 
-
 const Details = dynamic(() => import("@/components/steps/Step2-Details"), {
   loading: () => <Spinner />,
 });
@@ -65,8 +64,11 @@ function Claim({ setReady, data }: ClaimProps) {
     fdEvents1,
     setFdEvents1,
     claimValue,
+    setUrlEmail,
     urlEmail,
     urlPhone,
+    dbData,
+    setDbData,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -74,7 +76,7 @@ function Claim({ setReady, data }: ClaimProps) {
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const [utmParams, setUtmParams] = useState({});
 
-  const [theEmail, setTheEmail] = useState<string | null>(null);
+  const [newUserEmail, setNewUserEmail] = useState<string | null>(null);
 
   // Step1
 
@@ -173,7 +175,9 @@ function Claim({ setReady, data }: ClaimProps) {
     const res = await supabase
       .from("PPI_Claim_Form")
       .select()
-      .match(urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail });
+      .match(
+        urlPhone ? { phone: urlPhone } : { email: newUserEmail ?? urlEmail }
+      );
 
     let newRes = await supabase
       .from("PPI_Claim_Form_Completed")
@@ -190,14 +194,16 @@ function Claim({ setReady, data }: ClaimProps) {
           formData2.earnings?.length &&
           formData2.earnings !== Earnings.MoreThan150001
         ) {
-          const email = theEmail ?? urlEmail;
-          if (email) {
+          const email = newUserEmail ?? urlEmail;
+          const valueChanged = formData2.earnings !== dbData.earnings;
+          if (email && valueChanged) {
             await supabase
               .from("PPI_Claim_Form")
               .update({
                 earnings: formData2.earnings,
               })
               .match({ email: email });
+            setDbData((d) => ({ ...d, earnings: formData2.earnings }));
           }
           setStep(STEP.DETAILS);
         }
@@ -214,51 +220,17 @@ function Claim({ setReady, data }: ClaimProps) {
           month: false,
           year: false,
         });
+        const { firstEvent, ...details } = formData1;
         if (
-          formData1.firstName !== "" &&
-          formData1.lastName !== "" &&
-          formData1.email !== "" &&
-          Utils.validateEmail(formData1.email) &&
-          formData1.postCode !== "" &&
-          postcodeValidator(formData1.postCode, "GB") &&
-          formData1.address !== "" &&
-          formData1.day !== "" &&
-          formData1.month !== "" &&
-          formData1.year !== ""
+          Utils.isObjectFilled(details) &&
+          postcodeValidator(formData1.postCode, "GB")
         ) {
-          if (!theEmail) {
+          if (Utils.hasObjectValueChanged(details, dbData)) {
             let { data, error } = await supabase
               .from("PPI_Claim_Form")
-              .insert({
-                ...utmParams,
-                claimValue,
-                ourFee: calculateOurFee(+claimValue),
-                link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
-                estimated_total: amount,
-                earnings: formData2.earnings,
-                firstName: otherFormData1.firstName,
-                lastName: otherFormData1.lastName,
-                email: otherFormData1.email,
-                postCode: otherFormData1.postCode,
-                address: otherFormData1.address,
-                birthdate_str: `${day}/${month}/${year}`,
-                birthdate: JSON.stringify({
-                  day,
-                  month,
-                  year,
-                }),
-              })
-              .select("email");
-
-            setTheEmail(data?.[0].email);
-
-            if (
-              error?.message ===
-              'duplicate key value violates unique constraint "PPI_Claim_Form_email_key"'
-            ) {
-              const { error } = await supabase
-                .from("PPI_Claim_Form")
-                .update({
+              .upsert(
+                {
+                  ...utmParams,
                   claimValue,
                   ourFee: calculateOurFee(+claimValue),
                   link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
@@ -275,78 +247,79 @@ function Claim({ setReady, data }: ClaimProps) {
                     month,
                     year,
                   }),
-                })
-                .match({ email: otherFormData1.email });
-            }
-            setStep(STEP.SIGNATURE);
-          }
+                },
+                {
+                  // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
+                  ignoreDuplicates: false,
+                  onConflict: "email",
+                }
+              )
+              .select("email");
 
-          if (theEmail) {
-            const { error } = await supabase
-              .from("PPI_Claim_Form")
-              .update({
-                claimValue,
-                ourFee: calculateOurFee(+claimValue),
-                link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
-                estimated_total: amount,
-                earnings: formData2.earnings,
-                firstName: otherFormData1.firstName,
-                lastName: otherFormData1.lastName,
-                email: otherFormData1.email,
-                postCode: otherFormData1.postCode,
-                address: otherFormData1.address,
-                birthdate_str: `${day}/${month}/${year}`,
-                birthdate: JSON.stringify({
-                  day,
-                  month,
-                  year,
-                }),
-              })
-              .match({ email: theEmail });
-            setTheEmail(otherFormData1.email);
-            setStep(STEP.SIGNATURE);
+            if (urlEmail && urlEmail !== otherFormData1.email) {
+              router.push(`/?e=${otherFormData1.email}`, undefined, {
+                shallow: true,
+              });
+              setUrlEmail(otherFormData1.email);
+            }
+
+            setNewUserEmail(data?.[0].email);
+            setDbData((d) => ({ ...d, ...details }));
           }
+          setStep(STEP.SIGNATURE);
         }
         break;
 
       case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
-          const signatureUrlPrefix =
-            "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
+          if (formData3.signatureData !== dbData.signatureData) {
+            const signatureUrlPrefix =
+              "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
-          const { data } = await supabase.storage
-            .from("signatures")
-            .upload(
-              `claim-form/${+new Date()}.png`,
-              await base64ToFile(formData3.signatureData)
-            );
+            const { data } = await supabase.storage
+              .from("signatures")
+              .upload(
+                `claim-form/${+new Date()}.png`,
+                await base64ToFile(formData3.signatureData)
+              );
 
-          const { error } = await supabase
-            .from("PPI_Claim_Form")
-            .update({
+            const { error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                signatureData: formData3.signatureData,
+                signatureUrl: signatureUrlPrefix + data?.path,
+              })
+              .match(
+                urlPhone
+                  ? { phone: urlPhone }
+                  : { email: newUserEmail ?? urlEmail }
+              );
+            await handleAllDone();
+            setDbData((d) => ({
+              ...d,
               signatureData: formData3.signatureData,
-              signatureUrl: signatureUrlPrefix + data?.path,
-            })
-            .match(
-              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
-            );
-          await handleAllDone();
-
+            }));
+          }
           setStep(STEP.ONE_MORE);
         }
         break;
       case STEP.ONE_MORE:
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance && isNino(formData4.insurance)) {
-          const { error } = await supabase
-            .from("PPI_Claim_Form")
-            .update({ insurance: formData4.insurance })
-            .match(
-              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
-            );
+          if (formData4.insurance !== dbData.insurance) {
+            const { error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({ insurance: formData4.insurance })
+              .match(
+                urlPhone
+                  ? { phone: urlPhone }
+                  : { email: newUserEmail ?? urlEmail }
+              );
 
-          await handleAllDone();
+            await handleAllDone();
+            setDbData((d) => ({ ...d, insurance: formData4.insurance }));
+          }
           setStep(STEP.REFUNDS);
         }
         break;
@@ -374,18 +347,25 @@ function Claim({ setReady, data }: ClaimProps) {
           );
 
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
-          const { error } = await supabase
-            .from("PPI_Claim_Form")
-            .update({
-              ...updatedTaxYears,
-              tax_years: updatedTaxYears,
-              estimated_total_difference: +amount - totalTaxYears ?? 0,
-            })
-            .match(
-              urlPhone ? { phone: urlPhone } : { email: theEmail ?? urlEmail }
-            );
+          if (
+            Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
+          ) {
+            const { error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                ...updatedTaxYears,
+                tax_years: updatedTaxYears,
+                estimated_total_difference: +amount - totalTaxYears ?? 0,
+              })
+              .match(
+                urlPhone
+                  ? { phone: urlPhone }
+                  : { email: newUserEmail ?? urlEmail }
+              );
 
-          await handleAllDone();
+            await handleAllDone();
+            setDbData((d) => ({ ...d, tax_years: updatedTaxYears }));
+          } 
           setStep(STEP.ALL_DONE);
         }
         break;
@@ -415,7 +395,7 @@ function Claim({ setReady, data }: ClaimProps) {
     };
 
     /* get existed user data */
-    const getPrevData = async () => {
+    const getPrevData = () => {
       if (!data?.length) {
         return;
       }
@@ -481,7 +461,7 @@ function Claim({ setReady, data }: ClaimProps) {
     if (urlEmail || urlPhone) {
       getPrevData();
     }
-  }, [urlEmail, urlPhone]);
+  }, []);
 
   useEffect(() => {
     if (!!router.query) {
