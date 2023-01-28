@@ -1,13 +1,13 @@
-import { TAX_TYPE } from "@/libs/constants";
 import dynamic from "next/dynamic";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { ChangeEvent, useState } from "react";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslImg from "../public/images/ssl-secure.svg";
 import HeroImg from "../public/images/hero.png";
 import CustomCurrencyField from "./CustomCurrencyField";
+import { UserData } from "@/libs/constants";
+import { calculateOurFee } from "./Claim";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -15,31 +15,19 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 const HeroSection: React.FC<{
   handleStart: () => void;
 }> = ({ handleStart }) => {
-  const router = useRouter();
   const {
     amount,
     setAmount,
-    checkedYears,
-    setCheckedYears,
     claimValue,
     setClaimValue,
     urlEmail,
-    setUrlEmail,
     urlPhone,
-    setUrlPhone,
+    dbData,
+    setDbData,
+    newUserEmail,
   } = useSystemValues();
 
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
-  const [type, setType] = useState<TAX_TYPE>(TAX_TYPE.NONE);
-
-  const toggleCheckedYear = (year: string) => {
-    if (checkedYears.includes(year)) {
-      const years = checkedYears.filter((val) => val !== year);
-      setCheckedYears(years);
-    } else {
-      setCheckedYears([...checkedYears, year]);
-    }
-  };
 
   const calculateClaimFromAmount = (value: string) => {
     value = value.replace(/,/g, "");
@@ -55,51 +43,42 @@ const HeroSection: React.FC<{
         behavior: "smooth",
       });
     }
-    if (urlEmail || urlPhone) {
-      try {
-        await supabase
-          .from("PPI_Claim_Form")
-          .update({ estimated_total: amount })
-          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
-      } catch (e) {
-        console.log(e);
+    if (urlEmail || urlPhone || newUserEmail) {
+      // only update db value when amount changes
+      if (amount !== dbData.estimated_total) {
+        const data = {
+          estimated_total: amount,
+          claimValue,
+          ourFee: calculateOurFee(+claimValue),
+        };
+        try {
+          const { error } = await supabase
+            .from("PPI_Claim_Form")
+            .update(data)
+            .match(
+              urlPhone
+                ? { phone: urlPhone }
+                : { email: newUserEmail ?? urlEmail }
+            );
+          if (!error) {
+            setDbData((d: UserData) => ({ ...d, ...data }));
+            if (dbData.signatureData) {
+              await supabase.from("PPI_Claim_Form_Completed").upsert(
+                { ...data, email: newUserEmail ?? urlEmail },
+                {
+                  ignoreDuplicates: false,
+                  onConflict: "email",
+                }
+              );
+            }
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     handleStart();
   };
-
-  useEffect(() => {
-    const getPrevAmount = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("PPI_Claim_Form")
-          .select("estimated_total")
-          .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
-
-        if (data?.[0]?.estimated_total) {
-          setAmount(data[0].estimated_total);
-          calculateClaimFromAmount(data[0].estimated_total);
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    if (urlPhone || urlEmail) {
-      getPrevAmount();
-    }
-  }, [urlEmail, urlPhone]);
-
-  useEffect(() => {
-    if (!!router.query.e ?? !!router.query.email) {
-      // @ts-ignore
-      setUrlEmail(router.query.e ?? router.query.email);
-    }
-    if (!!router.query.p) {
-      // @ts-ignore
-      setUrlPhone(router.query.p);
-    }
-  }, [router.query]);
 
   return (
     <>

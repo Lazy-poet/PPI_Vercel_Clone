@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import PropTypes, { string } from "prop-types";
+import { UserData } from "@/libs/constants";
 
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
@@ -9,6 +10,8 @@ const useValue = () => {
   const [addressList, setAddressList] = useState([] as object[]);
   const [urlEmail, setUrlEmail] = useState<any>(null);
   const [urlPhone, setUrlPhone] = useState<any>(null);
+  const [dbData, setDbData] = useState({} as UserData);
+  const [newUserEmail, setNewUserEmail] = useState<any>(null);
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -82,6 +85,10 @@ const useValue = () => {
     setUrlEmail,
     urlPhone,
     setUrlPhone,
+    dbData,
+    setDbData,
+    newUserEmail,
+    setNewUserEmail,
   };
 };
 
@@ -149,6 +156,10 @@ export const ValueContext = createContext({
   setUrlEmail: (val: any) => {},
   urlPhone: null,
   setUrlPhone: (val: any) => {},
+  dbData: {} as UserData,
+  setDbData: (val: (d: UserData) => UserData) => {},
+  newUserEmail: null,
+  setNewUserEmail: (val: string) => {},
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {
