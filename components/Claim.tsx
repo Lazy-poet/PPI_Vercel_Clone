@@ -46,6 +46,11 @@ type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
   data: UserData[];
 };
+
+export const calculateOurFee = (value: number) => {
+  let feePercentage = 48;
+  return +((value / 100) * feePercentage).toFixed(2);
+};
 function Claim({ setReady, data }: ClaimProps) {
   const router = useRouter();
 
@@ -69,14 +74,14 @@ function Claim({ setReady, data }: ClaimProps) {
     urlPhone,
     dbData,
     setDbData,
+    newUserEmail,
+    setNewUserEmail,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
   const [utmParams, setUtmParams] = useState({});
-
-  const [newUserEmail, setNewUserEmail] = useState<string | null>(null);
 
   // Step1
 
@@ -147,16 +152,6 @@ function Claim({ setReady, data }: ClaimProps) {
     });
   };
 
-  const calculateCustomerValue = (value: number) => {
-    let percentage = 20;
-    return +((value / 100) * percentage).toFixed(2);
-  };
-
-  const calculateOurFee = (value: number) => {
-    let feePercentage = 48;
-    return +((value / 100) * feePercentage).toFixed(2);
-  };
-
   const base64ToFile = async (base64String: string) =>
     new File(
       [await fetch(base64String).then((res) => res.blob())],
@@ -171,17 +166,17 @@ function Claim({ setReady, data }: ClaimProps) {
     }
   };
 
-  const handleAllDone = async () => {
-    const res = await supabase
-      .from("PPI_Claim_Form")
-      .select()
-      .match(
-        urlPhone ? { phone: urlPhone } : { email: newUserEmail ?? urlEmail }
-      );
-
-    let newRes = await supabase
-      .from("PPI_Claim_Form_Completed")
-      .upsert(res.data);
+  /**
+   * This function updates the PPI_Claim_Form_Completed table with data from the primary table after the user has completed the signature step
+   */
+  const updateSecondaryTable = async (data: Record<string, any>) => {
+    await supabase.from("PPI_Claim_Form_Completed").upsert(
+      { ...data, ...(!data.email && { email: newUserEmail ?? urlEmail }) },
+      {
+        ignoreDuplicates: false,
+        onConflict: "email",
+      }
+    );
   };
 
   const nextStep = async () => {
@@ -203,8 +198,14 @@ function Claim({ setReady, data }: ClaimProps) {
                 earnings: formData2.earnings,
               })
               .match({ email: email });
+            if (dbData.signatureData) {
+              updateSecondaryTable({
+                earnings: formData2.earnings,
+              });
+            }
             setDbData((d) => ({ ...d, earnings: formData2.earnings }));
           }
+
           setStep(STEP.DETAILS);
         }
         break;
@@ -225,28 +226,22 @@ function Claim({ setReady, data }: ClaimProps) {
           Utils.isObjectFilled(details) &&
           postcodeValidator(formData1.postCode, "GB")
         ) {
-          if (Utils.hasObjectValueChanged(details, dbData)) {
-            let { data, error } = await supabase
+          const formattedDetails = Utils.formatUserDetails(details);
+          if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
+            const diff = Utils.getObjectDifference(dbData, formattedDetails);
+
+            const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
                 {
                   ...utmParams,
                   claimValue,
-                  ourFee: calculateOurFee(+claimValue),
-                  link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                   estimated_total: amount,
+                  ourFee: calculateOurFee(+claimValue),
                   earnings: formData2.earnings,
-                  firstName: otherFormData1.firstName,
-                  lastName: otherFormData1.lastName,
-                  email: otherFormData1.email,
-                  postCode: otherFormData1.postCode,
-                  address: otherFormData1.address,
-                  birthdate_str: `${day}/${month}/${year}`,
-                  birthdate: JSON.stringify({
-                    day,
-                    month,
-                    year,
-                  }),
+                  link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
+                  email: details.email,
+                  ...diff,
                 },
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
@@ -254,17 +249,24 @@ function Claim({ setReady, data }: ClaimProps) {
                   onConflict: "email",
                 }
               )
-              .select("email");
+              .select();
 
-            if (urlEmail && urlEmail !== otherFormData1.email) {
-              router.push(`/?e=${otherFormData1.email}`, undefined, {
-                shallow: true,
-              });
-              setUrlEmail(otherFormData1.email);
+            if (!error) {
+              if (urlEmail && "email" in diff) {
+                router.push(`/?e=${otherFormData1.email}`, undefined, {
+                  shallow: true,
+                });
+                setUrlEmail(diff.email);
+              }
+              setDbData((d) => ({ ...(data?.[0] || {}) }));
+
+              if (data?.[0] && dbData.signatureData) {
+                updateSecondaryTable({
+                  ...data[0],
+                });
+              }
             }
-
             setNewUserEmail(data?.[0].email);
-            setDbData((d) => ({ ...d, ...details }));
           }
           setStep(STEP.SIGNATURE);
         }
@@ -277,29 +279,33 @@ function Claim({ setReady, data }: ClaimProps) {
             const signatureUrlPrefix =
               "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
-            const { data } = await supabase.storage
+            const { data: sigData } = await supabase.storage
               .from("signatures")
               .upload(
                 `claim-form/${+new Date()}.png`,
                 await base64ToFile(formData3.signatureData)
               );
 
-            const { error } = await supabase
+            const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
                 signatureData: formData3.signatureData,
-                signatureUrl: signatureUrlPrefix + data?.path,
+                signatureUrl: signatureUrlPrefix + sigData?.path,
               })
               .match(
                 urlPhone
                   ? { phone: urlPhone }
                   : { email: newUserEmail ?? urlEmail }
-              );
-            await handleAllDone();
+              )
+              .select();
             setDbData((d) => ({
               ...d,
               signatureData: formData3.signatureData,
+              signatureUrl: signatureUrlPrefix + sigData?.path,
             }));
+            if (data?.length) {
+              updateSecondaryTable(data[0]);
+            }
           }
           setStep(STEP.ONE_MORE);
         }
@@ -317,7 +323,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   : { email: newUserEmail ?? urlEmail }
               );
 
-            await handleAllDone();
+            await updateSecondaryTable({ insurance: formData4.insurance });
             setDbData((d) => ({ ...d, insurance: formData4.insurance }));
           }
           setStep(STEP.REFUNDS);
@@ -345,27 +351,28 @@ function Claim({ setReady, data }: ClaimProps) {
             (sum, key) => sum + +updatedTaxYears[key],
             0
           );
-
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
+            const data = {
+              ...updatedTaxYears,
+              tax_years: updatedTaxYears,
+              estimated_total_difference:
+                Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0),
+            };
             const { error } = await supabase
               .from("PPI_Claim_Form")
-              .update({
-                ...updatedTaxYears,
-                tax_years: updatedTaxYears,
-                estimated_total_difference: +amount - totalTaxYears ?? 0,
-              })
+              .update(data)
               .match(
                 urlPhone
                   ? { phone: urlPhone }
                   : { email: newUserEmail ?? urlEmail }
               );
 
-            await handleAllDone();
+            await updateSecondaryTable({ ...data, completed: true });
             setDbData((d) => ({ ...d, tax_years: updatedTaxYears }));
-          } 
+          }
           setStep(STEP.ALL_DONE);
         }
         break;

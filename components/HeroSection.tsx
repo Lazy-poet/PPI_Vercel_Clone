@@ -7,6 +7,7 @@ import SslImg from "../public/images/ssl-secure.svg";
 import HeroImg from "../public/images/hero.png";
 import CustomCurrencyField from "./CustomCurrencyField";
 import { UserData } from "@/libs/constants";
+import { calculateOurFee } from "./Claim";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -23,6 +24,7 @@ const HeroSection: React.FC<{
     urlPhone,
     dbData,
     setDbData,
+    newUserEmail,
   } = useSystemValues();
 
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
@@ -41,15 +43,35 @@ const HeroSection: React.FC<{
         behavior: "smooth",
       });
     }
-    if (urlEmail || urlPhone) {
+    if (urlEmail || urlPhone || newUserEmail) {
       // only update db value when amount changes
       if (amount !== dbData.estimated_total) {
+        const data = {
+          estimated_total: amount,
+          claimValue,
+          ourFee: calculateOurFee(+claimValue),
+        };
         try {
-          await supabase
+          const { error } = await supabase
             .from("PPI_Claim_Form")
-            .update({ estimated_total: amount })
-            .match(urlPhone ? { phone: urlPhone } : { email: urlEmail });
-          setDbData((d: UserData) => ({ ...d, estimated_total: amount }));
+            .update(data)
+            .match(
+              urlPhone
+                ? { phone: urlPhone }
+                : { email: newUserEmail ?? urlEmail }
+            );
+          if (!error) {
+            setDbData((d: UserData) => ({ ...d, ...data }));
+            if (dbData.signatureData) {
+              await supabase.from("PPI_Claim_Form_Completed").upsert(
+                { ...data, email: newUserEmail ?? urlEmail },
+                {
+                  ignoreDuplicates: false,
+                  onConflict: "email",
+                }
+              );
+            }
+          }
         } catch (e) {
           console.log(e);
         }

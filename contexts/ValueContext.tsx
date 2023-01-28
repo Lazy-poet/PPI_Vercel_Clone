@@ -11,6 +11,8 @@ const useValue = () => {
   const [urlEmail, setUrlEmail] = useState<any>(null);
   const [urlPhone, setUrlPhone] = useState<any>(null);
   const [dbData, setDbData] = useState({} as UserData);
+  const [newUserEmail, setNewUserEmail] = useState<any>(null);
+
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
     firstName: "",
@@ -85,6 +87,8 @@ const useValue = () => {
     setUrlPhone,
     dbData,
     setDbData,
+    newUserEmail,
+    setNewUserEmail,
   };
 };
 
@@ -154,6 +158,8 @@ export const ValueContext = createContext({
   setUrlPhone: (val: any) => {},
   dbData: {} as UserData,
   setDbData: (val: (d: UserData) => UserData) => {},
+  newUserEmail: null,
+  setNewUserEmail: (val: string) => {},
 });
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {
