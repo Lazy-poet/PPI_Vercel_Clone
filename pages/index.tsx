@@ -26,17 +26,19 @@ type HomeProps = {
 
 export default function Home(props: HomeProps) {
   const [ready, setReady] = useState(false);
-  const { setAmount, setClaimValue, setUrlEmail, setUrlPhone } =
+  const { setAmount, setClaimValue, setUrlEmail, setUrlPhone, setDbData } =
     useSystemValues();
 
   useEffect(() => {
     setUrlEmail(props.urlEmail);
     setUrlPhone(props.urlPhone);
     if (props.data?.[0]) {
+      setDbData((_) => ({ ...props.data[0] }));
       setAmount(props.data[0]?.estimated_total);
       setClaimValue(props.data[0].claimValue);
     }
   }, []);
+
   return (
     <div className="relative">
       <Banner />
