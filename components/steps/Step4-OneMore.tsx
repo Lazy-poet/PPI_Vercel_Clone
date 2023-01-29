@@ -7,7 +7,12 @@ const OneMore = (props: {
   const { data, handleFormChange } = props;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.toUpperCase().trim();
+    const value = e.target.value.toUpperCase().trim();
+    //accept only letters and numbers
+    const regex = new RegExp("^[a-zA-Z0-9]+$");
+    if (value.length && !regex.test(value)) {
+      return;
+    }
     handleFormChange(e.target.name, value);
   };
 
