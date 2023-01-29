@@ -112,7 +112,7 @@ const Signature = (props: any) => {
               : "error"
           }`}
         >
-          Please sign in the boundaries of the box below
+          Please sign in the boundaries of the box above
         </p>
       </div>
     </div>

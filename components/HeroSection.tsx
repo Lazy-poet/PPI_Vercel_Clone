@@ -106,8 +106,8 @@ const HeroSection: React.FC<{
                 <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Now you can reclaim the tax your lender wrongfully handed over
-                to HMRC in 60 Seconds... Guaranteed!
+                Finally! now you can cut through the red tape to claim your PPI
+                tax refund in 60 Seconds...Guaranteed!
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
@@ -118,11 +118,7 @@ const HeroSection: React.FC<{
                   errorClass={`${
                     claimValue ? "success" : firstEvent ? "" : "error"
                   }`}
-                  helperClass={`${
-                    claimValue || firstEvent
-                      ? ""
-                      : "error"
-                  }`}
+                  helperClass={`${claimValue || firstEvent ? "" : "error"}`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
                     setAmount(e.target.value);

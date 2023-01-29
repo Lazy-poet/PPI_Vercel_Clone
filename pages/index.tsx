@@ -26,8 +26,14 @@ type HomeProps = {
 
 export default function Home(props: HomeProps) {
   const [ready, setReady] = useState(false);
-  const { setAmount, setClaimValue, setUrlEmail, setUrlPhone, setDbData } =
-    useSystemValues();
+  const {
+    setAmount,
+    setClaimValue,
+    setUrlEmail,
+    setUrlPhone,
+    setDbData,
+    setUserIp,
+  } = useSystemValues();
 
   useEffect(() => {
     setUrlEmail(props.urlEmail);
@@ -37,6 +43,10 @@ export default function Home(props: HomeProps) {
       setAmount(props.data[0]?.estimated_total);
       setClaimValue(props.data[0].claimValue);
     }
+    (async () => {
+      const { userIp } = await (await fetch("/api/ip")).json();
+      setUserIp(userIp);
+    })();
   }, []);
 
   return (

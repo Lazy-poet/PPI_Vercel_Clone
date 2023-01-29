@@ -34,7 +34,7 @@ export const SUB_TITLES = (step: any, onClick: any) => {
     "We need your National Insurance (NI) number to identify your tax account. Your refund can't be issued without it!",
     "How much PPI did you receive in the following tax years",
     <span key="what-happens-next">
-      <strong>What happens next?</strong> We will be in touch with updates on
+      <strong>What happens next?</strong> We&apos;ll be in touch with updates on
       your claim as soon as we hear anything. All you have to do is sit back,
       relax and wait until then!
     </span>,
@@ -95,8 +95,8 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
     "",
     "",
     <span key="5">
-      When you click submit, we&apos;ll begin processing your tax refund claims. We
-      will handle your data in accordance with our&nbsp;
+      When you click submit, we&apos;ll begin processing your tax refund claims.
+      We&apos;ll handle your data in accordance with our&nbsp;
       <a
         href="#"
         className="font-medium text-blue-600 hover:underline dark:text-blue-500"

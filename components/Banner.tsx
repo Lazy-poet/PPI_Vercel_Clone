@@ -55,7 +55,7 @@ const Banner = (props: Props) => {
           </svg>
 
           <p className="text-sm font-medium md:my-0">
-            CLAIM NOW TO BEAT THE APRIL DEADLINE
+            CLAIM NOW TO BEAT THE 5 APRIL DEADLINE
           </p>
         </div>
         <button
