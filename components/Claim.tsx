@@ -76,6 +76,7 @@ function Claim({ setReady, data }: ClaimProps) {
     setDbData,
     newUserEmail,
     setNewUserEmail,
+    userIp,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -240,6 +241,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   earnings: formData2.earnings,
                   link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                   email: details.email,
+                  user_ip: userIp,
                   ...diff,
                 },
                 {

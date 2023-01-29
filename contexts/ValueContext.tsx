@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, SetStateAction, useContext, useState, Dispatch } from "react";
 import PropTypes, { string } from "prop-types";
 import { UserData } from "@/libs/constants";
 
@@ -12,6 +12,7 @@ const useValue = () => {
   const [urlPhone, setUrlPhone] = useState<any>(null);
   const [dbData, setDbData] = useState({} as UserData);
   const [newUserEmail, setNewUserEmail] = useState<any>(null);
+  const [userIp, setUserIp] = useState<string>('');
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -89,78 +90,81 @@ const useValue = () => {
     setDbData,
     newUserEmail,
     setNewUserEmail,
+    userIp,
+    setUserIp,
   };
 };
 
-export const ValueContext = createContext({
-  amount: "",
-  showPulse: false,
-  setShowPulse: (value: boolean) => {},
-  setAmount: (value: string) => {},
-  claimValue: 0,
-  setClaimValue: (value: number) => {},
-  checkedYears: [""],
-  setCheckedYears: (value: string[]) => {},
+interface Value {
+  amount: string;
+  showPulse: boolean;
+  setShowPulse: Dispatch<SetStateAction<boolean>>;
+  setAmount: Dispatch<SetStateAction<string>>;
+  claimValue: number;
+  setClaimValue: Dispatch<SetStateAction<number>>;
   formData1: {
-    firstEvent: true,
-    firstName: "",
-    lastName: "",
-    email: "",
-    postCode: "",
-    address: "",
-    day: "",
-    month: "",
-    year: "",
-  },
-  setFdEvents1: (value: any) => {},
+    firstEvent: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    postCode: string;
+    address: string;
+    day: string;
+    month: string;
+    year: string;
+  };
+  setFdEvents1: Dispatch<SetStateAction<{ [x: string]: boolean }>>;
   fdEvents1: {
-    firstName: true,
-    lastName: true,
-    email: true,
-    postCode: true,
-    address: true,
-    day: true,
-    month: true,
-    year: true,
-  },
-  setFormData1: (value: any) => {},
+    firstName: boolean;
+    lastName: boolean;
+    email: boolean;
+    postCode: boolean;
+    address: boolean;
+    day: boolean;
+    month: boolean;
+    year: boolean;
+  };
+  setFormData1: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData2: {
-    firstEvent: true,
-    earnings: "",
-    claimChecked1: true,
-    claimChecked2: true,
-  },
-  setFormData2: (value: any) => {},
+    firstEvent: true;
+    earnings: string;
+  };
+  setFormData2: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData3: {
-    signatureData: {} as any,
-  },
-  setFormData3: (value: any) => {},
+    signatureData: string;
+    firstEvent: boolean
+  };
+  setFormData3: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData4: {
-    firstEvent: true,
-    insurance: "",
-  },
-  setFormData4: (value: any) => {},
+    firstEvent: boolean;
+    insurance: string;
+  };
+  setFormData4: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData5: {
     firstEvents: {
-      APR062018_APR052019: false,
-      APR062019_APR052020: false,
-      APR062020_APR052021: false,
-      APR062021_APR052022: false,
-    },
-    tax_years: {} as Record<string, string>,
-  },
-  setFormData5: (value: any) => {},
-  addressList: [] as object[],
-  setAddressList: (value: any) => {},
-  urlEmail: null,
-  setUrlEmail: (val: any) => {},
-  urlPhone: null,
-  setUrlPhone: (val: any) => {},
-  dbData: {} as UserData,
-  setDbData: (val: (d: UserData) => UserData) => {},
-  newUserEmail: null,
-  setNewUserEmail: (val: string) => {},
-});
+      APR062018_APR052019: boolean;
+      APR062019_APR052020: boolean;
+      APR062020_APR052021: boolean;
+      APR062021_APR052022: boolean;
+    };
+    tax_years: Record<string, string>;
+  };
+  setFormData5: Dispatch<SetStateAction<{ [x: string]: any }>>;
+  addressList: object[];
+  setAddressList: Dispatch<SetStateAction<object[]>>;
+  urlEmail: string;
+  setUrlEmail: Dispatch<SetStateAction<string>>;
+  urlPhone: string;
+  setUrlPhone: Dispatch<SetStateAction<string>>;
+  dbData: UserData;
+  setDbData: Dispatch<SetStateAction<UserData>>;
+  newUserEmail: string
+  setNewUserEmail: Dispatch<SetStateAction<string>>,
+  userIp: string
+  setUserIp: Dispatch<SetStateAction<string>>,
+}
+
+export const ValueContext = createContext({} as Value);
 
 export const ValueProvider = ({ children }: React.PropsWithChildren) => {
   const value = useValue();

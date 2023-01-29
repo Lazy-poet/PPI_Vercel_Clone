@@ -24,6 +24,7 @@
     "eslint-config-next": "^12.0.4",
     "flowbite": "^1.5.5",
     "flowbite-react": "^0.3.7",
+    "ip": "^1.1.8",
     "is-national-insurance-number": "^1.0.0",
     "next": "13.0.6",
     "pdfjs-dist": "^3.2.146",
@@ -36,6 +37,7 @@
     "typescript": "4.9.4"
   },
   "devDependencies": {
+    "@types/ip": "^1.1.0",
     "@types/react-signature-canvas": "^1.0.2",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.20",
