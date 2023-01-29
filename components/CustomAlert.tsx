@@ -13,7 +13,11 @@ const CustomAlert = ({ body, color, closable = true }: Props) => {
       className={
         hideAlert
           ? "hidden"
-          : `flex p-4 mb-2 mt-5 text-${color}-700 bg-${color}-100 border-t-4 border-${color}-500 dark:text-${color}-300 dark:bg-gray-800`
+          : `flex p-4 mb-2 mt-5  ${
+              color === "red"
+                ? "text-red-700 dark:text-red-700"
+                : `text-${color}-700  dark:text-${color}-300`
+            } bg-${color}-100 border-t-4 border-${color}-500 dark:bg-gray-800`
       }
       role="alert"
       id="banner-alert"
