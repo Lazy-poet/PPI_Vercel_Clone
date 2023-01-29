@@ -9,6 +9,7 @@ const Signature = (props: any) => {
   const { theme } = useTheme();
 
   const clear = () => {
+    if (!data.signatureData) return;
     // @ts-ignore
     canvasRef.current.clear();
     handleFormChange(null);
@@ -55,7 +56,7 @@ const Signature = (props: any) => {
 
       <div
         className={`form-group mt-6 ${
-          data.firstEVent ? "" : data.signatureData ? "success" : "error"
+          data.firstEvent ? "" : data.signatureData ? "success" : "error"
         }`}
       >
         <label
@@ -65,7 +66,7 @@ const Signature = (props: any) => {
           Draw your signature
         </label>
 
-        <div className="w-full mt-6 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
           <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
             <div className="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 h-[1px] rounded-lg bg-gray-700 dark:bg-gray-400 pointer-events-none" />
             <SignatureCanvas
@@ -106,7 +107,7 @@ const Signature = (props: any) => {
         </div>
         <p
           className={`mt-2 text-sm ${
-            data.firstEVent || data.signatureData
+            data.firstEvent || data.signatureData
               ? "text-gray-500 dark:text-gray-400 "
               : "error"
           }`}
