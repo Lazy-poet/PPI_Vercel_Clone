@@ -119,9 +119,7 @@ const HeroSection: React.FC<{
                     claimValue ? "success" : firstEvent ? "" : "error"
                   }`}
                   helperClass={`${
-                    claimValue
-                      ? "text-green-600 dark:text-green-600"
-                      : firstEvent
+                    claimValue || firstEvent
                       ? ""
                       : "error"
                   }`}

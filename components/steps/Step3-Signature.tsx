@@ -53,16 +53,17 @@ const Signature = (props: any) => {
         })}
       </ul>
 
-      <div>
-        <h1 className="mt-6 max-w-screen-xl mx-auto text-left mb-4 text-lg lg:text-xl font-extrabold tracking-tight leading-none text-gray-600 dark:text-gray-500">
-          Draw your signature
-        </h1>
-        <p
-          className={`max-w-screen-xl mx-auto text-left font-normal text-gray-500 dark:text-gray-400
-          }`}
+      <div
+        className={`form-group mt-6 ${
+          data.firstEVent ? "" : data.signatureData ? "success" : "error"
+        }`}
+      >
+        <label
+          htmlFor="first-name"
+          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          Please sign in the boundaries of the box below
-        </p>
+          Draw your signature
+        </label>
 
         <div className="w-full mt-6 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
           <div className="bg-[#F9FAFB] rounded-t-lg dark:bg-gray-800 relative">
@@ -103,6 +104,15 @@ const Signature = (props: any) => {
             </button>
           </div>
         </div>
+        <p
+          className={`mt-2 text-sm ${
+            data.firstEVent || data.signatureData
+              ? "text-gray-500 dark:text-gray-400 "
+              : "error"
+          }`}
+        >
+          Please sign in the boundaries of the box below
+        </p>
       </div>
     </div>
   );

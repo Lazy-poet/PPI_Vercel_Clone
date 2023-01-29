@@ -123,7 +123,6 @@ function Claim({ setReady, data }: ClaimProps) {
   // Step3
   const handleFormChange3 = (newSignatureData: string) => {
     setFormData3({
-      ...formData2,
       signatureData: newSignatureData,
       firstEvent: false,
     });

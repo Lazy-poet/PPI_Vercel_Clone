@@ -58,10 +58,9 @@ const ClaimNow = (props: any) => {
         </div>
         <p
           className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
-            data.firstEvent
+            data.firstEvent ||
+            (!!data.earnings && data.earnings !== Earnings.MoreThan150001)
               ? ""
-              : !!data.earnings && data.earnings !== Earnings.MoreThan150001
-              ? "text-green-700 dark:text-green-700"
               : "error"
           }`}
         >
