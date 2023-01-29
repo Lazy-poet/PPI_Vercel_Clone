@@ -67,7 +67,6 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TIMERS = [
-  "It only takes a minute",
   "52 seconds left...",
   "22 seconds left...",
   "19 seconds left...",
