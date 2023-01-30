@@ -106,8 +106,9 @@ const HeroSection: React.FC<{
                 <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Finally! now you can cut through the red tape to claim your PPI
-                tax refund in 60 Seconds...Guaranteed!
+                Finally! now you can claim your PPI tax refund in 60
+                seconds…Guaranteed, but you must act now if you want to beat the
+                5 April deadline!
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
