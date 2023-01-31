@@ -17,7 +17,8 @@ const StepAlert = (props: any) => {
             (signatureData.signatureData && (
               <CustomAlertBanner
                 color="green"
-                body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+                // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+                body={`Great news! You're entitled to claim a PPI tax refund`}
               />
             ))}
           {!(signatureData.signatureData || signatureData.firstEvent) && (
@@ -43,7 +44,8 @@ const StepAlert = (props: any) => {
       {STEP.DETAILS === step && (
         <CustomAlertBanner
           color="green"
-          body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+          // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
+          body={`Great news! You're entitled to claim a PPI tax refund`}
         />
       )}
       {step === STEP.ONE_MORE && (
