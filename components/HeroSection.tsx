@@ -37,7 +37,7 @@ const HeroSection: React.FC<{
 
   const handleClick = async () => {
     setFirstEvent(false);
-    if (!claimValue) {
+    if (!amount) {
       return window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -94,7 +94,7 @@ const HeroSection: React.FC<{
                   </span>
                   <span className="text-blue-600 font-extrabold">
                     <Animated
-                      animateToNumber={claimValue || 200}
+                      animateToNumber={amount ? claimValue : 200}
                       configs={[
                         { mass: 1, tension: 220, friction: 90 },
                         { mass: 1, tension: 280, friction: 90 },
@@ -117,9 +117,9 @@ const HeroSection: React.FC<{
                   label="How much PPI did you get back?"
                   placeholder={"Enter total amount"}
                   errorClass={`${
-                    claimValue ? "success" : firstEvent ? "" : "error"
+                    amount ? "success" : firstEvent ? "" : "error"
                   }`}
-                  helperClass={`${claimValue || firstEvent ? "" : "error"}`}
+                  helperClass={`${amount || firstEvent ? "" : "error"}`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
                     setAmount(e.target.value);
