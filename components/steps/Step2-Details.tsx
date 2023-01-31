@@ -84,7 +84,7 @@ const Details = (props: any) => {
     setMonths(_months);
     //
     const _years = [];
-    for (let y = 2005; y >= 1950; y--) {
+    for (let y = 2005; y >= 1923; y--) {
       _years.push(y.toString());
     }
     setYears(_years);

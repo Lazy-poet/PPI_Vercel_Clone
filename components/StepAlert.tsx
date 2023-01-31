@@ -31,12 +31,6 @@ const StepAlert = (props: any) => {
       )}
       {step === STEP.CLAIM_NOW && (
         <>
-          {earningsData.earnings !== Earnings.MoreThan150001 && (
-            <CustomAlertBanner
-              color="green"
-              body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
-            />
-          )}
           {earningsData.earnings === Earnings.MoreThan150001 && (
             <CustomAlertBanner
               color="red"

@@ -37,7 +37,7 @@ const HeroSection: React.FC<{
 
   const handleClick = async () => {
     setFirstEvent(false);
-    if (!claimValue) {
+    if (!amount) {
       return window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -94,7 +94,7 @@ const HeroSection: React.FC<{
                   </span>
                   <span className="text-blue-600 font-extrabold">
                     <Animated
-                      animateToNumber={claimValue || 200}
+                      animateToNumber={amount ? claimValue : 200}
                       configs={[
                         { mass: 1, tension: 220, friction: 90 },
                         { mass: 1, tension: 280, friction: 90 },
@@ -106,8 +106,9 @@ const HeroSection: React.FC<{
                 <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Finally! now you can cut through the red tape to claim your PPI
-                tax refund in 60 Seconds...Guaranteed!
+                Finally! now you can claim your PPI tax refund in 60
+                seconds…Guaranteed, but you must act now if you want to beat the
+                5 April deadline!
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
@@ -116,9 +117,9 @@ const HeroSection: React.FC<{
                   label="How much PPI did you get back?"
                   placeholder={"Enter total amount"}
                   errorClass={`${
-                    claimValue ? "success" : firstEvent ? "" : "error"
+                    amount ? "success" : firstEvent ? "" : "error"
                   }`}
-                  helperClass={`${claimValue || firstEvent ? "" : "error"}`}
+                  helperClass={`${amount || firstEvent ? "" : "error"}`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
                     setAmount(e.target.value);
