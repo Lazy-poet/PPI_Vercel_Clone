@@ -407,8 +407,11 @@ function Claim({ setReady, data }: ClaimProps) {
       if (!data?.length) {
         return;
       }
-
-      const birthdate = JSON.parse(data?.[0]?.birthdate);
+      const birthdate = data?.[0].birthdate
+        ? typeof data?.[0].birthdate === "string"
+          ? JSON.parse(data?.[0]?.birthdate)
+          : data?.[0].birthdate
+        : { day: "", month: "", year: "" };
 
       /* update the form data with existing user data */
 
@@ -419,12 +422,12 @@ function Claim({ setReady, data }: ClaimProps) {
         email: data?.[0].email ? data?.[0].email : "",
         postCode: data?.[0].postCode ? data?.[0].postCode : "",
         address: data?.[0].address ? data?.[0].address : "",
-        day: data?.[0].birthdate ? birthdate.day : "",
-        month: data?.[0].birthdate ? birthdate.month : "",
-        year: data?.[0].birthdate ? birthdate.year : "",
+        day: birthdate.day,
+        month: birthdate.month,
+        year: birthdate.year,
       });
       setFdEvents1({
-        firstName: false,
+        firstName: false,   
         lastName: false,
         email: false,
         postCode: false,
