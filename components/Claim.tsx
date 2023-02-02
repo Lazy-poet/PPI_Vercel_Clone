@@ -239,7 +239,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   estimated_total: amount,
                   ourFee: calculateOurFee(+claimValue),
                   earnings: formData2.earnings,
-                  link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
+                  email_link: `https://ppi.claimingmadeeasy.com/?e=${otherFormData1.email}`,
                   email: details.email,
                   user_ip: userIp,
                   ...diff,
