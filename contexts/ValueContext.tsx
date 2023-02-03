@@ -1,4 +1,10 @@
-import React, { createContext, SetStateAction, useContext, useState, Dispatch } from "react";
+import React, {
+  createContext,
+  SetStateAction,
+  useContext,
+  useState,
+  Dispatch,
+} from "react";
 import PropTypes, { string } from "prop-types";
 import { UserData } from "@/libs/constants";
 
@@ -8,11 +14,10 @@ const useValue = () => {
   const [claimValue, setClaimValue] = useState<number>(0);
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
-  const [urlEmail, setUrlEmail] = useState<any>(null);
-  const [urlPhone, setUrlPhone] = useState<any>(null);
+  const [linkCode, setLinkCode] = useState<any>(null);
   const [dbData, setDbData] = useState({} as UserData);
   const [newUserEmail, setNewUserEmail] = useState<any>(null);
-  const [userIp, setUserIp] = useState<string>('');
+  const [userIp, setUserIp] = useState<string>("");
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -82,10 +87,8 @@ const useValue = () => {
     setAddressList,
     claimValue,
     setClaimValue,
-    urlEmail,
-    setUrlEmail,
-    urlPhone,
-    setUrlPhone,
+    linkCode,
+    setLinkCode,
     dbData,
     setDbData,
     newUserEmail,
@@ -132,7 +135,7 @@ interface Value {
   setFormData2: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData3: {
     signatureData: string;
-    firstEvent: boolean
+    firstEvent: boolean;
   };
   setFormData3: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData4: {
@@ -152,16 +155,14 @@ interface Value {
   setFormData5: Dispatch<SetStateAction<{ [x: string]: any }>>;
   addressList: object[];
   setAddressList: Dispatch<SetStateAction<object[]>>;
-  urlEmail: string;
-  setUrlEmail: Dispatch<SetStateAction<string>>;
-  urlPhone: string;
-  setUrlPhone: Dispatch<SetStateAction<string>>;
+  linkCode: string;
+  setLinkCode: Dispatch<SetStateAction<string>>;
   dbData: UserData;
   setDbData: Dispatch<SetStateAction<UserData>>;
-  newUserEmail: string
-  setNewUserEmail: Dispatch<SetStateAction<string>>,
-  userIp: string
-  setUserIp: Dispatch<SetStateAction<string>>,
+  newUserEmail: string;
+  setNewUserEmail: Dispatch<SetStateAction<string>>;
+  userIp: string;
+  setUserIp: Dispatch<SetStateAction<string>>;
 }
 
 export const ValueContext = createContext({} as Value);

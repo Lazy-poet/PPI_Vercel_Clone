@@ -20,8 +20,7 @@ const HeroSection: React.FC<{
     setAmount,
     claimValue,
     setClaimValue,
-    urlEmail,
-    urlPhone,
+    linkCode,
     dbData,
     setDbData,
     newUserEmail,
@@ -43,7 +42,7 @@ const HeroSection: React.FC<{
         behavior: "smooth",
       });
     }
-    if (urlEmail || urlPhone || newUserEmail) {
+    if (linkCode || newUserEmail) {
       // only update db value when amount changes
       if (amount !== dbData.estimated_total) {
         const data = {
@@ -56,18 +55,21 @@ const HeroSection: React.FC<{
             .from("PPI_Claim_Form")
             .update(data)
             .match(
-              urlPhone
-                ? { phone: urlPhone }
-                : { email: newUserEmail ?? urlEmail }
+              linkCode ? { link_code: linkCode } : { email: newUserEmail }
             );
           if (!error) {
             setDbData((d: UserData) => ({ ...d, ...data }));
             if (dbData.signatureData) {
               await supabase.from("PPI_Claim_Form_Completed").upsert(
-                { ...data, email: newUserEmail ?? urlEmail },
+                {
+                  ...data,
+                  ...(linkCode
+                    ? { link_code: linkCode }
+                    : { email: newUserEmail }),
+                },
                 {
                   ignoreDuplicates: false,
-                  onConflict: "email",
+                  onConflict: linkCode ? "link_code" : "email",
                 }
               );
             }

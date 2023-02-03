@@ -26,6 +26,7 @@
     "flowbite-react": "^0.3.7",
     "ip": "^1.1.8",
     "is-national-insurance-number": "^1.0.0",
+    "nanoid": "^4.0.0",
     "next": "13.0.6",
     "pdfjs-dist": "^3.2.146",
     "postcode-validator": "^3.7.0",
