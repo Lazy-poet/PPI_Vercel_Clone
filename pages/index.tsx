@@ -19,25 +19,17 @@ const Claim = dynamic(() => import("@/components/Claim"), {
 });
 
 type HomeProps = {
-  urlEmail: string;
-  urlPhone: string;
+  link_code: string;
   data: UserData[];
 };
 
 export default function Home(props: HomeProps) {
   const [ready, setReady] = useState(false);
-  const {
-    setAmount,
-    setClaimValue,
-    setUrlEmail,
-    setUrlPhone,
-    setDbData,
-    setUserIp,
-  } = useSystemValues();
+  const { setAmount, setClaimValue, setLinkCode, setDbData, setUserIp } =
+    useSystemValues();
 
   useEffect(() => {
-    setUrlEmail(props.urlEmail);
-    setUrlPhone(props.urlPhone);
+    setLinkCode(props.link_code);
     if (props.data?.[0]) {
       setDbData((_) => ({ ...props.data[0] }));
       setAmount(props.data[0]?.estimated_total);
@@ -73,21 +65,22 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
   );
-  const { e: urlEmail, p: urlPhone } = context.query;
+  const { c: link_code } = context.query;
+
   let data = [] as any;
-  if (urlEmail || urlPhone) {
+
+  if (link_code) {
     const { data: result, error } = await supabase
       .from("PPI_Claim_Form")
       .select()
-      .match(urlPhone ? { phone: urlPhone } : { email: urlEmail })
+      .match({ link_code })
       .select();
     data = result;
   }
 
   return {
     props: {
-      urlEmail: urlEmail || null,
-      urlPhone: urlPhone || null,
+      link_code: link_code || null,
       data,
     },
   };

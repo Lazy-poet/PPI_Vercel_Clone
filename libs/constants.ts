@@ -46,4 +46,5 @@ export type UserData = {
   APR062021_APR052022: string;
   estimated_total_difference: string,
   imported: boolean;
+  link_code: string
 }
