@@ -153,8 +153,8 @@ interface Value {
     tax_years: Record<string, string>;
   };
   setFormData5: Dispatch<SetStateAction<{ [x: string]: any }>>;
-  addressList: object[];
-  setAddressList: Dispatch<SetStateAction<object[]>>;
+  addressList: Record<string, any>[];
+  setAddressList: Dispatch<SetStateAction<Record<string, any>[]>>;
   linkCode: string;
   setLinkCode: Dispatch<SetStateAction<string>>;
   dbData: UserData;
