@@ -103,8 +103,8 @@ const HeroSection: React.FC<{
                       ></Animated>
                       </span>
                 </span> */}
+                {/* <sup>*</sup> */}
                 Claim Your PPI Tax Refund Today
-                <sup>*</sup>
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
                 Finally! now you can claim your PPI tax refund in 60
