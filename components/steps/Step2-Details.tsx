@@ -20,6 +20,12 @@ const Details = (props: any) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  const isAddressValid = addressList.some(
+    (addr) =>
+      data.address ===
+      addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
@@ -51,6 +57,16 @@ const Details = (props: any) => {
     handleFormChange(e.target.name, value);
   };
 
+  /**
+   * discard the prefilled address if it is invalid
+   */
+  useEffect(() => {
+    if (data.address && addressList.length && !isAddressValid) {
+      handleFormChange("address", "");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.address, isAddressValid, addressList]);
   const searchAddressByPostcode = (e: string) => {
     if (!e || !postcodeValidator(e, "GB")) {
       return;
@@ -323,7 +339,7 @@ const Details = (props: any) => {
         {addressList?.length > 0 ? (
           <div
             className={`form-group max-w-full sm:col-span-2 ${
-              fdEvents.address ? "" : data.address ? "success" : "error"
+              fdEvents.address ? "" : isAddressValid ? "success" : "error"
             }`}
           >
             <label
@@ -349,18 +365,14 @@ const Details = (props: any) => {
                   {addressList.map((item: any, index: number) => (
                     <MenuItem
                       key={index}
-                      value={`${item.suggestion.split(
-                        ", " +
-                          item.suggestion.split(", ")[
-                            item.suggestion.split(", ").length - 1
-                          ]
-                      )}`}
+                      value={item.suggestion.substr(
+                        0,
+                        item.suggestion.lastIndexOf(",")
+                      )}
                     >
-                      {item.suggestion.split(
-                        ", " +
-                          item.suggestion.split(", ")[
-                            item.suggestion.split(", ").length - 1
-                          ]
+                      {item.suggestion.substr(
+                        0,
+                        item.suggestion.lastIndexOf(",")
                       )}
                     </MenuItem>
                   ))}
