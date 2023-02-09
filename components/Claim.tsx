@@ -71,6 +71,7 @@ function Claim({ setReady, data }: ClaimProps) {
     setFdEvents1,
     claimValue,
     linkCode,
+    setLinkCode,
     dbData,
     setDbData,
     newUserEmail,
@@ -172,13 +173,11 @@ function Claim({ setReady, data }: ClaimProps) {
     await supabase.from("PPI_Claim_Form_Completed").upsert(
       {
         ...data,
-        ...(linkCode
-          ? { link_code: linkCode }
-          : { ...(!data.email && { email: newUserEmail }) }),
+        link_code: linkCode,
       },
       {
         ignoreDuplicates: false,
-        onConflict: linkCode ? "link_code" : "email",
+        onConflict: "link_code",
       }
     );
   };
@@ -200,9 +199,7 @@ function Claim({ setReady, data }: ClaimProps) {
               .update({
                 earnings: formData2.earnings,
               })
-              .match(
-                linkCode ? { link_code: linkCode } : { email: newUserEmail }
-              );
+              .match({ link_code: linkCode });
             if (dbData.signatureData) {
               updateSecondaryTable({
                 earnings: formData2.earnings,
@@ -234,8 +231,9 @@ function Claim({ setReady, data }: ClaimProps) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
             const diff = Utils.getObjectDifference(dbData, formattedDetails);
-            const link_code = dbData.link_code || nanoid(9);
+            const link_code = linkCode || nanoid(9);
 
+            setLinkCode(link_code);
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
@@ -246,7 +244,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   ourFee: calculateOurFee(+claimValue),
                   earnings: formData2.earnings,
                   link_code,
-                  link: `https://ppi.claimingmadeeasy.com/?c=${link_code}`,
+                  link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
                   email: details.email,
                   user_ip: userIp,
                   ...diff,
@@ -254,7 +252,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: dbData.link_code ? "link_code" : "email",
+                  onConflict: "link_code",
                 }
               )
               .select();
@@ -294,9 +292,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 signatureData: formData3.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
-              .match(
-                linkCode ? { link_code: linkCode } : { email: newUserEmail }
-              )
+              .match({ link_code: linkCode })
               .select();
             setDbData((d) => ({
               ...d,
@@ -317,9 +313,7 @@ function Claim({ setReady, data }: ClaimProps) {
             const { error } = await supabase
               .from("PPI_Claim_Form")
               .update({ insurance: formData4.insurance })
-              .match(
-                linkCode ? { link_code: linkCode } : { email: newUserEmail }
-              );
+              .match({ link_code: linkCode });
 
             await updateSecondaryTable({ insurance: formData4.insurance });
             setDbData((d) => ({ ...d, insurance: formData4.insurance }));
@@ -362,9 +356,7 @@ function Claim({ setReady, data }: ClaimProps) {
             const { error } = await supabase
               .from("PPI_Claim_Form")
               .update(data)
-              .match(
-                linkCode ? { link_code: linkCode } : { email: newUserEmail }
-              );
+              .match({ link_code: linkCode });
 
             await updateSecondaryTable({ ...data, completed: true });
             setDbData((d) => ({ ...d, tax_years: updatedTaxYears }));

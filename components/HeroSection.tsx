@@ -54,22 +54,18 @@ const HeroSection: React.FC<{
           const { error } = await supabase
             .from("PPI_Claim_Form")
             .update(data)
-            .match(
-              linkCode ? { link_code: linkCode } : { email: newUserEmail }
-            );
+            .match({ link_code: linkCode });
           if (!error) {
             setDbData((d: UserData) => ({ ...d, ...data }));
             if (dbData.signatureData) {
               await supabase.from("PPI_Claim_Form_Completed").upsert(
                 {
                   ...data,
-                  ...(linkCode
-                    ? { link_code: linkCode }
-                    : { email: newUserEmail }),
+                  link_code: linkCode,
                 },
                 {
                   ignoreDuplicates: false,
-                  onConflict: linkCode ? "link_code" : "email",
+                  onConflict: "link_code",
                 }
               );
             }
