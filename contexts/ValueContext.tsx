@@ -16,7 +16,8 @@ const useValue = () => {
   const [addressList, setAddressList] = useState([] as object[]);
   const [linkCode, setLinkCode] = useState<any>(null);
   const [dbData, setDbData] = useState({} as UserData);
-  const [newUserEmail, setNewUserEmail] = useState<any>(null);
+  const [userEmail, setUserEmail] = useState<any>(null);
+  const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
 
   const [formData1, setFormData1] = useState<any>({
@@ -91,10 +92,12 @@ const useValue = () => {
     setLinkCode,
     dbData,
     setDbData,
-    newUserEmail,
-    setNewUserEmail,
+    userEmail,
+    setUserEmail,
     userIp,
     setUserIp,
+    userPhone,
+    setUserPhone,
   };
 };
 
@@ -159,8 +162,10 @@ interface Value {
   setLinkCode: Dispatch<SetStateAction<string>>;
   dbData: UserData;
   setDbData: Dispatch<SetStateAction<UserData>>;
-  newUserEmail: string;
-  setNewUserEmail: Dispatch<SetStateAction<string>>;
+  userEmail: string;
+  setUserEmail: Dispatch<SetStateAction<string>>;
+  userPhone: string;
+  setUserPhone: Dispatch<SetStateAction<string>>;
   userIp: string;
   setUserIp: Dispatch<SetStateAction<string>>;
 }
