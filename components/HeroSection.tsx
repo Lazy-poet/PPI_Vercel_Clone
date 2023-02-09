@@ -23,7 +23,8 @@ const HeroSection: React.FC<{
     linkCode,
     dbData,
     setDbData,
-    newUserEmail,
+    userEmail,
+    userPhone,
   } = useSystemValues();
 
   const [firstEvent, setFirstEvent] = useState<boolean>(true);
@@ -42,7 +43,7 @@ const HeroSection: React.FC<{
         behavior: "smooth",
       });
     }
-    if (linkCode || newUserEmail) {
+    if (userEmail || userPhone || linkCode) {
       // only update db value when amount changes
       if (amount !== dbData.estimated_total) {
         const data = {
@@ -54,7 +55,13 @@ const HeroSection: React.FC<{
           const { error } = await supabase
             .from("PPI_Claim_Form")
             .update(data)
-            .match({ link_code: linkCode });
+            .match(
+              userEmail
+                ? { email: userEmail }
+                : userPhone
+                ? { phone: userPhone }
+                : { link_code: linkCode }
+            );
           if (!error) {
             setDbData((d: UserData) => ({ ...d, ...data }));
             if (dbData.signatureData) {

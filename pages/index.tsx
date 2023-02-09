@@ -25,8 +25,15 @@ type HomeProps = {
 
 export default function Home(props: HomeProps) {
   const [ready, setReady] = useState(false);
-  const { setAmount, setClaimValue, setLinkCode, setDbData, setUserIp } =
-    useSystemValues();
+  const {
+    setAmount,
+    setClaimValue,
+    setLinkCode,
+    setDbData,
+    setUserIp,
+    setUserEmail,
+    setUserPhone,
+  } = useSystemValues();
 
   useEffect(() => {
     setLinkCode(props.link_code);
@@ -34,6 +41,8 @@ export default function Home(props: HomeProps) {
       setDbData((_) => ({ ...props.data[0] }));
       setAmount(props.data[0]?.estimated_total);
       setClaimValue(props.data[0].claimValue);
+      setUserEmail(props.data[0].email);
+      setUserPhone(props.data[0].phone);
     }
     (async () => {
       const { userIp } = await (await fetch("/api/ip")).json();
