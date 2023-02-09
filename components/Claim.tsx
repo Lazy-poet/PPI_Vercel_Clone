@@ -379,16 +379,6 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [step]);
 
   useEffect(() => {
-    /* to check where the user should continue in the form */
-    const formPageHandler = (data: any) => {
-      if (router.query.step === "1") return setStep(0);
-      if (data.tax_years) return setStep(5);
-      if (data.insurance) return setStep(4);
-      if (data.signatureData) return setStep(3);
-      if (data.earnings) return setStep(2);
-      if (data.email) return setStep(1);
-    };
-
     /* get existed user data */
     const getPrevData = () => {
       if (!data?.length) {
@@ -451,8 +441,6 @@ function Claim({ setReady, data }: ClaimProps) {
           return obj;
         }, {} as Record<string, boolean>),
       });
-
-      formPageHandler(data?.[0]);
     };
 
     /* if existed user */
