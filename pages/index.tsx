@@ -40,7 +40,6 @@ export default function Home(props: HomeProps) {
     if (props.data?.[0]) {
       setDbData((_) => ({ ...props.data[0] }));
       setAmount(props.data[0]?.estimated_total);
-      setClaimValue(props.data[0].claimValue);
       setUserEmail(props.data[0].email);
       setUserPhone(props.data[0].phone);
     }
