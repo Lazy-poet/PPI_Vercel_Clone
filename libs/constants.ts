@@ -26,14 +26,12 @@ export type UserData = {
   birthdate: string;
   signatureData: string;
   insurance: string;
-  claimValue: number;
   utm_source: string;
   utm_medium: string;
   utm_campaign: string;
   utm_content: string;
   utm_term: string;
   link: string;
-  ourFee: number,
   signatureUrl: string;
   birthdate_str: string;
   estimated_total: string;
