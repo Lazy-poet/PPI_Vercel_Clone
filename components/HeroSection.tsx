@@ -48,8 +48,6 @@ const HeroSection: React.FC<{
       if (amount !== dbData.estimated_total) {
         const data = {
           estimated_total: amount,
-          claimValue,
-          ourFee: calculateOurFee(+claimValue),
         };
         try {
           const { error } = await supabase

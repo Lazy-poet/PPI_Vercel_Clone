@@ -259,9 +259,7 @@ function Claim({ setReady, data }: ClaimProps) {
               .upsert(
                 {
                   ...utmParams,
-                  claimValue,
                   estimated_total: amount,
-                  ourFee: calculateOurFee(+claimValue),
                   earnings: formData2.earnings,
                   link_code,
                   link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
@@ -273,11 +271,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: userEmail
-                    ? "email"
-                    : userPhone
-                    ? "phone"
-                    : "link_code",
+                  onConflict: "email",
                 }
               )
               .select();
