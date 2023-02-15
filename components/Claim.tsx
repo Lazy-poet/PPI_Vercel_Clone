@@ -296,28 +296,28 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData3({ ...formData3, firstEvent: false });
         if (formData3.signatureData) {
           if (formData3.signatureData !== dbData.signatureData) {
-            const signatureUrlPrefix =
-              "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
+            // const signatureUrlPrefix =
+            //   "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
-            const { data: sigData } = await supabase.storage
-              .from("signatures")
-              .upload(
-                `claim-form/${+new Date()}.png`,
-                await base64ToFile(formData3.signatureData)
-              );
+            // const { data: sigData } = await supabase.storage
+            //   .from("signatures")
+            //   .upload(
+            //     `claim-form/${+new Date()}.png`,
+            //     await base64ToFile(formData3.signatureData)
+            //   );
 
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
                 signatureData: formData3.signatureData,
-                signatureUrl: signatureUrlPrefix + sigData?.path,
+                // signatureUrl: signatureUrlPrefix + sigData?.path,
               })
               .match({ email: userEmail })
               .select();
             setDbData((d) => ({
               ...d,
               signatureData: formData3.signatureData,
-              signatureUrl: signatureUrlPrefix + sigData?.path,
+              // signatureUrl: signatureUrlPrefix + sigData?.path,
             }));
             if (data?.length) {
               updateSecondaryTable(data[0]);
