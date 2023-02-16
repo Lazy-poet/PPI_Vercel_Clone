@@ -19,7 +19,11 @@ const Header = () => {
     <header className="bg-white dark:bg-gray-800">
       <Head>
         {/* Review Script */}
-        <script defer async src="https://cdn.trustindex.io/loader.js"></script>
+        <script
+          defer
+          async
+          src="https://cdn.trustindex.io/loader.js?937de4811ab6928b8e06a40d56d"
+        ></script>
       </Head>
       <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
