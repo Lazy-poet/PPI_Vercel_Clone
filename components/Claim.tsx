@@ -262,7 +262,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   estimated_total: amount,
                   earnings: formData2.earnings,
                   link_code,
-                  link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
+                  link: `https://quicktaxclaims.co.uk?c=${link_code}`,
                   email: details.email,
                   user_ip: userIp,
                   ...(userPhone && { phone: userPhone }),

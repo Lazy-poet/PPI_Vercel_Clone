@@ -35,7 +35,7 @@ const Banner = (props: Props) => {
         className={
           !showBanner
             ? "hidden"
-            : "flex z-50 fixed justify-between py-3 px-2 sm:px-4 w-full text-yellow-700 bg-yellow-50"
+            : "flex z-50 fixed justify-between py-3 px-2 sm:px-4 w-full text-red-800 bg-red-50"
         }
       >
         <div className="flex items-center mx-auto gap-2">
@@ -66,7 +66,7 @@ const Banner = (props: Props) => {
           }}
           data-collapse-toggle="banner"
           type="button"
-          className="inline-flex justify-center items-center text-yellow-500 hover:bg-yellow-200 rounded-lg text-sm p-1.5"
+          className="inline-flex justify-center items-center text-red-500 hover:bg-red-200 rounded-lg text-sm p-1.5"
         >
           <svg
             className="w-5 h-5"
