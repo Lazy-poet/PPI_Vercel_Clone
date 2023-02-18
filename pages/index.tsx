@@ -9,6 +9,7 @@ import Banner from "@/components/Banner";
 import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -35,7 +36,11 @@ export default function Home(props: HomeProps) {
     setUserPhone,
   } = useSystemValues();
 
+  const router = useRouter();
   useEffect(() => {
+    if (router.query.c && !props.link_code) {
+      router.push("/");
+    }
     setLinkCode(props.link_code);
     if (props.data?.[0]) {
       setDbData((_) => ({ ...props.data[0] }));
@@ -46,6 +51,14 @@ export default function Home(props: HomeProps) {
     (async () => {
       const { userIp } = await (await fetch("/api/ip")).json();
       setUserIp(userIp);
+      if (props.link_code) {
+        await supabase
+          .from("PPI_Claim_Form")
+          .update({
+            user_ip: userIp,
+          })
+          .match({ link_code: props.link_code });
+      }
     })();
   }, []);
 
@@ -88,7 +101,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      link_code: link_code || null,
+      link_code: link_code && data.length ? link_code : null,
       data,
     },
   };
