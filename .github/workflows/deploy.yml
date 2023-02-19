@@ -14,7 +14,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+      - name: Debug
+        run: |
+          cat ${HOME}/.ssh/id_rsa
       - name: Build and deploy
         uses: appleboy/ssh-action@master
         with:
