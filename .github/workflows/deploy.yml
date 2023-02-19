@@ -21,13 +21,8 @@ jobs:
       - name: Create Known Hosts
         run: echo "${{ secrets.KNOWN_HOSTS_1 }}" > ~/.ssh/known_hosts
       - name: Deploy app
-        run: |
-          ssh -i ~/.ssh/deploy ${{ secrets.DROPLET1_USER }}@${{ secrets.DROPLET1_HOST }}
-          cd ~/frontend/quicktaxclaims 
-          git pull origin main --rebase
-          npm i 
-          npm run build 
-          pm2 restart frontend
+        run: ssh -i ~/.ssh/deploy ${{ secrets.DROPLET1_USER }}@${{ secrets.DROPLET1_HOST }} 'cd /home/dev/frontend/quicktaxclaims && git pull origin main --rebase && npm i && npm run build && pm2 restart frontend'
+
 
   deploy-droplet2:
     name: Deploy to Droplet 2
@@ -44,10 +39,5 @@ jobs:
       - name: Create Known Hosts
         run: echo "${{ secrets.KNOWN_HOSTS_2 }}" > ~/.ssh/known_hosts
       - name: Deploy app
-        run: |
-          ssh -i ~/.ssh/deploy ${{ secrets.DROPLET2_USER }}@${{ secrets.DROPLET2_HOST }}
-          cd ~/frontend/quicktaxclaims 
-          git pull origin main --rebase
-          npm i 
-          npm run build 
-          pm2 restart frontend
+        run: ssh -i ~/.ssh/deploy ${{ secrets.DROPLET2_USER }}@${{ secrets.DROPLET2_HOST }} 'cd /home/dev/frontend/quicktaxclaims && git pull origin main --rebase && npm i && npm run build && pm2 restart frontend'
+
