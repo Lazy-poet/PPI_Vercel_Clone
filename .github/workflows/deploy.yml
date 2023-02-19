@@ -1,0 +1,50 @@
+name: Deploy to Droplets
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-droplet1:
+    name: Deploy to Droplet 1
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET1_HOST }}
+          username: ${{ secrets.DROPLET1_USER }}
+          key: ${{ secrets.DROPLET1_SSH_KEY }}
+          script: |
+            cd frontend/quicktaxclaims
+            git pull origin main --rebase
+            npm i
+            npm run build 
+            pm2 restart frontend
+  deploy-droplet2:
+    name: Deploy to Droplet 2
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DROPLET2_HOST }}
+          username: ${{ secrets.DROPLET2_USER }}
+          key: ${{ secrets.DROPLET2_SSH_KEY }}
+          script: |
+            cd frontend/quicktaxclaims
+            git pull origin main --rebase
+            npm i
+            npm run build 
+            pm2 restart frontend
