@@ -17,9 +17,9 @@ jobs:
       - name: Create ssh directory
         run: mkdir ~/.ssh && chmod 700 ~/.ssh
       - name: Copy SSH key
-        run: echo "${{ secrets.DROPLET1_SSH_KEY }}" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+        run: echo '${{ secrets.DROPLET1_SSH_KEY }}' > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
       - name: Create Known Hosts
-        run: echo "${{ secrets.KNOWN_HOSTS_1 }}" > ~/.ssh/known_hosts
+        run: echo '${{ secrets.KNOWN_HOSTS_1 }}' > ~/.ssh/known_hosts
       - name: Deploy app
         run: |
           ssh -i ~/.ssh/deploy ${{ secrets.DROPLET1_USER }}@${{ secrets.DROPLET1_HOST }}
@@ -40,9 +40,9 @@ jobs:
       - name: Create ssh directory
         run: mkdir ~/.ssh && chmod 700 ~/.ssh
       - name: Copy SSH key
-        run: echo "${{ secrets.DROPLET2_SSH_KEY }}" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+        run: echo '${{ secrets.DROPLET2_SSH_KEY }}' > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
       - name: Create Known Hosts
-        run: echo "${{ secrets.KNOWN_HOSTS_2 }}" > ~/.ssh/known_hosts
+        run: echo '${{ secrets.KNOWN_HOSTS_2 }}' > ~/.ssh/known_hosts
       - name: Deploy app
         run: |
           ssh -i ~/.ssh/deploy ${{ secrets.DROPLET2_USER }}@${{ secrets.DROPLET2_HOST }}
