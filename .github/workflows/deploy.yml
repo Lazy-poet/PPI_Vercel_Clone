@@ -23,7 +23,7 @@ jobs:
       - name: Deploy app
         run: |
           ssh -i ~/.ssh/deploy ${{ secrets.DROPLET1_USER }}@${{ secrets.DROPLET1_HOST }}
-          cd /home/dev/frontend/quicktaxclaims 
+          cd ~/frontend/quicktaxclaims 
           git pull origin main --rebase
           npm i 
           npm run build 
@@ -46,7 +46,7 @@ jobs:
       - name: Deploy app
         run: |
           ssh -i ~/.ssh/deploy ${{ secrets.DROPLET2_USER }}@${{ secrets.DROPLET2_HOST }}
-          cd /home/dev/frontend/quicktaxclaims 
+          cd ~/frontend/quicktaxclaims 
           git pull origin main --rebase
           npm i 
           npm run build 
