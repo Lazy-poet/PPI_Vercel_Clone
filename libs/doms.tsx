@@ -44,10 +44,9 @@ export const SUB_TITLES = (step: any, onClick: any) => {
 };
 
 export const CONFIRMS = [
-  "I understand that ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent",
   "I understand that the information I have provided will be shared with HMRC and confirm that this is true and accurate",
-  "I understand that ClaimingMadeEasy will be assigned as my nominee to enable them to submit tax refund claims to HMRC on my behalf and re-claim any overpaid tax",
   "I have read the tax claim documents, agree to the terms of service and understand that the information I have provided and my signature will be used to populate a claim form(s) to be sent to HMRC",
+  "I understand that the tax agent as named in the terms of service will be assigned as my nominee to enable them to submit tax refund claims to HMRC on my behalf and re-claim any overpaid tax",
 ];
 
 export const ERRORS = [
