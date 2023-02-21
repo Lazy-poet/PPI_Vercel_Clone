@@ -173,13 +173,18 @@ function Claim({ setReady, data }: ClaimProps) {
   /**
    * This function updates the PPI_Claim_Form_Completed table with data from the primary table after the user has completed the signature step
    */
-  const updateSecondaryTable = async (data: Record<string, any>) => {
+  const updateSecondaryTable = async (record: Record<string, any>) => {
+    const { createdAt, ...data } = record;
     await supabase.from("PPI_Claim_Form_Completed").upsert(
       {
         ...data,
         ...(userEmail && !data.email && { email: userEmail }),
         ...(userPhone && !data.phone && { phone: userPhone }),
-        ...(linkCode && !data.link_code && { link_code: linkCode }),
+        ...(linkCode &&
+          !data.link_code && {
+            link_code: linkCode,
+            link: `https://quicktaxclaims.co.uk?c=${linkCode}`,
+          }),
       },
       {
         ignoreDuplicates: false,
@@ -206,7 +211,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 earnings: formData2.earnings,
               })
               .match({ link_code: linkCode });
-            if (dbData.signatureData) {
+            if (dbData.signatureData || dbData.insurance) {
               updateSecondaryTable({
                 earnings: formData2.earnings,
               });
@@ -265,7 +270,7 @@ function Claim({ setReady, data }: ClaimProps) {
             if (!error) {
               setDbData((d) => ({ ...(data?.[0] || {}) }));
 
-              if (data?.[0] && dbData.signatureData) {
+              if (data?.[0] && (dbData.signatureData || dbData.insurance)) {
                 updateSecondaryTable({
                   ...data[0],
                 });
