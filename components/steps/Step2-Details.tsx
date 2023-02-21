@@ -16,8 +16,17 @@ const Details = (props: any) => {
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
   const currentAddressListPostCode = useRef<string>(data.postCode || "");
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    currentAddressListPostCode.current = data.postCode;
+    if (
+      data.postCode &&
+      postcodeValidator(data.postCode, "GB") &&
+      !data.address
+    ) {
+      setShowPulse(true);
+    }
   }, []);
 
   const isAddressValid = addressList.some(
@@ -51,6 +60,14 @@ const Details = (props: any) => {
     }
     handleFormChange(name, value);
   };
+  /**
+   * stop pulsing when address has been selected
+   */
+  useEffect(() => {
+    if (data.address && data.postCode === currentAddressListPostCode.current) {
+      setShowPulse(false);
+    }
+  }, [data.address]);
 
   const handleMUISelectChange = (e: SelectChangeEvent) => {
     const value = e.target.value;
@@ -255,9 +272,7 @@ const Details = (props: any) => {
           className={`form-group sm:col-span-2 ${
             fdEvents.postCode
               ? ""
-              : addressList.length > 0 &&
-                data.postCode &&
-                postcodeValidator(data.postCode, "GB")
+              : data.postCode && postcodeValidator(data.postCode, "GB")
               ? "success"
               : "error"
           }`}
@@ -302,11 +317,11 @@ const Details = (props: any) => {
                 showPulse ? "search-pulse" : ""
               } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               onClick={() => {
+                searchAddressByPostcode(data.postCode);
                 if (showPulse) {
                   // pulse should disappear after addresses have been fetched
                   setShowPulse(false);
                 }
-                searchAddressByPostcode(data.postCode);
               }}
             >
               Find address

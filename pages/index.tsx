@@ -101,7 +101,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   return {
     props: {
-      link_code: link_code && data.length ? link_code : null,
+      link_code: link_code && data?.length ? link_code : null,
       data,
     },
   };
