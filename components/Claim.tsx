@@ -404,11 +404,21 @@ function Claim({ setReady, data }: ClaimProps) {
       if (!data?.length) {
         return;
       }
-      const birthdate = data?.[0].birthdate
-        ? typeof data?.[0].birthdate === "string"
-          ? JSON.parse(data?.[0]?.birthdate)
-          : data?.[0].birthdate
-        : { day: "", month: "", year: "" };
+      let dob = { day: "", month: "", year: "" };
+      if (data?.[0].birthdate) {
+        dob =
+          typeof data?.[0].birthdate === "string"
+            ? JSON.parse(data?.[0]?.birthdate)
+            : data?.[0].birthdate;
+      } else if (data?.[0].birthdate_str) {
+        const separator = data[0].birthdate_str.includes("/")
+          ? "/"
+          : data[0].birthdate_str.includes("-")
+          ? "-"
+          : " ";
+        const [day, month, year] = data?.[0].birthdate_str.split(separator);
+        dob = { day, month, year };
+      }
 
       /* update the form data with existing user data */
 
@@ -419,9 +429,9 @@ function Claim({ setReady, data }: ClaimProps) {
         email: data?.[0].email ? data?.[0].email : "",
         postCode: data?.[0].postCode ? data?.[0].postCode : "",
         address: data?.[0].address ? data?.[0].address : "",
-        day: birthdate.day,
-        month: birthdate.month,
-        year: birthdate.year,
+        day: dob.day,
+        month: dob.month,
+        year: dob.year,
       });
       setFdEvents1({
         firstName: false,
