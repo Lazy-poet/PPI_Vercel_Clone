@@ -44,34 +44,33 @@ const HeroSection: React.FC<{
       });
     }
     if (linkCode) {
-      // only update db value when amount changes
-      if (amount !== dbData.estimated_total) {
-        const data = {
-          estimated_total: amount,
-        };
-        try {
-          const { error } = await supabase
-            .from("PPI_Claim_Form")
-            .update(data)
-            .match({ link_code: linkCode });
-          if (!error) {
-            setDbData((d: UserData) => ({ ...d, ...data }));
-            if (dbData.signatureData) {
-              await supabase.from("PPI_Claim_Form_Completed").upsert(
-                {
-                  ...data,
-                  link_code: linkCode,
-                },
-                {
-                  ignoreDuplicates: false,
-                  onConflict: "link_code",
-                }
-              );
-            }
+      const data = {
+        estimated_total: amount,
+      };
+      try {
+        const { data: existing_data, error } = await supabase
+          .from("PPI_Claim_Form")
+          .update(data)
+          .match({ link_code: linkCode })
+          .select();
+        if (!error) {
+          setDbData((d: UserData) => ({ ...d, ...data }));
+          if (dbData.signatureData || dbData.insurance) {
+            const { createdAt, ...rec } = existing_data?.[0];
+            await supabase.from("PPI_Claim_Form_Completed").upsert(
+              {
+                ...rec,
+                link_code: linkCode,
+              },
+              {
+                ignoreDuplicates: false,
+                onConflict: "link_code",
+              }
+            );
           }
-        } catch (e) {
-          console.log(e);
         }
+      } catch (e) {
+        console.log(e);
       }
     }
     handleStart();
