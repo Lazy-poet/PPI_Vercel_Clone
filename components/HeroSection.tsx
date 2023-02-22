@@ -51,7 +51,7 @@ const HeroSection: React.FC<{
         const { data: existing_data, error } = await supabase
           .from("PPI_Claim_Form")
           .update(data)
-          .match({ link_code: linkCode })
+          .match(userEmail ? { email: userEmail } : { link_code: linkCode })
           .select();
         if (!error) {
           setDbData((d: UserData) => ({ ...d, ...data }));
@@ -64,7 +64,7 @@ const HeroSection: React.FC<{
               },
               {
                 ignoreDuplicates: false,
-                onConflict: "link_code",
+                onConflict: userEmail ? "email" : "link_code",
               }
             );
           }

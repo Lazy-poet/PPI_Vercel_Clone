@@ -16,7 +16,7 @@ export enum STEP {
 }
 
 export type UserData = {
-  id: string,
+  id?: string,
   createdAt: Date,
   firstName: string;
   lastName: string;

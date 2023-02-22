@@ -174,7 +174,7 @@ function Claim({ setReady, data }: ClaimProps) {
    * This function updates the PPI_Claim_Form_Completed table with data from the primary table after the user has completed the signature step
    */
   const updateSecondaryTable = async (record: Record<string, any>) => {
-    const { createdAt, ...data } = record;
+    const { createdAt, id, ...data } = record;
     await supabase.from("PPI_Claim_Form_Completed").upsert(
       {
         ...data,
@@ -188,7 +188,7 @@ function Claim({ setReady, data }: ClaimProps) {
       },
       {
         ignoreDuplicates: false,
-        onConflict: "link_code",
+        onConflict: userEmail ? "email" : "link_code",
       }
     );
   };
@@ -204,13 +204,15 @@ function Claim({ setReady, data }: ClaimProps) {
           formData2.earnings !== Earnings.MoreThan150001
         ) {
           const valueChanged = formData2.earnings !== dbData.earnings;
-          if ((userEmail || userPhone || linkCode) && valueChanged) {
+          if ((userEmail || linkCode) && valueChanged) {
             await supabase
               .from("PPI_Claim_Form")
               .update({
                 earnings: formData2.earnings,
               })
-              .match({ link_code: linkCode });
+              .match(
+                userEmail ? { email: userEmail } : { link_code: linkCode }
+              );
             if (dbData.signatureData || dbData.insurance) {
               updateSecondaryTable({
                 earnings: formData2.earnings,
@@ -241,28 +243,37 @@ function Claim({ setReady, data }: ClaimProps) {
         ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
-            const is_new_user = !linkCode;
-
-            const diff = Utils.getObjectDifference(dbData, formattedDetails);
-            const link_code = is_new_user ? nanoid(9) : linkCode;
-
+            // if email has changed, copy current data to new row, otherwise only update changed fields
+            delete dbData.id;
+            const diff =
+              details.email === userEmail
+                ? Utils.getObjectDifference(dbData, formattedDetails)
+                : { ...dbData, ...formattedDetails };
+            // set a new link_code either if there isnt an existing one or when user email has changed
+            const link_code = linkCode
+            ? details.email !== userEmail
+            ? nanoid(9)
+            : linkCode
+            : nanoid(9);
+            console.log("link code is", link_code, details.email, userEmail);
+            
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
                 {
                   ...utmParams,
+                  ...diff,
                   estimated_total: amount,
                   earnings: formData2.earnings,
                   link_code,
                   link: `https://quicktaxclaims.co.uk?c=${link_code}`,
                   email: details.email,
                   user_ip: userIp,
-                  ...diff,
                 },
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: "link_code",
+                  onConflict: "email",
                 }
               )
               .select();
@@ -303,7 +314,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 signatureData: formData3.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
-              .match({ link_code: linkCode })
+              .match({ email: userEmail })
               .select();
             setDbData((d) => ({
               ...d,
@@ -324,7 +335,7 @@ function Claim({ setReady, data }: ClaimProps) {
             const { error } = await supabase
               .from("PPI_Claim_Form")
               .update({ insurance: formData4.insurance })
-              .match({ link_code: linkCode });
+              .match({ email: userEmail });
 
             await updateSecondaryTable({ insurance: formData4.insurance });
             setDbData((d) => ({ ...d, insurance: formData4.insurance }));
