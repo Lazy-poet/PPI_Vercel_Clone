@@ -272,7 +272,9 @@ const Details = (props: any) => {
           className={`form-group sm:col-span-2 ${
             fdEvents.postCode
               ? ""
-              : data.postCode && postcodeValidator(data.postCode, "GB")
+              : addressList.length > 0 &&
+                data.postCode &&
+                postcodeValidator(data.postCode, "GB")
               ? "success"
               : "error"
           }`}
