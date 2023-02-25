@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, createContext, useEffect, useState } from "react";
+
+export const ThemeContext = createContext(
+  {} as { theme: THEME; changeTheme: (t: THEME) => void }
+);
 
 export enum THEME {
   LIGHT,
   DARK,
 }
 
-export const useTheme = () => {
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<THEME>(THEME.LIGHT);
 
   useEffect(() => {
@@ -36,6 +40,11 @@ export const useTheme = () => {
       localStorage.setItem("color-theme", "dark");
     }
   };
-
-  return { theme, changeTheme };
+  return (
+    <ThemeContext.Provider value={{ theme, changeTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
+
+export const useThemeContext = () => useContext(ThemeContext);

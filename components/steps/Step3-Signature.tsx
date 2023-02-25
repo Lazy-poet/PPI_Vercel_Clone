@@ -1,12 +1,13 @@
 import { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { CONFIRMS } from "@/libs/doms";
-import { THEME, useTheme } from "../hooks/useTheme";
+import { THEME } from "@/contexts/ThemeContext";
+import { useThemeContext } from "@/contexts/ThemeContext";
 
 const Signature = (props: any) => {
   const { data, handleFormChange } = props;
-  const canvasRef = useRef(null);
-  const { theme } = useTheme();
+  const canvasRef = useRef<SignatureCanvas>(null);
+  const { theme } = useThemeContext();
 
   const clear = () => {
     if (!data.signatureData) return;
@@ -15,18 +16,50 @@ const Signature = (props: any) => {
     handleFormChange(null);
   };
 
-  const trim = () => {
+  const trim = async () => {
+    let data_url = canvasRef.current!.toDataURL("image/png");
+    if (theme === THEME.DARK) {
+      data_url = await convertToGrayScaleOrBlack(data_url, "black");
+    }
     handleFormChange(
       // @ts-ignore
-      canvasRef.current.toDataURL("image/png")
+      data_url
     );
   };
+  const convertToGrayScaleOrBlack = async (
+    dataUrl: string,
+    convertTo: "gray" | "black"
+  ): Promise<string> => {
+    const img = new Image();
+    img.src = dataUrl;
+    return new Promise((resolve) => {
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
 
+        const ctx = canvas.getContext("2d");
+        ctx!.filter =
+          convertTo === "gray"
+            ? "grayscale(100%) contrast(0%) brightness(100%)"
+            : "grayscale(100%) invert(100%) brightness(0%)";
+        ctx!.drawImage(img, 0, 0);
+        const url = canvas.toDataURL("image/png");
+        resolve(url);
+      };
+    });
+  };
   useEffect(() => {
     const signatureData = data.signatureData;
     if (signatureData && Object.keys(signatureData).length !== 0) {
-      // @ts-ignore
-      canvasRef.current.fromDataURL(signatureData);
+      (async () => {
+        const dataUrl =
+          theme === THEME.DARK
+            ? await convertToGrayScaleOrBlack(signatureData, "gray")
+            : signatureData;
+        // @ts-ignore
+        canvasRef.current.fromDataURL(dataUrl);
+      })();
     }
   }, []);
 

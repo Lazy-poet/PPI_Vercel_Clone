@@ -251,12 +251,11 @@ function Claim({ setReady, data }: ClaimProps) {
                 : { ...dbData, ...formattedDetails };
             // set a new link_code either if there isnt an existing one or when user email has changed
             const link_code = linkCode
-            ? details.email !== userEmail
-            ? nanoid(9)
-            : linkCode
-            : nanoid(9);
-            console.log("link code is", link_code, details.email, userEmail);
-            
+              ? details.email !== userEmail
+                ? nanoid(9)
+                : linkCode
+              : nanoid(9);
+
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
