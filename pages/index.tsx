@@ -88,7 +88,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
   );
-  const { c: link_code } = context.query;
+  let { c: link_code } = context.query;
 
   let data = [] as any;
 
@@ -98,7 +98,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       .select()
       .match({ link_code })
       .select();
-    data = result;
+    if (result?.[0].insurance) {
+      link_code = undefined;
+    } else {
+      data = result;
+    }
   }
 
   return {
