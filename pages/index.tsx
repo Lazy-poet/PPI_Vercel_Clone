@@ -98,7 +98,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       .select()
       .match({ link_code })
       .select();
-    if (result?.[0].insurance) {
+    if (result?.[0] && result[0].insurance) {
       link_code = undefined;
     } else {
       data = result;

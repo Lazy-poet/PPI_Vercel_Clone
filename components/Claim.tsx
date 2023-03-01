@@ -361,18 +361,20 @@ function Claim({ setReady, data }: ClaimProps) {
             return obj;
           }, {} as Record<string, string>);
           const totalTaxYears = Object.keys(TAX_YEARS).reduce(
-            (sum, key) => sum + +updatedTaxYears[key],
+            (sum, key) => sum + Number(updatedTaxYears[key].replace(/,/g, "")),
             0
           );
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
+            const estimated_total_difference =
+              Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0);
+
             const data = {
               ...updatedTaxYears,
               tax_years: updatedTaxYears,
-              estimated_total_difference:
-                Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0),
+              estimated_total_difference,
             };
             await supabase
               .from("PPI_Claim_Form")
