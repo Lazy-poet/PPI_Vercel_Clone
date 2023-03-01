@@ -46,8 +46,18 @@ const HeroSection: React.FC<{
     if (linkCode) {
       const data = {
         estimated_total: amount,
+        estimated_total_difference: 0,
       };
       try {
+        if (dbData.tax_years) {
+          const totalTaxYears = Object.keys(dbData.tax_years).reduce(
+            (sum, key) => sum + Number(dbData.tax_years[key].replace(/,/g, "")),
+            0
+          );
+          const estimated_total_difference =
+            Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0);
+          data["estimated_total_difference"] = estimated_total_difference;
+        }
         const { data: existing_data, error } = await supabase
           .from("PPI_Claim_Form")
           .update(data)
@@ -111,17 +121,23 @@ const HeroSection: React.FC<{
                   label="How much PPI did you get back?"
                   placeholder={"Enter total amount"}
                   errorClass={`${
-                    Number(amount) >= 10 ? "success" : firstEvent ? "" : "error"
+                    Number(amount.replace(/,/g, "")) >= 10
+                      ? "success"
+                      : firstEvent
+                      ? ""
+                      : "error"
                   }`}
                   helperText={
                     firstEvent
                       ? ""
-                      : Number(amount) < 10
+                      : Number(amount.replace(/,/g, "")) < 10
                       ? "Please enter at least 2 characters"
                       : ""
                   }
                   helperClass={`${
-                    Number(amount) >= 10 || firstEvent ? "" : "error"
+                    Number(amount.replace(/,/g, "")) >= 10 || firstEvent
+                      ? ""
+                      : "error"
                   }`}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setFirstEvent(false);
