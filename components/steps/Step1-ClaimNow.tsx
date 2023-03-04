@@ -17,7 +17,10 @@ const ClaimNow = (props: any) => {
             data.firstEvent
               ? ""
               : data.earnings
-              ? data.earnings === Earnings.MoreThan150001
+              ? [
+                  Earnings.MoreThan150001,
+                  Earnings.Between50001And150000,
+                ].includes(data.earnings)
                 ? "text-red-600 dark:text-red-600"
                 : "text-green-700 dark:text-green-700"
               : "error"
@@ -59,12 +62,18 @@ const ClaimNow = (props: any) => {
         <p
           className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
             data.firstEvent ||
-            (!!data.earnings && data.earnings !== Earnings.MoreThan150001)
+            (!!data.earnings &&
+              ![
+                Earnings.MoreThan150001,
+                Earnings.Between50001And150000,
+              ].includes(data.earnings))
               ? ""
               : "error"
           }`}
         >
-          {data.earnings === Earnings.MoreThan150001
+          {[Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
+            data.earnings
+          )
             ? "Sorry! you're not eligible to claim"
             : " Please select your annual income"}
         </p>
@@ -76,7 +85,7 @@ const ClaimNow = (props: any) => {
 const RadioInput: React.FC<{
   handleFormChange: (e: string, val: string) => void;
   value: string;
-  earnings: string;
+  earnings: Earnings;
   id: string;
   firstEvent: boolean;
 }> = ({ handleFormChange, earnings, value, id, firstEvent }) => {
@@ -86,7 +95,9 @@ const RadioInput: React.FC<{
         firstEvent || (earnings && earnings !== value)
           ? ""
           : earnings === value
-          ? value === Earnings.MoreThan150001
+          ? [Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
+              earnings
+            )
             ? "error"
             : "success"
           : "error"

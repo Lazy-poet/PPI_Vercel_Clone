@@ -201,7 +201,9 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData2({ ...formData2, firstEvent: false });
         if (
           formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan150001
+          ![Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
+            formData2.earnings as Earnings
+          )
         ) {
           const valueChanged = formData2.earnings !== dbData.earnings;
           if ((userEmail || linkCode) && valueChanged) {
@@ -368,8 +370,10 @@ function Claim({ setReady, data }: ClaimProps) {
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
-            const estimated_total_difference =
-              Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0);
+            const estimated_total_difference = Math.max(
+              0,
+              (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
+            );
 
             const data = {
               ...updatedTaxYears,
