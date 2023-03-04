@@ -54,8 +54,10 @@ const HeroSection: React.FC<{
             (sum, key) => sum + Number(dbData.tax_years[key].replace(/,/g, "")),
             0
           );
-          const estimated_total_difference =
-            Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0);
+          const estimated_total_difference = Math.max(
+            0,
+            (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
+          );
           data["estimated_total_difference"] = estimated_total_difference;
         }
         const { data: existing_data, error } = await supabase

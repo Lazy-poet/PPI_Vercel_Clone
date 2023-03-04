@@ -370,8 +370,10 @@ function Claim({ setReady, data }: ClaimProps) {
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
-            const estimated_total_difference =
-              Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0);
+            const estimated_total_difference = Math.max(
+              0,
+              (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
+            );
 
             const data = {
               ...updatedTaxYears,
