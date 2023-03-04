@@ -37,7 +37,7 @@ const HeroSection: React.FC<{
 
   const handleClick = async () => {
     setFirstEvent(false);
-    if (!amount || Number(amount) < 10) {
+    if (!amount || Number(amount) < 100) {
       return window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -121,7 +121,7 @@ const HeroSection: React.FC<{
                   label="How much PPI did you get back?"
                   placeholder={"Enter total amount"}
                   errorClass={`${
-                    Number(amount.replace(/,/g, "")) >= 10
+                    Number(amount.replace(/,/g, "")) >= 100
                       ? "success"
                       : firstEvent
                       ? ""
@@ -130,12 +130,12 @@ const HeroSection: React.FC<{
                   helperText={
                     firstEvent
                       ? ""
-                      : Number(amount.replace(/,/g, "")) < 10
-                      ? "Please enter at least 2 characters"
+                      : Number(amount.replace(/,/g, "")) < 100
+                      ? "Please enter at least 3 characters"
                       : ""
                   }
                   helperClass={`${
-                    Number(amount.replace(/,/g, "")) >= 10 || firstEvent
+                    Number(amount.replace(/,/g, "")) >= 100 || firstEvent
                       ? ""
                       : "error"
                   }`}
