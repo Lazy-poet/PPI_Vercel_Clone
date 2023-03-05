@@ -123,7 +123,7 @@ const HeroSection: React.FC<{
                   label="How much PPI did you get back?"
                   placeholder={"Enter total amount"}
                   errorClass={`${
-                    Number(amount.replace(/,/g, "")) >= 100
+                    Number(amount?.replace(/,/g, "")) >= 100
                       ? "success"
                       : firstEvent
                       ? ""
@@ -132,12 +132,12 @@ const HeroSection: React.FC<{
                   helperText={
                     firstEvent
                       ? ""
-                      : Number(amount.replace(/,/g, "")) < 100
+                      : Number(amount?.replace(/,/g, "")) < 100
                       ? "Please enter at least 3 characters"
                       : ""
                   }
                   helperClass={`${
-                    Number(amount.replace(/,/g, "")) >= 100 || firstEvent
+                    Number(amount?.replace(/,/g, "")) >= 100 || firstEvent
                       ? ""
                       : "error"
                   }`}

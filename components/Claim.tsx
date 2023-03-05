@@ -13,7 +13,7 @@ import StepAlert from "@/components/StepAlert";
 import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
-import { postcodeValidator } from "postcode-validator";
+import { isValid } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
@@ -239,10 +239,7 @@ function Claim({ setReady, data }: ClaimProps) {
           year: false,
         });
         const { firstEvent, ...details } = formData1;
-        if (
-          Utils.isObjectFilled(details) &&
-          postcodeValidator(formData1.postCode, "GB")
-        ) {
+        if (Utils.isObjectFilled(details) && isValid(formData1.postCode)) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
             // if email has changed, copy current data to new row, otherwise only update changed fields
@@ -508,7 +505,7 @@ function Claim({ setReady, data }: ClaimProps) {
       formData1.email !== "" &&
       Utils.validateEmail(formData1.email) &&
       formData1.postCode !== "" &&
-      postcodeValidator(formData1.postCode, "GB") &&
+      isValid(formData1.postCode) &&
       formData1.address !== "" &&
       formData1.day !== "" &&
       formData1.month !== "" &&

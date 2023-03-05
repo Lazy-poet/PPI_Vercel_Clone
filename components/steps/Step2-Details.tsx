@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
-import { postcodeValidator } from "postcode-validator";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
-
+import { isValid, parse } from "postcode";
 const Details = (props: any) => {
   const { data, fdEvents, handleFormChange, handleOpen } = props;
   const [Dates, setDates] = useState<string[]>([]);
@@ -20,11 +19,7 @@ const Details = (props: any) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     currentAddressListPostCode.current = data.postCode;
-    if (
-      data.postCode &&
-      postcodeValidator(data.postCode, "GB") &&
-      !data.address
-    ) {
+    if (data.postCode && isValid(data.postCode) && !data.address) {
       setShowPulse(true);
     }
   }, []);
@@ -49,11 +44,14 @@ const Details = (props: any) => {
         break;
       case "postCode":
         value = value.toUpperCase().substr(0, 8);
+        if (isValid(value)) {
+          value = parse(value).postcode!;
+        }
         if (
           name === "postCode" &&
           value !== currentAddressListPostCode.current
         ) {
-          const show = !!value && !!postcodeValidator(value, "GB");
+          const show = !!value && !!isValid(value);
           setShowPulse(show);
         }
         break;
@@ -85,7 +83,7 @@ const Details = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.address, isAddressValid, addressList]);
   const searchAddressByPostcode = (e: string) => {
-    if (!e || !postcodeValidator(e, "GB")) {
+    if (!e || !isValid(e)) {
       return;
     }
     const endpoint = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_ku4e95aqGky1uIIQZMefHVykARiTn&q=${e}`;
@@ -274,7 +272,7 @@ const Details = (props: any) => {
               ? ""
               : addressList.length > 0 &&
                 data.postCode &&
-                postcodeValidator(data.postCode, "GB")
+                isValid(data.postCode)
               ? "success"
               : "error"
           }`}
@@ -310,7 +308,11 @@ const Details = (props: any) => {
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="e.g. CH5 3UZ"
               required
-              value={data.postCode}
+              value={
+                isValid(data.postCode)
+                  ? parse(data.postCode).postcode
+                  : data.postCode
+              }
               onChange={(e) => handleInputChange(e)}
             />
             <button
@@ -336,7 +338,7 @@ const Details = (props: any) => {
             >
               Enter your postcode, then click the button to find your address
             </p>
-          ) : !(data.postCode && postcodeValidator(data.postCode, "GB")) ? (
+          ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               Please provide a valid UK postcode
             </p>
