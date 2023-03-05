@@ -13,7 +13,7 @@ import StepAlert from "@/components/StepAlert";
 import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
-import { postcodeValidator } from "postcode-validator";
+import { isValid } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
@@ -207,20 +207,19 @@ function Claim({ setReady, data }: ClaimProps) {
         ) {
           const valueChanged = formData2.earnings !== dbData.earnings;
           if ((userEmail || linkCode) && valueChanged) {
-            await supabase
+            const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
                 earnings: formData2.earnings,
               })
-              .match(
-                userEmail ? { email: userEmail } : { link_code: linkCode }
-              );
-            if (dbData.signatureData || dbData.insurance) {
-              updateSecondaryTable({
-                earnings: formData2.earnings,
+              .match(userEmail ? { email: userEmail } : { link_code: linkCode })
+              .select();
+            if (data?.length && (data[0].signatureData || data[0].insurance)) {
+              await updateSecondaryTable({
+                ...data[0],
               });
+              setDbData(data[0]);
             }
-            setDbData((d) => ({ ...d, earnings: formData2.earnings }));
           }
 
           setStep(STEP.DETAILS);
@@ -239,10 +238,7 @@ function Claim({ setReady, data }: ClaimProps) {
           year: false,
         });
         const { firstEvent, ...details } = formData1;
-        if (
-          Utils.isObjectFilled(details) &&
-          postcodeValidator(formData1.postCode, "GB")
-        ) {
+        if (Utils.isObjectFilled(details) && isValid(formData1.postCode)) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
             // if email has changed, copy current data to new row, otherwise only update changed fields
@@ -279,11 +275,10 @@ function Claim({ setReady, data }: ClaimProps) {
               )
               .select();
 
-            if (!error) {
-              setDbData((d) => ({ ...(data?.[0] || {}) }));
-
-              if (data?.[0] && (dbData.signatureData || dbData.insurance)) {
-                updateSecondaryTable({
+            if (data?.[0]) {
+              setDbData(data[0]);
+              if (data[0].signatureData || data[0].insurance) {
+                await updateSecondaryTable({
                   ...data[0],
                 });
               }
@@ -317,13 +312,9 @@ function Claim({ setReady, data }: ClaimProps) {
               })
               .match({ email: userEmail })
               .select();
-            setDbData((d) => ({
-              ...d,
-              signatureData: formData3.signatureData,
-              signatureUrl: signatureUrlPrefix + sigData?.path,
-            }));
             if (data?.length) {
-              updateSecondaryTable(data[0]);
+              setDbData(data[0]);
+              await updateSecondaryTable(data[0]);
             }
           }
           setStep(STEP.ONE_MORE);
@@ -333,13 +324,16 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance && isNino(formData4.insurance)) {
           if (formData4.insurance !== dbData.insurance) {
-            const { error } = await supabase
+            const { data } = await supabase
               .from("PPI_Claim_Form")
               .update({ insurance: formData4.insurance })
-              .match({ email: userEmail });
+              .match({ email: userEmail })
+              .select();
 
-            await updateSecondaryTable({ insurance: formData4.insurance });
-            setDbData((d) => ({ ...d, insurance: formData4.insurance }));
+            if (data?.length) {
+              setDbData(data[0]);
+              await updateSecondaryTable(data[0]);
+            }
           }
           setStep(STEP.REFUNDS);
         }
@@ -375,18 +369,21 @@ function Claim({ setReady, data }: ClaimProps) {
               (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
             );
 
-            const data = {
+            const tax_data = {
               ...updatedTaxYears,
               tax_years: updatedTaxYears,
               estimated_total_difference,
+              completed: true,
             };
-            await supabase
+            const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update(data)
-              .match({ link_code: linkCode });
-
-            await updateSecondaryTable({ ...data, completed: true });
-            setDbData((d) => ({ ...d, tax_years: updatedTaxYears }));
+              .update(tax_data)
+              .match({ link_code: linkCode })
+              .select();
+            if (data?.[0]) {
+              await updateSecondaryTable(data[0]);
+              setDbData(data[0]);
+            }
           }
           setStep(STEP.ALL_DONE);
         }
@@ -508,7 +505,7 @@ function Claim({ setReady, data }: ClaimProps) {
       formData1.email !== "" &&
       Utils.validateEmail(formData1.email) &&
       formData1.postCode !== "" &&
-      postcodeValidator(formData1.postCode, "GB") &&
+      isValid(formData1.postCode) &&
       formData1.address !== "" &&
       formData1.day !== "" &&
       formData1.month !== "" &&

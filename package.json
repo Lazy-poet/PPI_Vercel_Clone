@@ -29,6 +29,7 @@
     "nanoid": "^4.0.0",
     "next": "13.0.6",
     "pdfjs-dist": "^3.2.146",
+    "postcode": "^5.1.0",
     "postcode-validator": "^3.7.0",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
