@@ -14,7 +14,9 @@ const Details = (props: any) => {
     useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currentAddressListPostCode = useRef<string>(data.postCode || "");
+  const currentAddressListPostCode = useRef<string>(
+    parse(data.postCode)?.postcode || ""
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });

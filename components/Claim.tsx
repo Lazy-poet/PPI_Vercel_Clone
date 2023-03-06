@@ -13,7 +13,7 @@ import StepAlert from "@/components/StepAlert";
 import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
-import { isValid } from "postcode";
+import { isValid, parse } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { Worker } from "@react-pdf-viewer/core";
@@ -83,7 +83,7 @@ function Claim({ setReady, data }: ClaimProps) {
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
-  const [utmParams, setUtmParams] = useState({});
+  const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
   // Step1
 
@@ -431,7 +431,7 @@ function Claim({ setReady, data }: ClaimProps) {
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
         lastName: data?.[0].lastName ? data?.[0].lastName : "",
         email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? data?.[0].postCode : "",
+        postCode: data?.[0].postCode ? parse(data?.[0].postCode).postcode : "",
         address: data?.[0].address ? data?.[0].address : "",
         day: dob.day,
         month: dob.month,
@@ -489,6 +489,9 @@ function Claim({ setReady, data }: ClaimProps) {
       Object.keys(router.query).forEach((key) => {
         if (key.startsWith("utm_")) {
           utmParams[key] = router.query[key];
+        }
+        if (key === "s") {
+          utmParams["utm_source"] = router.query[key];
         }
         setUtmParams(utmParams);
       });
