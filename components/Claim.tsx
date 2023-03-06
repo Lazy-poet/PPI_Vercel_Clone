@@ -83,7 +83,7 @@ function Claim({ setReady, data }: ClaimProps) {
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
   const [open, setOpen] = useState<Boolean>(false);
   const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
-  const [utmParams, setUtmParams] = useState({});
+  const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
   // Step1
 
@@ -489,6 +489,9 @@ function Claim({ setReady, data }: ClaimProps) {
       Object.keys(router.query).forEach((key) => {
         if (key.startsWith("utm_")) {
           utmParams[key] = router.query[key];
+        }
+        if (key === "s") {
+          utmParams["utm_source"] = router.query[key];
         }
         setUtmParams(utmParams);
       });
