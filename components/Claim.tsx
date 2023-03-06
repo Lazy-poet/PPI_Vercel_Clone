@@ -261,6 +261,11 @@ function Claim({ setReady, data }: ClaimProps) {
                   ...utmParams,
                   ...diff,
                   estimated_total: amount,
+                  ...(!dbData.estimated_total_difference && {
+                    estimated_total_difference: Number(
+                      amount.replace(/,/g, "")
+                    ),
+                  }),
                   earnings: formData2.earnings,
                   link_code,
                   link: `https://quicktaxclaims.co.uk?c=${link_code}`,
@@ -365,8 +370,8 @@ function Claim({ setReady, data }: ClaimProps) {
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
             const estimated_total_difference = Math.max(
-              0,
-              (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
+              totalTaxYears,
+              Number(amount.replace(/,/g, ""))
             );
 
             const tax_data = {

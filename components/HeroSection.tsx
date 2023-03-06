@@ -55,8 +55,8 @@ const HeroSection: React.FC<{
             0
           );
           const estimated_total_difference = Math.max(
-            0,
-            (totalTaxYears ?? 0) - Number(amount.replace(/,/g, ""))
+            totalTaxYears,
+            Number(amount.replace(/,/g, ""))
           );
           data["estimated_total_difference"] = estimated_total_difference;
         }
