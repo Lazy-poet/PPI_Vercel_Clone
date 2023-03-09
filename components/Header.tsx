@@ -39,7 +39,7 @@ const Header = () => {
               width={36}
               height={36}
             />
-            <span>QuickTaxClaims™</span>
+            <span>ClaimingMadeEasy™</span>
           </Link>
           <div className="flex items-center md:order-2">
             <button
