@@ -183,7 +183,7 @@ function Claim({ setReady, data }: ClaimProps) {
         ...(linkCode &&
           !data.link_code && {
             link_code: linkCode,
-            link: `https://quicktaxclaims.co.uk?c=${linkCode}`,
+            link: `https://ppi.claimingmadeeasy.co.uk/?c=${linkCode}`,
           }),
       },
       {
@@ -268,7 +268,7 @@ function Claim({ setReady, data }: ClaimProps) {
                   }),
                   earnings: formData2.earnings,
                   link_code,
-                  link: `https://quicktaxclaims.co.uk?c=${link_code}`,
+                  link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
                   email: details.email,
                   user_ip: userIp,
                 },
@@ -300,7 +300,7 @@ function Claim({ setReady, data }: ClaimProps) {
         if (formData3.signatureData) {
           if (formData3.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
-              "https://zkfqakvzqywbqfuvgyzt.supabase.co/storage/v1/object/public/signatures/";
+              "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
             const { data: sigData } = await supabase.storage
               .from("signatures")
