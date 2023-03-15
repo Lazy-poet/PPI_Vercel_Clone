@@ -238,7 +238,11 @@ function Claim({ setReady, data }: ClaimProps) {
           year: false,
         });
         const { firstEvent, ...details } = formData1;
-        if (Utils.isObjectFilled(details) && isValid(formData1.postCode)) {
+        if (
+          Utils.isObjectFilled(details) &&
+          isValid(details.postCode) &&
+          Utils.validateEmail(details.email)
+        ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
             // if email has changed, copy current data to new row, otherwise only update changed fields
