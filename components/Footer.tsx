@@ -20,8 +20,10 @@ const Footer = () => {
           <span>ClaimingMadeEasy™</span>
         </Link>
         <p className="my-6 max-w-2xl mx-auto  text-gray-500 dark:text-gray-400">
-          ClaimingMadeEasy is a trading style of Approved Claims Group Ltd |
-          Company Number: 12552579 | Address: 20-22 Wenlock Road, London N1 7GU
+          ClaimingMadeEasy is a trading
+          style of Approved Claims Group Ltd | Company Number: 12552579 |
+          Address: 20-22 Wenlock Road, London N1 7GU |
+          support@claimingmadeeasy.com
         </p>
         <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
           © 2023&nbsp;
