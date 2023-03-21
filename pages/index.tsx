@@ -10,7 +10,7 @@ import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import Hotjar from "@/components/Hotjar";
+import LoadScripts from "@/components/Scripts";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -66,7 +66,7 @@ export default function Home(props: HomeProps) {
   return (
     <div className="relative">
       <Banner />
-      <Hotjar />
+      <LoadScripts />
       {ready ? (
         <Claim setReady={setReady} data={props.data} />
       ) : (
