@@ -22,7 +22,7 @@ const Header = () => {
         <script
           defer
           async
-          src="https://cdn.trustindex.io/loader.js?937de4811ab6928b8e06a40d56d"
+          src="https://cdn.trustindex.io/loader.js?13af5d813e3e503aa57601c3555"
         ></script>
       </Head>
       <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
