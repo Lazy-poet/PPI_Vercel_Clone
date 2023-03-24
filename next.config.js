@@ -14,9 +14,9 @@ const nextConfig = {
         process.env.NODE_ENV === "development"
           ? "https://work-from-home-2.vercel.app"
           : "https://ppi.claimingmadeeasy.com",
-      title: "QuickTaxClaims™ - Refund Tax Claim Platform",
+      title: "ClaimingMadeEasy™ - Refund Tax Claim Platform",
       description:
-        "QuickTaxClaims™ is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim. National Insurance to submit your claim",
+        "ClaimingMadeEasy is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim. National Insurance to submit your claim",
       socialPreview: "/images/logo.png",
     },
   },
