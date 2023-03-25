@@ -45,9 +45,9 @@ const Details = (props: any) => {
         value = value.trim();
         break;
       case "postCode":
-        value = value.toUpperCase().substr(0, 8);
-        if (isValid(value)) {
-          value = parse(value).postcode!;
+        value = value.toUpperCase().substr(0, 8).replace(".", "");
+        if (isValid(value.trim())) {
+          value = parse(value.trim()).postcode!;
         }
         if (
           name === "postCode" &&
