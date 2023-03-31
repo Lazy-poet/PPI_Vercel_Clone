@@ -10,26 +10,26 @@ export const TITLES = [
   "Apologies, we are unable to proceed",
 ];
 
-export const SUB_TITLES = (step: any, onClick: any) => {
+export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
     "If you want to claim your tax refund you must provide your details below",
     <span key="tos">
-      Your signature will be applied to a&nbsp;
+      {name}, your signature will be applied to an&nbsp;
+      <button
+        onClick={() => onClick("R40M2022.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        R40
+      </button>
+      &nbsp;and&nbsp;
       <button
         onClick={() => onClick("authorise_agent_64-8.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
         64-8
       </button>
-      &nbsp;form to authorise us as your agent. Please read our&nbsp;
-      <button
-        onClick={() => onClick("terms-of-service.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        terms of service
-      </button>
-      &nbsp;before proceeding.
+      &nbsp;form and used to submit your claim to HMRC.
     </span>,
     "We need your National Insurance (NI) number to identify your tax account. Your refund can't be issued without it!",
     "How much PPI did you receive in the following tax years",
@@ -91,7 +91,22 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       </a>
       .
     </span>,
-    "",
+    <span key="3">
+      By clicking next, you are confirming that you have read and agree with
+      the&nbsp;
+      <a
+        href="#"
+        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick("terms-of-service.pdf");
+        }}
+      >
+        terms & conditions
+      </a>
+      &nbsp;and that the information you have given on this form is correct, to
+      the best of your knowledge
+    </span>,
     "",
     <span key="5">
       When you click submit, we&apos;ll begin processing your tax refund claims.
