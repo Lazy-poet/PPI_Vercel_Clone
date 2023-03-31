@@ -19,6 +19,7 @@ const nextConfig = {
       description:
         "QuickTaxClaims™ is a trading style of Approved Claims Group Ltd, a HMRC registered Tax Agent. We will handle and process your claim. National Insurance to submit your claim",
       socialPreview: "/images/logo.png",
+      domain: 'quicktaxclaims.co.uk'
     },
   },
   images: {
