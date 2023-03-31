@@ -90,8 +90,9 @@ const RadioInput: React.FC<{
   firstEvent: boolean;
 }> = ({ handleFormChange, earnings, value, id, firstEvent }) => {
   return (
-    <div
-      className={`radio-wrapper icon-input flex items-center pl-5 border border-gray-200 rounded-lg dark:border-gray-700 ${
+    <label
+      htmlFor={id}
+      className={`radio-wrapper icon-input  cursor-pointer flex items-center pl-5 border border-gray-200 rounded-lg dark:border-gray-700 ${
         firstEvent || (earnings && earnings !== value)
           ? ""
           : earnings === value
@@ -115,13 +116,8 @@ const RadioInput: React.FC<{
           handleFormChange("earnings", value);
         }}
       />
-      <label
-        htmlFor={id}
-        className="py-5 ml-4 w-full sm:text-lg font-medium cursor-pointer"
-      >
-        {value}
-      </label>
-    </div>
+      <span className="py-5 ml-4 w-full sm:text-lg font-medium">{value}</span>
+    </label>
   );
 };
 export default ClaimNow;
