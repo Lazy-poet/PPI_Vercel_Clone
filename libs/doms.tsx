@@ -28,8 +28,8 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
         className="border-b border-gray-500 dark:border-gray-400"
       >
         64-8
-      </button>
-      &nbsp;form and used to submit your claim to HMRC.
+      </button>{" "}
+      form and used to submit your claim to HMRC.
     </span>,
     "We need your National Insurance (NI) number to identify your tax account. Your refund can't be issued without it!",
     "How much PPI did you receive in the following tax years",
