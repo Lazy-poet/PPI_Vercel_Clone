@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import { THEME, useThemeContext } from "@/contexts/ThemeContext";
-import { Logo } from "./svgs/logo";
+import UkImg from "../public/images/uk-header.png";
 import Image from "next/image";
 
 const Header = () => {
@@ -41,7 +41,10 @@ const Header = () => {
             />
             <span>QuickTaxClaims™</span>
           </Link>
-          <div className="flex items-center md:order-2">
+          <Image className="hidden sm:block w-24" src={UkImg} alt="uk logo" />
+
+          {/* DISABLE THEME SWITCHER */}
+          {/* <div className="flex items-center md:order-2">
             <button
               type="button"
               className="text-gray-400 font-medium rounded-lg text-sm py-2 outline-none ring-0 focus:right-0 focus:outline-none"
@@ -73,7 +76,7 @@ const Header = () => {
                 </svg>
               )}
             </button>
-          </div>
+          </div> */}
         </div>
       </nav>
     </header>
