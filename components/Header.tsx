@@ -41,7 +41,8 @@ const Header = () => {
             />
             <span>QuickTaxClaims™</span>
           </Link>
-          <div className="flex items-center md:order-2">
+          {/* DISABLE THEME SWITCHER */}
+          {/* <div className="flex items-center md:order-2">
             <button
               type="button"
               className="text-gray-400 font-medium rounded-lg text-sm py-2 outline-none ring-0 focus:right-0 focus:outline-none"
@@ -73,7 +74,7 @@ const Header = () => {
                 </svg>
               )}
             </button>
-          </div>
+          </div> */}
         </div>
       </nav>
     </header>
