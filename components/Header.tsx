@@ -2,6 +2,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { THEME, useThemeContext } from "@/contexts/ThemeContext";
 import UkImg from "../public/images/uk-header.png";
+import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
 
 const Header = () => {
@@ -32,16 +33,16 @@ const Header = () => {
             className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
           >
             <Image
-              src="/images/favicon.png"
-              className="mr-3 h-8 sm:h-9"
+              src={Favicon}
+              className="mr-1 md:mr-3 h-8 sm:h-9 w-9"
               style={{ objectFit: "contain" }}
               alt="Logo"
-              width={36}
-              height={36}
             />
-            <span>QuickTaxClaims™</span>
+            <span className="text-lg sm:text-xl lg:text-2xl">
+              QuickTaxClaims™
+            </span>
           </Link>
-          <Image className="hidden sm:block w-24" src={UkImg} alt="uk logo" />
+          <Image className="w-20 md:w-24" src={UkImg} alt="uk logo" />
 
           {/* DISABLE THEME SWITCHER */}
           {/* <div className="flex items-center md:order-2">
