@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Footer from "./Footer";
 import dynamic from "next/dynamic";
-import Faq from "./faq";
+
 const Header = dynamic(() => import("@/components/Header"), {
   ssr: false,
 });
@@ -92,9 +92,11 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
         )}
         <title key="title">{meta.title}</title>
       </Head>
+
       <Header />
+
       <main className="relative bg-white dark:bg-gray-900">{children}</main>
-      <Faq />
+
       <Footer />
     </div>
   );
