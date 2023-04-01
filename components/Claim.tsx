@@ -239,6 +239,8 @@ function Claim({ setReady, data }: ClaimProps) {
         });
         const { firstEvent, ...details } = formData1;
         if (
+          details.firstName.length > 1 &&
+          details.lastName.length > 1 &&
           Utils.isObjectFilled(details) &&
           isValid(details.postCode) &&
           Utils.validateEmail(details.email)

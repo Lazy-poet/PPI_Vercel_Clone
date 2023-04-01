@@ -36,9 +36,8 @@ const Details = (props: any) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
-        value = value.charAt(0).toUpperCase() + value.slice(1);
-        break;
       case "lastName":
+        value = value.replace(/[^a-z\-]/gi, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
@@ -134,7 +133,7 @@ const Details = (props: any) => {
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
           className={`form-group ${
-            fdEvents.firstName ? "" : data.firstName ? "success" : "error"
+            fdEvents.firstName ? "" : data.firstName.length > 1 ? "success" : "error"
           }`}
         >
           <label
@@ -157,17 +156,19 @@ const Details = (props: any) => {
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.firstName
-            ? ""
-            : !data.firstName && (
-                <p className="mt-2 text-sm">
-                  Please let us know your first name
-                </p>
-              )}
+          {fdEvents.firstName ? (
+            ""
+          ) : !data.firstName ? (
+            <p className="mt-2 text-sm">Please let us know your first name</p>
+          ) : (
+            data.firstName.length === 1 && (
+              <p className="mt-2 text-sm">Please enter a valid name</p>
+            )
+          )}
         </div>
         <div
           className={`form-group ${
-            fdEvents.lastName ? "" : data.lastName ? "success" : "error"
+            fdEvents.lastName ? "" : data.lastName.length > 1 ? "success" : "error"
           }`}
         >
           <label
@@ -190,13 +191,19 @@ const Details = (props: any) => {
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.lastName
-            ? ""
-            : !data.lastName && (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please let us know your last name
-                </p>
-              )}
+          {fdEvents.lastName ? (
+            ""
+          ) : !data.lastName ? (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please let us know your last name
+            </p>
+          ) : (
+            data.lastName.length === 1 && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please enter a valid name
+              </p>
+            )
+          )}
         </div>
         <div
           className={`form-group sm:col-span-2 ${
