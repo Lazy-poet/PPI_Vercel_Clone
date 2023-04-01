@@ -36,9 +36,8 @@ const Details = (props: any) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
-        value = value.charAt(0).toUpperCase() + value.slice(1);
-        break;
       case "lastName":
+        value = value.replace(/[^a-z\-]/gi, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
