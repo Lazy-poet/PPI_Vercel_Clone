@@ -72,7 +72,7 @@ const Signature = (props: any) => {
       >
         <label
           htmlFor="first-name"
-          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
+          className="block mb-2 text-xl lg:text-2xl font-bold text-gray-900 dark:text-white"
         >
           Sign in the box below
         </label>
@@ -123,7 +123,8 @@ const Signature = (props: any) => {
               : "error"
           }`}
         >
-          Please sign in the boundaries of the box above
+          Take your time to make your signature accurate. You can start again as
+          many times as you like by pressing &quot;Clear&quot;
         </p>
       </div>
     </div>
