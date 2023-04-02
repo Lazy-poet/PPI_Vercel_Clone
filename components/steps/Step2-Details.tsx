@@ -348,7 +348,7 @@ const Details = (props: any) => {
                 }
               }}
             >
-              Find address
+              Find My Address
             </button>
           </div>
           {fdEvents.postCode ? (
