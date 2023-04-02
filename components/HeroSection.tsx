@@ -121,7 +121,7 @@ const HeroSection: React.FC<{
                   value={amount}
                   id="grand-total"
                   label="How much PPI did you get back?"
-                  placeholder={"Enter total amount"}
+                  placeholder="Enter Total Amount"
                   errorClass={`${
                     Number(amount?.replace(/,/g, "")) >= 100
                       ? "success"

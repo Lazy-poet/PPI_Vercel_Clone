@@ -31,8 +31,8 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       </button>{" "}
       form and used to submit your claim to HMRC.
     </span>,
-    "We need your National Insurance (NI) number to identify your tax account. Your refund can't be issued without it!",
-    "How much PPI did you receive in the following tax years",
+    "HMRC requires your National Insurance Number to identify your tax account. Your refund can’t be issued without it!",
+    "How much PPI did you receive in the last four tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We&apos;ll be in touch with updates on
       your claim as soon as we hear anything. All you have to do is sit back,
