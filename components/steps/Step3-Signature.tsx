@@ -72,7 +72,7 @@ const Signature = (props: any) => {
       >
         <label
           htmlFor="first-name"
-          className="block mb-2 text-xl lg:text-2xl font-bold text-gray-900 dark:text-white"
+          className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
           Sign in the box below
         </label>
