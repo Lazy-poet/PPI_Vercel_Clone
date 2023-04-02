@@ -219,7 +219,6 @@ select:focus + .form-icon {
   background-position: center center;
 }
 
-
 .success .form-icon {
   background-image: url(../public/images/icons/check.svg) !important;
 }
@@ -433,11 +432,24 @@ select:focus + .form-icon {
 .dark .radio-wrapper.error input {
   background: #fff !important;
 }
-.radio-wrapper.error input:focus {
+/* .radio-wrapper input, */
+.radio-wrapper input:is(:focus) {
+  outline: 2px solid #fff;
+}
+.dark .radio-wrapper input:is(:focus) {
+  outline: 2px solid #111;
+}
+.radio-wrapper.error input:is(:focus, :hover, :active) {
   outline: 2px solid #f05252;
 }
-.dark .radio-wrapper.error input:focus {
+.dark .radio-wrapper.error input:is(:focus, :hover, :active) {
   outline: 2px solid #f05252;
+}
+.radio-wrapper.success input:is(:focus, :hover, :active) {
+  outline: 2px solid #1c64f2 !important;
+}
+.dark .radio-wrapper.success input:is(:focus, :hover, :active) {
+  outline: 2px solid #1c64f2 !important;
 }
 
 .radio-wrapper.error {
@@ -455,5 +467,6 @@ select:focus + .form-icon {
   background: #374151 !important;
   color: #f05252 !important;
   -webkit-text-fill-color: #f05252 !important;
+  box-shadow: 0 0 0 40px #374151 inset !important;
   -webkit-box-shadow: 0 0 0 40px #374151 inset !important;
 }
