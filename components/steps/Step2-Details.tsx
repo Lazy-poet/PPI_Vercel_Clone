@@ -37,7 +37,10 @@ const Details = (props: any) => {
     switch (name) {
       case "firstName":
       case "lastName":
-        value = value.replace(/[^a-z\-]/gi, "");
+        value = value
+          .replace(/\s+/g, "-") //replace spaces with '-'
+          .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
+          .replace(/[^a-z\-]/gi, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
@@ -133,7 +136,11 @@ const Details = (props: any) => {
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
           className={`form-group ${
-            fdEvents.firstName ? "" : data.firstName.length > 1 ? "success" : "error"
+            fdEvents.firstName
+              ? ""
+              : data.firstName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
@@ -168,7 +175,11 @@ const Details = (props: any) => {
         </div>
         <div
           className={`form-group ${
-            fdEvents.lastName ? "" : data.lastName.length > 1 ? "success" : "error"
+            fdEvents.lastName
+              ? ""
+              : data.lastName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
@@ -337,7 +348,7 @@ const Details = (props: any) => {
                 }
               }}
             >
-              Find address
+              Find My Address
             </button>
           </div>
           {fdEvents.postCode ? (
