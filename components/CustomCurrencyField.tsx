@@ -88,7 +88,7 @@ const CurrencyTextField = (props: Props) => {
               type="tel"
               name="currency"
               id={props.id}
-              placeholder="Enter total amount"
+              placeholder={props.placeholder || "Enter total amount"}
               className="
               bg-gray-50 border border-gray-300 text-gray-900 
               sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 
