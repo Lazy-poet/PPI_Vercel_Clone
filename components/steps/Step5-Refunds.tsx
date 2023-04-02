@@ -24,7 +24,6 @@ const Refunds = (props: {
               value={data.tax_years?.[key]}
               id={`field-${key}`}
               label={`Between ${TAX_YEARS[key]}`}
-              placeholder={"Estimated total"}
               errorClass={` ${
                 data.tax_years?.[key]
                   ? "success"

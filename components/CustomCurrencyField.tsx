@@ -4,7 +4,7 @@ import AutoNumeric from "autonumeric";
 type Props = {
   [key: string]: any;
   id: string;
-  placeholder: string;
+  placeholder?: string;
   label: string;
   value: string;
 };
@@ -88,7 +88,7 @@ const CurrencyTextField = (props: Props) => {
               type="tel"
               name="currency"
               id={props.id}
-              placeholder={props.placeholder || "Enter total amount"}
+              placeholder={props.placeholder || "Enter Total Amount"}
               className="
               bg-gray-50 border border-gray-300 text-gray-900 
               sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 
