@@ -11,6 +11,8 @@ import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import Hotjar from "@/components/Hotjar";
+import PdfViewer from "@/components/PdfViewer";
+import { Worker } from "@react-pdf-viewer/core";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -64,22 +66,25 @@ export default function Home(props: HomeProps) {
   }, []);
 
   return (
-    <div className="relative">
-      <Banner />
-      <Hotjar />
-      {ready ? (
-        <Claim setReady={setReady} data={props.data} />
-      ) : (
-        <HomeLayout>
-          <HeroSection
-            handleStart={() => {
-              setReady(true);
-            }}
-          />
-          <ReviewSection />
-        </HomeLayout>
-      )}
-    </div>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
+      <div className="relative">
+        <Banner />
+        <Hotjar />
+        <PdfViewer />
+        {ready ? (
+          <Claim setReady={setReady} data={props.data} />
+        ) : (
+          <HomeLayout>
+            <HeroSection
+              handleStart={() => {
+                setReady(true);
+              }}
+            />
+            <ReviewSection />
+          </HomeLayout>
+        )}
+      </div>
+    </Worker>
   );
 }
 
