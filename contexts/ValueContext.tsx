@@ -19,6 +19,8 @@ const useValue = () => {
   const [userEmail, setUserEmail] = useState<any>(null);
   const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [fileURL, setFileURL] = useState<string | null>(null);
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -65,6 +67,9 @@ const useValue = () => {
     tax_years: {},
   });
 
+  const openPdf = (path: string) => {
+    setFileURL(path);
+  };
   return {
     checkedYears,
     amount,
@@ -98,10 +103,16 @@ const useValue = () => {
     setUserIp,
     userPhone,
     setUserPhone,
+    fileURL,
+    setFileURL,
+    open,
+    setOpen,
+    openPdf
   };
 };
 
 interface Value {
+  openPdf: (path: string) => void;
   amount: string;
   showPulse: boolean;
   setShowPulse: Dispatch<SetStateAction<boolean>>;
@@ -168,6 +179,10 @@ interface Value {
   setUserPhone: Dispatch<SetStateAction<string>>;
   userIp: string;
   setUserIp: Dispatch<SetStateAction<string>>;
+  fileURL: string | null;
+  setFileURL: Dispatch<SetStateAction<string | null>>;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ValueContext = createContext({} as Value);

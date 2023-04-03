@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP, UserData } from "@/libs/constants";
 import Title from "@/components/Title";
-import TermsOfService from "@/components/TermsOfService";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
 import { Earnings } from "@/components/steps/Step1-ClaimNow";
@@ -16,7 +15,6 @@ const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
-import { Worker } from "@react-pdf-viewer/core";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -78,19 +76,14 @@ function Claim({ setReady, data }: ClaimProps) {
     setUserEmail,
     userPhone,
     userIp,
+    openPdf
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
-  const [open, setOpen] = useState<Boolean>(false);
-  const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
+
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
   // Step1
-
-  const handleOpen = (type: String) => {
-    setFileURL(type);
-    setOpen(!open);
-  };
 
   const handleFormChange1 = (key: string, value: string) => {
     // if (key === "email") {
@@ -540,19 +533,12 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.isReady, router]);
 
   return (
-    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
       <ClaimLayout>
         <section className="bg-white dark:bg-gray-900">
           <div className="max-w-screen-xl mx-auto lg:flex">
             <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
               <div className="w-full">
                 <ProgressBar step={step} goToPrevStep={prevStep} />
-
-                <TermsOfService
-                  fileURL={fileURL}
-                  open={open}
-                  handleOpen={handleOpen}
-                />
 
                 <StepAlert
                   step={step}
@@ -561,14 +547,14 @@ function Claim({ setReady, data }: ClaimProps) {
                   claimValue={claimValue}
                 />
 
-                <Title step={step} onClick={handleOpen} />
+                <Title step={step} onClick={openPdf} />
 
                 {step === STEP.DETAILS && (
                   <Details
                     data={formData1}
                     fdEvents={fdEvents1}
                     handleFormChange={handleFormChange1}
-                    handleOpen={handleOpen}
+                    handleOpen={openPdf}
                   />
                 )}
                 {step === STEP.CLAIM_NOW && (
@@ -602,7 +588,7 @@ function Claim({ setReady, data }: ClaimProps) {
                     onClick={nextStep}
                     timer={NEXT_BUTTON_TIMERS[step]}
                     label={step === STEP.REFUNDS ? "Submit" : "Next"}
-                    helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
+                    helper={NEXT_BUTTON_HELPERS(step, openPdf)}
                   />
                 )}
               </div>
@@ -612,7 +598,6 @@ function Claim({ setReady, data }: ClaimProps) {
           </div>
         </section>
       </ClaimLayout>
-    </Worker>
   );
 }
 export default Claim;
