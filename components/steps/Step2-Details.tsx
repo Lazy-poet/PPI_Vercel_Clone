@@ -32,15 +32,23 @@ const Details = (props: any) => {
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
 
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    value = value
+      .replace(/\-$/g, "")
+      .replace(/\s+$/g, "");
+    handleFormChange(name, value);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
       case "lastName":
         value = value
-          .replace(/\s+/g, "-") //replace spaces with '-'
+          .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
           .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
-          .replace(/[^a-z\-]/gi, "");
+          .replace(/[^a-z\-\s]/gi, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
@@ -159,7 +167,8 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.firstName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
@@ -198,7 +207,8 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.lastName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
