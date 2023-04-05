@@ -433,22 +433,22 @@ select:focus + .form-icon {
   background: #fff !important;
 }
 /* .radio-wrapper input, */
-.radio-wrapper input:is(:focus) {
+.radio-wrapper input:focus {
   outline: 2px solid #fff;
 }
-.dark .radio-wrapper input:is(:focus) {
+.dark .radio-wrapper input:focus {
   outline: 2px solid #111;
 }
-.radio-wrapper.error input:is(:focus, :hover, :active) {
+.radio-wrapper.error input:focus {
   outline: 2px solid #f05252;
 }
-.dark .radio-wrapper.error input:is(:focus, :hover, :active) {
+.dark .radio-wrapper.error input:focus {
   outline: 2px solid #f05252;
 }
-.radio-wrapper.success input:is(:focus, :hover, :active) {
+.radio-wrapper.success input:focus {
   outline: 2px solid #1c64f2 !important;
 }
-.dark .radio-wrapper.success input:is(:focus, :hover, :active) {
+.dark .radio-wrapper.success input:focus {
   outline: 2px solid #1c64f2 !important;
 }
 
