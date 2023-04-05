@@ -13,7 +13,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "If you want to claim your tax refund you must provide your details below",
+    "Complete your details below to start your claim today",
     <span key="tos">
       {name}, your signature will be applied to an&nbsp;
       <button
