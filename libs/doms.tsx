@@ -29,7 +29,7 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       >
         64-8
       </button>{" "}
-      form and used to submit your claim to HMRC.
+      form and used to submit your claim to HMRC
     </span>,
     "HMRC requires your National Insurance Number to identify your tax account. Your refund can’t be issued without it!",
     "How much PPI did you receive in the last four tax years",
