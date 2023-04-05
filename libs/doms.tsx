@@ -13,7 +13,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "If you want to claim your tax refund you must provide your details below",
+    "Complete your details below to start your claim today",
     <span key="tos">
       {name}, your signature will be applied to an&nbsp;
       <button
@@ -29,9 +29,9 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       >
         64-8
       </button>{" "}
-      form and used to submit your claim to HMRC.
+      form and used to submit your claim to HMRC
     </span>,
-    "HMRC requires your National Insurance Number to identify your tax account. Your refund can’t be issued without it!",
+    "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
     "How much PPI did you receive in the last four tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We&apos;ll be in touch with updates on

@@ -47,7 +47,7 @@ const Footer = () => {
                 openPdf("terms-of-service.pdf");
               }}
             >
-              Terms
+              Terms & Conditions
             </a>
           </li>
         </ul>

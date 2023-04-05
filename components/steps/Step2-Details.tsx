@@ -155,7 +155,7 @@ const Details = (props: any) => {
             htmlFor="first-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            First name
+            First name(s)
           </label>
           <div className="icon-input">
             <input
