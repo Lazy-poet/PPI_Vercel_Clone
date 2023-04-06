@@ -37,6 +37,7 @@ const nextConfig = {
     ],
   },
   transpilePackages: ["pdfjs-dist"],
+  productionBrowserSourceMaps: true,
 };
 
 module.exports = nextConfig;
