@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Head from "next/head";
 import { THEME, useThemeContext } from "@/contexts/ThemeContext";
-import UkImg from "../public/images/uk-header.png";
+import Flag from "../public/images/union-flag.svg";
+import SSLImgDark from "../public/images/ssl-secure.png";
+import SSLImgLight from "../public/images/ssl-secure-light.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
 
@@ -26,7 +28,7 @@ const Header = () => {
           src="https://cdn.trustindex.io/loader.js?13af5d813e3e503aa57601c3555"
         ></script>
       </Head>
-      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
+      <nav className="max-w-screen-xl mx-auto px-2 sm:px-4 md:px-20 py-2.5 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           <Link
             href="/"
@@ -42,7 +44,18 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <Image className="w-20 md:w-24" src={UkImg} alt="uk logo" />
+          <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24">
+            <Image
+              className="flex-1 rounded-[50%] w-4 h-4 md:w-8 md:h-8"
+              src={Flag}
+              alt="uk logo"
+            />
+            <Image
+              className="flex-1 w-20 md:w-24"
+              src={theme === THEME.DARK ? SSLImgLight : SSLImgDark}
+              alt="uk logo"
+            />
+          </div>
 
           {/* DISABLE THEME SWITCHER */}
           {/* <div className="flex items-center md:order-2">
