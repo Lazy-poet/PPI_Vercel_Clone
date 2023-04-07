@@ -46,7 +46,7 @@ const Header = () => {
           </Link>
           <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24">
             <Image
-              className="flex-1 rounded-[50%] w-4 h-4 md:w-8 md:h-8"
+              className="flex-1 w-8 h-4 md:w-12 md:h-7"
               src={Flag}
               alt="uk logo"
             />
