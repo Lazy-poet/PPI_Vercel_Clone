@@ -22,16 +22,19 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("color-theme", "dark");
     }
   };
+
   useEffect(() => {
     // const userPreference = localStorage.getItem("color-theme");
-    const listener = (e: MediaQueryListEvent) => {
-      changeTheme(e.matches ? THEME.DARK : THEME.LIGHT);
-    };
-    const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
-    changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
-    matchMedia.addEventListener("change", listener);
+    if (window.matchMedia) {
+      const listener = (e: MediaQueryListEvent) => {
+        changeTheme(e.matches ? THEME.DARK : THEME.LIGHT);
+      };
+      const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
+      changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
+      matchMedia.addEventListener("change", listener);
 
-    return () => matchMedia.removeEventListener("change", listener);
+      return () => matchMedia.removeEventListener("change", listener);
+    }
   }, []);
 
   return (
