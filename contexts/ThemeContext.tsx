@@ -30,10 +30,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         changeTheme(e.matches ? THEME.DARK : THEME.LIGHT);
       };
       const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
-      changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
-      matchMedia.addEventListener("change", listener);
+      if (matchMedia) {
+        changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
+        matchMedia.addEventListener("change", listener);
 
-      return () => matchMedia.removeEventListener("change", listener);
+        return () => matchMedia.removeEventListener("change", listener);
+      }
     }
   }, []);
 
