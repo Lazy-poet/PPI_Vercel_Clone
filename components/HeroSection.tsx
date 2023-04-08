@@ -152,7 +152,7 @@ const HeroSection: React.FC<{
               <div className="max-w-2xl text-sm text-gray-500 mt-10">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
-                    <div>
+                    <div className="text-center">
                       <button
                         className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium text-sm rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         onClick={handleClick}
@@ -200,10 +200,11 @@ const HeroSection: React.FC<{
                         color="blue"
                         closable={false}
                       />
-                      <Image className="w-20 mt-4" src={SslImg} alt="Secure" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Your information is 100% safe and secure on this website
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-5">
+                        This form is securely encrypted to ensure your data is
+                        safe
                       </p>
+                      <Image className="w-20 md:w-24 mx-auto mt-4" src={SslImg} alt="Secure" />
                     </div>
                   </li>
                 </ul>
