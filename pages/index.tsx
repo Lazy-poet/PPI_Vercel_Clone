@@ -4,7 +4,7 @@ import HomeLayout from "@/components/HomeLayout";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
-import ReviewSection from "@/components/ReviewSection";
+// import ReviewSection from "@/components/ReviewSection";
 import Banner from "@/components/Banner";
 import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
@@ -81,7 +81,7 @@ export default function Home(props: HomeProps) {
               }}
             />
             <Features />
-            <ReviewSection />
+            {/* <ReviewSection /> */}
           </HomeLayout>
         )}
       </div>
