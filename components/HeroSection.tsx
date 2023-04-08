@@ -157,8 +157,9 @@ const HeroSection: React.FC<{
                         className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium text-sm rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         onClick={handleClick}
                       >
+                        <div />
                         <div className="block">
-                          <div className="w-full font-semibold text-left text-lg">
+                          <div className="w-full font-semibold text-center text-lg">
                             Get Started
                           </div>
                           <div className="w-full flex flex-row justify-center items-center">
