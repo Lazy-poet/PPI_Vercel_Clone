@@ -111,11 +111,12 @@ const HeroSection: React.FC<{
                       </span>
                 </span> */}
                 {/* <sup>*</sup> */}
-                Claim Your PPI Tax Refund Today
+                You could be owed a tax refund of £100s on top of your PPI
+                payout
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Finally! now you can claim a tax refund on top of your PPI
-                payout, but you must claim now to beat the 5 April deadline!
+                See if you qualify for a tax refund worth £100s. Check online
+                now for free with no paperwork needed!
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
@@ -204,7 +205,11 @@ const HeroSection: React.FC<{
                         This form is securely encrypted to ensure your data is
                         safe
                       </p>
-                      <Image className="w-20 md:w-24 mx-auto mt-4" src={SslImg} alt="Secure" />
+                      <Image
+                        className="w-20 md:w-24 mx-auto mt-4"
+                        src={SslImg}
+                        alt="Secure"
+                      />
                     </div>
                   </li>
                 </ul>
