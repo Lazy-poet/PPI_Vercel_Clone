@@ -6,6 +6,7 @@ import SSLImgDark from "../public/images/ssl-secure.png";
 import SSLImgLight from "../public/images/ssl-secure-light.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
+import HeaderReview from "../public/images/reviews-logo-inline.png";
 
 const Header = () => {
   const { theme, changeTheme } = useThemeContext();
@@ -29,10 +30,10 @@ const Header = () => {
         ></script>
       </Head>
       <nav className="max-w-screen-xl mx-auto px-2 sm:px-4 md:px-20 py-2.5 border-gray-200">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl flex gap-2">
           <Link
             href="/"
-            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
+            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white order-1"
           >
             <Image
               src={Favicon}
@@ -44,9 +45,14 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24">
+          <Image
+            alt=""
+            src={HeaderReview}
+            className="w-48 mx-2 md:w-64 order-last smd:order-2 smd:mt-0 smd:mx-0"
+          />
+          <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24 order-3">
             <Image
-              className="flex-1 rounded-[50%] w-4 h-4 md:w-8 md:h-8"
+              className="flex-1 w-8 h-4 md:w-12 md:h-7"
               src={Flag}
               alt="uk logo"
             />

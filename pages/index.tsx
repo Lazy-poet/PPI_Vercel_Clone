@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import Hotjar from "@/components/Hotjar";
 import PdfViewer from "@/components/PdfViewer";
 import { Worker } from "@react-pdf-viewer/core";
-
+import Features from "@/components/Features";
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
     <div className="w-screen h-screen bg-white dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-white ">
@@ -80,6 +80,7 @@ export default function Home(props: HomeProps) {
                 setReady(true);
               }}
             />
+            <Features />
             <ReviewSection />
           </HomeLayout>
         )}
