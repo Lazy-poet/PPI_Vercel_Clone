@@ -148,33 +148,35 @@ const HeroSection: React.FC<{
                   }}
                 />
               </div>
-              <div className="max-w-2xl text-sm text-gray-500">
+              <div className="max-w-2xl text-sm text-gray-500 mt-10">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
                   <li className="md:col-span-2">
                     <div>
-                      <div className="flex justify-center items-center mt-10 mb-5 space-x-2 text-sm text-gray-500 dark:text-gray-400 pr-9">
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M5.11409 6H8V8H2V1.99121H4V4.25645C6.23708 1.91056 8.78663 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12H3C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C9.15922 3 7.04466 3.79137 5.11409 6ZM13 11H17V13H11V6H13V11Z"
-                          />
-                        </svg>
-                        <span>It only takes a minute!</span>
-                      </div>
                       <button
-                        className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium text-sm rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         onClick={handleClick}
                       >
-                        <div className="flex-grow">
-                          <div className="w-full flex flex-row justify-center items-center text-2xl font-semibold">
-                            <span>Get Started</span>
+                        <div className="block">
+                          <div className="w-full font-semibold text-left text-lg">
+                            Get Started
+                          </div>
+                          <div className="w-full flex flex-row justify-center items-center">
+                            <div className="flex justify-center items-center space-x-2 ">
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  d="M5.11409 6H8V8H2V1.99121H4V4.25645C6.23708 1.91056 8.78663 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12H3C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C9.15922 3 7.04466 3.79137 5.11409 6ZM13 11H17V13H11V6H13V11Z"
+                                />
+                              </svg>
+                              <span>It only takes a minute!</span>
+                            </div>
                           </div>
                         </div>
                         <svg
