@@ -8,6 +8,7 @@ import HeroImg from "../public/images/hero.png";
 import CustomCurrencyField from "./CustomCurrencyField";
 import { UserData } from "@/libs/constants";
 import { calculateOurFee } from "./Claim";
+import CustomAlert from "./CustomAlert";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -193,6 +194,11 @@ const HeroSection: React.FC<{
                           ></path>
                         </svg>
                       </button>
+                      <CustomAlert
+                        body="30,000+ people started their claim with us in the last 30 days"
+                        color="blue"
+                        closable={false}
+                      />
                       <Image className="w-20 mt-4" src={SslImg} alt="Secure" />
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         Your information is 100% safe and secure on this website
