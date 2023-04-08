@@ -6,6 +6,7 @@ import SSLImgDark from "../public/images/ssl-secure.png";
 import SSLImgLight from "../public/images/ssl-secure-light.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
+import HeaderReview from "../public/images/reviews-logo-inline.png";
 
 const Header = () => {
   const { theme, changeTheme } = useThemeContext();
@@ -44,6 +45,7 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
+          <Image alt="" src={HeaderReview} className="hidden sm:block w-20 sm:w-40 md:w-60" />
           <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24">
             <Image
               className="flex-1 w-8 h-4 md:w-12 md:h-7"
