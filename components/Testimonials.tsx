@@ -6,7 +6,7 @@ const Testimonials = () => {
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
         <div className="mx-auto max-w-screen-md text-center">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-            Testimonials
+            What our customers are saying
           </h2>
           <p className="mb-8 font-light text-gray-500 lg:mb-16 dark:text-gray-400 sm:text-xl">
             {" "}
@@ -106,10 +106,6 @@ const Testimonials = () => {
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Highly Recommend for Retirees
                 </h3>
-                <p className="my-4">
-                  &ldquo;Flowbite provides a robust set of design tokens and
-                  components based on the popular Tailwind CSS framework.
-                </p>
                 <p className="my-4">
                   I&apos;m a retired woman and wasn&apos;t sure if I was
                   eligible for a tax refund on my mis-sold financial product,

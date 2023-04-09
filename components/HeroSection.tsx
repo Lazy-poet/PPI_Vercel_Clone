@@ -197,16 +197,16 @@ const HeroSection: React.FC<{
                         </svg>
                       </button>
                       <CustomAlert
-                        body="30,000+ people started their claim with us in the last 30 days"
+                        body="<strong>30,000+ people</strong> started their claim with us in the last 30 days"
                         color="blue"
                         closable={false}
                       />
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-5">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-5 text-left">
                         This form is securely encrypted to ensure your data is
                         safe
                       </p>
                       <Image
-                        className="w-20 md:w-24 mx-auto mt-4"
+                        className="w-20 md:w-24 mt-4"
                         src={SslImg}
                         alt="Secure"
                       />
