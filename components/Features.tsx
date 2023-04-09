@@ -16,8 +16,8 @@ const Features = (props: Props) => {
         <div className="space-y-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-4 xl:gap-8 sm:space-y-0 md:mb-8 md:mt-12">
           <a
             href="https://www.itv.com/thismorning/articles/did-you-know-you-can-get-ppi-payout-tax-back"
+            target="__blank"
             className="block py-12 px-8 text-center bg-gray-50 rounded dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-        
           >
             <Image
               src={Feature1}
@@ -27,6 +27,7 @@ const Features = (props: Props) => {
           </a>
           <a
             href="https://www.dailymail.co.uk/news/article-8610431/New-PPI-gold-rush-Ruling-hidden-fees-spark-millions-fresh-payout-claims.html"
+            target="__blank"
             className="block py-12 px-8 text-center bg-gray-50 rounded dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <Image
@@ -37,6 +38,7 @@ const Features = (props: Props) => {
           </a>
           <a
             href="https://www.mirror.co.uk/money/martin-lewis-tells-millions-brits-21425465"
+            target="__blank"
             className="block py-12 px-8 text-center bg-gray-50 rounded dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <Image
@@ -47,6 +49,7 @@ const Features = (props: Props) => {
           </a>
           <a
             href="https://www.bbc.co.uk/news/business-15701101"
+            target="__blank"
             className="block py-12 px-8 text-center bg-gray-50 rounded dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <Image
