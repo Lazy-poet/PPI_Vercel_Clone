@@ -37,7 +37,10 @@ const CustomAlert = ({ body, color, closable = true }: Props) => {
           clipRule="evenodd"
         ></path>
       </svg>
-      <div className="ml-3 text-sm text-left font-medium">{body}</div>
+      <div
+        className="ml-3 text-sm text-left font-medium"
+        dangerouslySetInnerHTML={{ __html: body }}
+      />
       {closable && (
         <button
           type="button"

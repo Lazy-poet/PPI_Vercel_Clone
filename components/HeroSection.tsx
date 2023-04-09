@@ -197,7 +197,7 @@ const HeroSection: React.FC<{
                         </svg>
                       </button>
                       <CustomAlert
-                        body="30,000+ people started their claim with us in the last 30 days"
+                        body="<strong>30,000+ people</strong> started their claim with us in the last 30 days"
                         color="blue"
                         closable={false}
                       />
