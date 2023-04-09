@@ -1,5 +1,4 @@
-import React from "react";
-
+import Image from "next/image";
 const Testimonials = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -33,6 +32,14 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
+
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Susan J.</div>
                 </div>
@@ -54,6 +61,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div> Peter D.</div>
                 </div>
@@ -74,6 +88,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div> Emily W.</div>
                 </div>
@@ -96,6 +117,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>John R.</div>
                 </div>
@@ -116,6 +144,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Margaret S.</div>
                 </div>
@@ -137,6 +172,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sofia-mcguire.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Michael H.</div>
                 </div>
@@ -159,6 +201,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Jane M.</div>
                 </div>
@@ -179,6 +228,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/neil-sims.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Mark K.</div>
                 </div>
@@ -197,6 +253,13 @@ const Testimonials = () => {
                 </p>
               </blockquote>
               <figcaption className="flex items-center space-x-3">
+                <Image
+                  src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/robert-brown.png"
+                  className="w-9 h-9 rounded-full"
+                  width={36}
+                  height={36}
+                  alt="profile picture"
+                />
                 <div className="space-y-0.5 font-medium dark:text-white">
                   <div>Sarah B.</div>
                 </div>
