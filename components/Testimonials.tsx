@@ -107,10 +107,6 @@ const Testimonials = () => {
                   Highly Recommend for Retirees
                 </h3>
                 <p className="my-4">
-                  &ldquo;Flowbite provides a robust set of design tokens and
-                  components based on the popular Tailwind CSS framework.
-                </p>
-                <p className="my-4">
                   I&apos;m a retired woman and wasn&apos;t sure if I was
                   eligible for a tax refund on my mis-sold financial product,
                   but QuickTaxClaims helped me understand my options and guided
