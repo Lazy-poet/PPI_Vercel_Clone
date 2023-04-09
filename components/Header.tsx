@@ -2,11 +2,10 @@ import Link from "next/link";
 import Head from "next/head";
 import { THEME, useThemeContext } from "@/contexts/ThemeContext";
 import Flag from "../public/images/union-flag.svg";
-import SSLImgDark from "../public/images/ssl-secure.png";
-import SSLImgLight from "../public/images/ssl-secure-light.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
-import HeaderReview from "../public/images/reviews-logo-inline.png";
+import HeaderReviewLight from "../public/images/trustpilot-light.svg";
+import HeaderReviewDark from "../public/images/trustpilot-dark.svg";
 
 const Header = () => {
   const { theme, changeTheme } = useThemeContext();
@@ -45,20 +44,15 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <Image
-            alt=""
-            src={HeaderReview}
-            className="w-48 mx-2 md:w-64 order-last smd:order-2 smd:mt-0 smd:mx-0"
-          />
-          <div className="flex justify-center items-center gap-2 md:gap-4 max-w-24 order-3">
+          <div className="flex justify-center items-end gap-2 md:gap-4 max-w-24 order-3">
             <Image
-              className="flex-1 w-8 h-4 md:w-12 md:h-7"
+              className="flex-1 w-8 mh-4 md:w-12 md:mh-7"
               src={Flag}
               alt="uk logo"
             />
             <Image
-              className="flex-1 w-20 md:w-24"
-              src={theme === THEME.DARK ? SSLImgLight : SSLImgDark}
+              className="flex-1 w-[70px] md:w-24"
+              src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
               alt="uk logo"
             />
           </div>
