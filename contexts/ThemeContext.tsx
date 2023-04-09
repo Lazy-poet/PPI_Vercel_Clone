@@ -30,7 +30,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         changeTheme(e.matches ? THEME.DARK : THEME.LIGHT);
       };
       const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
-      if (matchMedia) {
+      if (
+        matchMedia &&
+        matchMedia.addEventListener &&
+        matchMedia.removeEventListener
+      ) {
         changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
         matchMedia.addEventListener("change", listener);
 
