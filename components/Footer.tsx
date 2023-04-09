@@ -28,7 +28,7 @@ const Footer = () => {
             no-win-no-fee basis. If your claim is successful, we will charge a
             fee of 48% (inclusive of VAT where applicable) of all rebates
             received from HMRC.{" "}
-            <span className="block">
+            <span className="inline">
               <a
                 href="#"
                 className="hover:underline"
