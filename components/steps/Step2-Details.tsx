@@ -34,9 +34,7 @@ const Details = (props: any) => {
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
-    value = value
-      .replace(/\-$/g, "")
-      .replace(/\s+$/g, "");
+    value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
     handleFormChange(name, value);
   };
 
@@ -349,7 +347,7 @@ const Details = (props: any) => {
               type="button"
               className={`${
                 showPulse ? "search-pulse" : ""
-              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              } absolute right-2.5 bottom-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               onClick={() => {
                 searchAddressByPostcode(data.postCode);
                 if (showPulse) {
@@ -466,7 +464,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      DD
+                      Day
                     </MenuItem>
                     {Dates &&
                       Dates.map((item: string, index: number) => (
@@ -478,23 +476,7 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.day ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
-              ) : !data.day ? (
-                <p className="mt-2 text-sm">Select day of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
-              )}
+              {!data.day && <p className="mt-2 text-sm">Select day of birth</p>}
             </div>
             <div
               className={fdEvents.month ? "" : data.month ? "success" : "error"}
@@ -511,7 +493,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      MM
+                      Month
                     </MenuItem>
                     {Months &&
                       Months.map((item: string, index: number) => (
@@ -523,22 +505,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.month ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
-              ) : !data.month ? (
+              {!data.month && (
                 <p className="mt-2 text-sm">Select month of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
               )}
             </div>
           </div>
@@ -555,7 +523,7 @@ const Details = (props: any) => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    YYYY
+                    Year
                   </MenuItem>
                   {Years &&
                     Years.map((item: string, index: number) => (
@@ -567,23 +535,7 @@ const Details = (props: any) => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            {fdEvents.year ? (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
-            ) : !data.year ? (
-              <p className="mt-2 text-sm">Select year of birth</p>
-            ) : (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
-            )}
+            {!data.year && <p className="mt-2 text-sm">Select year of birth</p>}
           </div>
         </div>
       </div>
