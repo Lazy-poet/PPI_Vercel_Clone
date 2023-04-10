@@ -52,6 +52,7 @@ const useValue = () => {
   const [formData3, setFormData3] = useState<any>({
     firstEvent: true,
     signatureData: null,
+    checked: true
   });
   const [formData4, setFormData4] = useState<any>({
     firstEvent: true,
@@ -150,6 +151,7 @@ interface Value {
   formData3: {
     signatureData: string;
     firstEvent: boolean;
+    checked: boolean
   };
   setFormData3: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData4: {
