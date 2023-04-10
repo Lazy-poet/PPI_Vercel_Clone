@@ -28,15 +28,15 @@ const Header = () => {
           src="https://cdn.trustindex.io/loader.js?13af5d813e3e503aa57601c3555"
         ></script>
       </Head>
-      <nav className="max-w-screen-xl mx-auto px-2 sm:px-4 md:px-20 py-6 border-gray-200">
+      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-6 border-gray-200">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl flex gap-2">
           <Link
             href="/"
-            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white order-1"
+            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white gap-1 sm:gap-2"
           >
             <Image
               src={Favicon}
-              className="mr-1 md:mr-3 h-8 sm:h-9 w-9"
+              className="w-9"
               style={{ objectFit: "contain" }}
               alt="Logo"
             />
@@ -44,14 +44,14 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <div className="flex justify-center items-end gap-2 md:gap-4 max-w-24 order-3">
+          <div className="flex justify-center items-center gap-2">
             <Image
-              className="flex-1 w-8 mh-4 md:w-12 md:mh-7"
+              className="flex-1 w-10 md:w-12 max-h-full"
               src={Flag}
               alt="uk logo"
             />
             <Image
-              className="flex-1 w-[70px] md:w-24"
+              className="flex-1 w-[72px] md:w-20"
               src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
               alt="uk logo"
             />
