@@ -364,7 +364,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &lsquo;Find My
+              Address&rsquo;
             </p>
           ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -379,7 +380,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &ldquo;Find My
+              Address&rdquo;
             </p>
           )}
         </div>
