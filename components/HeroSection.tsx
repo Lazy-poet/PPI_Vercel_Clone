@@ -111,12 +111,13 @@ const HeroSection: React.FC<{
                       </span>
                 </span> */}
                 {/* <sup>*</sup> */}
-                You could be owed a tax refund of £100s on top of your PPI
-                payout
+                You could be owed a tax refund of £100s from your PPI payout
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                See if you qualify for a tax refund worth £100s. Check online
-                now for free with no paperwork needed!
+                The Personal Savings Allowance means you can now get back the
+                tax automatically deducted from your PPI payout. This refund
+                could be worth £100s. Enter your PPI payout below to start your
+                claim
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
@@ -201,9 +202,27 @@ const HeroSection: React.FC<{
                         color="blue"
                         closable={false}
                       />
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-5 text-left">
-                        This form is securely encrypted to ensure your data is
-                        safe
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-5 text-left ">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          className="float-left mr-1 mb-0"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M5 9V7C5 5.67392 5.52678 4.40215 6.46447 3.46447C7.40215 2.52678 8.67392 2 10 2C11.3261 2 12.5979 2.52678 13.5355 3.46447C14.4732 4.40215 15 5.67392 15 7V9C15.5304 9 16.0391 9.21071 16.4142 9.58579C16.7893 9.96086 17 10.4696 17 11V16C17 16.5304 16.7893 17.0391 16.4142 17.4142C16.0391 17.7893 15.5304 18 15 18H5C4.46957 18 3.96086 17.7893 3.58579 17.4142C3.21071 17.0391 3 16.5304 3 16V11C3 10.4696 3.21071 9.96086 3.58579 9.58579C3.96086 9.21071 4.46957 9 5 9ZM13 7V9H7V7C7 6.20435 7.31607 5.44129 7.87868 4.87868C8.44129 4.31607 9.20435 4 10 4C10.7956 4 11.5587 4.31607 12.1213 4.87868C12.6839 5.44129 13 6.20435 13 7Z"
+                            fill="#111928"
+                          />
+                        </svg>
+
+                        <span>
+                          This form is securely encrypted to ensure your data is
+                          safe
+                        </span>
                       </p>
                       <Image
                         className="w-20 md:w-24 mt-4"

@@ -6,7 +6,7 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
 // import ReviewSection from "@/components/ReviewSection";
 import Testimonials from "@/components/Testimonials";
-import Banner from "@/components/Banner";
+// import Banner from "@/components/Banner";
 import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
@@ -69,7 +69,7 @@ export default function Home(props: HomeProps) {
   return (
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
       <div className="relative">
-        <Banner />
+        {/* <Banner />  */}
         <Hotjar />
         <PdfViewer />
         {ready ? (
