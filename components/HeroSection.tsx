@@ -111,12 +111,13 @@ const HeroSection: React.FC<{
                       </span>
                 </span> */}
                 {/* <sup>*</sup> */}
-                You could be owed a tax refund of £100s on top of your PPI
-                payout
+                You could be owed a tax refund of £100s from your PPI payout
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                See if you qualify for a tax refund worth £100s. Check online
-                now for free with no paperwork needed!
+                The Personal Savings Allowance means you can now get back the
+                tax automatically deducted from your PPI payout. This refund
+                could be worth £100s. Enter your PPI payout below to start your
+                claim
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
