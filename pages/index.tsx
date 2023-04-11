@@ -30,7 +30,6 @@ type HomeProps = {
 };
 
 export default function Home(props: HomeProps) {
-  const [ready, setReady] = useState(false);
   const {
     setAmount,
     setClaimValue,
@@ -39,6 +38,8 @@ export default function Home(props: HomeProps) {
     setUserIp,
     setUserEmail,
     setUserPhone,
+    ready,
+    setReady,
   } = useSystemValues();
 
   const router = useRouter();
