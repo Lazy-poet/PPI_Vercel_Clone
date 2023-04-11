@@ -24,7 +24,7 @@ const NextButton = ({
               onClick={onClick}
             >
               <div className="flex-grow">
-                <div className="w-full flex flex-col justify-center items-center text-2xl font-semibold">
+                <div className="w-full flex flex-col justify-center items-center text-lg font-semibold">
                   <span>{label}</span>
                   {timer && (
                     <div className="flex justify-center items-center space-x-2 text-sm font-medium">
