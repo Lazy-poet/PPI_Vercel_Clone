@@ -3,6 +3,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Footer from "./Footer";
 import dynamic from "next/dynamic";
+import MarketingBanner from "./MarketingBanner";
+import Image from "next/image";
+import HeaderReview from "../public/images/reviews-logo-inline.png";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 const Header = dynamic(() => import("@/components/Header"), {
   ssr: false,
@@ -21,7 +25,7 @@ type LayoutProps = {
 const Layout = ({ children, ...customMeta }: LayoutProps) => {
   const router = useRouter();
   const { asPath } = router;
-
+  const { ready } = useSystemValues();
   const { name, url, title, description, socialPreview } =
     publicRuntimeConfig.site;
 
@@ -94,8 +98,18 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
       </Head>
 
       <Header />
+      <main className="relative bg-white dark:bg-gray-900">
+        <MarketingBanner />
+        {!ready && (
+          <Image
+            className="w-56 mx-4 mt-2 sm:hidden "
+            src={HeaderReview}
+            alt="uk logo"
+          />
+        )}
 
-      <main className="relative bg-white dark:bg-gray-900">{children}</main>
+        {children}
+      </main>
 
       <Footer />
     </div>
