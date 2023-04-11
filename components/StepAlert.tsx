@@ -30,19 +30,6 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {step === STEP.CLAIM_NOW && (
-        <>
-          {[Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
-            earningsData.earnings
-          ) && (
-            <CustomAlertBanner
-              color="red"
-              body={`Sorry! because you earn ${earningsData.earnings.toLowerCase()} you’re not eligible to claim 😔`}
-              closable={false}
-            />
-          )}
-        </>
-      )}
       {STEP.DETAILS === step && (
         <CustomAlertBanner
           color="green"
