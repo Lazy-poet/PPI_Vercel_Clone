@@ -44,17 +44,19 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <div className="flex justify-center items-center gap-2">
+          <div className="hidden sm:block ">
             <Image
-              className="flex-1 w-10 md:w-12 max-h-full"
+              className=" w-[72px] md:w-20"
+              src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
+              alt="uk logo"
+            />
+          </div>
+          <div>
+            <Image
+              className="w-10 md:w-12 max-h-full"
               src={Flag}
               alt="uk logo"
             />
-            {/* <Image
-              className="flex-1 w-[72px] md:w-20"
-              src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
-              alt="uk logo"
-            /> */}
           </div>
 
           {/* DISABLE THEME SWITCHER */}
