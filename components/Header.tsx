@@ -50,11 +50,11 @@ const Header = () => {
               src={Flag}
               alt="uk logo"
             />
-            <Image
+            {/* <Image
               className="flex-1 w-[72px] md:w-20"
               src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
               alt="uk logo"
-            />
+            /> */}
           </div>
 
           {/* DISABLE THEME SWITCHER */}
