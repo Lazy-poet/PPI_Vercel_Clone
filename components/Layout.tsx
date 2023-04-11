@@ -1,6 +1,12 @@
 import getConfig from "next/config";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Footer from "./Footer";
+import dynamic from "next/dynamic";
+
+const Header = dynamic(() => import("@/components/Header"), {
+  ssr: false,
+});
 
 const { publicRuntimeConfig } = getConfig();
 
@@ -87,9 +93,11 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
         <title key="title">{meta.title}</title>
       </Head>
 
-      <main className="relative bg-white dark:bg-gray-900 min-h-screen">
-        {children}
-      </main>
+      <Header />
+
+      <main className="relative bg-white dark:bg-gray-900">{children}</main>
+
+      <Footer />
     </div>
   );
 };

@@ -9,7 +9,6 @@ import { Earnings } from "@/components/steps/Step1-ClaimNow";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
-import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
@@ -534,71 +533,60 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.isReady, router]);
 
   return (
-    <ClaimLayout>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="max-w-screen-xl mx-auto lg:flex">
-          <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
-            <div className="w-full">
-              <ProgressBar step={step} goToPrevStep={prevStep} />
+    <section className="bg-white dark:bg-gray-900">
+      <div className="max-w-screen-xl mx-auto lg:flex">
+        <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
+          <div className="w-full">
+            <ProgressBar step={step} goToPrevStep={prevStep} />
 
-              <StepAlert
-                step={step}
-                signatureData={formData3}
-                earningsData={formData2}
-                claimValue={claimValue}
+            <StepAlert
+              step={step}
+              signatureData={formData3}
+              earningsData={formData2}
+              claimValue={claimValue}
+            />
+
+            <Title step={step} onClick={openPdf} />
+
+            {step === STEP.DETAILS && (
+              <Details
+                data={formData1}
+                fdEvents={fdEvents1}
+                handleFormChange={handleFormChange1}
+                handleOpen={openPdf}
               />
+            )}
+            {step === STEP.CLAIM_NOW && (
+              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
+            )}
+            {step === STEP.SIGNATURE && (
+              <Signature
+                data={formData3}
+                handleFormChange={handleFormChange3}
+              />
+            )}
+            {step === STEP.ONE_MORE && (
+              <OneMore data={formData4} handleFormChange={handleFormChange4} />
+            )}
+            {step === STEP.REFUNDS && (
+              <Refunds data={formData5} handleFormChange={handleFormChange5} />
+            )}
+            {step === STEP.ALL_DONE && <AllDone />}
 
-              <Title step={step} onClick={openPdf} />
-
-              {step === STEP.DETAILS && (
-                <Details
-                  data={formData1}
-                  fdEvents={fdEvents1}
-                  handleFormChange={handleFormChange1}
-                  handleOpen={openPdf}
-                />
-              )}
-              {step === STEP.CLAIM_NOW && (
-                <ClaimNow
-                  data={formData2}
-                  handleFormChange={handleFormChange2}
-                />
-              )}
-              {step === STEP.SIGNATURE && (
-                <Signature
-                  data={formData3}
-                  handleFormChange={handleFormChange3}
-                />
-              )}
-              {step === STEP.ONE_MORE && (
-                <OneMore
-                  data={formData4}
-                  handleFormChange={handleFormChange4}
-                />
-              )}
-              {step === STEP.REFUNDS && (
-                <Refunds
-                  data={formData5}
-                  handleFormChange={handleFormChange5}
-                />
-              )}
-              {step === STEP.ALL_DONE && <AllDone />}
-
-              {step !== STEP.ALL_DONE && (
-                <NextButton
-                  onClick={nextStep}
-                  timer={NEXT_BUTTON_TIMERS[step]}
-                  label={step === STEP.REFUNDS ? "Submit" : "Next"}
-                  helper={NEXT_BUTTON_HELPERS(step, openPdf)}
-                />
-              )}
-            </div>
+            {step !== STEP.ALL_DONE && (
+              <NextButton
+                onClick={nextStep}
+                timer={NEXT_BUTTON_TIMERS[step]}
+                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                helper={NEXT_BUTTON_HELPERS(step, openPdf)}
+              />
+            )}
           </div>
-
-          <SidePanel amount={claimValue} step={step} />
         </div>
-      </section>
-    </ClaimLayout>
+
+        <SidePanel amount={claimValue} step={step} />
+      </div>
+    </section>
   );
 }
 export default Claim;

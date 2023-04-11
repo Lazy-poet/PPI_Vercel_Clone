@@ -1,6 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { UserData } from "@/libs/constants";
-import HomeLayout from "@/components/HomeLayout";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
@@ -15,6 +14,8 @@ import Hotjar from "@/components/Hotjar";
 import PdfViewer from "@/components/PdfViewer";
 import { Worker } from "@react-pdf-viewer/core";
 import Features from "@/components/Features";
+import Layout from "@/components/Layout";
+
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
     <div className="w-screen h-screen bg-white dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-white ">
@@ -68,25 +69,27 @@ export default function Home(props: HomeProps) {
 
   return (
     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
-      <div className="relative">
-        {/* <Banner />  */}
-        <Hotjar />
-        <PdfViewer />
-        {ready ? (
-          <Claim setReady={setReady} data={props.data} />
-        ) : (
-          <HomeLayout>
-            <HeroSection
-              handleStart={() => {
-                setReady(true);
-              }}
-            />
-            <Features />
-            {/* <ReviewSection /> */}
-            <Testimonials />
-          </HomeLayout>
-        )}
-      </div>
+      <Layout>
+        <div className="relative">
+          {/* <Banner />  */}
+          <Hotjar />
+          <PdfViewer />
+          {ready ? (
+            <Claim setReady={setReady} data={props.data} />
+          ) : (
+            <>
+              <HeroSection
+                handleStart={() => {
+                  setReady(true);
+                }}
+              />
+              <Features />
+              {/* <ReviewSection /> */}
+              <Testimonials />
+            </>
+          )}
+        </div>
+      </Layout>
     </Worker>
   );
 }

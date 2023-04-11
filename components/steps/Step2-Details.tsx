@@ -478,7 +478,9 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {!data.day && <p className="mt-2 text-sm">Select day of birth</p>}
+              {!data.day && !fdEvents.day && (
+                <p className="mt-2 text-sm">Select day of birth</p>
+              )}
             </div>
             <div
               className={fdEvents.month ? "" : data.month ? "success" : "error"}
@@ -507,7 +509,7 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {!data.month && (
+              {!data.month && !fdEvents.month && (
                 <p className="mt-2 text-sm">Select month of birth</p>
               )}
             </div>
@@ -537,7 +539,9 @@ const Details = (props: any) => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            {!data.year && <p className="mt-2 text-sm">Select year of birth</p>}
+            {!data.year && !fdEvents.year && (
+              <p className="mt-2 text-sm">Select year of birth</p>
+            )}
           </div>
         </div>
       </div>
