@@ -4,8 +4,7 @@ import { THEME, useThemeContext } from "@/contexts/ThemeContext";
 import Flag from "../public/images/union-flag.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
-import HeaderReviewLight from "../public/images/trustpilot-light.svg";
-import HeaderReviewDark from "../public/images/trustpilot-dark.svg";
+import HeaderReview from "../public/images/reviews-logo-inline.png";
 
 const Header = () => {
   const { theme, changeTheme } = useThemeContext();
@@ -29,10 +28,10 @@ const Header = () => {
         ></script>
       </Head>
       <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-6 border-gray-200">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl flex gap-2">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl gap-2">
           <Link
             href="/"
-            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white gap-1 sm:gap-2"
+            className=" flex justify-start items-center text-2xl font-semibold text-gray-900 dark:text-white gap-1  flex-1 sm:gap-2"
           >
             <Image
               src={Favicon}
@@ -44,14 +43,10 @@ const Header = () => {
               QuickTaxClaims™
             </span>
           </Link>
-          <div className="hidden sm:block ">
-            <Image
-              className=" w-[72px] md:w-20"
-              src={theme === THEME.DARK ? HeaderReviewLight : HeaderReviewDark}
-              alt="uk logo"
-            />
+          <div className="hidden md:flex justify-center flex-1">
+            <Image className="w-64" src={HeaderReview} alt="uk logo" />
           </div>
-          <div>
+          <div className="flex-1 flex justify-end">
             <Image
               className="w-10 md:w-12 max-h-full"
               src={Flag}
