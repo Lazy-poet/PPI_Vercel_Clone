@@ -46,7 +46,8 @@ const Details = (props: any) => {
         value = value
           .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
           .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
-          .replace(/[^a-z\-\s]/gi, "");
+          .replace(/[^a-z\-\s]/gi, "")
+          .replace(/^\-+/, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
