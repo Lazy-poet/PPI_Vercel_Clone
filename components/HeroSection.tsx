@@ -111,11 +111,12 @@ const HeroSection: React.FC<{
                       </span>
                 </span> */}
                 {/* <sup>*</sup> */}
-                Claim your PPI tax refund today!
+                Get Your PPI Tax Refund Today!
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Finally! now you can get back the money you&apos;re owed without any
-                paperwork. But you must act now if you don&apos;t want to miss out
+                Finally! now you can use your Personal Savings Allowance to get
+                a tax refund on top of your PPI payout. Enter your payout
+                details below to unlock your refund today...
               </p>
               <div className="max-w-2xl ">
                 <CustomCurrencyField
