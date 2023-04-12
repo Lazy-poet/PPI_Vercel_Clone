@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="mx-autos max-w-screen-xl text-center">
         <Link
           href="/"
-          className="flex justify-start sm:justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          className="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
         >
           <Image
             src="/images/favicon.png"
@@ -19,9 +19,9 @@ const Footer = () => {
             width={36}
             height={36}
           />
-          <span>QuickTaxClaims</span>
+          <span className="text-lg sm:text-xl lg:text-2xl">QuickTaxClaims</span>
         </Link>
-        <div className="flex flex-col justify-start items-center gap-8 mt-6 text-left sm:text-center ">
+        <div className="flex flex-col justify-start items-center gap-8 mt-6 text-center text-sm">
           <p className="max-w-2xl mx-auto text-gray-500 dark:text-gray-400">
             Quick Tax Claims Limited | Company Number: 14377745 | Address: 61
             Mosley Street, Manchester, M2 3HZ. We provide our service on a
