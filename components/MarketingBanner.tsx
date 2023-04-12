@@ -8,7 +8,7 @@ const MarketingBanner = () => {
     <div
       id="marketing-banner"
       tabIndex={-1}
-      className="sm:hidden relative z-50 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-4 mx-4 bg-white border border-gray-100 rounded-lg shadow-sm lg:max-w-7xl dark:bg-gray-700 dark:border-gray-600"
+      className="sm:hidden relative z-50 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-5 mx-4 bg-white border border-gray-100 rounded-lg shadow-sm lg:max-w-7xl dark:bg-gray-700 dark:border-gray-600"
     >
       <div className="flex flex-col items-start md:items-center md:flex-row text-gray-500 dark:text-gray-400">
         {!ready ? (
@@ -19,7 +19,7 @@ const MarketingBanner = () => {
           <div className="text-center flex flex-col gap-1 items-center justify-center w-full">
             <p>Our largest HMRC refund</p>
             <p className="text-3xl font-semibold">
-              <span className="text-lg font-medium">£</span>11767.
+              <span className="text-lg font-medium">£</span>11,767.
               <span className="text-lg font-medium">69</span>
             </p>
             <Image className="w-48 mx-4" src={HeaderReview} alt="uk logo" />
