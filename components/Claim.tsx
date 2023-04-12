@@ -296,7 +296,7 @@ function Claim({ setReady, data }: ClaimProps) {
 
       case STEP.SIGNATURE:
         setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData && formData3.checked) {
+        if (formData3.signatureData) {
           if (formData3.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://zkfqakvzqywbqfuvgyzt.supabase.co/storage/v1/object/public/signatures/";
