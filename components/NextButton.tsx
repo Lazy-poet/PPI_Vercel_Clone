@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SslImg from "../public/images/ssl-secure.svg";
 
 type Props = {
   onClick: VoidFunction;
@@ -20,7 +21,7 @@ const NextButton = ({
           <div>
             <button
               id="btnNext"
-              className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
               onClick={onClick}
             >
               <div className="flex-grow">
@@ -65,13 +66,7 @@ const NextButton = ({
                 {helper}
               </p>
             )}
-            <Image
-              className="mt-4"
-              src="/images/ssl-secure.svg"
-              alt="Secure"
-              width={80}
-              height={20}
-            />
+            <Image className="w-28 md:w-32 mt-4" src={SslImg} alt="Secure" />
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Your information is 100% safe and secure on this website
             </p>
