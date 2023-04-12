@@ -96,7 +96,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       the&nbsp;
       <a
         href="#"
-        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+        className="hover:underline"
         onClick={(e) => {
           e.preventDefault();
           onClick("terms-of-service.pdf");

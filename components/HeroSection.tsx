@@ -155,13 +155,13 @@ const HeroSection: React.FC<{
                   <li className="md:col-span-2">
                     <div className="text-center">
                       <button
-                        className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium text-sm rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                        className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium text-sm rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         onClick={handleClick}
                       >
                         <div />
                         <div className="block">
                           <div className="w-full font-semibold text-center text-lg">
-                            Get Started
+                            Check My Claim
                           </div>
                           <div className="w-full flex flex-row justify-center items-center">
                             <div className="flex justify-center items-center space-x-2 ">
@@ -224,7 +224,7 @@ const HeroSection: React.FC<{
                         </span>
                       </p>
                       <Image
-                        className="w-20 md:w-24 mt-4"
+                        className="w-28 md:w-32 mt-4"
                         src={SslImg}
                         alt="Secure"
                       />
