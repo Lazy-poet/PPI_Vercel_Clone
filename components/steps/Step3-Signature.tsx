@@ -126,38 +126,6 @@ const Signature = (props: any) => {
           many times as you like by pressing &quot;Clear&quot;
         </p>
       </div>
-      <div className="flex items-start mt-5">
-        <input
-          id="link-checkbox"
-          type="checkbox"
-          checked={data.checked}
-          onChange={(e) => handleFormChange("checked", e.target.checked)}
-          className="w-4 h-4 mt-1 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <label
-          htmlFor="link-checkbox"
-          className="ml-2 text-sm text-gray-500 dark:text-gray-400"
-        >
-          By clicking next, you are confirming that you have read and agree with
-          the&nbsp;
-          <a
-            href="#"
-            className="text-blue-600 dark:text-blue-500 hover:underline"
-            onClick={(e) => {
-              e.preventDefault();
-              openPdf("terms-of-service.pdf");
-            }}
-          >
-            terms & conditions
-          </a>
-          &nbsp;and that the information you have given on this form is correct,
-          to the best of your knowledge
-        </label>
-      </div>
-
-      {!data.firstEvent && !data.checked && (
-        <p className="mt-2 text-sm error">You must confirm to proceed</p>
-      )}
     </div>
   );
 };

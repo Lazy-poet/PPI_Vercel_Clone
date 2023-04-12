@@ -102,7 +102,7 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
         <MarketingBanner />
         {!ready && (
           <Image
-            className="w-56 mx-4 mt-2 sm:hidden "
+            className="w-56 mx-4 mt-2 sm:hidden"
             src={HeaderReview}
             alt="uk logo"
           />
