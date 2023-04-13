@@ -1,5 +1,4 @@
-import Image from "next/image";
-import SslImg from "../public/images/ssl-secure.svg";
+import SslSecure from "./SslSecure";
 
 type Props = {
   onClick: VoidFunction;
@@ -66,10 +65,7 @@ const NextButton = ({
                 {helper}
               </p>
             )}
-            <Image className="w-28 md:w-32 mt-4" src={SslImg} alt="Secure" />
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Your information is 100% safe and secure on this website
-            </p>
+           <SslSecure />
           </div>
         </li>
       </ul>
