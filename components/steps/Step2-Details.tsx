@@ -10,6 +10,7 @@ const Details = (props: any) => {
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const { showPulse, setShowPulse, addressList, setAddressList } =
     useSystemValues();
 
@@ -25,6 +26,10 @@ const Details = (props: any) => {
       setShowPulse(true);
     }
   }, []);
+
+  useEffect(() => {
+    setSelectedAddress(data.address);
+  }, [data.address]);
 
   const isAddressValid = addressList.some(
     (addr) =>
@@ -432,6 +437,21 @@ const Details = (props: any) => {
             </div>
           </div>
         ) : null}
+        {selectedAddress && (
+          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {selectedAddress.split(",").map((address, i) => (
+              <p
+                key={i}
+                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+              >
+                {address}
+              </p>
+            ))}
+            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+              {data.postCode}
+            </p>
+          </blockquote>
+        )}
       </div>
 
       <div className="form-group w-full my-5">
