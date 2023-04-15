@@ -6,7 +6,7 @@ const Footer = () => {
   const { openPdf } = useSystemValues();
   return (
     <footer className="px-4 py-16 bg-white dark:bg-gray-800">
-      <div className="mx-autos max-w-screen-xl text-center">
+      <div className="mx-auto max-w-screen-xl text-center">
         <Link
           href="/"
           className="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
