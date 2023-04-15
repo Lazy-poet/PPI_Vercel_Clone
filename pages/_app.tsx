@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import "../libs/polyfill";
+import "core-js";
 import type { AppProps } from "next/app";
 import { ValueProvider } from "@/contexts/ValueContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
