@@ -1,33 +1,35 @@
 import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
-import { postcodeValidator } from "postcode-validator";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
-
+import { isValid, parse } from "postcode";
 const Details = (props: any) => {
   const { data, fdEvents, handleFormChange, handleOpen } = props;
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const { showPulse, setShowPulse, addressList, setAddressList } =
     useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currentAddressListPostCode = useRef<string>(data.postCode || "");
+  const currentAddressListPostCode = useRef<string>(
+    parse(data.postCode)?.postcode || ""
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     currentAddressListPostCode.current = data.postCode;
-    if (
-      data.postCode &&
-      postcodeValidator(data.postCode, "GB") &&
-      !data.address
-    ) {
+    if (data.postCode && isValid(data.postCode) && !data.address) {
       setShowPulse(true);
     }
   }, []);
+
+  useEffect(() => {
+    setSelectedAddress(data.address);
+  }, [data.address]);
 
   const isAddressValid = addressList.some(
     (addr) =>
@@ -35,25 +37,37 @@ const Details = (props: any) => {
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
 
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
+    handleFormChange(name, value);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
-        value = value.charAt(0).toUpperCase() + value.slice(1);
-        break;
       case "lastName":
+        value = value
+          .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
+          .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
+          .replace(/[^a-z\-\s]/gi, "")
+          .replace(/^\-+/, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
         value = value.trim();
         break;
       case "postCode":
-        value = value.toUpperCase().substr(0, 8);
+        value = value.toUpperCase().substr(0, 8).replace(".", "");
+        if (isValid(value.trim())) {
+          value = parse(value.trim()).postcode!;
+        }
         if (
           name === "postCode" &&
           value !== currentAddressListPostCode.current
         ) {
-          const show = !!value && !!postcodeValidator(value, "GB");
+          const show = !!value && !!isValid(value);
           setShowPulse(show);
         }
         break;
@@ -85,7 +99,7 @@ const Details = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.address, isAddressValid, addressList]);
   const searchAddressByPostcode = (e: string) => {
-    if (!e || !postcodeValidator(e, "GB")) {
+    if (!e || !isValid(e)) {
       return;
     }
     const endpoint = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_ku4e95aqGky1uIIQZMefHVykARiTn&q=${e}`;
@@ -134,14 +148,18 @@ const Details = (props: any) => {
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
           className={`form-group ${
-            fdEvents.firstName ? "" : data.firstName ? "success" : "error"
+            fdEvents.firstName
+              ? ""
+              : data.firstName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            First name
+            First name(s)
           </label>
           <div className="icon-input">
             <input
@@ -153,21 +171,28 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.firstName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.firstName
-            ? ""
-            : !data.firstName && (
-                <p className="mt-2 text-sm">
-                  Please let us know your first name
-                </p>
-              )}
+          {fdEvents.firstName ? (
+            ""
+          ) : !data.firstName ? (
+            <p className="mt-2 text-sm">Please let us know your first name</p>
+          ) : (
+            data.firstName.length === 1 && (
+              <p className="mt-2 text-sm">Please enter a valid name</p>
+            )
+          )}
         </div>
         <div
           className={`form-group ${
-            fdEvents.lastName ? "" : data.lastName ? "success" : "error"
+            fdEvents.lastName
+              ? ""
+              : data.lastName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
@@ -186,17 +211,24 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.lastName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.lastName
-            ? ""
-            : !data.lastName && (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please let us know your last name
-                </p>
-              )}
+          {fdEvents.lastName ? (
+            ""
+          ) : !data.lastName ? (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please let us know your last name
+            </p>
+          ) : (
+            data.lastName.length === 1 && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please enter a valid name
+              </p>
+            )
+          )}
         </div>
         <div
           className={`form-group sm:col-span-2 ${
@@ -272,7 +304,9 @@ const Details = (props: any) => {
           className={`form-group sm:col-span-2 ${
             fdEvents.postCode
               ? ""
-              : data.postCode && postcodeValidator(data.postCode, "GB")
+              : addressList.length > 0 &&
+                data.postCode &&
+                isValid(data.postCode)
               ? "success"
               : "error"
           }`}
@@ -308,14 +342,18 @@ const Details = (props: any) => {
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="e.g. CH5 3UZ"
               required
-              value={data.postCode}
+              value={
+                isValid(data.postCode)
+                  ? parse(data.postCode).postcode
+                  : data.postCode
+              }
               onChange={(e) => handleInputChange(e)}
             />
             <button
               type="button"
               className={`${
                 showPulse ? "search-pulse" : ""
-              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              } absolute right-2.5 bottom-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               onClick={() => {
                 searchAddressByPostcode(data.postCode);
                 if (showPulse) {
@@ -324,7 +362,7 @@ const Details = (props: any) => {
                 }
               }}
             >
-              Find address
+              Find My Address
             </button>
           </div>
           {fdEvents.postCode ? (
@@ -332,9 +370,10 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &lsquo;Find My
+              Address&rsquo;
             </p>
-          ) : !(data.postCode && postcodeValidator(data.postCode, "GB")) ? (
+          ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               Please provide a valid UK postcode
             </p>
@@ -347,7 +386,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &ldquo;Find My
+              Address&rdquo;
             </p>
           )}
         </div>
@@ -397,6 +437,21 @@ const Details = (props: any) => {
             </div>
           </div>
         ) : null}
+        {selectedAddress && (
+          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {selectedAddress.split(",").map((address, i) => (
+              <p
+                key={i}
+                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+              >
+                {address}
+              </p>
+            ))}
+            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+              {data.postCode}
+            </p>
+          </blockquote>
+        )}
       </div>
 
       <div className="form-group w-full my-5">
@@ -432,7 +487,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      DD
+                      Day
                     </MenuItem>
                     {Dates &&
                       Dates.map((item: string, index: number) => (
@@ -444,22 +499,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.day ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
-              ) : !data.day ? (
+              {!data.day && !fdEvents.day && (
                 <p className="mt-2 text-sm">Select day of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
               )}
             </div>
             <div
@@ -477,7 +518,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      MM
+                      Month
                     </MenuItem>
                     {Months &&
                       Months.map((item: string, index: number) => (
@@ -489,22 +530,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.month ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
-              ) : !data.month ? (
+              {!data.month && !fdEvents.month && (
                 <p className="mt-2 text-sm">Select month of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
               )}
             </div>
           </div>
@@ -521,7 +548,7 @@ const Details = (props: any) => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    YYYY
+                    Year
                   </MenuItem>
                   {Years &&
                     Years.map((item: string, index: number) => (
@@ -533,22 +560,8 @@ const Details = (props: any) => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            {fdEvents.year ? (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
-            ) : !data.year ? (
+            {!data.year && !fdEvents.year && (
               <p className="mt-2 text-sm">Select year of birth</p>
-            ) : (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
             )}
           </div>
         </div>

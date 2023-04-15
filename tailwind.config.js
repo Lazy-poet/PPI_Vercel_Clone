@@ -1,6 +1,7 @@
 /**
  * @type {import('@types/tailwindcss/tailwind-config').TailwindConfig}
  */
+
 module.exports = {
   content: [
     "./node_modules/flowbite-react/**/*.js",
@@ -13,6 +14,7 @@ module.exports = {
   theme: {
     screens: {
       sm: "480px",
+      smd: "550px",
       md: "976px",
       lg: "1024px",
       xl: "1440px",

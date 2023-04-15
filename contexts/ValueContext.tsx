@@ -19,6 +19,9 @@ const useValue = () => {
   const [userEmail, setUserEmail] = useState<any>(null);
   const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
+  const [fileURL, setFileURL] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -50,6 +53,7 @@ const useValue = () => {
   const [formData3, setFormData3] = useState<any>({
     firstEvent: true,
     signatureData: null,
+    checked: true,
   });
   const [formData4, setFormData4] = useState<any>({
     firstEvent: true,
@@ -65,6 +69,9 @@ const useValue = () => {
     tax_years: {},
   });
 
+  const openPdf = (path: string) => {
+    setFileURL(path);
+  };
   return {
     checkedYears,
     amount,
@@ -98,10 +105,18 @@ const useValue = () => {
     setUserIp,
     userPhone,
     setUserPhone,
+    fileURL,
+    setFileURL,
+    open,
+    setOpen,
+    openPdf,
+    ready,
+    setReady,
   };
 };
 
 interface Value {
+  openPdf: (path: string) => void;
   amount: string;
   showPulse: boolean;
   setShowPulse: Dispatch<SetStateAction<boolean>>;
@@ -139,6 +154,7 @@ interface Value {
   formData3: {
     signatureData: string;
     firstEvent: boolean;
+    checked: boolean;
   };
   setFormData3: Dispatch<SetStateAction<{ [x: string]: any }>>;
   formData4: {
@@ -168,6 +184,12 @@ interface Value {
   setUserPhone: Dispatch<SetStateAction<string>>;
   userIp: string;
   setUserIp: Dispatch<SetStateAction<string>>;
+  fileURL: string | null;
+  setFileURL: Dispatch<SetStateAction<string | null>>;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  ready: boolean;
+  setReady: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ValueContext = createContext({} as Value);

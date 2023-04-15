@@ -1,59 +1,69 @@
 import { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 import { CONFIRMS } from "@/libs/doms";
-import { THEME, useTheme } from "../hooks/useTheme";
+import { THEME } from "@/contexts/ThemeContext";
+import { useThemeContext } from "@/contexts/ThemeContext";
+import { useSystemValues } from "@/contexts/ValueContext";
 
 const Signature = (props: any) => {
   const { data, handleFormChange } = props;
-  const canvasRef = useRef(null);
-  const { theme } = useTheme();
+  const canvasRef = useRef<SignatureCanvas>(null);
+  const { theme } = useThemeContext();
+  const { openPdf } = useSystemValues();
 
   const clear = () => {
     if (!data.signatureData) return;
     // @ts-ignore
     canvasRef.current.clear();
-    handleFormChange(null);
+    handleFormChange("signatureData", null);
   };
 
-  const trim = () => {
-    handleFormChange(
-      // @ts-ignore
-      canvasRef.current.toDataURL("image/png")
-    );
+  const trim = async () => {
+    let data_url = canvasRef.current!.toDataURL("image/png");
+    if (theme === THEME.DARK) {
+      data_url = await convertToGrayScaleOrBlack(data_url, "black");
+    }
+    handleFormChange("signatureData", data_url);
   };
+  const convertToGrayScaleOrBlack = async (
+    dataUrl: string,
+    convertTo: "gray" | "black"
+  ): Promise<string> => {
+    const img = new Image();
+    img.src = dataUrl;
+    return new Promise((resolve) => {
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
 
+        const ctx = canvas.getContext("2d");
+        ctx!.filter =
+          convertTo === "gray"
+            ? "grayscale(100%) contrast(0%) brightness(100%)"
+            : "grayscale(100%) invert(100%) brightness(0%)";
+        ctx!.drawImage(img, 0, 0);
+        const url = canvas.toDataURL("image/png");
+        resolve(url);
+      };
+    });
+  };
   useEffect(() => {
     const signatureData = data.signatureData;
     if (signatureData && Object.keys(signatureData).length !== 0) {
-      // @ts-ignore
-      canvasRef.current.fromDataURL(signatureData);
+      (async () => {
+        const dataUrl =
+          theme === THEME.DARK
+            ? await convertToGrayScaleOrBlack(signatureData, "gray")
+            : signatureData;
+        // @ts-ignore
+        canvasRef.current.fromDataURL(dataUrl);
+      })();
     }
   }, []);
 
   return (
     <div className="mt-6">
-      <ul className="space-y-1 list-inside text-gray-500 dark:text-gray-400">
-        {CONFIRMS.map((confirm, index) => {
-          return (
-            <li key={index} className="flex justify-start items-start">
-              <svg
-                className="w-5 h-5 mt-[3px] mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              {confirm}
-            </li>
-          );
-        })}
-      </ul>
-
       <div
         className={`form-group mt-6 ${
           data.firstEvent ? "" : data.signatureData ? "success" : "error"
@@ -63,7 +73,7 @@ const Signature = (props: any) => {
           htmlFor="first-name"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          Draw your signature
+          Sign in the box below
         </label>
 
         <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -112,7 +122,8 @@ const Signature = (props: any) => {
               : "error"
           }`}
         >
-          Please sign in the boundaries of the box above
+          Take your time to make your signature accurate. You can start again as
+          many times as you like by pressing &quot;Clear&quot;
         </p>
       </div>
     </div>

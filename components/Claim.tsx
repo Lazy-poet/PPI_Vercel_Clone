@@ -3,20 +3,17 @@ import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP, UserData } from "@/libs/constants";
 import Title from "@/components/Title";
-import TermsOfService from "@/components/TermsOfService";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
 import { Earnings } from "@/components/steps/Step1-ClaimNow";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
-import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
-import { postcodeValidator } from "postcode-validator";
+import { isValid, parse } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
-import { Worker } from "@react-pdf-viewer/core";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -78,19 +75,14 @@ function Claim({ setReady, data }: ClaimProps) {
     setUserEmail,
     userPhone,
     userIp,
+    openPdf,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
-  const [open, setOpen] = useState<Boolean>(false);
-  const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
-  const [utmParams, setUtmParams] = useState({});
+
+  const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
   // Step1
-
-  const handleOpen = (type: String) => {
-    setFileURL(type);
-    setOpen(!open);
-  };
 
   const handleFormChange1 = (key: string, value: string) => {
     // if (key === "email") {
@@ -126,10 +118,11 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   // Step3
-  const handleFormChange3 = (newSignatureData: string) => {
+  const handleFormChange3 = (key: string, value: string) => {
     setFormData3({
-      signatureData: newSignatureData,
-      firstEvent: false,
+      ...formData3,
+      [key]: value,
+      ...(key === "signatureData" && { firstEvent: false }),
     });
   };
 
@@ -173,17 +166,22 @@ function Claim({ setReady, data }: ClaimProps) {
   /**
    * This function updates the PPI_Claim_Form_Completed table with data from the primary table after the user has completed the signature step
    */
-  const updateSecondaryTable = async (data: Record<string, any>) => {
+  const updateSecondaryTable = async (record: Record<string, any>) => {
+    const { createdAt, id, ...data } = record;
     await supabase.from("PPI_Claim_Form_Completed").upsert(
       {
         ...data,
         ...(userEmail && !data.email && { email: userEmail }),
         ...(userPhone && !data.phone && { phone: userPhone }),
-        ...(linkCode && !data.link_code && { link_code: linkCode }),
+        ...(linkCode &&
+          !data.link_code && {
+            link_code: linkCode,
+            link: `https://quicktaxclaims.co.uk?c=${linkCode}`,
+          }),
       },
       {
         ignoreDuplicates: false,
-        onConflict: "link_code",
+        onConflict: userEmail ? "email" : "link_code",
       }
     );
   };
@@ -196,22 +194,25 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData2({ ...formData2, firstEvent: false });
         if (
           formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan150001
+          ![Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
+            formData2.earnings as Earnings
+          )
         ) {
           const valueChanged = formData2.earnings !== dbData.earnings;
-          if ((userEmail || userPhone || linkCode) && valueChanged) {
-            await supabase
+          if ((userEmail || linkCode) && valueChanged) {
+            const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
                 earnings: formData2.earnings,
               })
-              .match({ link_code: linkCode });
-            if (dbData.signatureData) {
-              updateSecondaryTable({
-                earnings: formData2.earnings,
+              .match(userEmail ? { email: userEmail } : { link_code: linkCode })
+              .select();
+            if (data?.length && (data[0].signatureData || data[0].insurance)) {
+              await updateSecondaryTable({
+                ...data[0],
               });
+              setDbData(data[0]);
             }
-            setDbData((d) => ({ ...d, earnings: formData2.earnings }));
           }
 
           setStep(STEP.DETAILS);
@@ -231,28 +232,44 @@ function Claim({ setReady, data }: ClaimProps) {
         });
         const { firstEvent, ...details } = formData1;
         if (
+          details.firstName.length > 1 &&
+          details.lastName.length > 1 &&
           Utils.isObjectFilled(details) &&
-          postcodeValidator(formData1.postCode, "GB")
+          isValid(details.postCode) &&
+          Utils.validateEmail(details.email)
         ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
-            const is_new_user = !linkCode;
-
-            const diff = Utils.getObjectDifference(dbData, formattedDetails);
-            const link_code = is_new_user ? nanoid(9) : linkCode;
+            // if email has changed, copy current data to new row, otherwise only update changed fields
+            delete dbData.id;
+            const diff =
+              details.email === userEmail
+                ? Utils.getObjectDifference(dbData, formattedDetails)
+                : { ...dbData, ...formattedDetails };
+            // set a new link_code either if there isnt an existing one or when user email has changed
+            const link_code = linkCode
+              ? details.email !== userEmail
+                ? nanoid(9)
+                : linkCode
+              : nanoid(9);
 
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
                 {
                   ...utmParams,
+                  ...diff,
                   estimated_total: amount,
+                  ...(!dbData.estimated_total_difference && {
+                    estimated_total_difference: Number(
+                      amount.replace(/,/g, "")
+                    ),
+                  }),
                   earnings: formData2.earnings,
                   link_code,
-                  link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
+                  link: `https://quicktaxclaims.co.uk?c=${link_code}`,
                   email: details.email,
                   user_ip: userIp,
-                  ...diff,
                 },
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
@@ -262,11 +279,10 @@ function Claim({ setReady, data }: ClaimProps) {
               )
               .select();
 
-            if (!error) {
-              setDbData((d) => ({ ...(data?.[0] || {}) }));
-
-              if (data?.[0] && dbData.signatureData) {
-                updateSecondaryTable({
+            if (data?.[0]) {
+              setDbData(data[0]);
+              if (data[0].signatureData || data[0].insurance) {
+                await updateSecondaryTable({
                   ...data[0],
                 });
               }
@@ -283,7 +299,7 @@ function Claim({ setReady, data }: ClaimProps) {
         if (formData3.signatureData) {
           if (formData3.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
-              "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
+              "https://zkfqakvzqywbqfuvgyzt.supabase.co/storage/v1/object/public/signatures/";
 
             const { data: sigData } = await supabase.storage
               .from("signatures")
@@ -300,13 +316,9 @@ function Claim({ setReady, data }: ClaimProps) {
               })
               .match({ link_code: linkCode })
               .select();
-            setDbData((d) => ({
-              ...d,
-              signatureData: formData3.signatureData,
-              signatureUrl: signatureUrlPrefix + sigData?.path,
-            }));
             if (data?.length) {
-              updateSecondaryTable(data[0]);
+              setDbData(data[0]);
+              await updateSecondaryTable(data[0]);
             }
           }
           setStep(STEP.ONE_MORE);
@@ -316,13 +328,16 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData4({ ...formData4, firstEvent: false });
         if (formData4.insurance && isNino(formData4.insurance)) {
           if (formData4.insurance !== dbData.insurance) {
-            const { error } = await supabase
+            const { data } = await supabase
               .from("PPI_Claim_Form")
               .update({ insurance: formData4.insurance })
-              .match({ link_code: linkCode });
+              .match({ email: userEmail })
+              .select();
 
-            await updateSecondaryTable({ insurance: formData4.insurance });
-            setDbData((d) => ({ ...d, insurance: formData4.insurance }));
+            if (data?.length) {
+              setDbData(data[0]);
+              await updateSecondaryTable(data[0]);
+            }
           }
           setStep(STEP.REFUNDS);
         }
@@ -346,26 +361,33 @@ function Claim({ setReady, data }: ClaimProps) {
             return obj;
           }, {} as Record<string, string>);
           const totalTaxYears = Object.keys(TAX_YEARS).reduce(
-            (sum, key) => sum + +updatedTaxYears[key],
+            (sum, key) => sum + Number(updatedTaxYears[key].replace(/,/g, "")),
             0
           );
           setFormData5({ ...formData5, tax_years: updatedTaxYears });
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
-            const data = {
+            const estimated_total_difference = Math.max(
+              totalTaxYears,
+              Number(amount.replace(/,/g, ""))
+            );
+
+            const tax_data = {
               ...updatedTaxYears,
               tax_years: updatedTaxYears,
-              estimated_total_difference:
-                Number(amount.replace(/,/g, "")) - (totalTaxYears ?? 0),
+              estimated_total_difference,
+              completed: true,
             };
-            await supabase
+            const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update(data)
-              .match({ link_code: linkCode });
-
-            await updateSecondaryTable({ ...data, completed: true });
-            setDbData((d) => ({ ...d, tax_years: updatedTaxYears }));
+              .update(tax_data)
+              .match({ link_code: linkCode })
+              .select();
+            if (data?.[0]) {
+              await updateSecondaryTable(data[0]);
+              setDbData(data[0]);
+            }
           }
           setStep(STEP.ALL_DONE);
         }
@@ -413,7 +435,7 @@ function Claim({ setReady, data }: ClaimProps) {
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
         lastName: data?.[0].lastName ? data?.[0].lastName : "",
         email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? data?.[0].postCode : "",
+        postCode: data?.[0].postCode ? parse(data?.[0].postCode).postcode : "",
         address: data?.[0].address ? data?.[0].address : "",
         day: dob.day,
         month: dob.month,
@@ -472,6 +494,9 @@ function Claim({ setReady, data }: ClaimProps) {
         if (key.startsWith("utm_")) {
           utmParams[key] = router.query[key];
         }
+        if (key === "s") {
+          utmParams["utm_source"] = router.query[key];
+        }
         setUtmParams(utmParams);
       });
     }
@@ -487,7 +512,7 @@ function Claim({ setReady, data }: ClaimProps) {
       formData1.email !== "" &&
       Utils.validateEmail(formData1.email) &&
       formData1.postCode !== "" &&
-      postcodeValidator(formData1.postCode, "GB") &&
+      isValid(formData1.postCode) &&
       formData1.address !== "" &&
       formData1.day !== "" &&
       formData1.month !== "" &&
@@ -508,79 +533,60 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.isReady, router]);
 
   return (
-    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
-      <ClaimLayout>
-        <section className="bg-white dark:bg-gray-900">
-          <div className="max-w-screen-xl mx-auto lg:flex">
-            <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
-              <div className="w-full">
-                <ProgressBar step={step} goToPrevStep={prevStep} />
+    <section className="bg-white dark:bg-gray-900">
+      <div className="max-w-screen-xl mx-auto lg:flex">
+        <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
+          <div className="w-full">
+            <ProgressBar step={step} goToPrevStep={prevStep} />
 
-                <TermsOfService
-                  fileURL={fileURL}
-                  open={open}
-                  handleOpen={handleOpen}
-                />
+            <StepAlert
+              step={step}
+              signatureData={formData3}
+              earningsData={formData2}
+              claimValue={claimValue}
+            />
 
-                <StepAlert
-                  step={step}
-                  signatureData={formData3}
-                  earningsData={formData2}
-                  claimValue={claimValue}
-                />
+            <Title step={step} onClick={openPdf} />
 
-                <Title step={step} onClick={handleOpen} />
+            {step === STEP.DETAILS && (
+              <Details
+                data={formData1}
+                fdEvents={fdEvents1}
+                handleFormChange={handleFormChange1}
+                handleOpen={openPdf}
+              />
+            )}
+            {step === STEP.CLAIM_NOW && (
+              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
+            )}
+            {step === STEP.SIGNATURE && (
+              <Signature
+                data={formData3}
+                handleFormChange={handleFormChange3}
+              />
+            )}
+            {step === STEP.ONE_MORE && (
+              <OneMore data={formData4} handleFormChange={handleFormChange4} />
+            )}
+            {step === STEP.REFUNDS && (
+              <Refunds data={formData5} handleFormChange={handleFormChange5} />
+            )}
+            {step === STEP.ALL_DONE && <AllDone />}
 
-                {step === STEP.DETAILS && (
-                  <Details
-                    data={formData1}
-                    fdEvents={fdEvents1}
-                    handleFormChange={handleFormChange1}
-                    handleOpen={handleOpen}
-                  />
-                )}
-                {step === STEP.CLAIM_NOW && (
-                  <ClaimNow
-                    data={formData2}
-                    handleFormChange={handleFormChange2}
-                  />
-                )}
-                {step === STEP.SIGNATURE && (
-                  <Signature
-                    data={formData3}
-                    handleFormChange={handleFormChange3}
-                  />
-                )}
-                {step === STEP.ONE_MORE && (
-                  <OneMore
-                    data={formData4}
-                    handleFormChange={handleFormChange4}
-                  />
-                )}
-                {step === STEP.REFUNDS && (
-                  <Refunds
-                    data={formData5}
-                    handleFormChange={handleFormChange5}
-                  />
-                )}
-                {step === STEP.ALL_DONE && <AllDone />}
-
-                {step !== STEP.ALL_DONE && (
-                  <NextButton
-                    onClick={nextStep}
-                    timer={NEXT_BUTTON_TIMERS[step]}
-                    label={step === STEP.REFUNDS ? "Submit" : "Next"}
-                    helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
-                  />
-                )}
-              </div>
-            </div>
-
-            <SidePanel amount={claimValue} step={step} />
+            {step !== STEP.ALL_DONE && (
+              <NextButton
+                onClick={nextStep}
+                timer={NEXT_BUTTON_TIMERS[step]}
+                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                helper={NEXT_BUTTON_HELPERS(step, openPdf)}
+              />
+            )}
           </div>
-        </section>
-      </ClaimLayout>
-    </Worker>
+        </div>
+
+        <SidePanel amount={claimValue} step={step} />
+      </div>
+    </section>
   );
 }
 export default Claim;

@@ -1,15 +1,20 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { UserData } from "@/libs/constants";
-import HomeLayout from "@/components/HomeLayout";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
-import ReviewSection from "@/components/ReviewSection";
-import Banner from "@/components/Banner";
+// import ReviewSection from "@/components/ReviewSection";
+import Testimonials from "@/components/Testimonials";
+// import Banner from "@/components/Banner";
 import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import Hotjar from "@/components/Hotjar";
+import PdfViewer from "@/components/PdfViewer";
+import { Worker } from "@react-pdf-viewer/core";
+import Features from "@/components/Features";
+import Layout from "@/components/Layout";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -25,7 +30,6 @@ type HomeProps = {
 };
 
 export default function Home(props: HomeProps) {
-  const [ready, setReady] = useState(false);
   const {
     setAmount,
     setClaimValue,
@@ -34,6 +38,8 @@ export default function Home(props: HomeProps) {
     setUserIp,
     setUserEmail,
     setUserPhone,
+    ready,
+    setReady,
   } = useSystemValues();
 
   const router = useRouter();
@@ -63,21 +69,29 @@ export default function Home(props: HomeProps) {
   }, []);
 
   return (
-    <div className="relative">
-      <Banner />
-      {ready ? (
-        <Claim setReady={setReady} data={props.data} />
-      ) : (
-        <HomeLayout>
-          <HeroSection
-            handleStart={() => {
-              setReady(true);
-            }}
-          />
-          <ReviewSection />
-        </HomeLayout>
-      )}
-    </div>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
+      <Layout>
+        <div className="relative">
+          {/* <Banner />  */}
+          <Hotjar />
+          <PdfViewer />
+          {ready ? (
+            <Claim setReady={setReady} data={props.data} />
+          ) : (
+            <>
+              <HeroSection
+                handleStart={() => {
+                  setReady(true);
+                }}
+              />
+              <Features />
+              {/* <ReviewSection /> */}
+              <Testimonials />
+            </>
+          )}
+        </div>
+      </Layout>
+    </Worker>
   );
 }
 
@@ -86,7 +100,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
   );
-  const { c: link_code } = context.query;
+  let { c: link_code } = context.query;
 
   let data = [] as any;
 
@@ -96,7 +110,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       .select()
       .match({ link_code })
       .select();
-    data = result;
+    if (result?.[0] && result[0].insurance) {
+      link_code = undefined;
+    } else {
+      data = result;
+    }
   }
 
   return {

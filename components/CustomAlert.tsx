@@ -16,15 +16,15 @@ const CustomAlert = ({ body, color, closable = true }: Props) => {
           : `flex p-4 mb-2 mt-5  ${
               color === "red"
                 ? "text-red-700 dark:text-red-700"
-                : `text-${color}-700  dark:text-${color}-300`
-            } bg-${color}-100 border-t-4 border-${color}-500 dark:bg-gray-800`
+                : `text-${color}-800  dark:text-${color}-400`
+            } bg-${color}-50 border-t-4 border-${color}-300 dark:border-${color}-800 dark:bg-gray-800`
       }
       role="alert"
       id="banner-alert"
       hidden={hideAlert}
     >
       {/* ADDING THIS EMPTY DIV WITH DYNAMIC TO BE USED TO PREVENT TAILWIND FROM PURGING THEM */}
-      <div className="text-blue-700 dark:text-blue-300 text-green-700 dark:text-green-300 text-yellow-700 dark:text-yellow-300 text-red-700 dark:text-red-300" />
+      <div className="text-blue-800 dark:text-blue-400 text-green-800 dark:text-green-400 text-yellow-800 dark:text-yellow-400 text-red-700 dark:text-red-700 border-blue-300 border-yellow-300 border-red-300 border-green-300 dark:border-blue-800 dark:border-yellow-800 dark:border-red-800 dark:border-green-800" />
       <svg
         className="flex-shrink-0 w-5 h-5"
         fill="currentColor"
@@ -37,11 +37,14 @@ const CustomAlert = ({ body, color, closable = true }: Props) => {
           clipRule="evenodd"
         ></path>
       </svg>
-      <div className="ml-3 text-sm font-medium">{body}</div>
+      <div
+        className="ml-3 text-sm text-left font-medium"
+        dangerouslySetInnerHTML={{ __html: body }}
+      />
       {closable && (
         <button
           type="button"
-          className={`ml-auto -mx-1.5 -my-1.5 bg-${color}-100 text-${color}-500 rounded-lg focus:ring-2 focus:ring-${color}-400 p-1.5 hover:bg-${color}-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-${color}-300 dark:hover:bg-gray-700`}
+          className={`ml-auto -mx-1.5 -my-1.5 bg-${color}-50 text-${color}-500 rounded-lg focus:ring-2 focus:ring-${color}-400 p-1.5 hover:bg-${color}-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-${color}-300 dark:hover:bg-gray-700`}
           data-dismiss-target="#banner-alert"
           aria-label="Close"
           onClick={() => setHideAlert(true)}

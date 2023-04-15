@@ -7,15 +7,17 @@ import { Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { useSystemValues } from "@/contexts/ValueContext";
 
-export default function Claim({ open, handleOpen, fileURL }: any) {
+export default function PdfViewer() {
+  const { fileURL, setFileURL } = useSystemValues();
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   return (
     <Dialog
       fullWidth={true}
       maxWidth="xl"
-      open={open}
-      onClose={handleOpen}
+      open={!!fileURL}
+      onClose={() => setFileURL(null)}
       PaperProps={{
         style: {
           minHeight: "90%",
@@ -26,7 +28,7 @@ export default function Claim({ open, handleOpen, fileURL }: any) {
       <DialogTitle>
         <IconButton
           aria-label="close"
-          onClick={handleOpen}
+          onClick={() => setFileURL(null)}
           sx={{
             position: "absolute",
             right: -5,

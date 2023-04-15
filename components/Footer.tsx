@@ -1,10 +1,12 @@
+import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import Link from "next/link";
 
 const Footer = () => {
+  const { openPdf } = useSystemValues();
   return (
-    <footer className="p-4 bg-white md:p-8 lg:p-10 dark:bg-gray-800">
-      <div className="mx-auto max-w-screen-xl text-center">
+    <footer className="px-4 py-16 bg-white dark:bg-gray-800">
+      <div className="mx-autos max-w-screen-xl text-center">
         <Link
           href="/"
           className="flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
@@ -17,19 +19,47 @@ const Footer = () => {
             width={36}
             height={36}
           />
-          <span>ClaimingMadeEasy™</span>
-        </Link>
-        <p className="my-6 max-w-2xl mx-auto  text-gray-500 dark:text-gray-400">
-          ClaimingMadeEasy is a trading style of Approved Claims Group Ltd |
-          Company Number: 12552579 | Address: 20-22 Wenlock Road, London N1 7GU
-        </p>
-        <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-          © 2023&nbsp;
-          <Link href="/" className="hover:underline">
+          <span className="text-lg sm:text-xl lg:text-2xl">
             ClaimingMadeEasy™
-          </Link>
-          . All Rights Reserved.
-        </span>
+          </span>
+        </Link>
+        <div className="flex flex-col justify-start items-center gap-8 mt-6 text-center text-sm">
+          <p className="max-w-2xl mx-auto text-gray-500 dark:text-gray-400">
+            ClaimingMadeEasy is a trading style of Approved Claims Group Ltd |
+            Company Number: 12552579 | Address: 20-22 Wenlock Road, London N1
+            7GU{" "}
+            <span className="inline">
+              <a
+                href="#"
+                className="hover:underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openPdf("terms-of-service.pdf");
+                }}
+              >
+                Terms & Conditions{" "}
+              </a>
+              |{" "}
+              <a
+                href="#"
+                className="hover:underline"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openPdf("privacy-policy.pdf");
+                }}
+              >
+                Privacy Policy
+              </a>
+            </span>
+          </p>
+          <span className="w-full text-gray-500 sm:text-center dark:text-gray-400">
+            © 2023&nbsp;
+            <Link href="/" className="hover:underline">
+              ClaimingMadeEasy™
+            </Link>
+            . All Rights Reserved.
+          </span>
+        </div>
       </div>
     </footer>
   );

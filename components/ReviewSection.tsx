@@ -15,7 +15,7 @@ const ReviewSection = () => {
           <div
             className="text-white"
             // @ts-ignore
-            src="https://cdn.trustindex.io/loader.js?937de4811ab6928b8e06a40d56d"
+            src="https://cdn.trustindex.io/loader.js?13af5d813e3e503aa57601c3555"
           ></div>
           <blockquote>
             <p className="text-2xl font-medium text-gray-900 dark:text-white">

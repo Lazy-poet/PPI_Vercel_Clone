@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Head from "next/head";
-import { THEME, useTheme } from "./hooks/useTheme";
-import { Logo } from "./svgs/logo";
+import { THEME, useThemeContext } from "@/contexts/ThemeContext";
+import Flag from "../public/images/union-flag.svg";
+import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
+import HeaderReview from "../public/images/reviews-logo-inline.png";
 
 const Header = () => {
-  const { theme, changeTheme } = useTheme();
+  const { theme, changeTheme } = useThemeContext();
 
   const toggleTheme = () => {
     if (theme === THEME.LIGHT) {
@@ -21,23 +23,35 @@ const Header = () => {
         {/* Review Script */}
         <script defer async src="https://cdn.trustindex.io/loader.js"></script>
       </Head>
-      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-2.5 border-gray-200">
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-6 border-gray-200">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl gap-2">
           <Link
             href="/"
-            className=" flex justify-center items-center text-2xl font-semibold text-gray-900 dark:text-white"
+            className=" flex justify-start items-center text-2xl font-semibold text-gray-900 dark:text-white gap-1  flex-1 sm:gap-2"
           >
             <Image
-              src="/images/favicon.png"
-              className="mr-3 h-8 sm:h-9"
+              src={Favicon}
+              className="w-9"
               style={{ objectFit: "contain" }}
               alt="Logo"
-              width={36}
-              height={36}
             />
-            <span>ClaimingMadeEasy™</span>
+            <span className="text-lg sm:text-xl lg:text-2xl">
+              ClaimingMadeEasy™
+            </span>
           </Link>
-          <div className="flex items-center md:order-2">
+          <div className="hidden md:flex justify-center flex-1">
+            <Image className="w-64" src={HeaderReview} alt="uk logo" />
+          </div>
+          <div className="flex-1 flex justify-end">
+            <Image
+              className="w-10 md:w-12 max-h-full"
+              src={Flag}
+              alt="uk logo"
+            />
+          </div>
+
+          {/* DISABLE THEME SWITCHER */}
+          {/* <div className="flex items-center md:order-2">
             <button
               type="button"
               className="text-gray-400 font-medium rounded-lg text-sm py-2 outline-none ring-0 focus:right-0 focus:outline-none"
@@ -69,7 +83,7 @@ const Header = () => {
                 </svg>
               )}
             </button>
-          </div>
+          </div> */}
         </div>
       </nav>
     </header>
