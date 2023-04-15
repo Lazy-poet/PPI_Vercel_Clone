@@ -10,6 +10,7 @@ const Details = (props: any) => {
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const { showPulse, setShowPulse, addressList, setAddressList } =
     useSystemValues();
 
@@ -26,19 +27,32 @@ const Details = (props: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    setSelectedAddress(data.address);
+  }, [data.address]);
+
   const isAddressValid = addressList.some(
     (addr) =>
       data.address ===
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
 
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
+    handleFormChange(name, value);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
-        value = value.charAt(0).toUpperCase() + value.slice(1);
-        break;
       case "lastName":
+        value = value
+          .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
+          .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
+          .replace(/[^a-z\-\s]/gi, "")
+          .replace(/^\-+/, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
@@ -134,14 +148,18 @@ const Details = (props: any) => {
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
           className={`form-group ${
-            fdEvents.firstName ? "" : data.firstName ? "success" : "error"
+            fdEvents.firstName
+              ? ""
+              : data.firstName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            First name
+            First name(s)
           </label>
           <div className="icon-input">
             <input
@@ -153,21 +171,28 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.firstName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.firstName
-            ? ""
-            : !data.firstName && (
-                <p className="mt-2 text-sm">
-                  Please let us know your first name
-                </p>
-              )}
+          {fdEvents.firstName ? (
+            ""
+          ) : !data.firstName ? (
+            <p className="mt-2 text-sm">Please let us know your first name</p>
+          ) : (
+            data.firstName.length === 1 && (
+              <p className="mt-2 text-sm">Please enter a valid name</p>
+            )
+          )}
         </div>
         <div
           className={`form-group ${
-            fdEvents.lastName ? "" : data.lastName ? "success" : "error"
+            fdEvents.lastName
+              ? ""
+              : data.lastName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
@@ -186,17 +211,24 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.lastName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.lastName
-            ? ""
-            : !data.lastName && (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please let us know your last name
-                </p>
-              )}
+          {fdEvents.lastName ? (
+            ""
+          ) : !data.lastName ? (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please let us know your last name
+            </p>
+          ) : (
+            data.lastName.length === 1 && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please enter a valid name
+              </p>
+            )
+          )}
         </div>
         <div
           className={`form-group sm:col-span-2 ${
@@ -321,7 +353,7 @@ const Details = (props: any) => {
               type="button"
               className={`${
                 showPulse ? "search-pulse" : ""
-              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              } absolute right-2.5 bottom-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               onClick={() => {
                 searchAddressByPostcode(data.postCode);
                 if (showPulse) {
@@ -330,7 +362,7 @@ const Details = (props: any) => {
                 }
               }}
             >
-              Find address
+              Find My Address
             </button>
           </div>
           {fdEvents.postCode ? (
@@ -338,7 +370,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &lsquo;Find My
+              Address&rsquo;
             </p>
           ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -353,7 +386,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &ldquo;Find My
+              Address&rdquo;
             </p>
           )}
         </div>
@@ -403,6 +437,21 @@ const Details = (props: any) => {
             </div>
           </div>
         ) : null}
+        {selectedAddress && (
+          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {selectedAddress.split(",").map((address, i) => (
+              <p
+                key={i}
+                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+              >
+                {address}
+              </p>
+            ))}
+            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+              {data.postCode}
+            </p>
+          </blockquote>
+        )}
       </div>
 
       <div className="form-group w-full my-5">
@@ -438,7 +487,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      DD
+                      Day
                     </MenuItem>
                     {Dates &&
                       Dates.map((item: string, index: number) => (
@@ -450,22 +499,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.day ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
-              ) : !data.day ? (
+              {!data.day && !fdEvents.day && (
                 <p className="mt-2 text-sm">Select day of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
               )}
             </div>
             <div
@@ -483,7 +518,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      MM
+                      Month
                     </MenuItem>
                     {Months &&
                       Months.map((item: string, index: number) => (
@@ -495,22 +530,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.month ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
-              ) : !data.month ? (
+              {!data.month && !fdEvents.month && (
                 <p className="mt-2 text-sm">Select month of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
               )}
             </div>
           </div>
@@ -527,7 +548,7 @@ const Details = (props: any) => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    YYYY
+                    Year
                   </MenuItem>
                   {Years &&
                     Years.map((item: string, index: number) => (
@@ -539,22 +560,8 @@ const Details = (props: any) => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            {fdEvents.year ? (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
-            ) : !data.year ? (
+            {!data.year && !fdEvents.year && (
               <p className="mt-2 text-sm">Select year of birth</p>
-            ) : (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
             )}
           </div>
         </div>

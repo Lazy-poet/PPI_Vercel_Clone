@@ -11,24 +11,6 @@ export enum THEME {
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<THEME>(THEME.LIGHT);
-
-  useEffect(() => {
-    const userPreference = localStorage.getItem("color-theme");
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-
-    if (userPreference === "dark" || (prefersDark && !userPreference)) {
-      setTheme(THEME.DARK);
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("color-theme", "dark");
-    } else {
-      setTheme(THEME.LIGHT);
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("color-theme", "light");
-    }
-  }, []);
-
   const changeTheme = (theme: THEME) => {
     setTheme(theme);
 
@@ -40,6 +22,27 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("color-theme", "dark");
     }
   };
+
+  useEffect(() => {
+    // const userPreference = localStorage.getItem("color-theme");
+    if (window.matchMedia) {
+      const listener = (e: MediaQueryListEvent) => {
+        changeTheme(e.matches ? THEME.DARK : THEME.LIGHT);
+      };
+      const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
+      if (
+        matchMedia &&
+        matchMedia.addEventListener &&
+        matchMedia.removeEventListener
+      ) {
+        changeTheme(matchMedia.matches ? THEME.DARK : THEME.LIGHT);
+        matchMedia.addEventListener("change", listener);
+
+        return () => matchMedia.removeEventListener("change", listener);
+      }
+    }
+  }, []);
+
   return (
     <ThemeContext.Provider value={{ theme, changeTheme }}>
       {children}

@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -34,6 +35,8 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ["pdfjs-dist"],
+  productionBrowserSourceMaps: true,
 };
 
 module.exports = nextConfig;
