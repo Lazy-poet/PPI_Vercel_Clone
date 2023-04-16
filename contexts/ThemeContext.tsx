@@ -1,4 +1,5 @@
 import { useContext, createContext, useEffect, useState } from "react";
+import util from "../libs/utils";
 
 export const ThemeContext = createContext(
   {} as { theme: THEME; changeTheme: (t: THEME) => void }
@@ -14,12 +15,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const changeTheme = (theme: THEME) => {
     setTheme(theme);
 
-    if (theme === THEME.LIGHT) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("color-theme", "light");
-    } else if (theme === THEME.DARK) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("color-theme", "dark");
+    if (util.isCookieSupported()) {
+      if (theme === THEME.LIGHT) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      } else if (theme === THEME.DARK) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      }
     }
   };
 
