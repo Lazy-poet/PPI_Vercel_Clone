@@ -1,11 +1,13 @@
 import "@/styles/globals.css";
+import { start } from "@/libs/bugsnag";
 import "core-js";
 import type { AppProps } from "next/app";
 import { ValueProvider } from "@/contexts/ValueContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import BugsnagProvider from "@/components/BugsnagProvider";
 import { useEffect } from "react";
 import getConfig from "next/config";
+
+start();
 
 export default function App({ Component, pageProps }: AppProps) {
   const { publicRuntimeConfig } = getConfig();
@@ -19,12 +21,10 @@ export default function App({ Component, pageProps }: AppProps) {
     } catch {}
   }, [domain]);
   return (
-    <BugsnagProvider>
-      <ValueProvider>
-        <ThemeProvider>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </ValueProvider>
-    </BugsnagProvider>
+    <ValueProvider>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </ValueProvider>
   );
 }
