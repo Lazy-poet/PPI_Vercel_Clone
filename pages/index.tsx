@@ -1,16 +1,20 @@
 import { useEffect, useState, lazy, Suspense } from "react";
 import { UserData } from "@/libs/constants";
-import HomeLayout from "@/components/HomeLayout";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
-import ReviewSection from "@/components/ReviewSection";
-import Banner from "@/components/Banner";
+// import ReviewSection from "@/components/ReviewSection";
+import Testimonials from "@/components/Testimonials";
+// import Banner from "@/components/Banner";
 import { GetServerSidePropsContext } from "next";
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import LoadScripts from "@/components/Scripts";
+import PdfViewer from "@/components/PdfViewer";
+import { Worker } from "@react-pdf-viewer/core";
+import Features from "@/components/Features";
+import Layout from "@/components/Layout";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -26,7 +30,6 @@ type HomeProps = {
 };
 
 export default function Home(props: HomeProps) {
-  const [ready, setReady] = useState(false);
   const {
     setAmount,
     setClaimValue,
@@ -35,6 +38,8 @@ export default function Home(props: HomeProps) {
     setUserIp,
     setUserEmail,
     setUserPhone,
+    ready,
+    setReady,
   } = useSystemValues();
 
   const router = useRouter();
@@ -64,22 +69,29 @@ export default function Home(props: HomeProps) {
   }, []);
 
   return (
-    <div className="relative">
-      <Banner />
-      <LoadScripts />
-      {ready ? (
-        <Claim setReady={setReady} data={props.data} />
-      ) : (
-        <HomeLayout>
-          <HeroSection
-            handleStart={() => {
-              setReady(true);
-            }}
-          />
-          <ReviewSection />
-        </HomeLayout>
-      )}
-    </div>
+    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
+      <Layout>
+        <div className="relative">
+          {/* <Banner />  */}
+          <LoadScripts />
+          <PdfViewer />
+          {ready ? (
+            <Claim setReady={setReady} data={props.data} />
+          ) : (
+            <>
+              <HeroSection
+                handleStart={() => {
+                  setReady(true);
+                }}
+              />
+              <Features />
+              {/* <ReviewSection /> */}
+              <Testimonials />
+            </>
+          )}
+        </div>
+      </Layout>
+    </Worker>
   );
 }
 

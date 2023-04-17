@@ -10,6 +10,7 @@ const Details = (props: any) => {
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
   const { showPulse, setShowPulse, addressList, setAddressList } =
     useSystemValues();
 
@@ -26,23 +27,44 @@ const Details = (props: any) => {
     }
   }, []);
 
+  useEffect(() => {
+    setSelectedAddress(data.address);
+  }, [data.address]);
+
   const isAddressValid = addressList.some(
     (addr) =>
       data.address ===
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
 
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
+    handleFormChange(name, value);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
       case "firstName":
-        value = value.charAt(0).toUpperCase() + value.slice(1);
-        break;
       case "lastName":
+        value = value
+          .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
+          .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
+          .replace(/[^a-z\-\s]/gi, "")
+          .replace(/^\-+/, "");
         value = value.charAt(0).toUpperCase() + value.slice(1);
         break;
       case "email":
         value = value.trim();
+        break;
+      case "phone":
+        if (value.length < 2) return;
+        if (!value.startsWith("07")) {
+          value = "07" + value;
+        }
+
+        value = value.substr(0, 11).replace(/\D/g, "");
         break;
       case "postCode":
         value = value.toUpperCase().substr(0, 8).replace(".", "");
@@ -134,14 +156,18 @@ const Details = (props: any) => {
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
           className={`form-group ${
-            fdEvents.firstName ? "" : data.firstName ? "success" : "error"
+            fdEvents.firstName
+              ? ""
+              : data.firstName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
             htmlFor="first-name"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            First name
+            First name(s)
           </label>
           <div className="icon-input">
             <input
@@ -153,21 +179,28 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.firstName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.firstName
-            ? ""
-            : !data.firstName && (
-                <p className="mt-2 text-sm">
-                  Please let us know your first name
-                </p>
-              )}
+          {fdEvents.firstName ? (
+            ""
+          ) : !data.firstName ? (
+            <p className="mt-2 text-sm">Please let us know your first name</p>
+          ) : (
+            data.firstName.length === 1 && (
+              <p className="mt-2 text-sm">Please enter a valid name</p>
+            )
+          )}
         </div>
         <div
           className={`form-group ${
-            fdEvents.lastName ? "" : data.lastName ? "success" : "error"
+            fdEvents.lastName
+              ? ""
+              : data.lastName.length > 1
+              ? "success"
+              : "error"
           }`}
         >
           <label
@@ -186,17 +219,78 @@ const Details = (props: any) => {
               required
               maxLength={64}
               value={data.lastName}
-              onChange={(e) => handleInputChange(e)}
+              onBlur={handleInputBlur}
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
-          {fdEvents.lastName
-            ? ""
-            : !data.lastName && (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please let us know your last name
-                </p>
-              )}
+          {fdEvents.lastName ? (
+            ""
+          ) : !data.lastName ? (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please let us know your last name
+            </p>
+          ) : (
+            data.lastName.length === 1 && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please enter a valid name
+              </p>
+            )
+          )}
+        </div>
+        <div
+          className={`form-group sm:col-span-2 ${
+            fdEvents.phone ? "" : data.phone.length === 11 ? "success" : "error"
+          }`}
+        >
+          <label
+            htmlFor="phone"
+            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
+          >
+            Mobile Telephone Number
+          </label>
+          <div className="flex">
+            <div className="icon-input w-full">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
+                    !(fdEvents.phone || data.phone.length === 11) && "error"
+                  }`}
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M2 3C2 2.73478 2.10536 2.48043 2.29289 2.29289C2.48043 2.10536 2.73478 2 3 2H5.153C5.38971 2.00011 5.6187 2.08418 5.79924 2.23726C5.97979 2.39034 6.10018 2.6025 6.139 2.836L6.879 7.271C6.91436 7.48222 6.88097 7.69921 6.78376 7.89003C6.68655 8.08085 6.53065 8.23543 6.339 8.331L4.791 9.104C5.34611 10.4797 6.17283 11.7293 7.22178 12.7782C8.27072 13.8272 9.52035 14.6539 10.896 15.209L11.67 13.661C11.7655 13.4695 11.9199 13.3138 12.1106 13.2166C12.3012 13.1194 12.5179 13.0859 12.729 13.121L17.164 13.861C17.3975 13.8998 17.6097 14.0202 17.7627 14.2008C17.9158 14.3813 17.9999 14.6103 18 14.847V17C18 17.2652 17.8946 17.5196 17.7071 17.7071C17.5196 17.8946 17.2652 18 17 18H15C7.82 18 2 12.18 2 5V3Z" />
+                </svg>
+              </div>
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
+                required
+                maxLength={64}
+                value={data.phone}
+                onChange={(e) => handleInputChange(e)}
+              />
+              <span className="form-icon"></span>
+            </div>
+          </div>
+          {fdEvents.phone || data.phone.length === 11 ? (
+            <p
+              id="helper-text-explanation"
+              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
+            >
+              We need this so we can keep you updated on your claim with text
+              messages
+            </p>
+          ) : (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              Please provide a valid phone number
+            </p>
+          )}
         </div>
         <div
           className={`form-group sm:col-span-2 ${
@@ -268,6 +362,7 @@ const Details = (props: any) => {
             </p>
           )}
         </div>
+
         <div
           className={`form-group sm:col-span-2 ${
             fdEvents.postCode
@@ -321,7 +416,7 @@ const Details = (props: any) => {
               type="button"
               className={`${
                 showPulse ? "search-pulse" : ""
-              } text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-lg px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+              } absolute right-2.5 bottom-2.5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               onClick={() => {
                 searchAddressByPostcode(data.postCode);
                 if (showPulse) {
@@ -330,7 +425,7 @@ const Details = (props: any) => {
                 }
               }}
             >
-              Find address
+              Find My Address
             </button>
           </div>
           {fdEvents.postCode ? (
@@ -338,7 +433,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &lsquo;Find My
+              Address&rsquo;
             </p>
           ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -353,7 +449,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              Enter your postcode, then click the button to find your address
+              Enter your current postcode and click &ldquo;Find My
+              Address&rdquo;
             </p>
           )}
         </div>
@@ -403,6 +500,21 @@ const Details = (props: any) => {
             </div>
           </div>
         ) : null}
+        {selectedAddress && (
+          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {selectedAddress.split(",").map((address, i) => (
+              <p
+                key={i}
+                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+              >
+                {address}
+              </p>
+            ))}
+            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+              {data.postCode}
+            </p>
+          </blockquote>
+        )}
       </div>
 
       <div className="form-group w-full my-5">
@@ -438,7 +550,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      DD
+                      Day
                     </MenuItem>
                     {Dates &&
                       Dates.map((item: string, index: number) => (
@@ -450,22 +562,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.day ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
-              ) : !data.day ? (
+              {!data.day && !fdEvents.day && (
                 <p className="mt-2 text-sm">Select day of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Day of birth
-                </p>
               )}
             </div>
             <div
@@ -483,7 +581,7 @@ const Details = (props: any) => {
                     IconComponent={ExpandMoreIcon}
                   >
                     <MenuItem value="" disabled>
-                      MM
+                      Month
                     </MenuItem>
                     {Months &&
                       Months.map((item: string, index: number) => (
@@ -495,22 +593,8 @@ const Details = (props: any) => {
                   <span className="form-icon"></span>
                 </FormControl>
               </div>
-              {fdEvents.month ? (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
-              ) : !data.month ? (
+              {!data.month && !fdEvents.month && (
                 <p className="mt-2 text-sm">Select month of birth</p>
-              ) : (
-                <p
-                  id="helper-text-explanation"
-                  className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-                >
-                  Month of birth
-                </p>
               )}
             </div>
           </div>
@@ -527,7 +611,7 @@ const Details = (props: any) => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    YYYY
+                    Year
                   </MenuItem>
                   {Years &&
                     Years.map((item: string, index: number) => (
@@ -539,22 +623,8 @@ const Details = (props: any) => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            {fdEvents.year ? (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
-            ) : !data.year ? (
+            {!data.year && !fdEvents.year && (
               <p className="mt-2 text-sm">Select year of birth</p>
-            ) : (
-              <p
-                id="helper-text-explanation"
-                className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-              >
-                Year of birth
-              </p>
             )}
           </div>
         </div>

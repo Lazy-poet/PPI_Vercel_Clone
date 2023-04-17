@@ -3,20 +3,17 @@ import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
 import { STEP, UserData } from "@/libs/constants";
 import Title from "@/components/Title";
-import TermsOfService from "@/components/TermsOfService";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
 import { Earnings } from "@/components/steps/Step1-ClaimNow";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
-import ClaimLayout from "@/components/Layout";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
-import { Worker } from "@react-pdf-viewer/core";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -78,19 +75,14 @@ function Claim({ setReady, data }: ClaimProps) {
     setUserEmail,
     userPhone,
     userIp,
+    openPdf,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
-  const [open, setOpen] = useState<Boolean>(false);
-  const [fileURL, setFileURL] = useState<String>("terms-of-service.pdf");
+
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
   // Step1
-
-  const handleOpen = (type: String) => {
-    setFileURL(type);
-    setOpen(!open);
-  };
 
   const handleFormChange1 = (key: string, value: string) => {
     // if (key === "email") {
@@ -126,10 +118,11 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   // Step3
-  const handleFormChange3 = (newSignatureData: string) => {
+  const handleFormChange3 = (key: string, value: string) => {
     setFormData3({
-      signatureData: newSignatureData,
-      firstEvent: false,
+      ...formData3,
+      [key]: value,
+      ...(key === "signatureData" && { firstEvent: false }),
     });
   };
 
@@ -201,9 +194,7 @@ function Claim({ setReady, data }: ClaimProps) {
         setFormData2({ ...formData2, firstEvent: false });
         if (
           formData2.earnings?.length &&
-          ![Earnings.MoreThan150001, Earnings.Between50001And150000].includes(
-            formData2.earnings as Earnings
-          )
+          formData2.earnings !== Earnings.MoreThan50001
         ) {
           const valueChanged = formData2.earnings !== dbData.earnings;
           if ((userEmail || linkCode) && valueChanged) {
@@ -239,6 +230,8 @@ function Claim({ setReady, data }: ClaimProps) {
         });
         const { firstEvent, ...details } = formData1;
         if (
+          details.firstName.length > 1 &&
+          details.lastName.length > 1 &&
           Utils.isObjectFilled(details) &&
           isValid(details.postCode) &&
           Utils.validateEmail(details.email)
@@ -279,7 +272,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: "email",
+                  onConflict: "link_code",
                 }
               )
               .select();
@@ -319,7 +312,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 signatureData: formData3.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
-              .match({ email: userEmail })
+              .match({ link_code: linkCode })
               .select();
             if (data?.length) {
               setDbData(data[0]);
@@ -538,79 +531,60 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.isReady, router]);
 
   return (
-    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.2.146/build/pdf.worker.min.js">
-      <ClaimLayout>
-        <section className="bg-white dark:bg-gray-900">
-          <div className="max-w-screen-xl mx-auto lg:flex">
-            <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
-              <div className="w-full">
-                <ProgressBar step={step} goToPrevStep={prevStep} />
+    <section className="bg-white dark:bg-gray-900">
+      <div className="max-w-screen-xl mx-auto lg:flex">
+        <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
+          <div className="w-full">
+            <ProgressBar step={step} goToPrevStep={prevStep} />
 
-                <TermsOfService
-                  fileURL={fileURL}
-                  open={open}
-                  handleOpen={handleOpen}
-                />
+            <StepAlert
+              step={step}
+              signatureData={formData3}
+              earningsData={formData2}
+              claimValue={claimValue}
+            />
 
-                <StepAlert
-                  step={step}
-                  signatureData={formData3}
-                  earningsData={formData2}
-                  claimValue={claimValue}
-                />
+            <Title step={step} onClick={openPdf} />
 
-                <Title step={step} onClick={handleOpen} />
+            {step === STEP.DETAILS && (
+              <Details
+                data={formData1}
+                fdEvents={fdEvents1}
+                handleFormChange={handleFormChange1}
+                handleOpen={openPdf}
+              />
+            )}
+            {step === STEP.CLAIM_NOW && (
+              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
+            )}
+            {step === STEP.SIGNATURE && (
+              <Signature
+                data={formData3}
+                handleFormChange={handleFormChange3}
+              />
+            )}
+            {step === STEP.ONE_MORE && (
+              <OneMore data={formData4} handleFormChange={handleFormChange4} />
+            )}
+            {step === STEP.REFUNDS && (
+              <Refunds data={formData5} handleFormChange={handleFormChange5} />
+            )}
+            {step === STEP.ALL_DONE && <AllDone />}
 
-                {step === STEP.DETAILS && (
-                  <Details
-                    data={formData1}
-                    fdEvents={fdEvents1}
-                    handleFormChange={handleFormChange1}
-                    handleOpen={handleOpen}
-                  />
-                )}
-                {step === STEP.CLAIM_NOW && (
-                  <ClaimNow
-                    data={formData2}
-                    handleFormChange={handleFormChange2}
-                  />
-                )}
-                {step === STEP.SIGNATURE && (
-                  <Signature
-                    data={formData3}
-                    handleFormChange={handleFormChange3}
-                  />
-                )}
-                {step === STEP.ONE_MORE && (
-                  <OneMore
-                    data={formData4}
-                    handleFormChange={handleFormChange4}
-                  />
-                )}
-                {step === STEP.REFUNDS && (
-                  <Refunds
-                    data={formData5}
-                    handleFormChange={handleFormChange5}
-                  />
-                )}
-                {step === STEP.ALL_DONE && <AllDone />}
-
-                {step !== STEP.ALL_DONE && (
-                  <NextButton
-                    onClick={nextStep}
-                    timer={NEXT_BUTTON_TIMERS[step]}
-                    label={step === STEP.REFUNDS ? "Submit" : "Next"}
-                    helper={NEXT_BUTTON_HELPERS(step, handleOpen)}
-                  />
-                )}
-              </div>
-            </div>
-
-            <SidePanel amount={claimValue} step={step} />
+            {step !== STEP.ALL_DONE && (
+              <NextButton
+                onClick={nextStep}
+                timer={NEXT_BUTTON_TIMERS[step]}
+                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                helper={NEXT_BUTTON_HELPERS(step, openPdf)}
+              />
+            )}
           </div>
-        </section>
-      </ClaimLayout>
-    </Worker>
+        </div>
+
+        <SidePanel amount={claimValue} step={step} />
+      </div>
+    </section>
   );
 }
 export default Claim;
