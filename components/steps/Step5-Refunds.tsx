@@ -1,7 +1,5 @@
 import { ChangeEvent } from "react";
 import CustomCurrencyField from "../CustomCurrencyField";
-import { FormControl, MenuItem, Select } from "@mui/material";
-import { useSystemValues } from "@/contexts/ValueContext";
 
 export enum TAX_YEARS {
   APR062018_APR052019 = "6 April 2018 and 5 April 2019",
@@ -14,95 +12,40 @@ const Refunds = (props: {
   data: any;
   handleFormChange: (field: string, value: string) => void;
 }) => {
-  const { lendersData, refunds, setRefunds } = useSystemValues();
-  const handleChange = (
-    field: "year" | "amount",
-    lender: string,
-    value: string
-  ) => {
-    setRefunds((prev) => ({
-      ...prev,
-      [lender]: {
-        ...prev[lender],
-        [field]: value,
-        firstEvent: {
-          ...prev[lender].firstEvent,
-          [field]: false,
-        },
-      },
-    }));
-  };
+  const { data, handleFormChange } = props;
+
   return (
-    <div className="grid gap-10 mt-6 mb-5">
-      {lendersData.selectedLenders
-        .concat(
-          lendersData.otherLender?.value ? [lendersData.otherLender.value] : []
-        )
-        .map((lender) => (
-          <div key={lender}>
-            <div
-              className={
-                refunds[lender]?.firstEvent?.year
-                  ? ""
-                  : refunds[lender]?.year
-                  ? "success"
-                  : "error"
-              }
-            >
-              <label
-                htmlFor="address"
-                className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
-              >
-                Select the year you received your refund from {lender}
-              </label>
-              <FormControl className="w-full mui-select mb-5">
-                <Select
-                  id="address"
-                  name="address"
-                  className="p-1 bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={refunds[lender]?.year || ""}
-                  onChange={(e) => handleChange("year", lender, e.target.value)}
-                  displayEmpty
-                  // IconComponent={ExpandMoreIcon}
-                >
-                  <MenuItem value="" disabled selected>
-                    Select Year
-                  </MenuItem>
-                  <MenuItem value="2018">Before 2018</MenuItem>
-                  <MenuItem value="2019">2019</MenuItem>
-                  <MenuItem value="2020">2020</MenuItem>
-                  <MenuItem value="2021">2021</MenuItem>
-                  <MenuItem value="2022">2022</MenuItem>
-                </Select>
-                <span className="form-icon"></span>
-              </FormControl>
-            </div>
+    <div className="grid gap-5 mt-6 mb-5">
+      {(Object.keys(TAX_YEARS) as (keyof typeof TAX_YEARS)[]).map(
+        (key, _, arr) => {
+          return (
             <CustomCurrencyField
-              id={`${lender}-amount`}
-              value={refunds[lender]?.amount + "" || ""}
-              label="Amount of compensation"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange("amount", lender, e.target.value)
-              }
-              errorClass={
-                refunds[lender]?.firstEvent?.amount
-                  ? ""
-                  : !!refunds[lender]?.amount &&
-                    Number(refunds[lender].amount.replace(/,/g, "")) > 0
+              key={key}
+              value={data.tax_years?.[key]}
+              id={`field-${key}`}
+              label={`Between ${TAX_YEARS[key]}`}
+              errorClass={` ${
+                data.tax_years?.[key]
                   ? "success"
-                  : "error"
-              }
-              helperClass={
-                refunds[lender]?.firstEvent?.amount
+                  : data?.firstEvents?.[key] ||
+                    arr.some((k) => k !== key && data.tax_years?.[k])
                   ? ""
-                  : !!refunds[lender]?.amount &&
-                    Number(refunds[lender].amount.replace(/,/g, "")) > 0
-                  ? "success"
                   : "error"
-              }
+              }`}
+              helperClass={` ${
+                data.tax_years?.[key] ||
+                data?.firstEvents?.[key] ||
+                arr.some((k) => k !== key && data.tax_years?.[k])
+                  ? ""
+                  : "error"
+              }`}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handleFormChange(key, e.target.value);
+              }}
             />
-          </div>
-        ))}
+          );
+        }
+      )}
     </div>
   );
 };

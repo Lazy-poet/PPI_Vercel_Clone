@@ -7,25 +7,7 @@ import React, {
 } from "react";
 import PropTypes, { string } from "prop-types";
 import { UserData } from "@/libs/constants";
-type LendersData = {
-  selectedLenders: string[];
-  showOtherLender: boolean;
-  otherLender: {
-    value: string;
-    firstEvent: boolean;
-  };
-  firstEvent: boolean;
-};
-export type REFUNDS = Record<
-  string,
-  {
-    year: string;
-    amount: string;
-    firstEvent: {
-      [key: string]: boolean;
-    };
-  }
->;
+
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>("");
@@ -40,16 +22,6 @@ const useValue = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
-  const [refunds, setRefunds] = useState({} as REFUNDS);
-  const [lendersData, setLendersData] = useState<LendersData>({
-    selectedLenders: [],
-    showOtherLender: false,
-    otherLender: {
-      value: "",
-      firstEvent: true,
-    },
-    firstEvent: true,
-  });
 
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
@@ -142,10 +114,6 @@ const useValue = () => {
     openPdf,
     ready,
     setReady,
-    lendersData,
-    setLendersData,
-    refunds,
-    setRefunds,
   };
 };
 
@@ -224,10 +192,6 @@ interface Value {
   setOpen: Dispatch<SetStateAction<boolean>>;
   ready: boolean;
   setReady: Dispatch<SetStateAction<boolean>>;
-  lendersData: LendersData;
-  setLendersData: Dispatch<SetStateAction<LendersData>>;
-  refunds: REFUNDS;
-  setRefunds: Dispatch<SetStateAction<REFUNDS>>;
 }
 
 export const ValueContext = createContext({} as Value);

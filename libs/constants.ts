@@ -10,12 +10,10 @@ export enum STEP {
   DETAILS,
   SIGNATURE,
   ONE_MORE,
-  LENDERS,
   REFUNDS,
   ALL_DONE,
   ERROR,
 }
-
 
 export type UserData = {
   id?: string,
@@ -47,11 +45,4 @@ export type UserData = {
   estimated_total_difference: number,
   imported: boolean;
   link_code: string
-  refunds: {
-    [x: string]: {
-      year: string;
-      amount: number;
-    }
-  }
 }
-
