@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+const {
+  BugsnagSourceMapUploaderPlugin,
+  BugsnagBuildReporterPlugin,
+} = require("webpack-bugsnag-plugins");
 
 const nextConfig = {
   reactStrictMode: true,
@@ -37,6 +41,37 @@ const nextConfig = {
   },
   transpilePackages: ["pdfjs-dist"],
   productionBrowserSourceMaps: true,
+  webpack(config, { buildId, isServer, webpack }) {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        // Define the build id so that it can be accessed in the client when reporting errors
+        "process.env.NEXT_BUILD_ID": JSON.stringify(buildId),
+        "process.env.NEXT_IS_SERVER": JSON.stringify(isServer),
+      })
+    );
+
+    // Upload source maps on production build
+    config.plugins.push(
+      new BugsnagBuildReporterPlugin(
+        {
+          apiKey: "2e8864db5e70f2fd27e9b539354a1270",
+          appVersion: buildId,
+          releaseStage: process.env.NODE_ENV,
+        },
+        { logLevel: "debug" }
+      ),
+      new BugsnagSourceMapUploaderPlugin({
+        apiKey: "2e8864db5e70f2fd27e9b539354a1270",
+        appVersion: buildId,
+        publicPath:
+          process.env.NODE_ENV === "production"
+            ? "https://quicktaxclaims.co.uk/_next/"
+            : "http://localhost:3000/_next/",
+      })
+    );
+
+    return config;
+  },
 };
 
 module.exports = nextConfig;
