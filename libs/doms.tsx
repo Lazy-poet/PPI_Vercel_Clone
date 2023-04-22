@@ -5,6 +5,7 @@ export const TITLES = [
   "Your details",
   "Your signature",
   "Confirm your identity",
+  "Your Lenders",
   "Your PPI refunds",
   "Thank you! 🎉",
   "Apologies, we are unable to proceed",
@@ -32,6 +33,7 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       form and used to submit your claim to HMRC
     </span>,
     "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
+    "We now need to know which lenders you received a PPI refund from",
     "How much PPI did you receive in the last four tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We&apos;ll be in touch with updates on
@@ -107,6 +109,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       &nbsp;and that the information you have given on this form is correct, to
       the best of your knowledge
     </span>,
+    "",
     "",
     <span key="5">
       When you click submit, we&apos;ll begin processing your tax refund claims.

@@ -13,7 +13,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
-import { useSystemValues } from "@/contexts/ValueContext";
+import { REFUNDS, useSystemValues } from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -33,6 +33,9 @@ const OneMore = dynamic(() => import("@/components/steps/Step4-OneMore"), {
   loading: () => <Spinner />,
 });
 
+const Lenders = dynamic(() => import("@/components/steps/Lenders"), {
+  loading: () => <Spinner />,
+});
 const Refunds = dynamic(() => import("@/components/steps/Step5-Refunds"), {
   loading: () => <Spinner />,
 });
@@ -76,6 +79,10 @@ function Claim({ setReady, data }: ClaimProps) {
     userPhone,
     userIp,
     openPdf,
+    lendersData,
+    setLendersData,
+    refunds,
+    setRefunds,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
@@ -337,54 +344,94 @@ function Claim({ setReady, data }: ClaimProps) {
               await updateSecondaryTable(data[0]);
             }
           }
+          setStep(STEP.LENDERS);
+        }
+        break;
+      case STEP.LENDERS:
+        setLendersData({
+          ...lendersData,
+          firstEvent: false,
+          otherLender: {
+            ...lendersData.otherLender,
+            firstEvent: false,
+          },
+        });
+        if (
+          (lendersData.selectedLenders.length &&
+            !lendersData.showOtherLender) ||
+          (lendersData.showOtherLender && lendersData.otherLender.value)
+        ) {
+          // append other lender into the refunds object
+          if (lendersData.otherLender?.value) {
+            if (!(lendersData.otherLender?.value in refunds)) {
+              setRefunds({
+                ...refunds,
+                [lendersData.otherLender?.value]: {
+                  year: "",
+                  amount: "" as any,
+                  firstEvent: {
+                    year: true,
+                    amount: true,
+                  },
+                },
+              });
+            }
+          }
+
           setStep(STEP.REFUNDS);
         }
         break;
       case STEP.REFUNDS:
-        setFormData5({
-          ...formData5,
-          firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
-            obj[key] = false;
-            return obj;
-          }, {} as Record<string, boolean>),
-        });
-        // check if at least one tax year is filled
-        const can_proceed = Object.keys(TAX_YEARS).some(
-          (key) => !!formData5.tax_years[key]
-        );
-        if (can_proceed) {
-          // default other fields to 0
-          const updatedTaxYears = Object.keys(TAX_YEARS).reduce((obj, key) => {
-            obj[key] = formData5.tax_years[key] || "0.00";
-            return obj;
-          }, {} as Record<string, string>);
-          const totalTaxYears = Object.keys(TAX_YEARS).reduce(
-            (sum, key) => sum + Number(updatedTaxYears[key].replace(/,/g, "")),
-            0
-          );
-          setFormData5({ ...formData5, tax_years: updatedTaxYears });
-          if (
-            Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
-          ) {
-            const estimated_total_difference = Math.max(
-              totalTaxYears,
-              Number(amount.replace(/,/g, ""))
-            );
+        for (const lender in refunds) {
+          refunds[lender] = {
+            ...refunds[lender],
+            firstEvent: {
+              year: false,
+              amount: false,
+            },
+          };
+        }
 
-            const tax_data = {
-              ...updatedTaxYears,
-              tax_years: updatedTaxYears,
-              estimated_total_difference,
-              completed: true,
-            };
+        setRefunds({ ...refunds });
+
+        const can_proceed = lendersData.selectedLenders
+          .concat(
+            lendersData.otherLender?.value
+              ? [lendersData.otherLender.value]
+              : []
+          )
+          .every((lender) => {
+            return (
+              refunds[lender]?.amount &&
+              Number(refunds[lender].amount.replace(/,/g, "")) > 0 &&
+              refunds[lender]?.year
+            );
+          });
+        if (can_proceed) {
+          const refund_data = {} as {
+            [key: string]: { year: string; amount: number };
+          };
+          for (const lender in refunds) {
+            if (
+              lendersData.selectedLenders.includes(lender) ||
+              lender === lendersData.otherLender.value
+            ) {
+              refund_data[lender] = {
+                year: refunds[lender].year,
+                amount: Number(refunds[lender].amount.replace(/,/g, "")),
+              };
+            }
+          }
+          if (Utils.hasObjectValueChanged(refund_data, dbData.refunds || {})) {
             const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update(tax_data)
-              .match({ link_code: linkCode })
+              .update({ refunds: refund_data })
+              .match({ email: userEmail })
               .select();
-            if (data?.[0]) {
-              await updateSecondaryTable(data[0]);
+
+            if (data?.length) {
               setDbData(data[0]);
+              await updateSecondaryTable(data[0]);
             }
           }
           setStep(STEP.ALL_DONE);
@@ -566,6 +613,7 @@ function Claim({ setReady, data }: ClaimProps) {
             {step === STEP.ONE_MORE && (
               <OneMore data={formData4} handleFormChange={handleFormChange4} />
             )}
+            {step === STEP.LENDERS && <Lenders />}
             {step === STEP.REFUNDS && (
               <Refunds data={formData5} handleFormChange={handleFormChange5} />
             )}
