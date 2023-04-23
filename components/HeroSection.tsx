@@ -18,7 +18,20 @@ const HeroSection: React.FC<{
   const { userData, setUserData, firstEvents, setFirstEvents } =
     useSystemValues();
   const [Dates, setDates] = useState<string[]>([]);
-  const [Months, setMonths] = useState<string[]>([]);
+  const [Months, setMonths] = useState<string[]>([
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ]);
   const [Years, setYears] = useState<string[]>([]);
   const handleMUISelectChange = (e: SelectChangeEvent) => {
     const value = e.target.value;
@@ -30,13 +43,6 @@ const HeroSection: React.FC<{
       _dates.push(("0" + d).slice(-2));
     }
     setDates(_dates);
-    //
-    const _months = [];
-    for (let m = 1; m <= 12; m++) {
-      _months.push(("0" + m).slice(-2));
-    }
-    setMonths(_months);
-    //
     const _years = [];
     for (let y = 2005; y >= 1923; y--) {
       _years.push(y.toString());
@@ -288,7 +294,10 @@ const HeroSection: React.FC<{
                             </MenuItem>
                             {Months &&
                               Months.map((item: string, index: number) => (
-                                <MenuItem key={index} value={item}>
+                                <MenuItem
+                                  key={index}
+                                  value={("0" + (index + 1)).slice(-2)}
+                                >
                                   {item}
                                 </MenuItem>
                               ))}
