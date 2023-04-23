@@ -3,7 +3,8 @@ export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 export const TITLES = [
   (name?: string) => name + ", Select Your Income Level",
   (name?: string) => `Congratulations, ${name}! You Qualify!`,
-  (name?: string) => "Your signature",
+  (name?: string) => `${name}, Enter Your Address`,
+  (name?: string) => `${name}, Sign to Confirm Your Claim`,
   (name?: string) => "Confirm your identity",
   (name?: string) => "Your Lenders",
   (name?: string) => "Your PPI refunds",
@@ -15,22 +16,16 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Your eligibility for a tax refund depends on your income.",
     "Please provide your contact details to proceed with your claim. We'll use these details to keep you updated on your claim via email or SMS. We won't call you.",
+    "Please provide your current residential address.",
     <span key="tos">
-      {name}, your signature will be applied to an&nbsp;
+      By signing, you agree to our{" "}
       <button
-        onClick={() => onClick("R40M2022.pdf")}
+        onClick={() => onClick("terms-of-service.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
-        R40
-      </button>
-      &nbsp;and&nbsp;
-      <button
-        onClick={() => onClick("authorise_agent_64-8.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        64-8
+        terms
       </button>{" "}
-      form and used to submit your claim to HMRC
+      and authorize us to proceed with your claim.
     </span>,
     "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
     "We now need to know which lenders you received a PPI refund from",

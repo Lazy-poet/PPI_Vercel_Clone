@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
-import { STEP, UserData } from "@/libs/constants";
+import { STEP, DBData } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
@@ -21,10 +21,13 @@ import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
 
-const Details = dynamic(() => import("@/components/steps/Step2-Contact"), {
+const Contact = dynamic(() => import("@/components/steps/Step2-Contact"), {
   loading: () => <Spinner />,
 });
-const ClaimNow = dynamic(() => import("@/components/steps/Step1-Income"), {
+const Income = dynamic(() => import("@/components/steps/Step1-Income"), {
+  loading: () => <Spinner />,
+});
+const Address = dynamic(() => import("@/components/steps/Step3-Address"), {
   loading: () => <Spinner />,
 });
 
@@ -48,7 +51,7 @@ const AllDone = dynamic(() => import("@/components/steps/Step6-AllDone"), {
 
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
-  data: UserData[];
+  data: DBData[];
 };
 
 export const calculateOurFee = (value: number) => {
@@ -216,7 +219,7 @@ function Claim({ setReady, data }: ClaimProps) {
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                IncomeLevel: userData.incomeLevel,
+                incomeLevel: userData.incomeLevel,
               })
               .match(userEmail ? { email: userEmail } : { link_code: linkCode })
               .select();
@@ -290,6 +293,38 @@ function Claim({ setReady, data }: ClaimProps) {
               }
               setUserEmail(details.email);
               setLinkCode(link_code);
+            }
+          }
+          setStep(STEP.ADDRESS);
+        }
+        break;
+      case STEP.ADDRESS:
+        setFirstEvents({
+          ...firstEvents,
+          postCode: false,
+          address: false,
+        });
+        if (
+          Utils.isObjectFilled(userData, ["postCode", "address"]) &&
+          isValid(userData.postCode)
+        ) {
+          if (Utils.hasObjectValueChanged(userData, dbData)) {
+            const { data, error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                postCode: userData.postCode,
+                address: userData.address,
+              })
+              .match({ email: userEmail })
+              .select();
+
+            if (data?.[0]) {
+              setDbData(data[0]);
+              if (data[0].signatureData || data[0].insurance) {
+                await updateSecondaryTable({
+                  ...data[0],
+                });
+              }
             }
           }
           setStep(STEP.SIGNATURE);
@@ -591,15 +626,16 @@ function Claim({ setReady, data }: ClaimProps) {
             <Title step={step} onClick={openPdf} />
 
             {step === STEP.CONTACT && (
-              <Details
+              <Contact
                 data={formData1}
                 fdEvents={fdEvents1}
                 handleFormChange={handleFormChange1}
                 handleOpen={openPdf}
               />
             )}
+            {step === STEP.ADDRESS && <Address />}
             {step === STEP.INCOME_LEVEL && (
-              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
+              <Income data={formData2} handleFormChange={handleFormChange2} />
             )}
             {step === STEP.SIGNATURE && (
               <Signature

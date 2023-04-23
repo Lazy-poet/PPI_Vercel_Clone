@@ -1,3 +1,5 @@
+import { IncomeLevel } from "@/contexts/ValueContext";
+
 export enum TAX_TYPE {
   NONE,
   LAST_YEAR,
@@ -8,6 +10,7 @@ export enum TAX_TYPE {
 export enum STEP {
   INCOME_LEVEL,
   CONTACT,
+  ADDRESS,
   SIGNATURE,
   ONE_MORE,
   LENDERS,
@@ -46,7 +49,8 @@ export type DBData = {
   APR062021_APR052022: string;
   estimated_total_difference: number,
   imported: boolean;
-  link_code: string
+  link_code: string;
+  incomeLevel: IncomeLevel
   refunds: {
     [x: string]: {
       year: string;
