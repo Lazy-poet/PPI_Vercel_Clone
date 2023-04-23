@@ -5,8 +5,7 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import PropTypes, { string } from "prop-types";
-import { UserData } from "@/libs/constants";
+
 type LendersData = {
   selectedLenders: string[];
   showOtherLender: boolean;
@@ -26,6 +25,29 @@ export type REFUNDS = Record<
     };
   }
 >;
+
+export type UserData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  postCode: string;
+  address: string;
+  phone: string;
+  day: string;
+  month: string;
+  year: string;
+  incomeLevel: string;
+};
+
+export type FirstEvents = {
+  [key in keyof UserData]: boolean;
+} & {
+  lendersData: boolean;
+  otherLender: boolean;
+  signatureData: boolean;
+  insurance: boolean;
+};
+
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>("");
@@ -50,7 +72,34 @@ const useValue = () => {
     },
     firstEvent: true,
   });
-
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    postCode: "",
+    address: "",
+    phone: "",
+    day: "",
+    month: "",
+    year: "",
+    incomeLevel: "",
+  } as UserData);
+  const [firstEvents, setFirstEvents] = useState({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    phone: true,
+    day: true,
+    month: true,
+    year: true,
+    incomeLevel: true,
+    lendersData: true,
+    otherLender: true,
+    signatureData: true,
+    insurance: true,
+  });
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
     firstName: "",
@@ -146,6 +195,10 @@ const useValue = () => {
     setLendersData,
     refunds,
     setRefunds,
+    userData,
+    setUserData,
+    firstEvents,
+    setFirstEvents,
   };
 };
 
@@ -228,6 +281,10 @@ interface Value {
   setLendersData: Dispatch<SetStateAction<LendersData>>;
   refunds: REFUNDS;
   setRefunds: Dispatch<SetStateAction<REFUNDS>>;
+  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
+  firstEvents: FirstEvents;
+  setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
 }
 
 export const ValueContext = createContext({} as Value);
@@ -241,7 +298,3 @@ export const ValueProvider = ({ children }: React.PropsWithChildren) => {
 };
 
 export const useSystemValues = () => useContext(ValueContext);
-
-ValueProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};

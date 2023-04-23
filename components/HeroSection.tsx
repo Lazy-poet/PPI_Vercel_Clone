@@ -1,14 +1,13 @@
 import dynamic from "next/dynamic";
-import { ChangeEvent, useState } from "react";
-import supabase from "utils/client";
+import { useEffect, useState } from "react";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslSecure from "./SslSecure";
 import HeroImg from "../public/images/hero.png";
-import CustomCurrencyField from "./CustomCurrencyField";
-import { UserData } from "@/libs/constants";
-import { calculateOurFee } from "./Claim";
 import CustomAlert from "./CustomAlert";
+import { FormControl, MenuItem, Select } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
@@ -16,139 +15,330 @@ const Animated = dynamic(() => import("react-animated-numbers"), {
 const HeroSection: React.FC<{
   handleStart: () => void;
 }> = ({ handleStart }) => {
-  const {
-    amount,
-    setAmount,
-    claimValue,
-    setClaimValue,
-    linkCode,
-    dbData,
-    setDbData,
-    userEmail,
-    userPhone,
-  } = useSystemValues();
-
-  const [firstEvent, setFirstEvent] = useState<boolean>(true);
-
-  const calculateClaimFromAmount = (value: string) => {
-    value = value.replace(/,/g, "");
-    const claim = Math.round(Number(value) * 0.112);
-    setClaimValue(claim);
+  const { userData, setUserData, firstEvents, setFirstEvents } =
+    useSystemValues();
+  const [Dates, setDates] = useState<string[]>([]);
+  const [Months, setMonths] = useState<string[]>([]);
+  const [Years, setYears] = useState<string[]>([]);
+  const handleMUISelectChange = (e: SelectChangeEvent) => {
+    const value = e.target.value;
+    handleFormChange(e.target.name, value);
   };
+  useEffect(() => {
+    const _dates = [];
+    for (let d = 1; d <= 31; d++) {
+      _dates.push(("0" + d).slice(-2));
+    }
+    setDates(_dates);
+    //
+    const _months = [];
+    for (let m = 1; m <= 12; m++) {
+      _months.push(("0" + m).slice(-2));
+    }
+    setMonths(_months);
+    //
+    const _years = [];
+    for (let y = 2005; y >= 1923; y--) {
+      _years.push(y.toString());
+    }
+    setYears(_years);
+  }, []);
 
+  const isPageComplete =
+    userData.firstName &&
+    userData.lastName &&
+    userData.day &&
+    userData.month &&
+    userData.year;
   const handleClick = async () => {
-    setFirstEvent(false);
-    if (!amount || Number(amount) < 100) {
+    // setFirstEvent(false);
+    setFirstEvents({
+      ...firstEvents,
+      firstName: false,
+      lastName: false,
+      day: false,
+      month: false,
+      year: false,
+    });
+
+    if (!isPageComplete) {
       return window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
     }
-    if (linkCode) {
-      const data = {
-        estimated_total: amount,
-        estimated_total_difference: 0,
-      };
-      try {
-        if (dbData.tax_years) {
-          const totalTaxYears = Object.keys(dbData.tax_years).reduce(
-            (sum, key) => sum + Number(dbData.tax_years[key].replace(/,/g, "")),
-            0
-          );
-          const estimated_total_difference = Math.max(
-            totalTaxYears,
-            Number(amount.replace(/,/g, ""))
-          );
-          data["estimated_total_difference"] = estimated_total_difference;
-        }
-        const { data: existing_data, error } = await supabase
-          .from("PPI_Claim_Form")
-          .update(data)
-          .match(userEmail ? { email: userEmail } : { link_code: linkCode })
-          .select();
-        if (!error) {
-          setDbData((d: UserData) => ({ ...d, ...data }));
-          if (dbData.signatureData || dbData.insurance) {
-            const { createdAt, ...rec } = existing_data?.[0];
-            await supabase.from("PPI_Claim_Form_Completed").upsert(
-              {
-                ...rec,
-                link_code: linkCode,
-              },
-              {
-                ignoreDuplicates: false,
-                onConflict: userEmail ? "email" : "link_code",
-              }
-            );
-          }
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    }
     handleStart();
   };
-
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...userData,
+      [key]: value,
+    });
+    if (key === "day" || key === "month" || key === "year") {
+      setFirstEvents({
+        ...firstEvents,
+        day: false,
+        month: false,
+        year: false,
+      });
+    } else {
+      setFirstEvents({
+        ...firstEvents,
+        [key]: false,
+      });
+    }
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    switch (name) {
+      case "firstName":
+      case "lastName":
+        value = value
+          .replace(/\s+(\S)/g, "-$1") //replace spaces with '-'
+          .replace(/\-+/g, "-") //enforce the occurence of only one consecutive hyphen
+          .replace(/[^a-z\-\s]/gi, "")
+          .replace(/^\-+/, "");
+        value = value.charAt(0).toUpperCase() + value.slice(1);
+        break;
+    }
+    handleFormChange(name, value);
+  };
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    let { name, value } = e.target;
+    value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
+    handleFormChange(name, value);
+  };
   return (
     <>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-white dark:bg-gray2-900">
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">
               <h1 className="max-w-2xl text-4xl font-extrabold leading-none tracking-tight inline md:text-5xl lg:text-6xl dark:text-white">
-                {/* <span className="anim-circle align-top inline-flex gap-1 items-center justify-center">
-                  <span className="text-blue-600 font-bold text-2xl md:text-3xl xl:text-4xl ">
-                  £
-                  </span>
-                  <span className="text-blue-600 font-extrabold">
-                    <Animated
-                      animateToNumber={amount ? claimValue : 200}
-                      configs={[
-                        { mass: 1, tension: 220, friction: 90 },
-                        { mass: 1, tension: 280, friction: 90 },
-                      ]}
-                      ></Animated>
-                      </span>
-                </span> */}
-                {/* <sup>*</sup> */}
-                Get Your PPI Tax Refund Today!
+                Claim Your PPI Tax Refund Today!
               </h1>
               <p className="max-w-2xl mb-8 lg:mb-10 mt-4 font-normal text-gray-500 text-lg lg:text-xl dark:text-gray-400">
-                Finally! now you can use your Personal Savings Allowance to get
-                a tax refund on top of your PPI payout. Enter your payout
-                details below to unlock your refund today...
+                Enter your name and date of birth to check if you qualify.
               </p>
-              <div className="max-w-2xl ">
-                <CustomCurrencyField
-                  value={amount}
-                  id="grand-total"
-                  label="How much PPI did you get back?"
-                  placeholder="Enter Total Amount"
-                  errorClass={`${
-                    Number(amount?.replace(/,/g, "")) >= 100
+              <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+                <div
+                  className={`form-group ${
+                    firstEvents.firstName
+                      ? ""
+                      : userData.firstName.length > 1
                       ? "success"
-                      : firstEvent
-                      ? ""
                       : "error"
                   }`}
-                  helperText={
-                    firstEvent
+                >
+                  <label
+                    htmlFor="first-name"
+                    className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
+                  >
+                    First name(s)
+                  </label>
+                  <div className="icon-input">
+                    <input
+                      type="text"
+                      name="firstName"
+                      id="first-name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
+                      placeholder="John"
+                      required
+                      maxLength={64}
+                      value={userData.firstName}
+                      onBlur={handleInputBlur}
+                      onChange={handleInputChange}
+                    />
+                    <span className="form-icon"></span>
+                  </div>
+                  {firstEvents.firstName ? (
+                    ""
+                  ) : !userData.firstName ? (
+                    <p className="mt-2 text-sm">Please enter your first name</p>
+                  ) : (
+                    userData.firstName.length === 1 && (
+                      <p className="mt-2 text-sm">Please enter a valid name</p>
+                    )
+                  )}
+                </div>
+                <div
+                  className={`form-group ${
+                    firstEvents.lastName
                       ? ""
-                      : Number(amount?.replace(/,/g, "")) < 100
-                      ? "Please enter at least 3 characters"
-                      : ""
-                  }
-                  helperClass={`${
-                    Number(amount?.replace(/,/g, "")) >= 100 || firstEvent
-                      ? ""
+                      : userData.lastName.length > 1
+                      ? "success"
                       : "error"
                   }`}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setFirstEvent(false);
-                    setAmount(e.target.value);
-                    calculateClaimFromAmount(e.target.value);
-                  }}
-                />
+                >
+                  <label
+                    htmlFor="last-name"
+                    className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
+                  >
+                    Surname
+                  </label>
+                  <div className="icon-input">
+                    <input
+                      type="text"
+                      name="lastName"
+                      id="last-name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
+                      placeholder=" Doe"
+                      required
+                      maxLength={64}
+                      value={userData.lastName}
+                      onBlur={handleInputBlur}
+                      onChange={handleInputChange}
+                    />
+                    <span className="form-icon"></span>
+                  </div>
+                  {firstEvents.lastName ? (
+                    ""
+                  ) : !userData.lastName ? (
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                      Please enter your surname
+                    </p>
+                  ) : (
+                    userData.lastName.length === 1 && (
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                        Please enter a valid name
+                      </p>
+                    )
+                  )}
+                </div>
+              </div>
+              <div className="form-group w-full my-5">
+                <div
+                  className={`w-full mb-2 ${
+                    firstEvents.day && firstEvents.month && firstEvents.year
+                      ? ""
+                      : userData.day && userData.month && userData.year
+                      ? "success"
+                      : "error"
+                  }`}
+                >
+                  <label
+                    htmlFor="birthday"
+                    className="block text-lg font-bold text-gray-900 dark:text-white"
+                  >
+                    Date of birth
+                  </label>
+                </div>
+
+                <div id="birthday" className="grid gap-5 sm:grid-cols-3">
+                  <div className="grid gap-5 grid-cols-2 sm:col-span-2">
+                    <div
+                      className={
+                        firstEvents.day
+                          ? ""
+                          : userData.day
+                          ? "success"
+                          : "error"
+                      }
+                    >
+                      <div className="icon-input">
+                        <FormControl className="w-full mui-select">
+                          <Select
+                            id="day"
+                            name="day"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={userData.day}
+                            onChange={(e) => handleMUISelectChange(e)}
+                            displayEmpty
+                            IconComponent={ExpandMoreIcon}
+                          >
+                            <MenuItem value="" disabled>
+                              DD
+                            </MenuItem>
+                            {Dates &&
+                              Dates.map((item: string, index: number) => (
+                                <MenuItem key={index} value={item}>
+                                  {item}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                          <span className="form-icon"></span>
+                        </FormControl>
+                      </div>
+                      {!userData.day && !firstEvents.day && (
+                        <p className="mt-2 text-sm">Select day of birth</p>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        firstEvents.month
+                          ? ""
+                          : userData.month
+                          ? "success"
+                          : "error"
+                      }
+                    >
+                      <div className="icon-input">
+                        <FormControl className="w-full mui-select">
+                          <Select
+                            id="month"
+                            name="month"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            value={userData.month}
+                            onChange={(e) => handleMUISelectChange(e)}
+                            displayEmpty
+                            IconComponent={ExpandMoreIcon}
+                          >
+                            <MenuItem value="" disabled>
+                              MM
+                            </MenuItem>
+                            {Months &&
+                              Months.map((item: string, index: number) => (
+                                <MenuItem key={index} value={item}>
+                                  {item}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                          <span className="form-icon"></span>
+                        </FormControl>
+                      </div>
+                      {!userData.month && !firstEvents.month && (
+                        <p className="mt-2 text-sm">Select month of birth</p>
+                      )}
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      firstEvents.year
+                        ? ""
+                        : userData.year
+                        ? "success"
+                        : "error"
+                    }
+                  >
+                    <div className="icon-input">
+                      <FormControl className="w-full mui-select">
+                        <Select
+                          id="year"
+                          name="year"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          value={userData.year}
+                          onChange={(e) => handleMUISelectChange(e)}
+                          displayEmpty
+                          IconComponent={ExpandMoreIcon}
+                        >
+                          <MenuItem value="" disabled>
+                            YYYY
+                          </MenuItem>
+                          {Years &&
+                            Years.map((item: string, index: number) => (
+                              <MenuItem key={index} value={item}>
+                                {item}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                        <span className="form-icon"></span>
+                      </FormControl>
+                    </div>
+                    {!userData.year && !firstEvents.year && (
+                      <p className="mt-2 text-sm">Select year of birth</p>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="max-w-2xl text-sm text-gray-500 mt-10">
                 <ul className="grid gap-6 w-full md:grid-cols-2">
@@ -161,7 +351,7 @@ const HeroSection: React.FC<{
                         <div />
                         <div className="block">
                           <div className="w-full font-semibold text-center text-lg">
-                            Check My Claim
+                            Check If I Qualify
                           </div>
                           <div className="w-full flex flex-row justify-center items-center">
                             <div className="flex justify-center items-center space-x-2 ">
