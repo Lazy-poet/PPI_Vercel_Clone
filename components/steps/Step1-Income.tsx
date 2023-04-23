@@ -59,7 +59,7 @@ const ClaimNow = (props: any) => {
           }`}
         >
           {userData.incomeLevel === IncomeLevel.ABR
-            ? "Sorry! you're not eligible to claim"
+            ? "Note: Higher and additional rate taxpayers do not qualify"
             : "Please select your income level."}
         </p>
       </div>

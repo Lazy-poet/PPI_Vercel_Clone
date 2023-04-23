@@ -85,7 +85,7 @@ export const NEXT_BUTTON_TIMERS = [
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
-    "Note: Higher and additional rate taxpayers do not qualify.",
+    "",
     <span key="2">
       Your personal information will be treated carefully in accordance with
       our&nbsp;
