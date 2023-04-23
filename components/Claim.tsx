@@ -16,7 +16,11 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
-import { useSystemValues, IncomeLevel } from "@/contexts/ValueContext";
+import {
+  useSystemValues,
+  IncomeLevel,
+  FirstEvents,
+} from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -92,6 +96,7 @@ function Claim({ setReady, data }: ClaimProps) {
     firstEvents,
     setFirstEvents,
     userData,
+    setUserData,
     showLoadingPage,
     setShowLoadingPage,
   } = useSystemValues();
@@ -332,9 +337,9 @@ function Claim({ setReady, data }: ClaimProps) {
         break;
 
       case STEP.SIGNATURE:
-        setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData) {
-          if (formData3.signatureData !== dbData.signatureData) {
+        setFirstEvents({ ...firstEvents, signatureData: false });
+        if (userData.signatureData) {
+          if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
@@ -342,13 +347,13 @@ function Claim({ setReady, data }: ClaimProps) {
               .from("signatures")
               .upload(
                 `claim-form/${+new Date()}.png`,
-                await base64ToFile(formData3.signatureData)
+                await base64ToFile(userData.signatureData)
               );
 
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                signatureData: formData3.signatureData,
+                signatureData: userData.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
               .match({ link_code: linkCode })
@@ -484,11 +489,13 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [step]);
 
   useEffect(() => {
+    // TODO: Move this logic a step higher so it can show data in hero section
     /* get existed user data */
     const getPrevData = () => {
       if (!data?.length) {
         return;
       }
+
       let dob = { day: "", month: "", year: "" };
       if (data?.[0].birthdate) {
         dob =
@@ -507,6 +514,31 @@ function Claim({ setReady, data }: ClaimProps) {
 
       /* update the form data with existing user data */
 
+      setUserData({
+        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
+        lastName: data?.[0].lastName ? data?.[0].lastName : "",
+        email: data?.[0].email ? data?.[0].email : "",
+        postCode: data?.[0].postCode
+          ? (parse(data?.[0].postCode).postcode as string)
+          : "",
+        address: data?.[0].address ? data?.[0].address : "",
+        day: dob.day,
+        month: dob.month,
+        year: dob.year,
+        phone: data?.[0]?.phone || "",
+        signatureData: data?.[0]?.signatureData || "",
+        incomeLevel: data?.[0]?.incomeLevel || "",
+      });
+
+      setFirstEvents(
+        (Object.keys(firstEvents) as (keyof typeof firstEvents)[]).reduce(
+          (obj, ev) => {
+            obj[ev] = false;
+            return obj;
+          },
+          {} as typeof firstEvents
+        )
+      );
       setFormData1({
         firstEvent: true,
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
@@ -637,12 +669,7 @@ function Claim({ setReady, data }: ClaimProps) {
             {step === STEP.INCOME_LEVEL && (
               <Income data={formData2} handleFormChange={handleFormChange2} />
             )}
-            {step === STEP.SIGNATURE && (
-              <Signature
-                data={formData3}
-                handleFormChange={handleFormChange3}
-              />
-            )}
+            {step === STEP.SIGNATURE && <Signature />}
             {step === STEP.ONE_MORE && (
               <OneMore data={formData4} handleFormChange={handleFormChange4} />
             )}

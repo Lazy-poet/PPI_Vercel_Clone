@@ -5,17 +5,28 @@ import { THEME } from "@/contexts/ThemeContext";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useSystemValues } from "@/contexts/ValueContext";
 
-const Signature = (props: any) => {
-  const { data, handleFormChange } = props;
+const Signature = () => {
   const canvasRef = useRef<SignatureCanvas>(null);
   const { theme } = useThemeContext();
-  const { openPdf } = useSystemValues();
+  const { setUserData, userData, firstEvents, setFirstEvents } =
+    useSystemValues();
 
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...userData,
+      [key]: value,
+    });
+
+    setFirstEvents({
+      ...firstEvents,
+      [key]: false,
+    });
+  };
   const clear = () => {
-    if (!data.signatureData) return;
+    if (!userData.signatureData) return;
     // @ts-ignore
     canvasRef.current.clear();
-    handleFormChange("signatureData", null);
+    handleFormChange("signatureData", "");
   };
 
   const trim = async () => {
@@ -49,7 +60,7 @@ const Signature = (props: any) => {
     });
   };
   useEffect(() => {
-    const signatureData = data.signatureData;
+    const signatureData = userData.signatureData;
     if (signatureData && Object.keys(signatureData).length !== 0) {
       (async () => {
         const dataUrl =
@@ -66,7 +77,11 @@ const Signature = (props: any) => {
     <div className="mt-6">
       <div
         className={`form-group mt-6 ${
-          data.firstEvent ? "" : data.signatureData ? "success" : "error"
+          firstEvents.signatureData
+            ? ""
+            : userData.signatureData
+            ? "success"
+            : "error"
         }`}
       >
         <label
@@ -115,16 +130,14 @@ const Signature = (props: any) => {
             </button>
           </div>
         </div>
-        <p
-          className={`mt-2 text-sm ${
-            data.firstEvent || data.signatureData
-              ? "text-gray-500 dark:text-gray-400 "
-              : "error"
-          }`}
-        >
-          Take your time to make your signature accurate. You can start again as
-          many times as you like by pressing &quot;Clear&quot;
-        </p>
+        {firstEvents.signatureData || userData.signatureData ? (
+          <p className={`mt-2 text-sm ${"text-gray-500 dark:text-gray-400 "}`}>
+            Take your time to make your signature accurate. You can start again
+            as many times as you like by pressing &quot;Clear&quot;
+          </p>
+        ) : (
+          <p className={`mt-2 text-sm error`}>Please provide your signature</p>
+        )}
       </div>
     </div>
   );

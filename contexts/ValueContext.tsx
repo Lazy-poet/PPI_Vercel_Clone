@@ -43,6 +43,7 @@ export type UserData = {
   month: string;
   year: string;
   incomeLevel: IncomeLevel;
+  signatureData: string;
 };
 
 export type FirstEvents = {
@@ -50,7 +51,6 @@ export type FirstEvents = {
 } & {
   lendersData: boolean;
   otherLender: boolean;
-  signatureData: boolean;
   insurance: boolean;
 };
 
@@ -89,6 +89,7 @@ const useValue = () => {
     day: "",
     month: "",
     year: "",
+    signatureData: "",
     incomeLevel: "" as IncomeLevel,
   } as UserData);
   const [firstEvents, setFirstEvents] = useState({
