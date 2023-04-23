@@ -25,14 +25,14 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {STEP.DETAILS === step && (
+      {STEP.CONTACT === step && (
         <CustomAlertBanner
           color="green"
           // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
           body={`Great news! You're entitled to claim a PPI tax refund`}
         />
       )}
-      {step === STEP.ONE_MORE && (
+      {step === STEP.INSURANCE && (
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
       {step === STEP.REFUNDS && (
