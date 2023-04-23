@@ -5,7 +5,11 @@ import { STEP, UserData } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
-import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
+import {
+  NEXT_BUTTON_HELPERS,
+  NEXT_BUTTON_TEXTS,
+  NEXT_BUTTON_TIMERS,
+} from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
 import Utils from "../libs/utils";
@@ -625,7 +629,7 @@ function Claim({ setReady, data }: ClaimProps) {
               <NextButton
                 onClick={nextStep}
                 timer={NEXT_BUTTON_TIMERS[step]}
-                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                label={NEXT_BUTTON_TEXTS[step]}
                 helper={NEXT_BUTTON_HELPERS(step, openPdf)}
               />
             )}

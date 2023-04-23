@@ -67,11 +67,22 @@ export const SIDE_INFO = [
   "Thank you",
 ];
 
+export const NEXT_BUTTON_TEXTS = [
+  "Verify My Eligibility",
+  "Continue to Address",
+  "Proceed to Signature",
+  "Confirm and Continue",
+  "Submit NIN",
+  "Complete My Claim",
+];
+
 export const NEXT_BUTTON_TIMERS = [
-  "52 seconds left...",
-  "22 seconds left...",
-  "19 seconds left...",
-  "15 seconds left...",
+  "55 seconds remaining...",
+  "35 seconds remaining...",
+  "25 seconds remaining...",
+  "20 seconds remaining...",
+  "10 seconds remaining...",
+  "0 seconds remaining...",
   "",
 ];
 
