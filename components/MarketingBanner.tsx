@@ -8,7 +8,7 @@ const MarketingBanner = () => {
     <div
       id="marketing-banner"
       tabIndex={-1}
-      className="sm:hidden relative z-50 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-5 mx-4 bg-[#FCE96A] border border-gray-100 rounded-lg shadow-sm lg:max-w-7xl dark:border-gray-600"
+      className="sm:hidden relative z-10 flex flex-col md:flex-row justify-between w-[calc(100%-2rem)] p-5 mx-4 bg-[#FCE96A] border border-gray-100 rounded-lg shadow-sm lg:max-w-7xl dark:border-gray-600"
     >
       <div className="flex flex-col items-start md:items-center md:flex-row text-gray-900">
         {!ready ? (

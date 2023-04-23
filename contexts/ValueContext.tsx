@@ -68,6 +68,7 @@ const useValue = () => {
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [refunds, setRefunds] = useState({} as REFUNDS);
+  const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -204,6 +205,8 @@ const useValue = () => {
     setUserData,
     firstEvents,
     setFirstEvents,
+    showLoadingPage,
+    setShowLoadingPage,
   };
 };
 
@@ -290,6 +293,8 @@ interface Value {
   setUserData: Dispatch<SetStateAction<UserData>>;
   firstEvents: FirstEvents;
   setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
+  showLoadingPage: boolean;
+  setShowLoadingPage: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ValueContext = createContext({} as Value);

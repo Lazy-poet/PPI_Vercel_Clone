@@ -15,6 +15,7 @@ import PdfViewer from "@/components/PdfViewer";
 import { Worker } from "@react-pdf-viewer/core";
 import Features from "@/components/Features";
 import Layout from "@/components/Layout";
+import Loading from "@/components/Loading";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -40,6 +41,7 @@ export default function Home(props: HomeProps) {
     setUserPhone,
     ready,
     setReady,
+    showLoadingPage,
   } = useSystemValues();
 
   const router = useRouter();
@@ -75,6 +77,7 @@ export default function Home(props: HomeProps) {
           {/* <Banner />  */}
           <LoadScripts />
           <PdfViewer />
+          {showLoadingPage && <Loading />}
           {ready ? (
             <Claim setReady={setReady} data={props.data} />
           ) : (

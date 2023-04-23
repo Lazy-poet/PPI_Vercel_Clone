@@ -110,7 +110,7 @@ const HeroSection: React.FC<{
   };
   return (
     <>
-      <section className="bg-white dark:bg-gray2-900">
+      <section className="bg-white dark:bg-gray-900">
         <div className="max-w-screen-xl mx-auto px-4 md:px-20 py-8 lg:py-24">
           <div className="grid lg:grid-cols-12 lg:gap-8 xl:gap-0">
             <div className="mr-auto place-self-center lg:col-span-7">

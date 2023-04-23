@@ -89,6 +89,8 @@ function Claim({ setReady, data }: ClaimProps) {
     firstEvents,
     setFirstEvents,
     userData,
+    showLoadingPage,
+    setShowLoadingPage,
   } = useSystemValues();
 
   const [step, setStep] = useState<STEP>(STEP.INCOME_LEVEL);
@@ -225,8 +227,11 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-
-          setStep(STEP.DETAILS);
+          setShowLoadingPage(true);
+          setTimeout(() => {
+            setShowLoadingPage(false);
+            setStep(STEP.DETAILS);
+          }, 1000);
         }
         break;
       case STEP.DETAILS:
