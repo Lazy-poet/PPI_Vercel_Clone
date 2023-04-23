@@ -5,7 +5,6 @@ import { STEP, UserData } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
-import { Earnings } from "@/components/steps/Step1-ClaimNow";
 import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
@@ -13,7 +12,7 @@ import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
-import { REFUNDS, useSystemValues } from "@/contexts/ValueContext";
+import { useSystemValues, IncomeLevel } from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
@@ -21,7 +20,7 @@ import { nanoid } from "nanoid";
 const Details = dynamic(() => import("@/components/steps/Step2-Details"), {
   loading: () => <Spinner />,
 });
-const ClaimNow = dynamic(() => import("@/components/steps/Step1-ClaimNow"), {
+const ClaimNow = dynamic(() => import("@/components/steps/Step1-Income"), {
   loading: () => <Spinner />,
 });
 
@@ -83,9 +82,12 @@ function Claim({ setReady, data }: ClaimProps) {
     setLendersData,
     refunds,
     setRefunds,
+    firstEvents,
+    setFirstEvents,
+    userData,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
+  const [step, setStep] = useState<STEP>(STEP.INCOME_LEVEL);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
@@ -163,7 +165,7 @@ function Claim({ setReady, data }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.CLAIM_NOW) {
+    if (step === STEP.INCOME_LEVEL) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -197,18 +199,18 @@ function Claim({ setReady, data }: ClaimProps) {
     let { day, month, year, ...otherFormData1 } = formData1;
 
     switch (step) {
-      case STEP.CLAIM_NOW:
-        setFormData2({ ...formData2, firstEvent: false });
+      case STEP.INCOME_LEVEL:
+        setFirstEvents({ ...firstEvents, incomeLevel: false });
         if (
-          formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan50001
+          userData.incomeLevel?.length &&
+          userData.incomeLevel !== IncomeLevel.ABR
         ) {
-          const valueChanged = formData2.earnings !== dbData.earnings;
+          const valueChanged = userData.incomeLevel !== dbData.incomeLevel;
           if ((userEmail || linkCode) && valueChanged) {
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                earnings: formData2.earnings,
+                IncomeLevel: userData.incomeLevel,
               })
               .match(userEmail ? { email: userEmail } : { link_code: linkCode })
               .select();
@@ -601,7 +603,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 handleOpen={openPdf}
               />
             )}
-            {step === STEP.CLAIM_NOW && (
+            {step === STEP.INCOME_LEVEL && (
               <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
             )}
             {step === STEP.SIGNATURE && (

@@ -1,19 +1,19 @@
 export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 
 export const TITLES = [
-  "Your income",
-  "Your details",
-  "Your signature",
-  "Confirm your identity",
-  "Your Lenders",
-  "Your PPI refunds",
-  "Thank you! 🎉",
-  "Apologies, we are unable to proceed",
+  (name?: string) => name + ", Select Your Income Level",
+  (name?: string) => "Your details",
+  (name?: string) => "Your signature",
+  (name?: string) => "Confirm your identity",
+  (name?: string) => "Your Lenders",
+  (name?: string) => "Your PPI refunds",
+  (name?: string) => "Thank you! 🎉",
+  (name?: string) => "Apologies, we are unable to proceed",
 ];
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
-    "Tell us about your annual income to see if you qualify",
+    "Your eligibility for a tax refund depends on your income.",
     "Complete your details below to start your claim today",
     <span key="tos">
       {name}, your signature will be applied to an&nbsp;
@@ -77,7 +77,7 @@ export const NEXT_BUTTON_TIMERS = [
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
-    "",
+    "Note: Higher and additional rate taxpayers do not qualify.",
     <span key="2">
       Your personal information will be treated carefully in accordance with
       our&nbsp;

@@ -6,6 +6,11 @@ import React, {
   Dispatch,
 } from "react";
 
+export enum IncomeLevel {
+  UPA = "Under Personal Allowance",
+  BR = "Basic Rate",
+  ABR = "Above Basic Rate",
+}
 type LendersData = {
   selectedLenders: string[];
   showOtherLender: boolean;
@@ -36,7 +41,7 @@ export type UserData = {
   day: string;
   month: string;
   year: string;
-  incomeLevel: string;
+  incomeLevel: IncomeLevel;
 };
 
 export type FirstEvents = {
@@ -82,7 +87,7 @@ const useValue = () => {
     day: "",
     month: "",
     year: "",
-    incomeLevel: "",
+    incomeLevel: "" as IncomeLevel,
   } as UserData);
   const [firstEvents, setFirstEvents] = useState({
     firstName: true,

@@ -1,10 +1,5 @@
 import { STEP } from "@/libs/constants";
 import CustomAlertBanner from "./CustomAlert";
-import { Earnings } from "./steps/Step1-ClaimNow";
-
-type Props = {
-  step: STEP;
-};
 
 const StepAlert = (props: any) => {
   const { step, signatureData, earningsData, claimValue } = props;
