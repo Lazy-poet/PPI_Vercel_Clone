@@ -12,9 +12,8 @@ const Address = () => {
     setShowPulse,
     addressList,
     setAddressList,
-    setUserData,
     userData: data,
-    setFirstEvents,
+    handleFormChange,
     firstEvents,
   } = useSystemValues();
 
@@ -40,18 +39,6 @@ const Address = () => {
       data.address ===
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
-
-  const handleFormChange = (key: string, value: string) => {
-    setUserData({
-      ...data,
-      [key]: value,
-    });
-
-    setFirstEvents({
-      ...firstEvents,
-      [key]: false,
-    });
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;

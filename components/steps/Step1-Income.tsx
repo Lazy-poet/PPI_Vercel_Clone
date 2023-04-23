@@ -7,19 +7,8 @@ export enum Earnings {
 }
 
 const ClaimNow = (props: any) => {
-  const { userData, setUserData, firstEvents, setFirstEvents } =
-    useSystemValues();
-  const handleFormChange = (key: string, value: string) => {
-    setUserData({
-      ...userData,
-      [key]: value,
-    });
+  const { userData, firstEvents, handleFormChange } = useSystemValues();
 
-    setFirstEvents({
-      ...firstEvents,
-      [key]: false,
-    });
-  };
   return (
     <div className="grid gap-[40px] mt-6 mb-5 sm:grid-cols-2">
       <div className={`form-group sm:col-span-2 `}>

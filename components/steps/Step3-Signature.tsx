@@ -8,20 +8,8 @@ import { useSystemValues } from "@/contexts/ValueContext";
 const Signature = () => {
   const canvasRef = useRef<SignatureCanvas>(null);
   const { theme } = useThemeContext();
-  const { setUserData, userData, firstEvents, setFirstEvents } =
-    useSystemValues();
+  const { userData, firstEvents, handleFormChange } = useSystemValues();
 
-  const handleFormChange = (key: string, value: string) => {
-    setUserData({
-      ...userData,
-      [key]: value,
-    });
-
-    setFirstEvents({
-      ...firstEvents,
-      [key]: false,
-    });
-  };
   const clear = () => {
     if (!userData.signatureData) return;
     // @ts-ignore

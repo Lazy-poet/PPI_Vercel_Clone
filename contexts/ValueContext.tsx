@@ -159,6 +159,25 @@ const useValue = () => {
   const openPdf = (path: string) => {
     setFileURL(path);
   };
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...userData,
+      [key]: value,
+    });
+    if (key === "day" || key === "month" || key === "year") {
+      setFirstEvents({
+        ...firstEvents,
+        day: false,
+        month: false,
+        year: false,
+      });
+    } else {
+      setFirstEvents({
+        ...firstEvents,
+        [key]: false,
+      });
+    }
+  };
   return {
     checkedYears,
     amount,
@@ -209,6 +228,7 @@ const useValue = () => {
     setFirstEvents,
     showLoadingPage,
     setShowLoadingPage,
+    handleFormChange,
   };
 };
 
@@ -297,6 +317,7 @@ interface Value {
   setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
   showLoadingPage: boolean;
   setShowLoadingPage: Dispatch<SetStateAction<boolean>>;
+  handleFormChange: (key: string, value: string) => void;
 }
 
 export const ValueContext = createContext({} as Value);

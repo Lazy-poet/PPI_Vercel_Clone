@@ -5,31 +5,7 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import { isValid, parse } from "postcode";
 const Details = (props: any) => {
   const { handleOpen } = props;
-  const {
-    addressList,
-    setAddressList,
-    setUserData,
-    userData: data,
-    setFirstEvents,
-    firstEvents,
-  } = useSystemValues();
-
-  // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
-  const currentAddressListPostCode = useRef<string>(
-    parse(data.postCode)?.postcode || ""
-  );
-
-  const handleFormChange = (key: string, value: string) => {
-    setUserData({
-      ...data,
-      [key]: value,
-    });
-
-    setFirstEvents({
-      ...firstEvents,
-      [key]: false,
-    });
-  };
+  const { userData: data, firstEvents, handleFormChange } = useSystemValues();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
