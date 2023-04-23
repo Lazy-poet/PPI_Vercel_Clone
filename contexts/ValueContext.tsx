@@ -1,3 +1,4 @@
+import { DBData } from "@/libs/constants";
 import React, {
   createContext,
   SetStateAction,
@@ -5,8 +6,12 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import PropTypes, { string } from "prop-types";
-import { UserData } from "@/libs/constants";
+
+export enum IncomeLevel {
+  UPA = "Under Personal Allowance",
+  BR = "Basic Rate",
+  ABR = "Above Basic Rate",
+}
 type LendersData = {
   selectedLenders: string[];
   showOtherLender: boolean;
@@ -26,6 +31,29 @@ export type REFUNDS = Record<
     };
   }
 >;
+
+export type UserData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  postCode: string;
+  address: string;
+  phone: string;
+  day: string;
+  month: string;
+  year: string;
+  incomeLevel: IncomeLevel;
+  signatureData: string;
+  insurance: string;
+};
+
+export type FirstEvents = {
+  [key in keyof UserData]: boolean;
+} & {
+  lendersData: boolean;
+  otherLender: boolean;
+};
+
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>("");
@@ -33,7 +61,7 @@ const useValue = () => {
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
   const [linkCode, setLinkCode] = useState<any>(null);
-  const [dbData, setDbData] = useState({} as UserData);
+  const [dbData, setDbData] = useState({} as DBData);
   const [userEmail, setUserEmail] = useState<any>(null);
   const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
@@ -41,6 +69,7 @@ const useValue = () => {
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [refunds, setRefunds] = useState({} as REFUNDS);
+  const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -50,13 +79,42 @@ const useValue = () => {
     },
     firstEvent: true,
   });
-
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    postCode: "",
+    address: "",
+    phone: "",
+    day: "",
+    month: "",
+    year: "",
+    signatureData: "",
+    incomeLevel: "" as IncomeLevel,
+    insurance: "",
+  } as UserData);
+  const [firstEvents, setFirstEvents] = useState({
+    firstName: true,
+    lastName: true,
+    email: true,
+    postCode: true,
+    address: true,
+    phone: true,
+    day: true,
+    month: true,
+    year: true,
+    incomeLevel: true,
+    lendersData: true,
+    otherLender: true,
+    signatureData: true,
+    insurance: true,
+  });
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
     firstName: "",
     lastName: "",
     email: "",
-    phone: "07",
+    phone: "",
     postCode: "",
     address: "",
     day: "",
@@ -102,6 +160,25 @@ const useValue = () => {
   const openPdf = (path: string) => {
     setFileURL(path);
   };
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...userData,
+      [key]: value,
+    });
+    if (key === "day" || key === "month" || key === "year") {
+      setFirstEvents({
+        ...firstEvents,
+        day: false,
+        month: false,
+        year: false,
+      });
+    } else {
+      setFirstEvents({
+        ...firstEvents,
+        [key]: false,
+      });
+    }
+  };
   return {
     checkedYears,
     amount,
@@ -146,6 +223,13 @@ const useValue = () => {
     setLendersData,
     refunds,
     setRefunds,
+    userData,
+    setUserData,
+    firstEvents,
+    setFirstEvents,
+    showLoadingPage,
+    setShowLoadingPage,
+    handleFormChange,
   };
 };
 
@@ -210,8 +294,8 @@ interface Value {
   setAddressList: Dispatch<SetStateAction<Record<string, any>[]>>;
   linkCode: string;
   setLinkCode: Dispatch<SetStateAction<string>>;
-  dbData: UserData;
-  setDbData: Dispatch<SetStateAction<UserData>>;
+  dbData: DBData;
+  setDbData: Dispatch<SetStateAction<DBData>>;
   userEmail: string;
   setUserEmail: Dispatch<SetStateAction<string>>;
   userPhone: string;
@@ -228,6 +312,13 @@ interface Value {
   setLendersData: Dispatch<SetStateAction<LendersData>>;
   refunds: REFUNDS;
   setRefunds: Dispatch<SetStateAction<REFUNDS>>;
+  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
+  firstEvents: FirstEvents;
+  setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
+  showLoadingPage: boolean;
+  setShowLoadingPage: Dispatch<SetStateAction<boolean>>;
+  handleFormChange: (key: string, value: string) => void;
 }
 
 export const ValueContext = createContext({} as Value);
@@ -241,7 +332,3 @@ export const ValueProvider = ({ children }: React.PropsWithChildren) => {
 };
 
 export const useSystemValues = () => useContext(ValueContext);
-
-ValueProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};

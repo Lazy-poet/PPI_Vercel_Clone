@@ -65,7 +65,7 @@ const nextConfig = {
         appVersion: buildId,
         publicPath:
           process.env.NODE_ENV === "production"
-            ? "https://quicktaxclaims.co.uk/_next/"
+            ? "https://ppi.claimingmadeeasy.co.uk/_next/"
             : "http://localhost:3000/_next/",
       })
     );

@@ -50,30 +50,9 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
         </p>
 
         <ul role="list" className="space-y-4 text-left">
-          {step === STEP.CLAIM_NOW &&
-            SIDE_INFO.slice(0, 1).map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
-          {step === STEP.DETAILS &&
-            SIDE_INFO.slice(0, 2).map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
-          {step === STEP.SIGNATURE &&
-            SIDE_INFO.slice(0, 3).map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
-          {step === STEP.ONE_MORE &&
-            SIDE_INFO.slice(0, 4).map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
-          {step === STEP.REFUNDS &&
-            SIDE_INFO.slice(0, 5).map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
-          {step === STEP.ALL_DONE &&
-            SIDE_INFO.map((info, index) => {
-              return <SideItem key={index} info={info} />;
-            })}
+          {SIDE_INFO.slice(0, step + 1).map((info, index) => {
+            return <SideItem key={index} info={info} />;
+          })}
         </ul>
       </div>
     </div>

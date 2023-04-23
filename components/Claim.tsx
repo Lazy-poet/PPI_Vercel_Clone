@@ -1,27 +1,37 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
-import { STEP, UserData } from "@/libs/constants";
+import { STEP, DBData } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
-import { Earnings } from "@/components/steps/Step1-ClaimNow";
-import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
+import {
+  NEXT_BUTTON_HELPERS,
+  NEXT_BUTTON_TEXTS,
+  NEXT_BUTTON_TIMERS,
+} from "@/libs/doms";
 import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
 import StepAlert from "@/components/StepAlert";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
-import { REFUNDS, useSystemValues } from "@/contexts/ValueContext";
+import {
+  useSystemValues,
+  IncomeLevel,
+  FirstEvents,
+} from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
 
-const Details = dynamic(() => import("@/components/steps/Step2-Details"), {
+const Contact = dynamic(() => import("@/components/steps/Step2-Contact"), {
   loading: () => <Spinner />,
 });
-const ClaimNow = dynamic(() => import("@/components/steps/Step1-ClaimNow"), {
+const Income = dynamic(() => import("@/components/steps/Step1-Income"), {
+  loading: () => <Spinner />,
+});
+const Address = dynamic(() => import("@/components/steps/Step3-Address"), {
   loading: () => <Spinner />,
 });
 
@@ -29,7 +39,7 @@ const Signature = dynamic(() => import("@/components/steps/Step3-Signature"), {
   loading: () => <Spinner />,
 });
 
-const OneMore = dynamic(() => import("@/components/steps/Step4-OneMore"), {
+const Insurance = dynamic(() => import("@/components/steps/Step4-Insurance"), {
   loading: () => <Spinner />,
 });
 
@@ -45,7 +55,7 @@ const AllDone = dynamic(() => import("@/components/steps/Step6-AllDone"), {
 
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
-  data: UserData[];
+  data: DBData[];
 };
 
 export const calculateOurFee = (value: number) => {
@@ -83,9 +93,15 @@ function Claim({ setReady, data }: ClaimProps) {
     setLendersData,
     refunds,
     setRefunds,
+    firstEvents,
+    setFirstEvents,
+    userData,
+    setUserData,
+    showLoadingPage,
+    setShowLoadingPage,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
+  const [step, setStep] = useState<STEP>(STEP.INCOME_LEVEL);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
@@ -163,7 +179,7 @@ function Claim({ setReady, data }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.CLAIM_NOW) {
+    if (step === STEP.INCOME_LEVEL) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -197,18 +213,18 @@ function Claim({ setReady, data }: ClaimProps) {
     let { day, month, year, ...otherFormData1 } = formData1;
 
     switch (step) {
-      case STEP.CLAIM_NOW:
-        setFormData2({ ...formData2, firstEvent: false });
+      case STEP.INCOME_LEVEL:
+        setFirstEvents({ ...firstEvents, incomeLevel: false });
         if (
-          formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan50001
+          userData.incomeLevel?.length &&
+          userData.incomeLevel !== IncomeLevel.ABR
         ) {
-          const valueChanged = formData2.earnings !== dbData.earnings;
+          const valueChanged = userData.incomeLevel !== dbData.incomeLevel;
           if ((userEmail || linkCode) && valueChanged) {
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                earnings: formData2.earnings,
+                incomeLevel: userData.incomeLevel,
               })
               .match(userEmail ? { email: userEmail } : { link_code: linkCode })
               .select();
@@ -219,29 +235,25 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-
-          setStep(STEP.DETAILS);
+          setShowLoadingPage(true);
+          setTimeout(() => {
+            setShowLoadingPage(false);
+            setStep(STEP.CONTACT);
+          }, 1000);
         }
         break;
-      case STEP.DETAILS:
-        setFormData1({ ...formData1, firstEvent: false });
-        setFdEvents1({
-          firstName: false,
-          lastName: false,
+      case STEP.CONTACT:
+        setFirstEvents({
+          ...firstEvents,
+          phone: false,
           email: false,
-          postCode: false,
-          address: false,
-          day: false,
-          month: false,
-          year: false,
         });
-        const { firstEvent, ...details } = formData1;
+        const { ...details } = userData;
         if (
-          details.firstName.length > 1 &&
-          details.lastName.length > 1 &&
-          Utils.isObjectFilled(details) &&
-          isValid(details.postCode) &&
-          Utils.validateEmail(details.email)
+          Utils.isObjectFilled(details, ["phone", "email"]) &&
+          Utils.validateEmail(details.email) &&
+          details.phone.length === 11 &&
+          details.phone.startsWith("07")
         ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
@@ -252,6 +264,8 @@ function Claim({ setReady, data }: ClaimProps) {
                 ? Utils.getObjectDifference(dbData, formattedDetails)
                 : { ...dbData, ...formattedDetails };
             // set a new link_code either if there isnt an existing one or when user email has changed
+            console.log("details", details.email, userEmail);
+
             const link_code = linkCode
               ? details.email !== userEmail
                 ? nanoid(9)
@@ -264,13 +278,6 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   ...utmParams,
                   ...diff,
-                  estimated_total: amount,
-                  ...(!dbData.estimated_total_difference && {
-                    estimated_total_difference: Number(
-                      amount.replace(/,/g, "")
-                    ),
-                  }),
-                  earnings: formData2.earnings,
                   link_code,
                   link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
                   email: details.email,
@@ -279,7 +286,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: "link_code",
+                  onConflict: "email",
                 }
               )
               .select();
@@ -295,14 +302,46 @@ function Claim({ setReady, data }: ClaimProps) {
               setLinkCode(link_code);
             }
           }
+          setStep(STEP.ADDRESS);
+        }
+        break;
+      case STEP.ADDRESS:
+        setFirstEvents({
+          ...firstEvents,
+          postCode: false,
+          address: false,
+        });
+        if (
+          Utils.isObjectFilled(userData, ["postCode", "address"]) &&
+          isValid(userData.postCode)
+        ) {
+          if (Utils.hasObjectValueChanged(userData, dbData)) {
+            const { data, error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                postCode: userData.postCode,
+                address: userData.address,
+              })
+              .match({ email: userEmail })
+              .select();
+
+            if (data?.[0]) {
+              setDbData(data[0]);
+              if (data[0].signatureData || data[0].insurance) {
+                await updateSecondaryTable({
+                  ...data[0],
+                });
+              }
+            }
+          }
           setStep(STEP.SIGNATURE);
         }
         break;
 
       case STEP.SIGNATURE:
-        setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData) {
-          if (formData3.signatureData !== dbData.signatureData) {
+        setFirstEvents({ ...firstEvents, signatureData: false });
+        if (userData.signatureData) {
+          if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";
 
@@ -310,32 +349,33 @@ function Claim({ setReady, data }: ClaimProps) {
               .from("signatures")
               .upload(
                 `claim-form/${+new Date()}.png`,
-                await base64ToFile(formData3.signatureData)
+                await base64ToFile(userData.signatureData)
               );
 
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                signatureData: formData3.signatureData,
+                signatureData: userData.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
-              .match({ link_code: linkCode })
+              .match({ email: userEmail })
               .select();
             if (data?.length) {
               setDbData(data[0]);
               await updateSecondaryTable(data[0]);
             }
           }
-          setStep(STEP.ONE_MORE);
+          setStep(STEP.INSURANCE);
         }
         break;
-      case STEP.ONE_MORE:
-        setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance && isNino(formData4.insurance)) {
-          if (formData4.insurance !== dbData.insurance) {
+      case STEP.INSURANCE:
+        setFirstEvents({ ...firstEvents, insurance: false });
+
+        if (userData.insurance && isNino(userData.insurance)) {
+          if (userData.insurance !== dbData.insurance) {
             const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update({ insurance: formData4.insurance })
+              .update({ insurance: userData.insurance })
               .match({ email: userEmail })
               .select();
 
@@ -452,11 +492,13 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [step]);
 
   useEffect(() => {
+    // TODO: Move this logic a step higher so it can show data in hero section
     /* get existed user data */
     const getPrevData = () => {
       if (!data?.length) {
         return;
       }
+
       let dob = { day: "", month: "", year: "" };
       if (data?.[0].birthdate) {
         dob =
@@ -475,6 +517,32 @@ function Claim({ setReady, data }: ClaimProps) {
 
       /* update the form data with existing user data */
 
+      setUserData({
+        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
+        lastName: data?.[0].lastName ? data?.[0].lastName : "",
+        email: data?.[0].email ? data?.[0].email : "",
+        postCode: data?.[0].postCode
+          ? (parse(data?.[0].postCode).postcode as string)
+          : "",
+        address: data?.[0].address ? data?.[0].address : "",
+        day: dob.day,
+        month: dob.month,
+        year: dob.year,
+        phone: data?.[0]?.phone || "",
+        signatureData: data?.[0]?.signatureData || "",
+        incomeLevel: data?.[0]?.incomeLevel || "",
+        insurance: data?.[0]?.insurance || "",
+      });
+
+      setFirstEvents(
+        (Object.keys(firstEvents) as (keyof typeof firstEvents)[]).reduce(
+          (obj, ev) => {
+            obj[ev] = false;
+            return obj;
+          },
+          {} as typeof firstEvents
+        )
+      );
       setFormData1({
         firstEvent: true,
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
@@ -593,25 +661,24 @@ function Claim({ setReady, data }: ClaimProps) {
 
             <Title step={step} onClick={openPdf} />
 
-            {step === STEP.DETAILS && (
-              <Details
+            {step === STEP.CONTACT && (
+              <Contact
                 data={formData1}
                 fdEvents={fdEvents1}
                 handleFormChange={handleFormChange1}
                 handleOpen={openPdf}
               />
             )}
-            {step === STEP.CLAIM_NOW && (
-              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
+            {step === STEP.ADDRESS && <Address />}
+            {step === STEP.INCOME_LEVEL && (
+              <Income data={formData2} handleFormChange={handleFormChange2} />
             )}
-            {step === STEP.SIGNATURE && (
-              <Signature
-                data={formData3}
-                handleFormChange={handleFormChange3}
+            {step === STEP.SIGNATURE && <Signature />}
+            {step === STEP.INSURANCE && (
+              <Insurance
+                data={formData4}
+                handleFormChange={handleFormChange4}
               />
-            )}
-            {step === STEP.ONE_MORE && (
-              <OneMore data={formData4} handleFormChange={handleFormChange4} />
             )}
             {step === STEP.LENDERS && <Lenders />}
             {step === STEP.REFUNDS && (
@@ -623,7 +690,7 @@ function Claim({ setReady, data }: ClaimProps) {
               <NextButton
                 onClick={nextStep}
                 timer={NEXT_BUTTON_TIMERS[step]}
-                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                label={NEXT_BUTTON_TEXTS[step]}
                 helper={NEXT_BUTTON_HELPERS(step, openPdf)}
               />
             )}

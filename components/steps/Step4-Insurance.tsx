@@ -1,10 +1,14 @@
+import { useSystemValues } from "@/contexts/ValueContext";
+
 const isNino = require("is-national-insurance-number");
 
-const OneMore = (props: {
+const Insurance = (props: {
   data: any;
   handleFormChange: (field: string, value: string) => void;
 }) => {
-  const { data, handleFormChange } = props;
+
+  const { userData, firstEvents, setUserData, handleFormChange } =
+    useSystemValues();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().trim();
@@ -20,9 +24,9 @@ const OneMore = (props: {
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
       <div
         className={`form-group sm:col-span-2 ${
-          data.firstEvent
+          firstEvents.insurance
             ? ""
-            : data.insurance && isNino(data.insurance)
+            : userData.insurance && isNino(userData.insurance)
             ? "success"
             : "error"
         }`}
@@ -31,7 +35,7 @@ const OneMore = (props: {
           htmlFor="insurance"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          National Insurance (NI) number
+          NIN
         </label>
         <div className="flex">
           <div className="icon-input w-full">
@@ -39,9 +43,9 @@ const OneMore = (props: {
               <svg
                 viewBox="0 0 16 18"
                 className={`w-5 h-5 ${
-                  data.firstEvent
+                  firstEvents.insurance
                     ? "text-gray-500 dark:text-gray-400"
-                    : data.insurance && isNino(data.insurance)
+                    : userData.insurance && isNino(userData.insurance)
                     ? "text-green-500"
                     : "error"
                 }`}
@@ -60,17 +64,17 @@ const OneMore = (props: {
               type="text"
               name="insurance"
               id="insurance"
-              placeholder="e.g. AB123456C"
+              placeholder="AB 12 34 56 C"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
               maxLength={9}
-              value={data.insurance}
+              value={userData.insurance}
               onChange={(e) => handleInputChange(e)}
             />
             <span className="form-icon"></span>
           </div>
         </div>
-        {data.firstEvent ? (
+        {firstEvents.insurance ? (
           <p
             id="helper-text-explanation"
             className="mt-2 text-sm text-gray-500 dark:text-gray-400"
@@ -78,17 +82,12 @@ const OneMore = (props: {
             You can find your NI number on your payslip, P60, or any letters
             sent to you by HMRC relating to tax and benefits.
           </p>
-        ) : !data.insurance ? (
+        ) : !userData.insurance || !isNino(userData.insurance) ? (
           <p
             id="helper-text-explanation"
             className="mt-2 text-sm text-red-600 dark:text-red-500"
           >
-            You can find your NI number on your payslip, P60, or any letters
-            sent to you by HMRC relating to tax and benefits.
-          </p>
-        ) : !isNino(data.insurance) ? (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            Please provide a valid National Insurance (NI) number
+            Please enter a valid NIN
           </p>
         ) : (
           <p
@@ -104,4 +103,4 @@ const OneMore = (props: {
   );
 };
 
-export default OneMore;
+export default Insurance;
