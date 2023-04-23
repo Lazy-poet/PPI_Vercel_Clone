@@ -44,6 +44,7 @@ export type UserData = {
   year: string;
   incomeLevel: IncomeLevel;
   signatureData: string;
+  insurance: string;
 };
 
 export type FirstEvents = {
@@ -51,7 +52,6 @@ export type FirstEvents = {
 } & {
   lendersData: boolean;
   otherLender: boolean;
-  insurance: boolean;
 };
 
 const useValue = () => {
@@ -91,6 +91,7 @@ const useValue = () => {
     year: "",
     signatureData: "",
     incomeLevel: "" as IncomeLevel,
+    insurance: "",
   } as UserData);
   const [firstEvents, setFirstEvents] = useState({
     firstName: true,

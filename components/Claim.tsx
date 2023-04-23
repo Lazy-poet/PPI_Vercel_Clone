@@ -39,7 +39,7 @@ const Signature = dynamic(() => import("@/components/steps/Step3-Signature"), {
   loading: () => <Spinner />,
 });
 
-const OneMore = dynamic(() => import("@/components/steps/Step4-OneMore"), {
+const Insurance = dynamic(() => import("@/components/steps/Step4-Insurance"), {
   loading: () => <Spinner />,
 });
 
@@ -264,6 +264,8 @@ function Claim({ setReady, data }: ClaimProps) {
                 ? Utils.getObjectDifference(dbData, formattedDetails)
                 : { ...dbData, ...formattedDetails };
             // set a new link_code either if there isnt an existing one or when user email has changed
+            console.log("details", details.email, userEmail);
+
             const link_code = linkCode
               ? details.email !== userEmail
                 ? nanoid(9)
@@ -284,7 +286,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   // upserting with these options creates new entry if email doesn't exist or merge existing fields if it does
                   ignoreDuplicates: false,
-                  onConflict: "link_code",
+                  onConflict: "email",
                 }
               )
               .select();
@@ -356,23 +358,24 @@ function Claim({ setReady, data }: ClaimProps) {
                 signatureData: userData.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
-              .match({ link_code: linkCode })
+              .match({ email: userEmail })
               .select();
             if (data?.length) {
               setDbData(data[0]);
               await updateSecondaryTable(data[0]);
             }
           }
-          setStep(STEP.ONE_MORE);
+          setStep(STEP.INSURANCE);
         }
         break;
-      case STEP.ONE_MORE:
-        setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance && isNino(formData4.insurance)) {
-          if (formData4.insurance !== dbData.insurance) {
+      case STEP.INSURANCE:
+        setFirstEvents({ ...firstEvents, insurance: false });
+
+        if (userData.insurance && isNino(userData.insurance)) {
+          if (userData.insurance !== dbData.insurance) {
             const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update({ insurance: formData4.insurance })
+              .update({ insurance: userData.insurance })
               .match({ email: userEmail })
               .select();
 
@@ -528,6 +531,7 @@ function Claim({ setReady, data }: ClaimProps) {
         phone: data?.[0]?.phone || "",
         signatureData: data?.[0]?.signatureData || "",
         incomeLevel: data?.[0]?.incomeLevel || "",
+        insurance: data?.[0]?.insurance || "",
       });
 
       setFirstEvents(
@@ -670,8 +674,11 @@ function Claim({ setReady, data }: ClaimProps) {
               <Income data={formData2} handleFormChange={handleFormChange2} />
             )}
             {step === STEP.SIGNATURE && <Signature />}
-            {step === STEP.ONE_MORE && (
-              <OneMore data={formData4} handleFormChange={handleFormChange4} />
+            {step === STEP.INSURANCE && (
+              <Insurance
+                data={formData4}
+                handleFormChange={handleFormChange4}
+              />
             )}
             {step === STEP.LENDERS && <Lenders />}
             {step === STEP.REFUNDS && (

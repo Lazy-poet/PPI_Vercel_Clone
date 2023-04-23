@@ -5,7 +5,7 @@ export const TITLES = [
   (name?: string) => `Congratulations, ${name}! You Qualify!`,
   (name?: string) => `${name}, Enter Your Address`,
   (name?: string) => `${name}, Sign to Confirm Your Claim`,
-  (name?: string) => "Confirm your identity",
+  (name?: string) => `${name}, Provide Your National Insurance Number`,
   (name?: string) => "Your Lenders",
   (name?: string) => "Your PPI refunds",
   (name?: string) => "Thank you! 🎉",
@@ -27,7 +27,7 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       </button>{" "}
       and authorize us to proceed with your claim.
     </span>,
-    "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
+    "Your NIN is required to process your claim.",
     "We now need to know which lenders you received a PPI refund from",
     "How much PPI did you receive in the last four tax years",
     <span key="what-happens-next">
@@ -54,10 +54,12 @@ export const ERRORS = [
 ];
 
 export const SIDE_INFO = [
-  "Your income",
-  "Your details",
+  "Your Income",
+  "Your Contact",
+  "Your Address",
   "Your signature",
   "Your (NI) number",
+  "Your Lenders",
   "Your PPI refunds",
   "Thank you",
 ];
