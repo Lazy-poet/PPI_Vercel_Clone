@@ -21,7 +21,7 @@ import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
 
-const Details = dynamic(() => import("@/components/steps/Step2-Details"), {
+const Details = dynamic(() => import("@/components/steps/Step2-Contact"), {
   loading: () => <Spinner />,
 });
 const ClaimNow = dynamic(() => import("@/components/steps/Step1-Income"), {
@@ -230,29 +230,22 @@ function Claim({ setReady, data }: ClaimProps) {
           setShowLoadingPage(true);
           setTimeout(() => {
             setShowLoadingPage(false);
-            setStep(STEP.DETAILS);
+            setStep(STEP.CONTACT);
           }, 1000);
         }
         break;
-      case STEP.DETAILS:
-        setFormData1({ ...formData1, firstEvent: false });
-        setFdEvents1({
-          firstName: false,
-          lastName: false,
+      case STEP.CONTACT:
+        setFirstEvents({
+          ...firstEvents,
+          phone: false,
           email: false,
-          postCode: false,
-          address: false,
-          day: false,
-          month: false,
-          year: false,
         });
-        const { firstEvent, ...details } = formData1;
+        const { ...details } = userData;
         if (
-          details.firstName.length > 1 &&
-          details.lastName.length > 1 &&
-          Utils.isObjectFilled(details) &&
-          isValid(details.postCode) &&
-          Utils.validateEmail(details.email)
+          Utils.isObjectFilled(details, ["phone", "email"]) &&
+          Utils.validateEmail(details.email) &&
+          details.phone.length === 11 &&
+          details.phone.startsWith("07")
         ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
@@ -275,13 +268,6 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   ...utmParams,
                   ...diff,
-                  estimated_total: amount,
-                  ...(!dbData.estimated_total_difference && {
-                    estimated_total_difference: Number(
-                      amount.replace(/,/g, "")
-                    ),
-                  }),
-                  earnings: formData2.earnings,
                   link_code,
                   link: `https://ppi.claimingmadeeasy.co.uk/?c=${link_code}`,
                   email: details.email,
@@ -604,7 +590,7 @@ function Claim({ setReady, data }: ClaimProps) {
 
             <Title step={step} onClick={openPdf} />
 
-            {step === STEP.DETAILS && (
+            {step === STEP.CONTACT && (
               <Details
                 data={formData1}
                 fdEvents={fdEvents1}

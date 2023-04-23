@@ -45,8 +45,8 @@ const HeroSection: React.FC<{
   }, []);
 
   const isPageComplete =
-    userData.firstName &&
-    userData.lastName &&
+    userData.firstName?.length > 1 &&
+    userData.lastName?.length > 1 &&
     userData.day &&
     userData.month &&
     userData.year;

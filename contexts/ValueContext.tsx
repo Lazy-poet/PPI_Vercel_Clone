@@ -1,3 +1,4 @@
+import { DBData } from "@/libs/constants";
 import React, {
   createContext,
   SetStateAction,
@@ -60,7 +61,7 @@ const useValue = () => {
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
   const [linkCode, setLinkCode] = useState<any>(null);
-  const [dbData, setDbData] = useState({} as UserData);
+  const [dbData, setDbData] = useState({} as DBData);
   const [userEmail, setUserEmail] = useState<any>(null);
   const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
@@ -111,7 +112,7 @@ const useValue = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "07",
+    phone: "",
     postCode: "",
     address: "",
     day: "",
@@ -271,8 +272,8 @@ interface Value {
   setAddressList: Dispatch<SetStateAction<Record<string, any>[]>>;
   linkCode: string;
   setLinkCode: Dispatch<SetStateAction<string>>;
-  dbData: UserData;
-  setDbData: Dispatch<SetStateAction<UserData>>;
+  dbData: DBData;
+  setDbData: Dispatch<SetStateAction<DBData>>;
   userEmail: string;
   setUserEmail: Dispatch<SetStateAction<string>>;
   userPhone: string;

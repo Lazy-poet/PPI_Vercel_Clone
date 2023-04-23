@@ -7,7 +7,7 @@ export enum TAX_TYPE {
 
 export enum STEP {
   INCOME_LEVEL,
-  DETAILS,
+  CONTACT,
   SIGNATURE,
   ONE_MORE,
   LENDERS,
@@ -17,7 +17,7 @@ export enum STEP {
 }
 
 
-export type UserData = {
+export type DBData = {
   id?: string,
   createdAt: Date,
   firstName: string;

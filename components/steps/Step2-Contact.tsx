@@ -6,13 +6,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { isValid, parse } from "postcode";
 const Details = (props: any) => {
-  const { data, fdEvents, handleFormChange, handleOpen } = props;
+  const { handleOpen } = props;
   const [Dates, setDates] = useState<string[]>([]);
   const [Months, setMonths] = useState<string[]>([]);
   const [Years, setYears] = useState<string[]>([]);
   const [selectedAddress, setSelectedAddress] = useState("");
-  const { showPulse, setShowPulse, addressList, setAddressList } =
-    useSystemValues();
+  const {
+    showPulse,
+    setShowPulse,
+    addressList,
+    setAddressList,
+    setUserData,
+    userData: data,
+    setFirstEvents,
+    firstEvents,
+  } = useSystemValues();
 
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
   const currentAddressListPostCode = useRef<string>(
@@ -37,6 +45,17 @@ const Details = (props: any) => {
       addr.suggestion.substr(0, addr.suggestion.lastIndexOf(","))
   );
 
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...data,
+      [key]: value,
+    });
+
+    setFirstEvents({
+      ...firstEvents,
+      [key]: false,
+    });
+  };
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     value = value.replace(/\-$/g, "").replace(/\s+$/g, "");
@@ -59,10 +78,10 @@ const Details = (props: any) => {
         value = value.trim();
         break;
       case "phone":
-        if (value.length < 2) return;
-        if (!value.startsWith("07")) {
-          value = "07" + value;
-        }
+        // if (value.length < 2) return;
+        // if (!value.startsWith("0")) {
+        //   value = "07" + value;
+        // }
 
         value = value.substr(0, 11).replace(/\D/g, "");
         break;
@@ -124,7 +143,7 @@ const Details = (props: any) => {
       })
       .catch((error) => console.log("error", error));
   };
-
+const isPhoneValid = data.phone.length === 11 && data.phone.startsWith("07");
   useEffect(() => {
     const _dates = [];
     for (let d = 1; d <= 31; d++) {
@@ -155,99 +174,15 @@ const Details = (props: any) => {
     <>
       <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
         <div
-          className={`form-group ${
-            fdEvents.firstName
-              ? ""
-              : data.firstName.length > 1
-              ? "success"
-              : "error"
-          }`}
-        >
-          <label
-            htmlFor="first-name"
-            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
-          >
-            First name(s)
-          </label>
-          <div className="icon-input">
-            <input
-              type="text"
-              name="firstName"
-              id="first-name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="e.g. Joe"
-              required
-              maxLength={64}
-              value={data.firstName}
-              onBlur={handleInputBlur}
-              onChange={handleInputChange}
-            />
-            <span className="form-icon"></span>
-          </div>
-          {fdEvents.firstName ? (
-            ""
-          ) : !data.firstName ? (
-            <p className="mt-2 text-sm">Please let us know your first name</p>
-          ) : (
-            data.firstName.length === 1 && (
-              <p className="mt-2 text-sm">Please enter a valid name</p>
-            )
-          )}
-        </div>
-        <div
-          className={`form-group ${
-            fdEvents.lastName
-              ? ""
-              : data.lastName.length > 1
-              ? "success"
-              : "error"
-          }`}
-        >
-          <label
-            htmlFor="last-name"
-            className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
-          >
-            Last name
-          </label>
-          <div className="icon-input">
-            <input
-              type="text"
-              name="lastName"
-              id="last-name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-              placeholder="e.g. Bloggs"
-              required
-              maxLength={64}
-              value={data.lastName}
-              onBlur={handleInputBlur}
-              onChange={handleInputChange}
-            />
-            <span className="form-icon"></span>
-          </div>
-          {fdEvents.lastName ? (
-            ""
-          ) : !data.lastName ? (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please let us know your last name
-            </p>
-          ) : (
-            data.lastName.length === 1 && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Please enter a valid name
-              </p>
-            )
-          )}
-        </div>
-        <div
           className={`form-group sm:col-span-2 ${
-            fdEvents.phone ? "" : data.phone.length === 11 ? "success" : "error"
+            firstEvents.phone ? "" : isPhoneValid ? "success" : "error"
           }`}
         >
           <label
             htmlFor="phone"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            Mobile Telephone Number
+            Mobile Number
           </label>
           <div className="flex">
             <div className="icon-input w-full">
@@ -258,7 +193,7 @@ const Details = (props: any) => {
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
-                    !(fdEvents.phone || data.phone.length === 11) && "error"
+                    !(firstEvents.phone || isPhoneValid) && "error"
                   }`}
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -269,6 +204,7 @@ const Details = (props: any) => {
                 type="tel"
                 name="phone"
                 id="phone"
+                placeholder="07123 456789"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
                 required
                 maxLength={64}
@@ -278,7 +214,7 @@ const Details = (props: any) => {
               <span className="form-icon"></span>
             </div>
           </div>
-          {fdEvents.phone || data.phone.length === 11 ? (
+          {firstEvents.phone || isPhoneValid ? (
             <p
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
@@ -288,13 +224,13 @@ const Details = (props: any) => {
             </p>
           ) : (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid phone number
+              Please enter a valid mobile number.
             </p>
           )}
         </div>
         <div
           className={`form-group sm:col-span-2 ${
-            fdEvents.email
+            firstEvents.email
               ? ""
               : data.email && Utils.validateEmail(data.email)
               ? "success"
@@ -305,7 +241,7 @@ const Details = (props: any) => {
             htmlFor="email"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            Email address
+            Email Address
           </label>
           <div className="flex">
             <div className="icon-input w-full">
@@ -313,7 +249,7 @@ const Details = (props: any) => {
                 <svg
                   aria-hidden="true"
                   className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
-                    !(fdEvents.email || Utils.validateEmail(data.email)) &&
+                    !(firstEvents.email || Utils.validateEmail(data.email)) &&
                     "error"
                   }`}
                   fill="currentColor"
@@ -328,7 +264,7 @@ const Details = (props: any) => {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="e.g. name@example.com"
+                placeholder="john.doe@example.com"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
                 required
                 maxLength={64}
@@ -338,7 +274,7 @@ const Details = (props: any) => {
               <span className="form-icon"></span>
             </div>
           </div>
-          {fdEvents.email || Utils.validateEmail(data.email) ? (
+          {firstEvents.email || Utils.validateEmail(data.email) ? (
             <p
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
@@ -358,14 +294,14 @@ const Details = (props: any) => {
             </p>
           ) : (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid email address
+              Please enter a valid email address.
             </p>
           )}
         </div>
-
+        {/* 
         <div
           className={`form-group sm:col-span-2 ${
-            fdEvents.postCode
+            firstEvents.postCode
               ? ""
               : addressList.length > 0 &&
                 data.postCode &&
@@ -428,7 +364,7 @@ const Details = (props: any) => {
               Find My Address
             </button>
           </div>
-          {fdEvents.postCode ? (
+          {firstEvents.postCode ? (
             <p
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
@@ -457,7 +393,7 @@ const Details = (props: any) => {
         {addressList?.length > 0 ? (
           <div
             className={`form-group max-w-full sm:col-span-2 ${
-              fdEvents.address ? "" : isAddressValid ? "success" : "error"
+              firstEvents.address ? "" : isAddressValid ? "success" : "error"
             }`}
           >
             <label
@@ -514,120 +450,7 @@ const Details = (props: any) => {
               {data.postCode}
             </p>
           </blockquote>
-        )}
-      </div>
-
-      <div className="form-group w-full my-5">
-        <div
-          className={`w-full mb-2 ${
-            fdEvents.day && fdEvents.month && fdEvents.year
-              ? ""
-              : data.day && data.month && data.year
-              ? "success"
-              : "error"
-          }`}
-        >
-          <label
-            htmlFor="birthday"
-            className="block text-lg font-bold text-gray-900 dark:text-white"
-          >
-            Date of birth
-          </label>
-        </div>
-
-        <div id="birthday" className="grid gap-5 sm:grid-cols-3">
-          <div className="grid gap-5 grid-cols-2 sm:col-span-2">
-            <div className={fdEvents.day ? "" : data.day ? "success" : "error"}>
-              <div className="icon-input">
-                <FormControl className="w-full mui-select">
-                  <Select
-                    id="day"
-                    name="day"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value={data.day}
-                    onChange={(e) => handleMUISelectChange(e)}
-                    displayEmpty
-                    IconComponent={ExpandMoreIcon}
-                  >
-                    <MenuItem value="" disabled>
-                      Day
-                    </MenuItem>
-                    {Dates &&
-                      Dates.map((item: string, index: number) => (
-                        <MenuItem key={index} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                  <span className="form-icon"></span>
-                </FormControl>
-              </div>
-              {!data.day && !fdEvents.day && (
-                <p className="mt-2 text-sm">Select day of birth</p>
-              )}
-            </div>
-            <div
-              className={fdEvents.month ? "" : data.month ? "success" : "error"}
-            >
-              <div className="icon-input">
-                <FormControl className="w-full mui-select">
-                  <Select
-                    id="month"
-                    name="month"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value={data.month}
-                    onChange={(e) => handleMUISelectChange(e)}
-                    displayEmpty
-                    IconComponent={ExpandMoreIcon}
-                  >
-                    <MenuItem value="" disabled>
-                      Month
-                    </MenuItem>
-                    {Months &&
-                      Months.map((item: string, index: number) => (
-                        <MenuItem key={index} value={item}>
-                          {item}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                  <span className="form-icon"></span>
-                </FormControl>
-              </div>
-              {!data.month && !fdEvents.month && (
-                <p className="mt-2 text-sm">Select month of birth</p>
-              )}
-            </div>
-          </div>
-          <div className={fdEvents.year ? "" : data.year ? "success" : "error"}>
-            <div className="icon-input">
-              <FormControl className="w-full mui-select">
-                <Select
-                  id="year"
-                  name="year"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={data.year}
-                  onChange={(e) => handleMUISelectChange(e)}
-                  displayEmpty
-                  IconComponent={ExpandMoreIcon}
-                >
-                  <MenuItem value="" disabled>
-                    Year
-                  </MenuItem>
-                  {Years &&
-                    Years.map((item: string, index: number) => (
-                      <MenuItem key={index} value={item}>
-                        {item}
-                      </MenuItem>
-                    ))}
-                </Select>
-                <span className="form-icon"></span>
-              </FormControl>
-            </div>
-            {!data.year && !fdEvents.year && (
-              <p className="mt-2 text-sm">Select year of birth</p>
-            )}
-          </div>
-        </div>
+        )} */}
       </div>
     </>
   );

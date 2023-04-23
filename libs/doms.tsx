@@ -2,7 +2,7 @@ export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 
 export const TITLES = [
   (name?: string) => name + ", Select Your Income Level",
-  (name?: string) => "Your details",
+  (name?: string) => `Congratulations, ${name}! You Qualify!`,
   (name?: string) => "Your signature",
   (name?: string) => "Confirm your identity",
   (name?: string) => "Your Lenders",
@@ -14,7 +14,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Your eligibility for a tax refund depends on your income.",
-    "Complete your details below to start your claim today",
+    "Please provide your contact details to proceed with your claim. We'll use these details to keep you updated on your claim via email or SMS. We won't call you.",
     <span key="tos">
       {name}, your signature will be applied to an&nbsp;
       <button
