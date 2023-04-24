@@ -16,7 +16,7 @@ const Refunds = (props: {
 }) => {
   const { lendersData, refunds, setRefunds } = useSystemValues();
   const handleChange = (
-    field: "year" | "amount",
+    field: "year" | "amount" | "tax_deduction",
     lender: string,
     value: string
   ) => {
@@ -33,7 +33,7 @@ const Refunds = (props: {
     }));
   };
   return (
-    <div className="grid gap-10 mt-6 mb-5">
+    <div className="grid  gap-10 mt-6 mb-5">
       {lendersData.selectedLenders
         .concat(
           lendersData.otherLender?.value ? [lendersData.otherLender.value] : []
@@ -77,30 +77,72 @@ const Refunds = (props: {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
-            <CustomCurrencyField
-              id={`${lender}-amount`}
-              value={refunds[lender]?.amount + "" || ""}
-              label="Amount of compensation"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChange("amount", lender, e.target.value)
-              }
-              errorClass={
-                refunds[lender]?.firstEvent?.amount
-                  ? ""
-                  : !!refunds[lender]?.amount &&
-                    Number(refunds[lender].amount.replace(/,/g, "")) > 0
-                  ? "success"
-                  : "error"
-              }
-              helperClass={
-                refunds[lender]?.firstEvent?.amount
-                  ? ""
-                  : !!refunds[lender]?.amount &&
-                    Number(refunds[lender].amount.replace(/,/g, "")) > 0
-                  ? "success"
-                  : "error"
-              }
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-10 flex-col sm:flex-row w-full">
+              <CustomCurrencyField
+                id={`${lender}-amount`}
+                value={refunds[lender]?.amount + "" || ""}
+                label="Total Amount Received"
+                placeholder="£XXXX.XX"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  handleChange("amount", lender, e.target.value)
+                }
+                errorClass={
+                  refunds[lender]?.firstEvent?.amount
+                    ? ""
+                    : !!refunds[lender]?.amount &&
+                      Number(refunds[lender].amount.replace(/,/g, "")) > 0
+                    ? "success"
+                    : "error"
+                }
+                helperClass={
+                  refunds[lender]?.firstEvent?.amount
+                    ? ""
+                    : !!refunds[lender]?.amount &&
+                      Number(refunds[lender].amount.replace(/,/g, "")) > 0
+                    ? "success"
+                    : "error"
+                }
+                helperText={
+                  !refunds[lender]?.firstEvent?.amount &&
+                  !refunds[lender]?.amount
+                    ? "Please enter the total PPI refund amount."
+                    : ""
+                }
+              />
+              <CustomCurrencyField
+                id={`${lender}-tax`}
+                value={refunds[lender]?.tax_deduction + "" || ""}
+                label="Tax Deduction"
+                placeholder="£XXX.XX"
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  handleChange("tax_deduction", lender, e.target.value)
+                }
+                errorClass={
+                  refunds[lender]?.firstEvent?.tax_deduction
+                    ? ""
+                    : !!refunds[lender]?.tax_deduction &&
+                      Number(refunds[lender].tax_deduction.replace(/,/g, "")) >
+                        0
+                    ? "success"
+                    : "error"
+                }
+                helperClass={
+                  refunds[lender]?.firstEvent?.tax_deduction
+                    ? ""
+                    : !!refunds[lender]?.tax_deduction &&
+                      Number(refunds[lender].tax_deduction.replace(/,/g, "")) >
+                        0
+                    ? "success"
+                    : "error"
+                }
+                helperText={
+                  !refunds[lender]?.firstEvent?.tax_deduction &&
+                  !refunds[lender]?.tax_deduction
+                    ? "Please enter the tax deduction amount."
+                    : ""
+                }
+              />
+            </div>
           </div>
         ))}
     </div>

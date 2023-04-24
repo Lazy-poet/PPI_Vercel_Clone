@@ -1,9 +1,9 @@
 import { useSystemValues, IncomeLevel } from "@/contexts/ValueContext";
 
 export enum Earnings {
-  LessThan12500 = "Less than £12,500",
-  Between12500And50000 = "£12,500 to £50,000",
-  MoreThan50001 = "More than £50,001",
+  LessThan12570 = "Less than £12,570",
+  Between12571And50270 = "£12,500 to £50,270",
+  MoreThan50271 = "More than £50,271",
 }
 
 const ClaimNow = (props: any) => {
@@ -15,10 +15,10 @@ const ClaimNow = (props: any) => {
         <label
           htmlFor="employer"
           className={`block mb-2 text-lg font-bold text-gray-900 dark:text-white ${
-            firstEvents.incomeLevel
+            firstEvents.earnings
               ? ""
-              : userData.incomeLevel
-              ? userData.incomeLevel === IncomeLevel.ABR
+              : userData.earnings
+              ? userData.earnings === Earnings.MoreThan50271
                 ? "text-red-600 dark:text-red-600"
                 : "text-green-700 dark:text-green-700"
               : "error"
@@ -29,38 +29,41 @@ const ClaimNow = (props: any) => {
 
         <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
           <RadioInput
-            value={IncomeLevel.UPA}
+            value={Earnings.LessThan12570}
             handleFormChange={handleFormChange}
-            earnings={userData.incomeLevel}
+            earnings={userData.earnings}
             id="bordered-radio-1"
-            firstEvent={firstEvents.incomeLevel}
+            firstEvent={firstEvents.earnings}
           />
           <RadioInput
-            value={IncomeLevel.BR}
+            value={Earnings.Between12571And50270}
             handleFormChange={handleFormChange}
-            earnings={userData.incomeLevel}
+            earnings={userData.earnings}
             id="bordered-radio-2"
-            firstEvent={firstEvents.incomeLevel}
+            firstEvent={firstEvents.earnings}
           />
           <RadioInput
-            value={IncomeLevel.ABR}
+            value={Earnings.MoreThan50271}
             handleFormChange={handleFormChange}
-            earnings={userData.incomeLevel}
+            earnings={userData.earnings}
             id="bordered-radio-3"
-            firstEvent={firstEvents.incomeLevel}
+            firstEvent={firstEvents.earnings}
           />
         </div>
         <p
           className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
-            firstEvents.incomeLevel ||
-            (!!userData.incomeLevel && userData.incomeLevel !== IncomeLevel.ABR)
+            firstEvents.earnings ||
+            (!!userData.earnings &&
+              userData.earnings !== Earnings.MoreThan50271)
               ? ""
               : "error"
           }`}
         >
-          {userData.incomeLevel === IncomeLevel.ABR
-            ? "Note: Higher and additional rate taxpayers do not qualify"
-            : "Please select your income level."}
+          {userData.earnings === Earnings.MoreThan50271
+            ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
+            : !userData.earnings
+            ? "Please select an income option"
+            : ""}
         </p>
       </div>
     </div>
@@ -70,7 +73,7 @@ const ClaimNow = (props: any) => {
 const RadioInput: React.FC<{
   handleFormChange: (e: string, val: string) => void;
   value: string;
-  earnings: IncomeLevel;
+  earnings: Earnings;
   id: string;
   firstEvent: boolean;
 }> = ({ handleFormChange, earnings, value, id, firstEvent }) => {
@@ -81,7 +84,7 @@ const RadioInput: React.FC<{
         firstEvent || (earnings && earnings !== value)
           ? ""
           : earnings === value
-          ? earnings === IncomeLevel.ABR
+          ? earnings === Earnings.MoreThan50271
             ? "error"
             : "success"
           : "error"
@@ -96,7 +99,7 @@ const RadioInput: React.FC<{
         checked={earnings === value}
         onChange={(e) => {
           if (!e.target.checked) return;
-          handleFormChange("incomeLevel", value);
+          handleFormChange("earnings", value);
         }}
       />
       <span className="py-5 ml-4 w-full sm:text-lg font-medium">{value}</span>

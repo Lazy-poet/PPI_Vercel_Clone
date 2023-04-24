@@ -35,7 +35,7 @@ const Insurance = (props: {
           htmlFor="insurance"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          NIN
+          National Insurance Number
         </label>
         <div className="flex">
           <div className="icon-input w-full">
@@ -64,7 +64,7 @@ const Insurance = (props: {
               type="text"
               name="insurance"
               id="insurance"
-              placeholder="AB 12 34 56 C"
+              placeholder="AA 12 34 56 B"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
               maxLength={9}
@@ -79,8 +79,8 @@ const Insurance = (props: {
             id="helper-text-explanation"
             className="mt-2 text-sm text-gray-500 dark:text-gray-400"
           >
-            You can find your NI number on your payslip, P60, or any letters
-            sent to you by HMRC relating to tax and benefits.
+            You can find your NIN on your payslip, P60, or any official letter
+            from HMRC
           </p>
         ) : !userData.insurance || !isNino(userData.insurance) ? (
           <p

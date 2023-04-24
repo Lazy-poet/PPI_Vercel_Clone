@@ -76,7 +76,7 @@ const Signature = () => {
           htmlFor="first-name"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          Sign in the box below
+          Signature
         </label>
 
         <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -124,7 +124,9 @@ const Signature = () => {
             as many times as you like by pressing &quot;Clear&quot;
           </p>
         ) : (
-          <p className={`mt-2 text-sm error`}>Please provide your signature</p>
+          <p className={`mt-2 text-sm error`}>
+            Please sign in the box provided
+          </p>
         )}
       </div>
     </div>
