@@ -1,3 +1,4 @@
+import { Earnings } from "@/components/steps/Step1-Income";
 import { DBData } from "@/libs/constants";
 import React, {
   createContext,
@@ -42,6 +43,7 @@ export type UserData = {
   day: string;
   month: string;
   year: string;
+  earnings: Earnings,
   incomeLevel: IncomeLevel;
   signatureData: string;
   insurance: string;
@@ -90,6 +92,7 @@ const useValue = () => {
     month: "",
     year: "",
     signatureData: "",
+    earnings: "" as Earnings,
     incomeLevel: "" as IncomeLevel,
     insurance: "",
   } as UserData);
@@ -103,6 +106,7 @@ const useValue = () => {
     day: true,
     month: true,
     year: true,
+    earnings: true,
     incomeLevel: true,
     lendersData: true,
     otherLender: true,

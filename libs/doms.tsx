@@ -1,7 +1,8 @@
 export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
 
 export const TITLES = [
-  (name?: string) => name + ", Select Your Income Level",
+  (name?: string) =>
+    `${name}, What Was Your Income When You Received Your PPI Payout(s)?`,
   (name?: string) => `Congratulations, ${name}! You Qualify!`,
   (name?: string) => `${name}, Enter Your Address`,
   (name?: string) => `${name}, Sign to Confirm Your Claim`,
@@ -14,7 +15,7 @@ export const TITLES = [
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
-    "Your eligibility for a tax refund depends on your income.",
+    "To accurately assess your eligibility for a PPI tax refund, please select the income level that best represents your situation during the time(s) you received the payout(s).",
     "Please provide your contact details to proceed with your claim. We'll use these details to keep you updated on your claim via email or SMS. We won't call you.",
     "Please provide your current residential address.",
     <span key="tos">

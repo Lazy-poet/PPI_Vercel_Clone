@@ -18,12 +18,11 @@ import { isValid, parse } from "postcode";
 import supabase from "utils/client";
 import {
   useSystemValues,
-  IncomeLevel,
-  FirstEvents,
 } from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
+import { Earnings } from "@/components/steps/Step1-Income";
 
 const Contact = dynamic(() => import("@/components/steps/Step2-Contact"), {
   loading: () => <Spinner />,
@@ -101,7 +100,7 @@ function Claim({ setReady, data }: ClaimProps) {
     setShowLoadingPage,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.INCOME_LEVEL);
+  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
@@ -179,7 +178,7 @@ function Claim({ setReady, data }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.INCOME_LEVEL) {
+    if (step === STEP.EARNINGS) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -213,18 +212,18 @@ function Claim({ setReady, data }: ClaimProps) {
     let { day, month, year, ...otherFormData1 } = formData1;
 
     switch (step) {
-      case STEP.INCOME_LEVEL:
-        setFirstEvents({ ...firstEvents, incomeLevel: false });
+      case STEP.EARNINGS:
+        setFirstEvents({ ...firstEvents, earnings: false });
         if (
-          userData.incomeLevel?.length &&
-          userData.incomeLevel !== IncomeLevel.ABR
+          userData.earnings?.length &&
+          userData.earnings !== Earnings.MoreThan50271
         ) {
-          const valueChanged = userData.incomeLevel !== dbData.incomeLevel;
+          const valueChanged = userData.earnings !== dbData.earnings;
           if ((userEmail || linkCode) && valueChanged) {
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                incomeLevel: userData.incomeLevel,
+                earnings: userData.earnings,
               })
               .match(userEmail ? { email: userEmail } : { link_code: linkCode })
               .select();
@@ -239,7 +238,7 @@ function Claim({ setReady, data }: ClaimProps) {
           setTimeout(() => {
             setShowLoadingPage(false);
             setStep(STEP.CONTACT);
-          }, 1000);
+          }, 3000);
         }
         break;
       case STEP.CONTACT:
@@ -531,6 +530,7 @@ function Claim({ setReady, data }: ClaimProps) {
         phone: data?.[0]?.phone || "",
         signatureData: data?.[0]?.signatureData || "",
         incomeLevel: data?.[0]?.incomeLevel || "",
+        earnings: data?.[0]?.earnings || "",
         insurance: data?.[0]?.insurance || "",
       });
 
@@ -670,7 +670,7 @@ function Claim({ setReady, data }: ClaimProps) {
               />
             )}
             {step === STEP.ADDRESS && <Address />}
-            {step === STEP.INCOME_LEVEL && (
+            {step === STEP.EARNINGS && (
               <Income data={formData2} handleFormChange={handleFormChange2} />
             )}
             {step === STEP.SIGNATURE && <Signature />}

@@ -1,3 +1,4 @@
+import { Earnings } from "@/components/steps/Step1-Income";
 import { IncomeLevel } from "@/contexts/ValueContext";
 
 export enum TAX_TYPE {
@@ -8,7 +9,7 @@ export enum TAX_TYPE {
 }
 
 export enum STEP {
-  INCOME_LEVEL,
+  EARNINGS,
   CONTACT,
   ADDRESS,
   SIGNATURE,
@@ -40,7 +41,7 @@ export type DBData = {
   signatureUrl: string;
   birthdate_str: string;
   estimated_total: string;
-  earnings: string;
+  earnings: Earnings;
   tax_years: Record<string, string>;
   phone: string,
   APR062018_APR052019: string;
