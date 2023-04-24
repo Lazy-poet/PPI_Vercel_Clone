@@ -72,10 +72,12 @@ const Lenders = () => {
         ...refunds,
         [lender]: {
           year: "",
-          amount: "" as any,
+          amount: "",
+          tax_deduction: "",
           firstEvent: {
             year: true,
             amount: true,
+            tax_deduction: true,
           },
         },
       });
@@ -94,7 +96,7 @@ const Lenders = () => {
         }`}
       >
         {" "}
-        Please select all banks / lenders that refunded your PPI
+        Select Lenders
       </p>
       <div className="items-center w-full text-lg font-medium grid grid-cols-1 sm:grid-cols-2 gap-2">
         {LENDERS.map((lender) => (

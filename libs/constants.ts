@@ -1,4 +1,4 @@
-import { Earnings } from "@/components/steps/Step1-Income";
+import { Earnings } from "@/components/steps/Income";
 import { IncomeLevel } from "@/contexts/ValueContext";
 
 export enum TAX_TYPE {
@@ -10,6 +10,7 @@ export enum TAX_TYPE {
 
 export enum STEP {
   EARNINGS,
+  PAYOUTS,
   CONTACT,
   ADDRESS,
   SIGNATURE,

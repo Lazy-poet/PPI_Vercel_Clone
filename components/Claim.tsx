@@ -10,45 +10,46 @@ import {
   NEXT_BUTTON_TEXTS,
   NEXT_BUTTON_TIMERS,
 } from "@/libs/doms";
-import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
+import { TAX_YEARS } from "@/components/steps/Refunds";
 import StepAlert from "@/components/StepAlert";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
 import { isValid, parse } from "postcode";
 import supabase from "utils/client";
-import {
-  useSystemValues,
-} from "@/contexts/ValueContext";
+import { useSystemValues } from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
-import { Earnings } from "@/components/steps/Step1-Income";
+import { Earnings } from "@/components/steps/Income";
 
-const Contact = dynamic(() => import("@/components/steps/Step2-Contact"), {
+const Contact = dynamic(() => import("@/components/steps/Contact"), {
   loading: () => <Spinner />,
 });
-const Income = dynamic(() => import("@/components/steps/Step1-Income"), {
+const Income = dynamic(() => import("@/components/steps/Income"), {
   loading: () => <Spinner />,
 });
-const Address = dynamic(() => import("@/components/steps/Step3-Address"), {
+const Payouts = dynamic(() => import("@/components/steps/Payouts"), {
+  loading: () => <Spinner />,
+});
+const Address = dynamic(() => import("@/components/steps/Address"), {
   loading: () => <Spinner />,
 });
 
-const Signature = dynamic(() => import("@/components/steps/Step3-Signature"), {
+const Signature = dynamic(() => import("@/components/steps/Signature"), {
   loading: () => <Spinner />,
 });
 
-const Insurance = dynamic(() => import("@/components/steps/Step4-Insurance"), {
+const Insurance = dynamic(() => import("@/components/steps/Insurance"), {
   loading: () => <Spinner />,
 });
 
 const Lenders = dynamic(() => import("@/components/steps/Lenders"), {
   loading: () => <Spinner />,
 });
-const Refunds = dynamic(() => import("@/components/steps/Step5-Refunds"), {
+const Refunds = dynamic(() => import("@/components/steps/Refunds"), {
   loading: () => <Spinner />,
 });
-const AllDone = dynamic(() => import("@/components/steps/Step6-AllDone"), {
+const AllDone = dynamic(() => import("@/components/steps/AllDone"), {
   loading: () => <Spinner />,
 });
 
@@ -237,8 +238,30 @@ function Claim({ setReady, data }: ClaimProps) {
           setShowLoadingPage(true);
           setTimeout(() => {
             setShowLoadingPage(false);
-            setStep(STEP.CONTACT);
+            setStep(STEP.PAYOUTS);
           }, 3000);
+        }
+        break;
+      case STEP.PAYOUTS:
+        setFirstEvents({ ...firstEvents, amount: false });
+        if (amount && Number(amount) >= 100) {
+          const valueChanged = amount !== dbData.estimated_total;
+          if ((userEmail || linkCode) && valueChanged) {
+            const { data, error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                estimated_total: amount,
+              })
+              .match(userEmail ? { email: userEmail } : { link_code: linkCode })
+              .select();
+            if (data?.length && (data[0].signatureData || data[0].insurance)) {
+              await updateSecondaryTable({
+                ...data[0],
+              });
+              setDbData(data[0]);
+            }
+          }
+          setStep(STEP.CONTACT);
         }
         break;
       case STEP.CONTACT:
@@ -407,10 +430,12 @@ function Claim({ setReady, data }: ClaimProps) {
                 ...refunds,
                 [lendersData.otherLender?.value]: {
                   year: "",
-                  amount: "" as any,
+                  amount: "",
+                  tax_deduction: "",
                   firstEvent: {
                     year: true,
                     amount: true,
+                    tax_deduction: true,
                   },
                 },
               });
@@ -427,6 +452,7 @@ function Claim({ setReady, data }: ClaimProps) {
             firstEvent: {
               year: false,
               amount: false,
+              tax_deduction: false,
             },
           };
         }
@@ -443,12 +469,17 @@ function Claim({ setReady, data }: ClaimProps) {
             return (
               refunds[lender]?.amount &&
               Number(refunds[lender].amount.replace(/,/g, "")) > 0 &&
+              Number(refunds[lender].tax_deduction.replace(/,/g, "")) > 0 &&
               refunds[lender]?.year
             );
           });
         if (can_proceed) {
           const refund_data = {} as {
-            [key: string]: { year: string; amount: number };
+            [key: string]: {
+              year: string;
+              amount: number;
+              tax_deduction: number;
+            };
           };
           for (const lender in refunds) {
             if (
@@ -458,6 +489,9 @@ function Claim({ setReady, data }: ClaimProps) {
               refund_data[lender] = {
                 year: refunds[lender].year,
                 amount: Number(refunds[lender].amount.replace(/,/g, "")),
+                tax_deduction: Number(
+                  refunds[lender].tax_deduction.replace(/,/g, "")
+                ),
               };
             }
           }
@@ -670,6 +704,7 @@ function Claim({ setReady, data }: ClaimProps) {
               />
             )}
             {step === STEP.ADDRESS && <Address />}
+            {step === STEP.PAYOUTS && <Payouts />}
             {step === STEP.EARNINGS && (
               <Income data={formData2} handleFormChange={handleFormChange2} />
             )}

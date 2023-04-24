@@ -153,7 +153,7 @@ const Address = () => {
               id="postCode"
               name="postCode"
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="e.g. CH5 3UZ"
+              placeholder="AB12 3CD"
               required
               value={
                 isValid(data.postCode)
@@ -188,7 +188,7 @@ const Address = () => {
             </p>
           ) : !(data.postCode && isValid(data.postCode)) ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please provide a valid UK postcode
+              Please enter a valid postcode
             </p>
           ) : addressList.length === 0 ? (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -214,7 +214,7 @@ const Address = () => {
               htmlFor="address"
               className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
             >
-              Address
+              Select Your Address
             </label>
             <div className="icon-input">
               <FormControl className="w-full mui-select">
@@ -228,7 +228,7 @@ const Address = () => {
                   IconComponent={ExpandMoreIcon}
                 >
                   <MenuItem value="" disabled>
-                    Please select your address
+                    Choose from the list of addresses
                   </MenuItem>
                   {addressList.map((item: any, index: number) => (
                     <MenuItem
@@ -248,6 +248,11 @@ const Address = () => {
                 <span className="form-icon"></span>
               </FormControl>
             </div>
+            {!firstEvents.address && !data.address && (
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                Please select your address from the list
+              </p>
+            )}
           </div>
         ) : null}
         {selectedAddress && (

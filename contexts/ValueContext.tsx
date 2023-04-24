@@ -1,4 +1,4 @@
-import { Earnings } from "@/components/steps/Step1-Income";
+import { Earnings } from "@/components/steps/Income";
 import { DBData } from "@/libs/constants";
 import React, {
   createContext,
@@ -27,6 +27,7 @@ export type REFUNDS = Record<
   {
     year: string;
     amount: string;
+    tax_deduction: string;
     firstEvent: {
       [key: string]: boolean;
     };
@@ -43,7 +44,7 @@ export type UserData = {
   day: string;
   month: string;
   year: string;
-  earnings: Earnings,
+  earnings: Earnings;
   incomeLevel: IncomeLevel;
   signatureData: string;
   insurance: string;
@@ -54,6 +55,7 @@ export type FirstEvents = {
 } & {
   lendersData: boolean;
   otherLender: boolean;
+  amount: boolean;
 };
 
 const useValue = () => {
@@ -112,6 +114,7 @@ const useValue = () => {
     otherLender: true,
     signatureData: true,
     insurance: true,
+    amount: true,
   });
   const [formData1, setFormData1] = useState<any>({
     firstEvent: true,
