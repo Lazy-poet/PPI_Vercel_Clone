@@ -1,10 +1,16 @@
 import React from "react";
 
-const Spinner = ({ className }: { className?: string }) => {
+const Spinner = ({
+  className,
+  helper,
+}: {
+  className?: string;
+  helper?: string;
+}) => {
   return (
     <div
       role="status"
-      className={`flex items-center justify-center my-20 ${className}`}
+      className={`flex flex-col items-center justify-center gap-2 my-20 ${className}`}
     >
       <svg
         aria-hidden="true"
@@ -22,6 +28,11 @@ const Spinner = ({ className }: { className?: string }) => {
           fill="currentFill"
         />
       </svg>
+      {helper && (
+        <p className="block mx-auto text-center text-sm font-normal text-gray-500 md:text-base dark:text-gray-400">
+          {helper}
+        </p>
+      )}
       <span className="sr-only">Loading...</span>
     </div>
   );
