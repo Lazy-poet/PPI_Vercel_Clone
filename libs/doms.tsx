@@ -1,4 +1,4 @@
-export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
+export const PERCENTS = [9, 18, 36, 54, 72, 81, 90, 95, 100];
 
 export const TITLES = [
   (name?: string) =>
