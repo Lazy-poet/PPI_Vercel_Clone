@@ -411,7 +411,7 @@ const HeroSection: React.FC<{
                 <li className="md:col-span-2">
                   <div className="text-center">
                     <button
-                      className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                       onClick={handleClick}
                     >
                       <div />
@@ -452,6 +452,7 @@ const HeroSection: React.FC<{
                         ></path>
                       </svg>
                     </button>
+                    <SslSecure />
                   </div>
                 </li>
               </ul>
