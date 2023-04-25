@@ -1,39 +1,38 @@
 export const PERCENTS = [9, 18, 54, 72, 81, 90, 95, 100];
 
 export const TITLES = [
-  "Your income",
-  "Your Payouts",
-  "Your details",
-  "Your signature",
-  "Confirm your identity",
-  "Your Lenders",
-  "Your PPI refunds",
-  "Thank you! 🎉",
-  "Apologies, we are unable to proceed",
+  (name?: string) => "Your income",
+  (name?: string) => `Its good news ${name}!`,
+  (name?: string) => "Your details",
+  (name?: string) => "Your signature",
+  (name?: string) => "Confirm your identity",
+  (name?: string) => "Your Lenders",
+  (name?: string) => "Your PPI refunds",
+  (name?: string) => "Thank you! 🎉",
+  (name?: string) => "Apologies, we are unable to proceed",
 ];
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Please enter the total amount of PPI payouts you received",
+    "Our records show that you could be owed a refund of £100s, maybe even £1,000s. We just need a few details to complete your claim",
     "Complete your details below to start your claim today",
     <span key="tos">
-      By signing, you agree to our{" "}
+      {name}, your signature will be applied to an&nbsp;
       <button
-        onClick={() => onClick("terms-of-service.pdf")}
+        onClick={() => onClick("R40M2022.pdf")}
         className="border-b border-gray-500 dark:border-gray-400"
       >
-        terms
+        R40
+      </button>
+      &nbsp;and&nbsp;
+      <button
+        onClick={() => onClick("authorise_agent_64-8.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        64-8
       </button>{" "}
-      and authorize us to proceed with your claim.
-    </span>,
-    "Your NIN is required to process your claim.",
-    "We now need to know which lenders you received a PPI refund from",
-    "How much PPI did you receive in the last four tax years",
-    <span key="what-happens-next">
-      <strong>What happens next?</strong> We&apos;ll be in touch with updates on
-      your claim as soon as we hear anything. All you have to do is sit back,
-      relax and wait until then!
+      form and used to submit your claim to HMRC
     </span>,
     "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
     "We now need to know which lenders you received a PPI refund from",
@@ -76,7 +75,6 @@ export const NEXT_BUTTON_TEXTS = [
   "Verify My Eligibility",
   "Next",
   "Next",
-  "Next",
   "Confirm and Continue",
   "Proceed to PPI Refunds Breakdown",
   "Next",
@@ -87,7 +85,6 @@ export const NEXT_BUTTON_TIMERS = [
   "55 seconds remaining...",
   "30 seconds remaining...",
   "25 seconds remaining...",
-  "20 seconds remaining...",
   "15 seconds remaining...",
   "10 seconds remaining...",
   "5 seconds remaining...",

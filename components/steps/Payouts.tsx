@@ -19,7 +19,7 @@ const Insurance = () => {
       <CustomCurrencyField
         value={amount}
         id="grand-total"
-        label="Total PPI Received"
+        label="How much PPI did you get back?"
         errorClass={`${
           Number(amount?.replace(/,/g, "")) >= 100
             ? "success"
