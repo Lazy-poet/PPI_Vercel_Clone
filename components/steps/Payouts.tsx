@@ -20,7 +20,6 @@ const Insurance = () => {
         value={amount}
         id="grand-total"
         label="Total PPI Received"
-        placeholder="£XXXX.XX"
         errorClass={`${
           Number(amount?.replace(/,/g, "")) >= 100
             ? "success"

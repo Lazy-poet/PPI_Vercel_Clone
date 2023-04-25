@@ -82,7 +82,6 @@ const Refunds = (props: {
                 id={`${lender}-amount`}
                 value={refunds[lender]?.amount + "" || ""}
                 label="Total Amount Received"
-                placeholder="£XXXX.XX"
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleChange("amount", lender, e.target.value)
                 }
@@ -113,7 +112,6 @@ const Refunds = (props: {
                 id={`${lender}-tax`}
                 value={refunds[lender]?.tax_deduction + "" || ""}
                 label="Tax Deduction"
-                placeholder="£XXX.XX"
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleChange("tax_deduction", lender, e.target.value)
                 }
