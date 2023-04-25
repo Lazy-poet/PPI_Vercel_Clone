@@ -269,14 +269,24 @@ function Claim({ setReady, data }: ClaimProps) {
           ...firstEvents,
           phone: false,
           email: false,
+          postCode: false,
+          address: false,
         });
         const { ...details } = userData;
         if (
-          Utils.isObjectFilled(details, ["phone", "email"]) &&
+          Utils.isObjectFilled(details, [
+            "phone",
+            "email",
+            "postCode",
+            "address",
+          ]) &&
           Utils.validateEmail(details.email) &&
+          isValid(userData.postCode) &&
           details.phone.length === 11 &&
           details.phone.startsWith("07")
         ) {
+          console.log(userData);
+
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
             // if email has changed, copy current data to new row, otherwise only update changed fields
@@ -324,42 +334,9 @@ function Claim({ setReady, data }: ClaimProps) {
               setLinkCode(link_code);
             }
           }
-          setStep(STEP.ADDRESS);
-        }
-        break;
-      case STEP.ADDRESS:
-        setFirstEvents({
-          ...firstEvents,
-          postCode: false,
-          address: false,
-        });
-        if (
-          Utils.isObjectFilled(userData, ["postCode", "address"]) &&
-          isValid(userData.postCode)
-        ) {
-          if (Utils.hasObjectValueChanged(userData, dbData)) {
-            const { data, error } = await supabase
-              .from("PPI_Claim_Form")
-              .update({
-                postCode: userData.postCode,
-                address: userData.address,
-              })
-              .match({ email: userEmail })
-              .select();
-
-            if (data?.[0]) {
-              setDbData(data[0]);
-              if (data[0].signatureData || data[0].insurance) {
-                await updateSecondaryTable({
-                  ...data[0],
-                });
-              }
-            }
-          }
           setStep(STEP.SIGNATURE);
         }
         break;
-
       case STEP.SIGNATURE:
         setFirstEvents({ ...firstEvents, signatureData: false });
         if (userData.signatureData) {
@@ -703,7 +680,6 @@ function Claim({ setReady, data }: ClaimProps) {
                 handleOpen={openPdf}
               />
             )}
-            {step === STEP.ADDRESS && <Address />}
             {step === STEP.PAYOUTS && <Payouts />}
             {step === STEP.EARNINGS && (
               <Income data={formData2} handleFormChange={handleFormChange2} />

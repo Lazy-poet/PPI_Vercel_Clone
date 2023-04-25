@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useSystemValues } from "@/contexts/ValueContext";
-import { isValid, parse } from "postcode";
+import Address from "./Address";
 const Details = (props: any) => {
   const { handleOpen } = props;
   const { userData: data, firstEvents, handleFormChange } = useSystemValues();
@@ -150,6 +150,7 @@ const Details = (props: any) => {
           )}
         </div>
       </div>
+      <Address />
     </>
   );
 };
