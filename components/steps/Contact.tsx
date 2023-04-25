@@ -33,7 +33,7 @@ const Details = (props: any) => {
             htmlFor="phone"
             className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
           >
-            Mobile Number
+            Mobile Telephone Number
           </label>
           <div className="flex">
             <div className="icon-input w-full">
@@ -70,7 +70,8 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              We&apos;ll use your number to send updates via SMS only
+              We need this so we can keep you updated on your claim with text
+              messages
             </p>
           ) : (
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
@@ -129,8 +130,7 @@ const Details = (props: any) => {
               id="helper-text-explanation"
               className="mt-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              We&apos;ll use your email to send claim updates. We’ll never share
-              your details in accordance with our{" "}
+              We’ll never share your details in accordance with our{" "}
               <a
                 href="#"
                 className="font-medium text-blue-600 hover:underline dark:text-blue-500"

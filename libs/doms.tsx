@@ -65,11 +65,10 @@ export const SIDE_INFO = [
   "Your Income",
   "Your PPI Payouts",
   "Your Contact",
-  "Your Address",
-  "Your signature",
+  "Your Signature",
   "Your (NI) number",
   "Your Lenders",
-  "Your PPI refunds",
+  "Your PPI Refunds",
   "Thank you",
 ];
 

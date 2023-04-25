@@ -216,7 +216,7 @@ const HeroSection: React.FC<{
                   name="firstName"
                   id="first-name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-                  placeholder="John"
+                  placeholder="e.g. Joe"
                   required
                   maxLength={64}
                   value={userData.firstName}
@@ -228,7 +228,10 @@ const HeroSection: React.FC<{
               {firstEvents.firstName ? (
                 ""
               ) : !userData.firstName ? (
-                <p className="mt-2 text-sm">Please enter your first name</p>
+                <p className="mt-2 text-sm">
+                  {" "}
+                  Please let us know your first name
+                </p>
               ) : (
                 userData.firstName.length === 1 && (
                   <p className="mt-2 text-sm">Please enter a valid name</p>
@@ -248,7 +251,7 @@ const HeroSection: React.FC<{
                 htmlFor="last-name"
                 className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
               >
-                Surname
+                Last name
               </label>
               <div className="icon-input">
                 <input
@@ -256,7 +259,7 @@ const HeroSection: React.FC<{
                   name="lastName"
                   id="last-name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
-                  placeholder=" Doe"
+                  placeholder="e.g. Bloggs"
                   required
                   maxLength={64}
                   value={userData.lastName}
@@ -269,7 +272,7 @@ const HeroSection: React.FC<{
                 ""
               ) : !userData.lastName ? (
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please enter your surname
+                  Please let us know your last name
                 </p>
               ) : (
                 userData.lastName.length === 1 && (

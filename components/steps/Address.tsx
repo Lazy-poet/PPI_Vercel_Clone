@@ -153,7 +153,7 @@ const Address = () => {
               id="postCode"
               name="postCode"
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="AB12 3CD"
+              placeholder="e.g. CH5 3UZ"
               required
               value={
                 isValid(data.postCode)
@@ -214,7 +214,7 @@ const Address = () => {
               htmlFor="address"
               className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
             >
-              Select Your Address
+              Address
             </label>
             <div className="icon-input">
               <FormControl className="w-full mui-select">
