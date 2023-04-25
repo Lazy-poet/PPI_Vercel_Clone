@@ -24,10 +24,10 @@ const ClaimNow = (props: any) => {
               : "error"
           }`}
         >
-          Income Level
+          How much do you earn?
         </label>
 
-        <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
+        <div className="grid w-50 gap-5 text-gray-500 dark:text-gray-400">
           <RadioInput
             value={Earnings.LessThan12570}
             handleFormChange={handleFormChange}
@@ -62,7 +62,7 @@ const ClaimNow = (props: any) => {
           {userData.earnings === Earnings.MoreThan50271
             ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
             : !userData.earnings
-            ? "Please select an income option"
+            ? "Please select your annual income"
             : ""}
         </p>
       </div>

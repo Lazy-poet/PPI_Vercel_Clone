@@ -20,7 +20,6 @@ const Insurance = () => {
         value={amount}
         id="grand-total"
         label="Total PPI Received"
-        placeholder="£XXXX.XX"
         errorClass={`${
           Number(amount?.replace(/,/g, "")) >= 100
             ? "success"
@@ -30,12 +29,12 @@ const Insurance = () => {
         }`}
         helperText={
           firstEvents.amount
-            ? ""
+            ? "This can be an estimate"
             : !amount
             ? "Please enter the total PPI refund amount"
             : Number(amount?.replace(/,/g, "")) < 100
             ? "Please enter at least 3 characters"
-            : ""
+            : "This can be an estimate"
         }
         helperClass={`${
           Number(amount?.replace(/,/g, "")) >= 100 || firstEvents.amount

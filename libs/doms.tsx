@@ -1,31 +1,48 @@
-export const PERCENTS = [9, 18, 36, 54, 72, 81, 90, 95, 100];
+export const PERCENTS = [9, 18, 54, 72, 81, 90, 95, 100];
 
 export const TITLES = [
-  (name?: string) =>
-    `${name}, What Was Your Income When You Received Your PPI Payout(s)?`,
-  (name?: string) => `Great News, ${name}! You're Eligible to Claim`,
-  (name?: string) => `${name}, Let's Proceed With Your Claim`,
-  (name?: string) => `${name}, Enter Your Address`,
-  (name?: string) => `${name}, We Need Your Permission to Get Started`,
-  (name?: string) => `${name}, We Need Your National Insurance Number`,
-  (name?: string) =>
-    `${name}, Select the Lenders You Received PPI Payouts From`,
-  (name?: string) => `${name}, Provide the PPI Refund Details for Each Lender`,
-  (name?: string) => `Thank You, ${name}! Your Claim Has Been Submitted 🎉`,
-  (name?: string) => "Apologies, we are unable to proceed",
+  "Your income",
+  "Your Payouts",
+  "Your details",
+  "Your signature",
+  "Confirm your identity",
+  "Your Lenders",
+  "Your PPI refunds",
+  "Thank you! 🎉",
+  "Apologies, we are unable to proceed",
 ];
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
-    "To accurately assess your eligibility for a PPI tax refund, please select the income level that best represents your situation during the time(s) you received the payout(s).",
+    "Tell us about your annual income to see if you qualify",
     "Please enter the total amount of PPI payouts you received",
-    "Please provide your contact details to proceed with your claim. We'll use these details to keep you updated on your claim via email or SMS. We won't call you.",
-    "Please provide your current residential address.",
-    "Please sign below to authorize us to deal with your application with the HMRC directly",
-    "Your National Insurance Number (NIN) is required for processing your claim with HMRC. We ensure that your information is securely stored and used only for the purpose of your claim",
-    "Choose all lenders you received PPI refunds from.",
+    "Complete your details below to start your claim today",
+    <span key="tos">
+      By signing, you agree to our{" "}
+      <button
+        onClick={() => onClick("terms-of-service.pdf")}
+        className="border-b border-gray-500 dark:border-gray-400"
+      >
+        terms
+      </button>{" "}
+      and authorize us to proceed with your claim.
+    </span>,
+    "Your NIN is required to process your claim.",
+    "We now need to know which lenders you received a PPI refund from",
+    "How much PPI did you receive in the last four tax years",
+    <span key="what-happens-next">
+      <strong>What happens next?</strong> We&apos;ll be in touch with updates on
+      your claim as soon as we hear anything. All you have to do is sit back,
+      relax and wait until then!
+    </span>,
+    "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
+    "We now need to know which lenders you received a PPI refund from",
     "Enter the year, total amount received, and tax deduction for each lender selected.",
-    "You have successfully completed your claim. We will now process your application and keep you updated on its progress",
+    <span key="what-happens-next">
+      <strong>What happens next?</strong> We&apos;ll be in touch with updates on
+      your claim as soon as we hear anything. All you have to do is sit back,
+      relax and wait until then!
+    </span>,
     "Due to the Pandemic, the government asked the workforce to work from home (WFH) whenever possible. All UK taxpayers may be eligible to claim the full £312 WFH allowance since 6 April 2020, provided they have worked a minimum of one day from home (per year).",
   ];
   return <>{subtitles[step]}</>;
@@ -48,17 +65,16 @@ export const SIDE_INFO = [
   "Your Income",
   "Your PPI Payouts",
   "Your Contact",
-  "Your Address",
-  "Your signature",
+  "Your Signature",
   "Your (NI) number",
   "Your Lenders",
-  "Your PPI refunds",
+  "Your PPI Refunds",
   "Thank you",
 ];
 
 export const NEXT_BUTTON_TEXTS = [
   "Verify My Eligibility",
-  "Proceed to Contact Details",
+  "Next",
   "Next",
   "Next",
   "Confirm and Continue",
@@ -82,12 +98,9 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
     "",
     "",
-    "",
-    "We do not use this information to send any paperwork",
-    "",
-    <span key="5">
-      When you click submit, we&apos;ll begin processing your tax refund claims.
-      We&apos;ll handle your data in accordance with our&nbsp;
+    <span key="2">
+      Your personal information will be treated carefully in accordance with
+      our&nbsp;
       <a
         href="#"
         className="font-medium text-blue-600 hover:underline dark:text-blue-500"
@@ -100,6 +113,23 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       </a>
       .
     </span>,
+    <span key="3">
+      By clicking next, you are confirming that you have read and agree with
+      the&nbsp;
+      <a
+        href="#"
+        className="hover:underline"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick("terms-of-service.pdf");
+        }}
+      >
+        terms & conditions
+      </a>
+      &nbsp;and that the information you have given on this form is correct, to
+      the best of your knowledge
+    </span>,
+    "",
     "",
     "",
   ];

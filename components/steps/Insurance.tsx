@@ -6,7 +6,6 @@ const Insurance = (props: {
   data: any;
   handleFormChange: (field: string, value: string) => void;
 }) => {
-
   const { userData, firstEvents, setUserData, handleFormChange } =
     useSystemValues();
 
@@ -35,7 +34,7 @@ const Insurance = (props: {
           htmlFor="insurance"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          National Insurance Number
+          National Insurance (NI) number
         </label>
         <div className="flex">
           <div className="icon-input w-full">
@@ -64,7 +63,7 @@ const Insurance = (props: {
               type="text"
               name="insurance"
               id="insurance"
-              placeholder="AA 12 34 56 B"
+              placeholder="e.g. AB123456C"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
               required
               maxLength={9}
@@ -79,15 +78,15 @@ const Insurance = (props: {
             id="helper-text-explanation"
             className="mt-2 text-sm text-gray-500 dark:text-gray-400"
           >
-            You can find your NIN on your payslip, P60, or any official letter
-            from HMRC
+            You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits.
           </p>
         ) : !userData.insurance || !isNino(userData.insurance) ? (
           <p
             id="helper-text-explanation"
             className="mt-2 text-sm text-red-600 dark:text-red-500"
           >
-            Please enter a valid NIN
+            Please provide a valid National Insurance (NI) number
           </p>
         ) : (
           <p

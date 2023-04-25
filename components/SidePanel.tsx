@@ -50,7 +50,7 @@ const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
         </p>
 
         <ul role="list" className="space-y-4 text-left">
-          {SIDE_INFO.slice(0, step + 1).map((info, index) => {
+          {SIDE_INFO.slice(0, step).map((info, index) => {
             return <SideItem key={index} info={info} />;
           })}
         </ul>

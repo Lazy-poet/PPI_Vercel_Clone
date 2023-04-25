@@ -112,7 +112,7 @@ const Address = () => {
 
   return (
     <>
-      <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+      <div className="grid gap-5 my-5 sm:grid-cols-2">
         <div
           className={`form-group sm:col-span-2 ${
             firstEvents.postCode
@@ -153,7 +153,7 @@ const Address = () => {
               id="postCode"
               name="postCode"
               className=" block w-full p-4 pl-10 sm:text-lg text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="AB12 3CD"
+              placeholder="e.g. CH5 3UZ"
               required
               value={
                 isValid(data.postCode)
@@ -214,7 +214,7 @@ const Address = () => {
               htmlFor="address"
               className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
             >
-              Select Your Address
+              Address
             </label>
             <div className="icon-input">
               <FormControl className="w-full mui-select">
@@ -260,12 +260,12 @@ const Address = () => {
             {selectedAddress.split(",").map((address, i) => (
               <p
                 key={i}
-                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+                className="sm:text-lg leading-relaxed text-gray-900 dark:text-white"
               >
                 {address}
               </p>
             ))}
-            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+            <p className="sm:text-lg leading-relaxed text-gray-900 dark:text-white">
               {data.postCode}
             </p>
           </blockquote>
