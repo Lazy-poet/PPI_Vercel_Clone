@@ -1,21 +1,21 @@
 export const PERCENTS = [9, 18, 54, 72, 81, 90, 95, 100];
 
 export const TITLES = [
-  "Your income",
-  "Your Payouts",
-  "Your details",
-  "Your signature",
-  "Confirm your identity",
-  "Your Lenders",
-  "Your PPI refunds",
-  "Thank you! 🎉",
-  "Apologies, we are unable to proceed",
+  (name?: string) => "Your income",
+  (name?: string) => `Its good news ${name}!`,
+  (name?: string) => "Your details",
+  (name?: string) => "Your signature",
+  (name?: string) => "Confirm your identity",
+  (name?: string) => "Your Lenders",
+  (name?: string) => "Your PPI refunds",
+  (name?: string) => "Thank you! 🎉",
+  (name?: string) => "Apologies, we are unable to proceed",
 ];
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Please enter the total amount of PPI payouts you received",
+    "Our records show that you could be owed a refund of £100s, maybe even £1,000s. We just need a few details to complete your claim",
     "Complete your details below to start your claim today",
     <span key="tos">
       {name}, your signature will be applied to an&nbsp;
