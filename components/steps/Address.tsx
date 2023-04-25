@@ -260,12 +260,12 @@ const Address = () => {
             {selectedAddress.split(",").map((address, i) => (
               <p
                 key={i}
-                className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white"
+                className="sm:text-lg leading-relaxed text-gray-900 dark:text-white"
               >
                 {address}
               </p>
             ))}
-            <p className="sm:text-lg italic leading-relaxed text-gray-900 dark:text-white">
+            <p className="sm:text-lg leading-relaxed text-gray-900 dark:text-white">
               {data.postCode}
             </p>
           </blockquote>
