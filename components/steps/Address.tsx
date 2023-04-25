@@ -112,7 +112,7 @@ const Address = () => {
 
   return (
     <>
-      <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
+      <div className="grid gap-5 my-5 sm:grid-cols-2">
         <div
           className={`form-group sm:col-span-2 ${
             firstEvents.postCode

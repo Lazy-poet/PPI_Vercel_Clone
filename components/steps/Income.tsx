@@ -27,7 +27,7 @@ const ClaimNow = (props: any) => {
           Income Level
         </label>
 
-        <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
+        <div className="grid w-50 gap-5 text-gray-500 dark:text-gray-400">
           <RadioInput
             value={Earnings.LessThan12570}
             handleFormChange={handleFormChange}

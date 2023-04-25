@@ -1,4 +1,4 @@
-export const PERCENTS = [9, 18, 36, 54, 72, 81, 90, 95, 100];
+export const PERCENTS = [9, 18, 54, 72, 81, 90, 95, 100];
 
 export const TITLES = [
   "Your income",
@@ -75,7 +75,7 @@ export const SIDE_INFO = [
 
 export const NEXT_BUTTON_TEXTS = [
   "Verify My Eligibility",
-  "Proceed to Contact Details",
+  "Next",
   "Next",
   "Next",
   "Confirm and Continue",
@@ -99,12 +99,9 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
     "",
     "",
-    "",
-    "We do not use this information to send any paperwork",
-    "",
-    <span key="5">
-      When you click submit, we&apos;ll begin processing your tax refund claims.
-      We&apos;ll handle your data in accordance with our&nbsp;
+    <span key="2">
+      Your personal information will be treated carefully in accordance with
+      our&nbsp;
       <a
         href="#"
         className="font-medium text-blue-600 hover:underline dark:text-blue-500"
@@ -117,6 +114,23 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       </a>
       .
     </span>,
+    <span key="3">
+      By clicking next, you are confirming that you have read and agree with
+      the&nbsp;
+      <a
+        href="#"
+        className="hover:underline"
+        onClick={(e) => {
+          e.preventDefault();
+          onClick("terms-of-service.pdf");
+        }}
+      >
+        terms & conditions
+      </a>
+      &nbsp;and that the information you have given on this form is correct, to
+      the best of your knowledge
+    </span>,
+    "",
     "",
     "",
   ];
