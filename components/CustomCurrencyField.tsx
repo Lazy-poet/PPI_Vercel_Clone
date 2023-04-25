@@ -115,7 +115,7 @@ const CurrencyTextField = (props: Props) => {
         <p
           className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${props.helperClass}`}
         >
-          {props.helperText || "This can be an estimate"}
+          {props.helperText ?? "This can be an estimate"}
         </p>
       </div>
     </>
