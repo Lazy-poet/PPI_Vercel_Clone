@@ -295,80 +295,83 @@ const HeroSection: React.FC<{
                 </label>
               </div>
 
-              <div id="birthday" className="grid gap-3 sm:gap-5 grid-cols-3">
-                <div
-                  className={
-                    firstEvents.day ? "" : userData.day ? "success" : "error"
-                  }
-                >
-                  <div className="icon-input">
-                    <FormControl className="w-full mui-select">
-                      <Select
-                        id="day"
-                        name="day"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={userData.day}
-                        onChange={(e) => handleMUISelectChange(e)}
-                        displayEmpty
-                        IconComponent={ExpandMoreIcon}
-                      >
-                        <MenuItem value="" disabled>
-                          DD
-                        </MenuItem>
-                        {Dates &&
-                          Dates.map((item: string, index: number) => (
-                            <MenuItem key={index} value={item}>
-                              {item}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                      <span className="form-icon"></span>
-                    </FormControl>
+              <div id="birthday" className="grid gap-3 sm:gap-5 sm:grid-cols-3">
+                <div className="grid gap-5 grid-cols-2 sm:col-span-2">
+                  <div
+                    className={
+                      firstEvents.day ? "" : userData.day ? "success" : "error"
+                    }
+                  >
+                    <div className="icon-input">
+                      <FormControl className="w-full mui-select">
+                        <Select
+                          id="day"
+                          name="day"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          value={userData.day}
+                          onChange={(e) => handleMUISelectChange(e)}
+                          displayEmpty
+                          IconComponent={ExpandMoreIcon}
+                        >
+                          <MenuItem value="" disabled>
+                            Day
+                          </MenuItem>
+                          {Dates &&
+                            Dates.map((item: string, index: number) => (
+                              <MenuItem key={index} value={item}>
+                                {item}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                        <span className="form-icon"></span>
+                      </FormControl>
+                    </div>
+                    {!userData.day && !firstEvents.day && (
+                      <p className="mt-2 text-sm">Select day of birth</p>
+                    )}
                   </div>
-                  {!userData.day && !firstEvents.day && (
-                    <p className="mt-2 text-sm">Select day of birth</p>
-                  )}
-                </div>
-                <div
-                  className={
-                    firstEvents.month
-                      ? ""
-                      : userData.month
-                      ? "success"
-                      : "error"
-                  }
-                >
-                  <div className="icon-input">
-                    <FormControl className="w-full mui-select">
-                      <Select
-                        id="month"
-                        name="month"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={userData.month}
-                        onChange={(e) => handleMUISelectChange(e)}
-                        displayEmpty
-                        IconComponent={ExpandMoreIcon}
-                      >
-                        <MenuItem value="" disabled>
-                          MM
-                        </MenuItem>
-                        {Months &&
-                          Months.map((item: string, index: number) => (
-                            <MenuItem
-                              key={index}
-                              value={("0" + (index + 1)).slice(-2)}
-                            >
-                              {item}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                      <span className="form-icon"></span>
-                    </FormControl>
+                  <div
+                    className={
+                      firstEvents.month
+                        ? ""
+                        : userData.month
+                        ? "success"
+                        : "error"
+                    }
+                  >
+                    <div className="icon-input">
+                      <FormControl className="w-full mui-select">
+                        <Select
+                          id="month"
+                          name="month"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          value={userData.month}
+                          onChange={(e) => handleMUISelectChange(e)}
+                          displayEmpty
+                          IconComponent={ExpandMoreIcon}
+                        >
+                          <MenuItem value="" disabled>
+                            Month
+                          </MenuItem>
+                          {Months &&
+                            Months.map((item: string, index: number) => (
+                              <MenuItem
+                                key={index}
+                                value={("0" + (index + 1)).slice(-2)}
+                              >
+                                {item}
+                              </MenuItem>
+                            ))}
+                        </Select>
+                        <span className="form-icon"></span>
+                      </FormControl>
+                    </div>
+                    {!userData.month && !firstEvents.month && (
+                      <p className="mt-2 text-sm">Select month of birth</p>
+                    )}
                   </div>
-                  {!userData.month && !firstEvents.month && (
-                    <p className="mt-2 text-sm">Select month of birth</p>
-                  )}
                 </div>
+
                 <div
                   className={
                     firstEvents.year ? "" : userData.year ? "success" : "error"
@@ -386,7 +389,7 @@ const HeroSection: React.FC<{
                         IconComponent={ExpandMoreIcon}
                       >
                         <MenuItem value="" disabled>
-                          YYYY
+                          Year
                         </MenuItem>
                         {Years &&
                           Years.map((item: string, index: number) => (
