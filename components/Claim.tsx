@@ -61,18 +61,8 @@ function Claim({ setReady, data }: ClaimProps) {
 
   const {
     amount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-    fdEvents1,
-    setFdEvents1,
+    taxYears,
+    setTaxYears,
     claimValue,
     linkCode,
     setLinkCode,
@@ -87,7 +77,8 @@ function Claim({ setReady, data }: ClaimProps) {
     setFirstEvents,
     userData,
     setUserData,
-    showLoadingPage,
+    signatureTermsChecked,
+
     setShowLoadingPage,
   } = useSystemValues();
 
@@ -97,13 +88,13 @@ function Claim({ setReady, data }: ClaimProps) {
 
   // Step5
   const handleTaxYearsChange = (key: string, value: string) => {
-    setFormData5({
+    setTaxYears({
       firstEvents: {
-        ...formData5.firstEvents,
+        ...taxYears.firstEvents,
         [key]: false,
       },
       tax_years: {
-        ...formData5.tax_years,
+        ...taxYears.tax_years,
         [key]: value,
       },
     });
@@ -147,8 +138,6 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   const nextStep = async () => {
-    let { day, month, year, ...otherFormData1 } = formData1;
-
     switch (step) {
       case STEP.EARNINGS:
         setFirstEvents({ ...firstEvents, earnings: false });
@@ -321,8 +310,8 @@ function Claim({ setReady, data }: ClaimProps) {
         }
         break;
       case STEP.REFUNDS:
-        setFormData5({
-          ...formData5,
+        setTaxYears({
+          ...taxYears,
           firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
             obj[key] = false;
             return obj;
@@ -330,19 +319,19 @@ function Claim({ setReady, data }: ClaimProps) {
         });
         // check if at least one tax year is filled
         const can_proceed = Object.keys(TAX_YEARS).some(
-          (key) => !!formData5.tax_years[key]
+          (key) => !!taxYears.tax_years[key]
         );
         if (can_proceed) {
           // default other fields to 0
           const updatedTaxYears = Object.keys(TAX_YEARS).reduce((obj, key) => {
-            obj[key] = formData5.tax_years[key] || "0.00";
+            obj[key] = taxYears.tax_years[key] || "0.00";
             return obj;
           }, {} as Record<string, string>);
           const totalTaxYears = Object.keys(TAX_YEARS).reduce(
             (sum, key) => sum + Number(updatedTaxYears[key].replace(/,/g, "")),
             0
           );
-          setFormData5({ ...formData5, tax_years: updatedTaxYears });
+          setTaxYears({ ...taxYears, tax_years: updatedTaxYears });
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
@@ -437,44 +426,7 @@ function Claim({ setReady, data }: ClaimProps) {
           {} as typeof firstEvents
         )
       );
-      setFormData1({
-        firstEvent: true,
-        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
-        lastName: data?.[0].lastName ? data?.[0].lastName : "",
-        email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? parse(data?.[0].postCode).postcode : "",
-        address: data?.[0].address ? data?.[0].address : "",
-        day: dob.day,
-        month: dob.month,
-        year: dob.year,
-      });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-      setFormData2({
-        earnings: data?.[0]?.earnings || "",
-        firstEvent: !data?.[0]?.earnings,
-      });
-
-      setFormData3({
-        signatureData: data?.[0]?.signatureData || "",
-        firstEvent: !data?.[0]?.signatureData,
-      });
-
-      setFormData4({
-        ...formData4,
-        insurance: data?.[0]?.insurance || "",
-        firstEvent: !data?.[0]?.insurance,
-      });
-
-      setFormData5({
+      setTaxYears({
         tax_years: Object.keys(TAX_YEARS).reduce((obj, key) => {
           obj[key] = data?.[0]?.tax_years?.[key];
           return obj;
@@ -509,36 +461,6 @@ function Claim({ setReady, data }: ClaimProps) {
     }
   }, [router.query, router]);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    // Initiate validation for doing backup
-    if (
-      formData1.firstName !== "" &&
-      formData1.lastName !== "" &&
-      formData1.email !== "" &&
-      Utils.validateEmail(formData1.email) &&
-      formData1.postCode !== "" &&
-      isValid(formData1.postCode) &&
-      formData1.address !== "" &&
-      formData1.day !== "" &&
-      formData1.month !== "" &&
-      formData1.year !== ""
-    ) {
-      setFormData1({ ...formData1, firstEvent: false });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-    }
-  }, [router.isReady, router]);
-
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-screen-xl mx-auto lg:flex">
@@ -546,12 +468,7 @@ function Claim({ setReady, data }: ClaimProps) {
           <div className="w-full">
             <ProgressBar step={step} goToPrevStep={prevStep} />
 
-            <StepAlert
-              step={step}
-              signatureData={formData3}
-              earningsData={formData2}
-              claimValue={claimValue}
-            />
+            <StepAlert step={step} />
 
             <Title step={step} onClick={openPdf} />
 
@@ -562,7 +479,7 @@ function Claim({ setReady, data }: ClaimProps) {
             {step === STEP.INSURANCE && <Insurance />}
             {step === STEP.REFUNDS && (
               <Refunds
-                data={formData5}
+                data={taxYears}
                 handleFormChange={handleTaxYearsChange}
               />
             )}
