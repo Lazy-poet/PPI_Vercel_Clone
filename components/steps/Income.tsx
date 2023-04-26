@@ -1,11 +1,13 @@
+import { useSystemValues } from "@/contexts/ValueContext";
+
 export enum Earnings {
-  LessThan12500 = "Less than £12,500",
-  Between12500And50000 = "£12,500 to £50,000",
-  MoreThan50001 = "More than £50,001",
+  LessThan12570 = "Less than £12,570",
+  Between12571And50270 = "£12,500 to £50,270",
+  MoreThan50271 = "More than £50,271",
 }
 
 const ClaimNow = (props: any) => {
-  const { data, handleFormChange } = props;
+  const { userData, firstEvents, handleFormChange } = useSystemValues();
 
   return (
     <div className="grid gap-[40px] mt-6 mb-5 sm:grid-cols-2">
@@ -13,10 +15,10 @@ const ClaimNow = (props: any) => {
         <label
           htmlFor="employer"
           className={`block mb-2 text-lg font-bold text-gray-900 dark:text-white ${
-            data.firstEvent
+            firstEvents.earnings
               ? ""
-              : data.earnings
-              ? data.earnings === Earnings.MoreThan50001
+              : userData.earnings
+              ? userData.earnings === Earnings.MoreThan50271
                 ? "text-red-600 dark:text-red-600"
                 : "text-green-700 dark:text-green-700"
               : "error"
@@ -25,40 +27,43 @@ const ClaimNow = (props: any) => {
           How much do you earn?
         </label>
 
-        <div className="grid w-50 gap-3 text-gray-500 dark:text-gray-400">
+        <div className="grid w-50 gap-5 text-gray-500 dark:text-gray-400">
           <RadioInput
-            value={Earnings.LessThan12500}
+            value={Earnings.LessThan12570}
             handleFormChange={handleFormChange}
-            earnings={data.earnings}
+            earnings={userData.earnings}
             id="bordered-radio-1"
-            firstEvent={data.firstEvent}
+            firstEvent={firstEvents.earnings}
           />
           <RadioInput
-            value={Earnings.Between12500And50000}
+            value={Earnings.Between12571And50270}
             handleFormChange={handleFormChange}
-            earnings={data.earnings}
+            earnings={userData.earnings}
             id="bordered-radio-2"
-            firstEvent={data.firstEvent}
+            firstEvent={firstEvents.earnings}
           />
           <RadioInput
-            value={Earnings.MoreThan50001}
+            value={Earnings.MoreThan50271}
             handleFormChange={handleFormChange}
-            earnings={data.earnings}
+            earnings={userData.earnings}
             id="bordered-radio-3"
-            firstEvent={data.firstEvent}
+            firstEvent={firstEvents.earnings}
           />
         </div>
         <p
           className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
-            data.firstEvent ||
-            (!!data.earnings && data.earnings !== Earnings.MoreThan50001)
+            firstEvents.earnings ||
+            (!!userData.earnings &&
+              userData.earnings !== Earnings.MoreThan50271)
               ? ""
               : "error"
           }`}
         >
-          {data.earnings === Earnings.MoreThan50001
-            ? "Sorry! you're not eligible to claim"
-            : " Please select your annual income"}
+          {userData.earnings === Earnings.MoreThan50271
+            ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
+            : !userData.earnings
+            ? "Please select your annual income"
+            : ""}
         </p>
       </div>
     </div>
@@ -79,7 +84,7 @@ const RadioInput: React.FC<{
         firstEvent || (earnings && earnings !== value)
           ? ""
           : earnings === value
-          ? earnings === Earnings.MoreThan50001
+          ? earnings === Earnings.MoreThan50271
             ? "error"
             : "success"
           : "error"

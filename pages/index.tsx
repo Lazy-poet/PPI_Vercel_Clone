@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy, Suspense } from "react";
-import { UserData } from "@/libs/constants";
+import { DBData } from "@/libs/constants";
 import supabase from "utils/client";
 import { useSystemValues } from "@/contexts/ValueContext";
 import HeroSection from "@/components/HeroSection";
@@ -15,6 +15,7 @@ import PdfViewer from "@/components/PdfViewer";
 import { Worker } from "@react-pdf-viewer/core";
 import Features from "@/components/Features";
 import Layout from "@/components/Layout";
+import Loading from "@/components/Loading";
 
 const Claim = dynamic(() => import("@/components/Claim"), {
   loading: () => (
@@ -26,7 +27,7 @@ const Claim = dynamic(() => import("@/components/Claim"), {
 
 type HomeProps = {
   link_code: string;
-  data: UserData[];
+  data: DBData[];
 };
 
 export default function Home(props: HomeProps) {
@@ -40,6 +41,7 @@ export default function Home(props: HomeProps) {
     setUserPhone,
     ready,
     setReady,
+    showLoadingPage,
   } = useSystemValues();
 
   const router = useRouter();
@@ -54,6 +56,7 @@ export default function Home(props: HomeProps) {
       setUserEmail(props.data[0].email);
       setUserPhone(props.data[0].phone);
     }
+    
     (async () => {
       const { userIp } = await (await fetch("/api/ip")).json();
       setUserIp(userIp);
@@ -75,6 +78,7 @@ export default function Home(props: HomeProps) {
           {/* <Banner />  */}
           <Hotjar />
           <PdfViewer />
+          {showLoadingPage && <Loading />}
           {ready ? (
             <Claim setReady={setReady} data={props.data} />
           ) : (

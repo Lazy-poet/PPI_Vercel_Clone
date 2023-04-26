@@ -1,21 +1,19 @@
 import { useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
-import { CONFIRMS } from "@/libs/doms";
 import { THEME } from "@/contexts/ThemeContext";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useSystemValues } from "@/contexts/ValueContext";
 
-const Signature = (props: any) => {
-  const { data, handleFormChange } = props;
+const Signature = () => {
   const canvasRef = useRef<SignatureCanvas>(null);
   const { theme } = useThemeContext();
-  const { openPdf } = useSystemValues();
+  const { userData, firstEvents, handleFormChange } = useSystemValues();
 
   const clear = () => {
-    if (!data.signatureData) return;
+    if (!userData.signatureData) return;
     // @ts-ignore
     canvasRef.current.clear();
-    handleFormChange("signatureData", null);
+    handleFormChange("signatureData", "");
   };
 
   const trim = async () => {
@@ -49,7 +47,7 @@ const Signature = (props: any) => {
     });
   };
   useEffect(() => {
-    const signatureData = data.signatureData;
+    const signatureData = userData.signatureData;
     if (signatureData && Object.keys(signatureData).length !== 0) {
       (async () => {
         const dataUrl =
@@ -66,14 +64,18 @@ const Signature = (props: any) => {
     <div className="mt-6">
       <div
         className={`form-group mt-6 ${
-          data.firstEvent ? "" : data.signatureData ? "success" : "error"
+          firstEvents.signatureData
+            ? ""
+            : userData.signatureData
+            ? "success"
+            : "error"
         }`}
       >
         <label
           htmlFor="first-name"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          Sign in the box below
+          Signature
         </label>
 
         <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -115,16 +117,16 @@ const Signature = (props: any) => {
             </button>
           </div>
         </div>
-        <p
-          className={`mt-2 text-sm ${
-            data.firstEvent || data.signatureData
-              ? "text-gray-500 dark:text-gray-400 "
-              : "error"
-          }`}
-        >
-          Take your time to make your signature accurate. You can start again as
-          many times as you like by pressing &quot;Clear&quot;
-        </p>
+        {firstEvents.signatureData || userData.signatureData ? (
+          <p className={`mt-2 text-sm ${"text-gray-500 dark:text-gray-400 "}`}>
+            Take your time to make your signature accurate. You can start again
+            as many times as you like by pressing &quot;Clear&quot;
+          </p>
+        ) : (
+          <p className={`mt-2 text-sm error`}>
+            Please sign in the box provided
+          </p>
+        )}
       </div>
     </div>
   );

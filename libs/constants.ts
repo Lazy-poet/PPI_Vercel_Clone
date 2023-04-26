@@ -1,3 +1,4 @@
+import { Earnings } from "@/components/steps/Income";
 export enum TAX_TYPE {
   NONE,
   LAST_YEAR,
@@ -6,16 +7,18 @@ export enum TAX_TYPE {
 }
 
 export enum STEP {
-  CLAIM_NOW,
-  DETAILS,
+  EARNINGS,
+  PAYOUTS,
+  CONTACT,
   SIGNATURE,
-  ONE_MORE,
+  INSURANCE,
   REFUNDS,
   ALL_DONE,
   ERROR,
 }
 
-export type UserData = {
+
+export type DBData = {
   id?: string,
   createdAt: Date,
   firstName: string;
@@ -35,7 +38,7 @@ export type UserData = {
   signatureUrl: string;
   birthdate_str: string;
   estimated_total: string;
-  earnings: string;
+  earnings: Earnings;
   tax_years: Record<string, string>;
   phone: string,
   APR062018_APR052019: string;
