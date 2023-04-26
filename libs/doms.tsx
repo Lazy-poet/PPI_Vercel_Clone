@@ -1,35 +1,25 @@
-export const PERCENTS = [9, 18, 73, 82, 91, 100, 100];
+export const PERCENTS = [9, 18, 54, 72, 83, 91, 100];
 
 export const TITLES = [
-  "Your income",
-  "Your details",
-  "Your signature",
-  "Confirm your identity",
-  "Your PPI refunds",
-  "Thank you! 🎉",
-  "Apologies, we are unable to proceed",
+  (name?: string) => "Your income",
+  (name?: string) => `Its good news ${name}!`,
+  (name?: string) => "Your details",
+  (name?: string) => "Your signature",
+  (name?: string) => "Confirm your identity",
+  (name?: string) => "Your PPI refunds",
+  (name?: string) => "Thank you! 🎉",
+  (name?: string) => "Apologies, we are unable to proceed",
 ];
 
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
+    "Our records show that you could be owed a refund of £100s, maybe even £1,000s. We just need a few details to complete your claim",
     "Complete your details below to start your claim today",
     <span key="tos">
-      {name}, your signature will be applied to an&nbsp;
-      <button
-        onClick={() => onClick("R40M2022.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        R40
-      </button>
-      &nbsp;and&nbsp;
-      <button
-        onClick={() => onClick("authorise_agent_64-8.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        64-8
-      </button>{" "}
-      form and used to submit your claim to HMRC
+      We need your permission to deal with your application with the HMRC
+      directly. We do this by getting your consent via signature. Once your
+      application has concluded, we remove this from our records.
     </span>,
     "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
     "How much PPI did you receive in the last four tax years",
@@ -57,24 +47,38 @@ export const ERRORS = [
 ];
 
 export const SIDE_INFO = [
-  "Your income",
-  "Your details",
-  "Your signature",
+  "Your Income",
+  "Your PPI Payouts",
+  "Your Contact",
+  "Your Signature",
   "Your (NI) number",
-  "Your PPI refunds",
+  "Your PPI Refunds",
   "Thank you",
 ];
 
+export const NEXT_BUTTON_TEXTS = [
+  "Verify My Eligibility",
+  "Next",
+  "Next",
+  "Confirm and Continue",
+  "Proceed to PPI Refunds Breakdown",
+  "Next",
+  "Complete My Claim",
+];
+
 export const NEXT_BUTTON_TIMERS = [
-  "52 seconds left...",
-  "22 seconds left...",
-  "19 seconds left...",
-  "15 seconds left...",
+  "55 seconds remaining...",
+  "30 seconds remaining...",
+  "25 seconds remaining...",
+  "15 seconds remaining...",
+  "10 seconds remaining...",
+  "5 seconds remaining...",
   "",
 ];
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
+    "",
     "",
     <span key="2">
       Your personal information will be treated carefully in accordance with
@@ -108,21 +112,6 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       the best of your knowledge
     </span>,
     "",
-    <span key="5">
-      When you click submit, we&apos;ll begin processing your tax refund claims.
-      We&apos;ll handle your data in accordance with our&nbsp;
-      <a
-        href="#"
-        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-        onClick={(e) => {
-          e.preventDefault();
-          onClick("privacy-policy.pdf");
-        }}
-      >
-        Privacy Policy
-      </a>
-      .
-    </span>,
     "",
     "",
   ];

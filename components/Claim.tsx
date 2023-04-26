@@ -1,13 +1,16 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import ProgressBar from "@/components/ProgressBar";
-import { STEP, UserData } from "@/libs/constants";
+import { STEP, DBData } from "@/libs/constants";
 import Title from "@/components/Title";
 import NextButton from "@/components/NextButton";
 import SidePanel from "@/components/SidePanel";
-import { Earnings } from "@/components/steps/Step1-ClaimNow";
-import { NEXT_BUTTON_HELPERS, NEXT_BUTTON_TIMERS } from "@/libs/doms";
-import { TAX_YEARS } from "@/components/steps/Step5-Refunds";
+import {
+  NEXT_BUTTON_HELPERS,
+  NEXT_BUTTON_TEXTS,
+  NEXT_BUTTON_TIMERS,
+} from "@/libs/doms";
+import { TAX_YEARS } from "@/components/steps/Refunds";
 import StepAlert from "@/components/StepAlert";
 import Utils from "../libs/utils";
 const isNino = require("is-national-insurance-number");
@@ -17,32 +20,36 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import dynamic from "next/dynamic";
 import Spinner from "./Spinner";
 import { nanoid } from "nanoid";
+import { Earnings } from "@/components/steps/Income";
 
-const Details = dynamic(() => import("@/components/steps/Step2-Details"), {
+const Contact = dynamic(() => import("@/components/steps/Contact"), {
   loading: () => <Spinner />,
 });
-const ClaimNow = dynamic(() => import("@/components/steps/Step1-ClaimNow"), {
+const Income = dynamic(() => import("@/components/steps/Income"), {
   loading: () => <Spinner />,
 });
-
-const Signature = dynamic(() => import("@/components/steps/Step3-Signature"), {
-  loading: () => <Spinner />,
-});
-
-const OneMore = dynamic(() => import("@/components/steps/Step4-OneMore"), {
+const Payouts = dynamic(() => import("@/components/steps/Payouts"), {
   loading: () => <Spinner />,
 });
 
-const Refunds = dynamic(() => import("@/components/steps/Step5-Refunds"), {
+const Signature = dynamic(() => import("@/components/steps/Signature"), {
   loading: () => <Spinner />,
 });
-const AllDone = dynamic(() => import("@/components/steps/Step6-AllDone"), {
+
+const Insurance = dynamic(() => import("@/components/steps/Insurance"), {
+  loading: () => <Spinner />,
+});
+
+const Refunds = dynamic(() => import("@/components/steps/Refunds"), {
+  loading: () => <Spinner />,
+});
+const AllDone = dynamic(() => import("@/components/steps/AllDone"), {
   loading: () => <Spinner />,
 });
 
 type ClaimProps = {
   setReady: Dispatch<SetStateAction<boolean>>;
-  data: UserData[];
+  data: DBData[];
 };
 
 export const calculateOurFee = (value: number) => {
@@ -54,18 +61,8 @@ function Claim({ setReady, data }: ClaimProps) {
 
   const {
     amount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-    fdEvents1,
-    setFdEvents1,
+    taxYears,
+    setTaxYears,
     claimValue,
     linkCode,
     setLinkCode,
@@ -76,74 +73,28 @@ function Claim({ setReady, data }: ClaimProps) {
     userPhone,
     userIp,
     openPdf,
+    firstEvents,
+    setFirstEvents,
+    userData,
+    setUserData,
+    signatureTermsChecked,
+
+    setShowLoadingPage,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.CLAIM_NOW);
+  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
-  // Step1
-
-  const handleFormChange1 = (key: string, value: string) => {
-    // if (key === "email") {
-    //   setUserEmail(value);
-    // }
-    setFormData1({
-      ...formData1,
-      firstEvent: false,
-      [key]: value,
-    });
-    if (key === "day" || key === "month" || key === "year") {
-      setFdEvents1({
-        ...fdEvents1,
-        day: false,
-        month: false,
-        year: false,
-      });
-    } else {
-      setFdEvents1({
-        ...fdEvents1,
-        [key]: false,
-      });
-    }
-  };
-
-  // Step2
-  const handleFormChange2 = (key: string, value: string) => {
-    setFormData2({
-      ...formData2,
-      firstEvent: false,
-      [key]: value,
-    });
-  };
-
-  // Step3
-  const handleFormChange3 = (key: string, value: string) => {
-    setFormData3({
-      ...formData3,
-      [key]: value,
-      ...(key === "signatureData" && { firstEvent: false }),
-    });
-  };
-
-  // Step4
-  const handleFormChange4 = (key: string, value: string) => {
-    setFormData4({
-      ...formData4,
-      firstEvent: false,
-      [key]: value,
-    });
-  };
-
   // Step5
-  const handleFormChange5 = (key: string, value: string) => {
-    setFormData5({
+  const handleTaxYearsChange = (key: string, value: string) => {
+    setTaxYears({
       firstEvents: {
-        ...formData5.firstEvents,
+        ...taxYears.firstEvents,
         [key]: false,
       },
       tax_years: {
-        ...formData5.tax_years,
+        ...taxYears.tax_years,
         [key]: value,
       },
     });
@@ -156,7 +107,7 @@ function Claim({ setReady, data }: ClaimProps) {
     );
 
   const prevStep = () => {
-    if (step === STEP.CLAIM_NOW) {
+    if (step === STEP.EARNINGS) {
       setReady(false);
     } else {
       setStep((step) => step - 1);
@@ -176,7 +127,7 @@ function Claim({ setReady, data }: ClaimProps) {
         ...(linkCode &&
           !data.link_code && {
             link_code: linkCode,
-            link: `https://quicktaxclaims.co.uk?c=${linkCode}`,
+            link: `https://ppi.claimingmadeeasy.co.uk/?c=${linkCode}`,
           }),
       },
       {
@@ -187,21 +138,19 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   const nextStep = async () => {
-    let { day, month, year, ...otherFormData1 } = formData1;
-
     switch (step) {
-      case STEP.CLAIM_NOW:
-        setFormData2({ ...formData2, firstEvent: false });
+      case STEP.EARNINGS:
+        setFirstEvents({ ...firstEvents, earnings: false });
         if (
-          formData2.earnings?.length &&
-          formData2.earnings !== Earnings.MoreThan50001
+          userData.earnings?.length &&
+          userData.earnings !== Earnings.MoreThan50271
         ) {
-          const valueChanged = formData2.earnings !== dbData.earnings;
+          const valueChanged = userData.earnings !== dbData.earnings;
           if ((userEmail || linkCode) && valueChanged) {
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                earnings: formData2.earnings,
+                earnings: userData.earnings,
               })
               .match(userEmail ? { email: userEmail } : { link_code: linkCode })
               .select();
@@ -212,29 +161,56 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-
-          setStep(STEP.DETAILS);
+          setShowLoadingPage(true);
+          setTimeout(() => {
+            setShowLoadingPage(false);
+            setStep(STEP.PAYOUTS);
+          }, 3000);
         }
         break;
-      case STEP.DETAILS:
-        setFormData1({ ...formData1, firstEvent: false });
-        setFdEvents1({
-          firstName: false,
-          lastName: false,
+      case STEP.PAYOUTS:
+        setFirstEvents({ ...firstEvents, amount: false });
+        console.log(amount);
+        if (amount && Number(amount?.replace(/,/g, "")) >= 100) {
+          const valueChanged = amount !== dbData.estimated_total;
+          if ((userEmail || linkCode) && valueChanged) {
+            const { data, error } = await supabase
+              .from("PPI_Claim_Form")
+              .update({
+                estimated_total: amount,
+              })
+              .match(userEmail ? { email: userEmail } : { link_code: linkCode })
+              .select();
+            if (data?.length && (data[0].signatureData || data[0].insurance)) {
+              await updateSecondaryTable({
+                ...data[0],
+              });
+              setDbData(data[0]);
+            }
+          }
+          setStep(STEP.CONTACT);
+        }
+        break;
+      case STEP.CONTACT:
+        setFirstEvents({
+          ...firstEvents,
+          phone: false,
           email: false,
           postCode: false,
           address: false,
-          day: false,
-          month: false,
-          year: false,
         });
-        const { firstEvent, ...details } = formData1;
+        const { ...details } = userData;
         if (
-          details.firstName.length > 1 &&
-          details.lastName.length > 1 &&
-          Utils.isObjectFilled(details) &&
-          isValid(details.postCode) &&
-          Utils.validateEmail(details.email)
+          Utils.isObjectFilled(details, [
+            "phone",
+            "email",
+            "postCode",
+            "address",
+          ]) &&
+          Utils.validateEmail(details.email) &&
+          isValid(userData.postCode) &&
+          details.phone.length === 11 &&
+          details.phone.startsWith("07")
         ) {
           const formattedDetails = Utils.formatUserDetails(details);
           if (Utils.hasObjectValueChanged(formattedDetails, dbData)) {
@@ -257,13 +233,6 @@ function Claim({ setReady, data }: ClaimProps) {
                 {
                   ...utmParams,
                   ...diff,
-                  estimated_total: amount,
-                  ...(!dbData.estimated_total_difference && {
-                    estimated_total_difference: Number(
-                      amount.replace(/,/g, "")
-                    ),
-                  }),
-                  earnings: formData2.earnings,
                   link_code,
                   link: `https://quicktaxclaims.co.uk?c=${link_code}`,
                   email: details.email,
@@ -291,11 +260,10 @@ function Claim({ setReady, data }: ClaimProps) {
           setStep(STEP.SIGNATURE);
         }
         break;
-
       case STEP.SIGNATURE:
-        setFormData3({ ...formData3, firstEvent: false });
-        if (formData3.signatureData) {
-          if (formData3.signatureData !== dbData.signatureData) {
+        setFirstEvents({ ...firstEvents, signatureData: false });
+        if (userData.signatureData) {
+          if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://zkfqakvzqywbqfuvgyzt.supabase.co/storage/v1/object/public/signatures/";
 
@@ -303,13 +271,13 @@ function Claim({ setReady, data }: ClaimProps) {
               .from("signatures")
               .upload(
                 `claim-form/${+new Date()}.png`,
-                await base64ToFile(formData3.signatureData)
+                await base64ToFile(userData.signatureData)
               );
 
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .update({
-                signatureData: formData3.signatureData,
+                signatureData: userData.signatureData,
                 signatureUrl: signatureUrlPrefix + sigData?.path,
               })
               .match({ email: userEmail })
@@ -319,16 +287,17 @@ function Claim({ setReady, data }: ClaimProps) {
               await updateSecondaryTable(data[0]);
             }
           }
-          setStep(STEP.ONE_MORE);
+          setStep(STEP.INSURANCE);
         }
         break;
-      case STEP.ONE_MORE:
-        setFormData4({ ...formData4, firstEvent: false });
-        if (formData4.insurance && isNino(formData4.insurance)) {
-          if (formData4.insurance !== dbData.insurance) {
+      case STEP.INSURANCE:
+        setFirstEvents({ ...firstEvents, insurance: false });
+
+        if (userData.insurance && isNino(userData.insurance)) {
+          if (userData.insurance !== dbData.insurance) {
             const { data } = await supabase
               .from("PPI_Claim_Form")
-              .update({ insurance: formData4.insurance })
+              .update({ insurance: userData.insurance })
               .match({ email: userEmail })
               .select();
 
@@ -341,8 +310,8 @@ function Claim({ setReady, data }: ClaimProps) {
         }
         break;
       case STEP.REFUNDS:
-        setFormData5({
-          ...formData5,
+        setTaxYears({
+          ...taxYears,
           firstEvents: Object.keys(TAX_YEARS).reduce((obj, key) => {
             obj[key] = false;
             return obj;
@@ -350,19 +319,19 @@ function Claim({ setReady, data }: ClaimProps) {
         });
         // check if at least one tax year is filled
         const can_proceed = Object.keys(TAX_YEARS).some(
-          (key) => !!formData5.tax_years[key]
+          (key) => !!taxYears.tax_years[key]
         );
         if (can_proceed) {
           // default other fields to 0
           const updatedTaxYears = Object.keys(TAX_YEARS).reduce((obj, key) => {
-            obj[key] = formData5.tax_years[key] || "0.00";
+            obj[key] = taxYears.tax_years[key] || "0.00";
             return obj;
           }, {} as Record<string, string>);
           const totalTaxYears = Object.keys(TAX_YEARS).reduce(
             (sum, key) => sum + Number(updatedTaxYears[key].replace(/,/g, "")),
             0
           );
-          setFormData5({ ...formData5, tax_years: updatedTaxYears });
+          setTaxYears({ ...taxYears, tax_years: updatedTaxYears });
           if (
             Utils.hasObjectValueChanged(updatedTaxYears, dbData.tax_years || {})
           ) {
@@ -405,11 +374,13 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [step]);
 
   useEffect(() => {
+    // TODO: Move this logic a step higher so it can show data in hero section
     /* get existed user data */
     const getPrevData = () => {
       if (!data?.length) {
         return;
       }
+
       let dob = { day: "", month: "", year: "" };
       if (data?.[0].birthdate) {
         dob =
@@ -428,44 +399,34 @@ function Claim({ setReady, data }: ClaimProps) {
 
       /* update the form data with existing user data */
 
-      setFormData1({
-        firstEvent: true,
+      setUserData({
         firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
         lastName: data?.[0].lastName ? data?.[0].lastName : "",
         email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? parse(data?.[0].postCode).postcode : "",
+        postCode: data?.[0].postCode
+          ? (parse(data?.[0].postCode).postcode as string)
+          : "",
         address: data?.[0].address ? data?.[0].address : "",
         day: dob.day,
         month: dob.month,
         year: dob.year,
-      });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-      setFormData2({
-        earnings: data?.[0]?.earnings || "",
-        firstEvent: !data?.[0]?.earnings,
-      });
-
-      setFormData3({
+        phone: data?.[0]?.phone || "",
         signatureData: data?.[0]?.signatureData || "",
-        firstEvent: !data?.[0]?.signatureData,
-      });
 
-      setFormData4({
-        ...formData4,
+        earnings: data?.[0]?.earnings || "",
         insurance: data?.[0]?.insurance || "",
-        firstEvent: !data?.[0]?.insurance,
       });
 
-      setFormData5({
+      setFirstEvents(
+        (Object.keys(firstEvents) as (keyof typeof firstEvents)[]).reduce(
+          (obj, ev) => {
+            obj[ev] = false;
+            return obj;
+          },
+          {} as typeof firstEvents
+        )
+      );
+      setTaxYears({
         tax_years: Object.keys(TAX_YEARS).reduce((obj, key) => {
           obj[key] = data?.[0]?.tax_years?.[key];
           return obj;
@@ -500,36 +461,6 @@ function Claim({ setReady, data }: ClaimProps) {
     }
   }, [router.query, router]);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    // Initiate validation for doing backup
-    if (
-      formData1.firstName !== "" &&
-      formData1.lastName !== "" &&
-      formData1.email !== "" &&
-      Utils.validateEmail(formData1.email) &&
-      formData1.postCode !== "" &&
-      isValid(formData1.postCode) &&
-      formData1.address !== "" &&
-      formData1.day !== "" &&
-      formData1.month !== "" &&
-      formData1.year !== ""
-    ) {
-      setFormData1({ ...formData1, firstEvent: false });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-    }
-  }, [router.isReady, router]);
-
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-screen-xl mx-auto lg:flex">
@@ -537,37 +468,20 @@ function Claim({ setReady, data }: ClaimProps) {
           <div className="w-full">
             <ProgressBar step={step} goToPrevStep={prevStep} />
 
-            <StepAlert
-              step={step}
-              signatureData={formData3}
-              earningsData={formData2}
-              claimValue={claimValue}
-            />
+            <StepAlert step={step} />
 
             <Title step={step} onClick={openPdf} />
 
-            {step === STEP.DETAILS && (
-              <Details
-                data={formData1}
-                fdEvents={fdEvents1}
-                handleFormChange={handleFormChange1}
-                handleOpen={openPdf}
-              />
-            )}
-            {step === STEP.CLAIM_NOW && (
-              <ClaimNow data={formData2} handleFormChange={handleFormChange2} />
-            )}
-            {step === STEP.SIGNATURE && (
-              <Signature
-                data={formData3}
-                handleFormChange={handleFormChange3}
-              />
-            )}
-            {step === STEP.ONE_MORE && (
-              <OneMore data={formData4} handleFormChange={handleFormChange4} />
-            )}
+            {step === STEP.CONTACT && <Contact handleOpen={openPdf} />}
+            {step === STEP.PAYOUTS && <Payouts />}
+            {step === STEP.EARNINGS && <Income />}
+            {step === STEP.SIGNATURE && <Signature />}
+            {step === STEP.INSURANCE && <Insurance />}
             {step === STEP.REFUNDS && (
-              <Refunds data={formData5} handleFormChange={handleFormChange5} />
+              <Refunds
+                data={taxYears}
+                handleFormChange={handleTaxYearsChange}
+              />
             )}
             {step === STEP.ALL_DONE && <AllDone />}
 
@@ -575,7 +489,7 @@ function Claim({ setReady, data }: ClaimProps) {
               <NextButton
                 onClick={nextStep}
                 timer={NEXT_BUTTON_TIMERS[step]}
-                label={step === STEP.REFUNDS ? "Submit" : "Next"}
+                label={NEXT_BUTTON_TEXTS[step]}
                 helper={NEXT_BUTTON_HELPERS(step, openPdf)}
               />
             )}

@@ -1,27 +1,22 @@
 import { STEP } from "@/libs/constants";
 import CustomAlertBanner from "./CustomAlert";
-import { Earnings } from "./steps/Step1-ClaimNow";
+import { useSystemValues } from "@/contexts/ValueContext";
 
-type Props = {
-  step: STEP;
-};
-
-const StepAlert = (props: any) => {
-  const { step, signatureData, earningsData, claimValue } = props;
-
+const StepAlert = ({ step }: { step: STEP }) => {
+  const { firstEvents, userData } = useSystemValues();
   return (
     <>
       {step === STEP.SIGNATURE && (
         <>
-          {signatureData.firstEvent ||
-            (signatureData.signatureData && (
+          {firstEvents.signatureData ||
+            (userData.signatureData && (
               <CustomAlertBanner
                 color="green"
                 // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
                 body={`Great news! You're entitled to claim a PPI tax refund`}
               />
             ))}
-          {!(signatureData.signatureData || signatureData.firstEvent) && (
+          {!(userData.signatureData || firstEvents.signatureData) && (
             <CustomAlertBanner
               closable={false}
               body="Please provide your signature to proceed"
@@ -30,14 +25,7 @@ const StepAlert = (props: any) => {
           )}
         </>
       )}
-      {STEP.DETAILS === step && (
-        <CustomAlertBanner
-          color="green"
-          // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
-          body={`Great news! You're entitled to claim a PPI tax refund`}
-        />
-      )}
-      {step === STEP.ONE_MORE && (
+      {step === STEP.INSURANCE && (
         <CustomAlertBanner color="blue" body="Only two steps left" />
       )}
       {step === STEP.REFUNDS && (

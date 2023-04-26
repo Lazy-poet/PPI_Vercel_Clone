@@ -20,7 +20,7 @@ const NextButton = ({
           <div>
             <button
               id="btnNext"
-              className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              className="inline-flex justify-between items-center p-5 w-full focus:outline-none text-white bg-[#00A400] hover:bg-[#00A100] focus:ring-4 focus:ring-green-300 font-medium rounded-lg dark:bg-[#00A400] dark:hover:bg-[#00A100] dark:focus:ring-green-800"
               onClick={onClick}
             >
               <div className="flex-grow">

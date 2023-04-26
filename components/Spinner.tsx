@@ -1,11 +1,20 @@
 import React from "react";
 
-const Spinner = () => {
+const Spinner = ({
+  className,
+  helper,
+}: {
+  className?: string;
+  helper?: string;
+}) => {
   return (
-    <div role="status" className="flex items-center justify-center my-20">
+    <div
+      role="status"
+      className={`flex flex-col items-center justify-center gap-2 my-20 ${className}`}
+    >
       <svg
         aria-hidden="true"
-        className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+        className="w-10 h-10 lg:w-12 h-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -19,6 +28,11 @@ const Spinner = () => {
           fill="currentFill"
         />
       </svg>
+      {helper && (
+        <p className="block mx-auto text-center text-sm font-normal text-gray-500 md:text-base dark:text-gray-400">
+          {helper}
+        </p>
+      )}
       <span className="sr-only">Loading...</span>
     </div>
   );

@@ -1,3 +1,5 @@
+import { Earnings } from "@/components/steps/Income";
+import { DBData } from "@/libs/constants";
 import React, {
   createContext,
   SetStateAction,
@@ -5,8 +7,27 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import PropTypes, { string } from "prop-types";
-import { UserData } from "@/libs/constants";
+
+export type UserData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  postCode: string;
+  address: string;
+  phone: string;
+  day: string;
+  month: string;
+  year: string;
+  earnings: Earnings;
+  signatureData: string;
+  insurance: string;
+};
+
+export type FirstEvents = {
+  [key in keyof UserData]: boolean;
+} & {
+  amount: boolean;
+};
 
 const useValue = () => {
   const [checkedYears, setCheckedYears] = useState<string[]>([]);
@@ -15,27 +36,30 @@ const useValue = () => {
   const [showPulse, setShowPulse] = useState<boolean>(false);
   const [addressList, setAddressList] = useState([] as object[]);
   const [linkCode, setLinkCode] = useState<any>(null);
-  const [dbData, setDbData] = useState({} as UserData);
+  const [dbData, setDbData] = useState({} as DBData);
   const [userEmail, setUserEmail] = useState<any>(null);
   const [userPhone, setUserPhone] = useState<any>(null);
   const [userIp, setUserIp] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
-
-  const [formData1, setFormData1] = useState<any>({
-    firstEvent: true,
+  const [showLoadingPage, setShowLoadingPage] = useState(false);
+  const [signatureTermsChecked, setSignatureTermsChecked] = useState(false);
+  const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "07",
     postCode: "",
     address: "",
+    phone: "",
     day: "",
     month: "",
     year: "",
-  });
-  const [fdEvents1, setFdEvents1] = useState<any>({
+    signatureData: "",
+    earnings: "" as Earnings,
+    insurance: "",
+  } as UserData);
+  const [firstEvents, setFirstEvents] = useState({
     firstName: true,
     lastName: true,
     email: true,
@@ -45,23 +69,13 @@ const useValue = () => {
     day: true,
     month: true,
     year: true,
+    earnings: true,
+    signatureData: true,
+    insurance: true,
+    amount: true,
   });
-  const [formData2, setFormData2] = useState<any>({
-    firstEvent: true,
-    earnings: null,
-    claimChecked1: true,
-    claimChecked2: true,
-  });
-  const [formData3, setFormData3] = useState<any>({
-    firstEvent: true,
-    signatureData: null,
-    checked: true,
-  });
-  const [formData4, setFormData4] = useState<any>({
-    firstEvent: true,
-    insurance: "",
-  });
-  const [formData5, setFormData5] = useState<any>({
+
+  const [taxYears, setTaxYears] = useState<any>({
     firstEvents: {
       APR062018_APR052019: true,
       APR062019_APR052020: true,
@@ -74,23 +88,32 @@ const useValue = () => {
   const openPdf = (path: string) => {
     setFileURL(path);
   };
+  const handleFormChange = (key: string, value: string) => {
+    setUserData({
+      ...userData,
+      [key]: value,
+    });
+    if (key === "day" || key === "month" || key === "year") {
+      setFirstEvents({
+        ...firstEvents,
+        day: false,
+        month: false,
+        year: false,
+      });
+    } else {
+      setFirstEvents({
+        ...firstEvents,
+        [key]: false,
+      });
+    }
+  };
   return {
     checkedYears,
     amount,
     setCheckedYears,
     setAmount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-    fdEvents1,
-    setFdEvents1,
+    taxYears,
+    setTaxYears,
     showPulse,
     setShowPulse,
     addressList,
@@ -114,6 +137,15 @@ const useValue = () => {
     openPdf,
     ready,
     setReady,
+    userData,
+    setUserData,
+    firstEvents,
+    setFirstEvents,
+    showLoadingPage,
+    setShowLoadingPage,
+    handleFormChange,
+    signatureTermsChecked,
+    setSignatureTermsChecked,
   };
 };
 
@@ -125,46 +157,7 @@ interface Value {
   setAmount: Dispatch<SetStateAction<string>>;
   claimValue: number;
   setClaimValue: Dispatch<SetStateAction<number>>;
-  formData1: {
-    firstEvent: boolean;
-    firstName: string;
-    lastName: string;
-    email: string;
-    postCode: string;
-    address: string;
-    day: string;
-    month: string;
-    year: string;
-  };
-  setFdEvents1: Dispatch<SetStateAction<{ [x: string]: boolean }>>;
-  fdEvents1: {
-    firstName: boolean;
-    lastName: boolean;
-    email: boolean;
-    postCode: boolean;
-    address: boolean;
-    day: boolean;
-    month: boolean;
-    year: boolean;
-  };
-  setFormData1: Dispatch<SetStateAction<{ [x: string]: any }>>;
-  formData2: {
-    firstEvent: true;
-    earnings: string;
-  };
-  setFormData2: Dispatch<SetStateAction<{ [x: string]: any }>>;
-  formData3: {
-    signatureData: string;
-    firstEvent: boolean;
-    checked: boolean;
-  };
-  setFormData3: Dispatch<SetStateAction<{ [x: string]: any }>>;
-  formData4: {
-    firstEvent: boolean;
-    insurance: string;
-  };
-  setFormData4: Dispatch<SetStateAction<{ [x: string]: any }>>;
-  formData5: {
+  taxYears: {
     firstEvents: {
       APR062018_APR052019: boolean;
       APR062019_APR052020: boolean;
@@ -173,13 +166,13 @@ interface Value {
     };
     tax_years: Record<string, string>;
   };
-  setFormData5: Dispatch<SetStateAction<{ [x: string]: any }>>;
+  setTaxYears: Dispatch<SetStateAction<{ [x: string]: any }>>;
   addressList: Record<string, any>[];
   setAddressList: Dispatch<SetStateAction<Record<string, any>[]>>;
   linkCode: string;
   setLinkCode: Dispatch<SetStateAction<string>>;
-  dbData: UserData;
-  setDbData: Dispatch<SetStateAction<UserData>>;
+  dbData: DBData;
+  setDbData: Dispatch<SetStateAction<DBData>>;
   userEmail: string;
   setUserEmail: Dispatch<SetStateAction<string>>;
   userPhone: string;
@@ -192,6 +185,15 @@ interface Value {
   setOpen: Dispatch<SetStateAction<boolean>>;
   ready: boolean;
   setReady: Dispatch<SetStateAction<boolean>>;
+  userData: UserData;
+  setUserData: Dispatch<SetStateAction<UserData>>;
+  firstEvents: FirstEvents;
+  setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
+  showLoadingPage: boolean;
+  setShowLoadingPage: Dispatch<SetStateAction<boolean>>;
+  signatureTermsChecked: boolean;
+  setSignatureTermsChecked: Dispatch<SetStateAction<boolean>>;
+  handleFormChange: (key: string, value: string) => void;
 }
 
 export const ValueContext = createContext({} as Value);
@@ -205,7 +207,3 @@ export const ValueProvider = ({ children }: React.PropsWithChildren) => {
 };
 
 export const useSystemValues = () => useContext(ValueContext);
-
-ValueProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
