@@ -61,9 +61,7 @@ const ClaimNow = (props: any) => {
         >
           {userData.earnings === Earnings.MoreThan50271
             ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
-            : !userData.earnings
-            ? "Please select your annual income"
-            : ""}
+            : "Please select your annual income"}
         </p>
       </div>
     </div>
