@@ -87,11 +87,11 @@ function Claim({ setReady, data }: ClaimProps) {
     setFirstEvents,
     userData,
     setUserData,
-    showLoadingPage,
+    signatureTermsChecked,
     setShowLoadingPage,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
+  const [step, setStep] = useState<STEP>(STEP.SIGNATURE);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
@@ -275,7 +275,7 @@ function Claim({ setReady, data }: ClaimProps) {
         break;
       case STEP.SIGNATURE:
         setFirstEvents({ ...firstEvents, signatureData: false });
-        if (userData.signatureData) {
+        if (userData.signatureData && signatureTermsChecked) {
           if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://rzbhbpskzzutuagptiqq.supabase.co/storage/v1/object/public/signatures/";

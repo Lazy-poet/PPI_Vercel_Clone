@@ -74,6 +74,7 @@ const useValue = () => {
   const [ready, setReady] = useState(false);
   const [refunds, setRefunds] = useState({} as REFUNDS);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
+  const [signatureTermsChecked, setSignatureTermsChecked] = useState(false);
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -190,6 +191,8 @@ const useValue = () => {
     showLoadingPage,
     setShowLoadingPage,
     handleFormChange,
+    signatureTermsChecked,
+    setSignatureTermsChecked,
   };
 };
 
@@ -239,6 +242,8 @@ interface Value {
   setFirstEvents: Dispatch<SetStateAction<FirstEvents>>;
   showLoadingPage: boolean;
   setShowLoadingPage: Dispatch<SetStateAction<boolean>>;
+  signatureTermsChecked: boolean;
+  setSignatureTermsChecked: Dispatch<SetStateAction<boolean>>;
   handleFormChange: (key: string, value: string) => void;
 }
 
