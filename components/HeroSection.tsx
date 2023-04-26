@@ -119,7 +119,7 @@ const HeroSection: React.FC<{
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-center leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Claim Your PPI Tax Refund Today!
           </h1>
-          <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl text-center sm:px-16 xl:px-24 dark:text-gray-400">
+          <p className="mb-8 lg:mb-10 text-lg font-normal text-gray-500 lg:text-xl text-center sm:px-16 xl:px-24 dark:text-gray-400">
             Discover if you&apos;re eligible for a tax refund in just 60 seconds
             – simply enter your name below to get started!
           </p>
@@ -189,7 +189,7 @@ const HeroSection: React.FC<{
               </a>
             </div>
           )}
-          <form className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-6 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
+          <form className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-5 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
             <div
               className={`form-group ${
                 firstEvents.firstName
@@ -404,7 +404,7 @@ const HeroSection: React.FC<{
                 </div>
               </div>
             </div>
-            <div className="w-full text-sm text-gray-500  sm:col-span-2">
+            <div className="w-full text-sm text-gray-500 mt-5 sm:col-span-2">
               <ul className="grid gap-6 w-full md:grid-cols-2">
                 <li className="md:col-span-2">
                   <div className="text-center">

@@ -26,7 +26,7 @@ const SslSecure = (props: Props) => {
         <span>This form is securely encrypted to ensure your data is safe</span>
       </p>
       <Image
-        className="w-28 md:w-32 mt-4 mx-auto sm:mx-0"
+        className="w-28 md:w-32 mt-5 mx-auto sm:mx-0"
         src={SslImg}
         alt="Secure"
       />
