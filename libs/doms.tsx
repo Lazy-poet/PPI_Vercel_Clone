@@ -110,22 +110,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       </a>
       .
     </span>,
-    <span key="3">
-      By clicking next, you are confirming that you have read and agree with
-      the&nbsp;
-      <a
-        href="#"
-        className="hover:underline"
-        onClick={(e) => {
-          e.preventDefault();
-          onClick("terms-of-service.pdf");
-        }}
-      >
-        terms & conditions
-      </a>
-      &nbsp;and that the information you have given on this form is correct, to
-      the best of your knowledge
-    </span>,
+    "",
     "",
     "",
     "",

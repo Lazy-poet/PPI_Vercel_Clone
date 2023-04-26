@@ -2,7 +2,6 @@ import { useSystemValues } from "@/contexts/ValueContext";
 import { ChangeEvent } from "react";
 import CustomCurrencyField from "../CustomCurrencyField";
 
-const isNino = require("is-national-insurance-number");
 
 const Insurance = () => {
   const { firstEvents, setFirstEvents, amount, setClaimValue, setAmount } =

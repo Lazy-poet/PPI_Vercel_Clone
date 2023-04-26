@@ -27,7 +27,9 @@ const Footer = () => {
           <p className="max-w-2xl mx-auto text-gray-500 dark:text-gray-400">
             ClaimingMadeEasy is a trading style of Approved Claims Group Ltd |
             Company Number: 12552579 | Address: 20-22 Wenlock Road, London N1
-            7GU | support@claimingmadeeasy.com{" "}
+            7GU | We provide our service on a no-win-no-fee basis. If your claim
+            is successful, we will charge a fee of 48% (inclusive of VAT where
+            applicable) of all rebates received from HMRC.{" "}
             <span className="inline">
               <a
                 href="#"

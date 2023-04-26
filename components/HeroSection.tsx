@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslSecure from "./SslSecure";
@@ -38,6 +38,8 @@ const HeroSection: React.FC<{
     handleFormChange(e.target.name, value);
   };
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     const _dates = [];
     for (let d = 1; d <= 31; d++) {
       _dates.push(("0" + d).slice(-2));
@@ -56,8 +58,8 @@ const HeroSection: React.FC<{
     userData.day &&
     userData.month &&
     userData.year;
-  const handleClick = async () => {
-    // setFirstEvent(false);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFirstEvents({
       ...firstEvents,
       firstName: false,
@@ -191,10 +193,7 @@ const HeroSection: React.FC<{
               </a>
             </div>
           )}
-          <form
-            action="#"
-            className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-6 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2"
-          >
+          <form className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-6 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
             <div
               className={`form-group ${
                 firstEvents.firstName

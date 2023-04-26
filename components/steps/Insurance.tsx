@@ -2,11 +2,8 @@ import { useSystemValues } from "@/contexts/ValueContext";
 
 const isNino = require("is-national-insurance-number");
 
-const Insurance = (props: {
-  data: any;
-  handleFormChange: (field: string, value: string) => void;
-}) => {
-  const { userData, firstEvents, setUserData, handleFormChange } =
+const Insurance = () => {
+  const { userData, firstEvents, handleFormChange } =
     useSystemValues();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
