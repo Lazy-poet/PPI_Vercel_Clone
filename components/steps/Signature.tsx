@@ -83,7 +83,7 @@ const Signature = () => {
           htmlFor="first-name"
           className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
         >
-          Signature
+          Please draw your signature below
         </label>
 
         <div className="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -136,11 +136,11 @@ const Signature = () => {
           </p>
         )}
       </div>
-      <div className="p-4 my-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2">
-        <p className="text-base font-medium leading-relaxed text-gray-900 dark:text-white">
+      <div className="p-4 my-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
+        <p className="font-medium leading-relaxed text-gray-900 dark:text-white">
           What are you signing;
         </p>
-        <ul className="space-y-3 text-sm list-disc list-inside mt-1 text-gray-900 dark:text-white">
+        <ul className="space-y-3 list-disc list-inside mt-1 text-gray-900 dark:text-white">
           <li>
             <span className="inline font-medium">
               <span
