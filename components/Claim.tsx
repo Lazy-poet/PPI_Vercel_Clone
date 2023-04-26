@@ -244,7 +244,7 @@ function Claim({ setReady, data }: ClaimProps) {
         break;
       case STEP.PAYOUTS:
         setFirstEvents({ ...firstEvents, amount: false });
-        if (amount && Number(amount) >= 100) {
+        if (amount && Number(amount?.replace(/,/g, "")) >= 100) {
           const valueChanged = amount !== dbData.estimated_total;
           if ((userEmail || linkCode) && valueChanged) {
             const { data, error } = await supabase

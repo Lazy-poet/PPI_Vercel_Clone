@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Image from "next/image";
 import SslSecure from "./SslSecure";
@@ -56,8 +56,8 @@ const HeroSection: React.FC<{
     userData.day &&
     userData.month &&
     userData.year;
-  const handleClick = async () => {
-    // setFirstEvent(false);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setFirstEvents({
       ...firstEvents,
       firstName: false,
@@ -191,10 +191,7 @@ const HeroSection: React.FC<{
               </a>
             </div>
           )}
-          <form
-            action="#"
-            className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-6 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2"
-          >
+          <form className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-6 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
             <div
               className={`form-group ${
                 firstEvents.firstName
