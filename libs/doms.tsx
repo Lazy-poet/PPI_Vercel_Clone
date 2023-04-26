@@ -18,21 +18,9 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
     "Our records show that you could be owed a refund of £100s, maybe even £1,000s. We just need a few details to complete your claim",
     "Complete your details below to start your claim today",
     <span key="tos">
-      {name}, your signature will be applied to an&nbsp;
-      <button
-        onClick={() => onClick("R40M2022.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        R40
-      </button>
-      &nbsp;and&nbsp;
-      <button
-        onClick={() => onClick("authorise_agent_64-8.pdf")}
-        className="border-b border-gray-500 dark:border-gray-400"
-      >
-        64-8
-      </button>{" "}
-      form and used to submit your claim to HMRC
+      We need your permission to deal with your application with the HMRC
+      directly. We do this by getting your consent via signature. Once your
+      application has concluded, we remove this from our records.
     </span>,
     "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
     "We now need to know which lenders you received a PPI refund from",
