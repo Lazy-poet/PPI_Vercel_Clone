@@ -38,6 +38,8 @@ const HeroSection: React.FC<{
     handleFormChange(e.target.name, value);
   };
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     const _dates = [];
     for (let d = 1; d <= 31; d++) {
       _dates.push(("0" + d).slice(-2));

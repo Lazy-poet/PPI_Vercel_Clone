@@ -10,10 +10,7 @@ export enum TAX_YEARS {
   APR062021_APR052022 = "6 April 2021 and 5 April 2022",
 }
 
-const Refunds = (props: {
-  data: any;
-  handleFormChange: (field: string, value: string) => void;
-}) => {
+const Refunds = () => {
   const { lendersData, refunds, setRefunds } = useSystemValues();
   const handleChange = (
     field: "year" | "amount" | "tax_deduction",

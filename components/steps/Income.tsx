@@ -6,7 +6,7 @@ export enum Earnings {
   MoreThan50271 = "More than £50,271",
 }
 
-const ClaimNow = (props: any) => {
+const ClaimNow = () => {
   const { userData, firstEvents, handleFormChange } = useSystemValues();
 
   return (

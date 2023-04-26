@@ -1,22 +1,22 @@
 import { STEP } from "@/libs/constants";
 import CustomAlertBanner from "./CustomAlert";
+import { useSystemValues } from "@/contexts/ValueContext";
 
-const StepAlert = (props: any) => {
-  const { step, signatureData, earningsData, claimValue } = props;
-
+const StepAlert = ({ step }: { step: STEP }) => {
+  const { firstEvents, userData } = useSystemValues();
   return (
     <>
       {step === STEP.SIGNATURE && (
         <>
-          {signatureData.firstEvent ||
-            (signatureData.signatureData && (
+          {firstEvents.signatureData ||
+            (userData.signatureData && (
               <CustomAlertBanner
                 color="green"
                 // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
                 body={`Great news! You're entitled to claim a PPI tax refund`}
               />
             ))}
-          {!(signatureData.signatureData || signatureData.firstEvent) && (
+          {!(userData.signatureData || firstEvents.signatureData) && (
             <CustomAlertBanner
               closable={false}
               body="Please provide your signature to proceed"

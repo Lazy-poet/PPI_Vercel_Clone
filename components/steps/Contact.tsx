@@ -3,9 +3,13 @@ import Utils from "../../libs/utils";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Address from "./Address";
-const Details = (props: any) => {
-  const { handleOpen } = props;
-  const { userData: data, firstEvents, handleFormChange } = useSystemValues();
+const Details = () => {
+  const {
+    userData: data,
+    firstEvents,
+    handleFormChange,
+    openPdf,
+  } = useSystemValues();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
@@ -136,7 +140,7 @@ const Details = (props: any) => {
                 className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleOpen("privacy-policy.pdf");
+                  openPdf("privacy-policy.pdf");
                 }}
               >
                 Privacy Policy

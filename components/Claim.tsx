@@ -67,18 +67,8 @@ function Claim({ setReady, data }: ClaimProps) {
 
   const {
     amount,
-    formData1,
-    setFormData1,
-    formData2,
-    setFormData2,
-    formData3,
-    setFormData3,
-    formData4,
-    setFormData4,
-    formData5,
-    setFormData5,
-    fdEvents1,
-    setFdEvents1,
+    taxYears,
+    setTaxYears,
     claimValue,
     linkCode,
     setLinkCode,
@@ -105,68 +95,14 @@ function Claim({ setReady, data }: ClaimProps) {
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
-  // Step1
-
-  const handleFormChange1 = (key: string, value: string) => {
-    // if (key === "email") {
-    //   setUserEmail(value);
-    // }
-    setFormData1({
-      ...formData1,
-      firstEvent: false,
-      [key]: value,
-    });
-    if (key === "day" || key === "month" || key === "year") {
-      setFdEvents1({
-        ...fdEvents1,
-        day: false,
-        month: false,
-        year: false,
-      });
-    } else {
-      setFdEvents1({
-        ...fdEvents1,
-        [key]: false,
-      });
-    }
-  };
-
-  // Step2
-  const handleFormChange2 = (key: string, value: string) => {
-    setFormData2({
-      ...formData2,
-      firstEvent: false,
-      [key]: value,
-    });
-  };
-
-  // Step3
-  const handleFormChange3 = (key: string, value: string) => {
-    setFormData3({
-      ...formData3,
-      [key]: value,
-      ...(key === "signatureData" && { firstEvent: false }),
-    });
-  };
-
-  // Step4
-  const handleFormChange4 = (key: string, value: string) => {
-    setFormData4({
-      ...formData4,
-      firstEvent: false,
-      [key]: value,
-    });
-  };
-
-  // Step5
   const handleFormChange5 = (key: string, value: string) => {
-    setFormData5({
+    setTaxYears({
       firstEvents: {
-        ...formData5.firstEvents,
+        ...taxYears.firstEvents,
         [key]: false,
       },
       tax_years: {
-        ...formData5.tax_years,
+        ...taxYears.tax_years,
         [key]: value,
       },
     });
@@ -210,7 +146,7 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   const nextStep = async () => {
-    let { day, month, year, ...otherFormData1 } = formData1;
+    // let { day, month, year, ...otherFormData1 } = userData;
 
     switch (step) {
       case STEP.EARNINGS:
@@ -554,44 +490,7 @@ function Claim({ setReady, data }: ClaimProps) {
           {} as typeof firstEvents
         )
       );
-      setFormData1({
-        firstEvent: true,
-        firstName: data?.[0]?.firstName ? data?.[0].firstName : "",
-        lastName: data?.[0].lastName ? data?.[0].lastName : "",
-        email: data?.[0].email ? data?.[0].email : "",
-        postCode: data?.[0].postCode ? parse(data?.[0].postCode).postcode : "",
-        address: data?.[0].address ? data?.[0].address : "",
-        day: dob.day,
-        month: dob.month,
-        year: dob.year,
-      });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-      setFormData2({
-        earnings: data?.[0]?.earnings || "",
-        firstEvent: !data?.[0]?.earnings,
-      });
-
-      setFormData3({
-        signatureData: data?.[0]?.signatureData || "",
-        firstEvent: !data?.[0]?.signatureData,
-      });
-
-      setFormData4({
-        ...formData4,
-        insurance: data?.[0]?.insurance || "",
-        firstEvent: !data?.[0]?.insurance,
-      });
-
-      setFormData5({
+      setTaxYears({
         tax_years: Object.keys(TAX_YEARS).reduce((obj, key) => {
           obj[key] = data?.[0]?.tax_years?.[key];
           return obj;
@@ -626,36 +525,6 @@ function Claim({ setReady, data }: ClaimProps) {
     }
   }, [router.query, router]);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-
-    // Initiate validation for doing backup
-    if (
-      formData1.firstName !== "" &&
-      formData1.lastName !== "" &&
-      formData1.email !== "" &&
-      Utils.validateEmail(formData1.email) &&
-      formData1.postCode !== "" &&
-      isValid(formData1.postCode) &&
-      formData1.address !== "" &&
-      formData1.day !== "" &&
-      formData1.month !== "" &&
-      formData1.year !== ""
-    ) {
-      setFormData1({ ...formData1, firstEvent: false });
-      setFdEvents1({
-        firstName: false,
-        lastName: false,
-        email: false,
-        postCode: false,
-        address: false,
-        day: false,
-        month: false,
-        year: false,
-      });
-    }
-  }, [router.isReady, router]);
-
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-screen-xl mx-auto lg:flex">
@@ -663,38 +532,17 @@ function Claim({ setReady, data }: ClaimProps) {
           <div className="w-full">
             <ProgressBar step={step} goToPrevStep={prevStep} />
 
-            <StepAlert
-              step={step}
-              signatureData={formData3}
-              earningsData={formData2}
-              claimValue={claimValue}
-            />
+            <StepAlert step={step} />
 
             <Title step={step} onClick={openPdf} />
 
-            {step === STEP.CONTACT && (
-              <Contact
-                data={formData1}
-                fdEvents={fdEvents1}
-                handleFormChange={handleFormChange1}
-                handleOpen={openPdf}
-              />
-            )}
+            {step === STEP.CONTACT && <Contact />}
             {step === STEP.PAYOUTS && <Payouts />}
-            {step === STEP.EARNINGS && (
-              <Income data={formData2} handleFormChange={handleFormChange2} />
-            )}
+            {step === STEP.EARNINGS && <Income />}
             {step === STEP.SIGNATURE && <Signature />}
-            {step === STEP.INSURANCE && (
-              <Insurance
-                data={formData4}
-                handleFormChange={handleFormChange4}
-              />
-            )}
+            {step === STEP.INSURANCE && <Insurance />}
             {step === STEP.LENDERS && <Lenders />}
-            {step === STEP.REFUNDS && (
-              <Refunds data={formData5} handleFormChange={handleFormChange5} />
-            )}
+            {step === STEP.REFUNDS && <Refunds />}
             {step === STEP.ALL_DONE && <AllDone />}
 
             {step !== STEP.ALL_DONE && (
