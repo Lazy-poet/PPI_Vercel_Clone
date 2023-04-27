@@ -60,11 +60,11 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TEXTS = [
-  "Verify My Eligibility",
   "Next",
   "Next",
-  "Confirm and Continue",
-  "Proceed to PPI Refunds Breakdown",
+  "Next",
+  "Next",
+  "Next",
   "Next",
   "Complete My Claim",
 ];

@@ -4,11 +4,11 @@ import { THEME, useThemeContext } from "@/contexts/ThemeContext";
 import Flag from "../public/images/union-flag.svg";
 import Favicon from "../public/images/favicon.png";
 import Image from "next/image";
-import HeaderReview from "../public/images/reviews-logo-inline.png";
-
+import Trustpilot from "./Trustpilot";
+import { useSystemValues } from "@/contexts/ValueContext";
 const Header = () => {
   const { theme, changeTheme } = useThemeContext();
-
+  const { ready } = useSystemValues();
   const toggleTheme = () => {
     if (theme === THEME.LIGHT) {
       changeTheme(THEME.DARK);
@@ -39,9 +39,11 @@ const Header = () => {
               ClaimingMadeEasy™
             </span>
           </Link>
-          <div className="hidden md:flex justify-center flex-1">
-            <Image className="w-64" src={HeaderReview} alt="uk logo" />
-          </div>
+          {ready && (
+            <div className="hidden md:flex justify-center flex-1">
+              <Trustpilot />
+            </div>
+          )}
           <div className="flex-1 flex justify-end">
             <Image
               className="w-10 md:w-12 max-h-full"

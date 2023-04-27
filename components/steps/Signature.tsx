@@ -136,11 +136,11 @@ const Signature = () => {
           </p>
         )}
       </div>
-      <div className="p-4 my-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
+      <div className="p-5 my-5 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
         <p className="font-bold leading-relaxed text-gray-900 dark:text-white">
           What are you signing;
         </p>
-        <ul className="space-y-3 list-disc list-inside mt-1 text-gray-900 dark:text-white">
+        <ul className="space-y-5 list-disc list-inside mt-1 text-gray-900 dark:text-white">
           <li>
             <span className="inline font-medium">
               <span
@@ -205,7 +205,7 @@ const Signature = () => {
         </label>
       </div>
 
-      {!firstEvents.signatureData && !signatureTermsChecked && (
+      {!firstEvents.signatureTermsChecked && !signatureTermsChecked && (
         <p className="mt-2 text-sm error">You must confirm to proceed</p>
       )}
     </div>

@@ -230,9 +230,11 @@ function Claim({ setReady, data }: ClaimProps) {
             const diff =
               details.email === userEmail
                 ? Utils.getObjectDifference(dbData, formattedDetails)
-                : { ...dbData, ...formattedDetails };
+                : Utils.getObjectDifference(
+                    {},
+                    { ...dbData, ...formattedDetails }
+                  ); // strip out empty fields;
             // set a new link_code either if there isnt an existing one or when user email has changed
-            console.log("details", details.email, userEmail);
 
             const link_code = linkCode
               ? details.email !== userEmail
@@ -274,7 +276,11 @@ function Claim({ setReady, data }: ClaimProps) {
         }
         break;
       case STEP.SIGNATURE:
-        setFirstEvents({ ...firstEvents, signatureData: false });
+        setFirstEvents({
+          ...firstEvents,
+          signatureData: false,
+          signatureTermsChecked: false,
+        });
         if (userData.signatureData && signatureTermsChecked) {
           if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =

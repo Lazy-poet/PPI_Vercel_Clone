@@ -28,7 +28,7 @@ const getObjectDifference = (
 ): Record<string, any> => {
   const result = {} as Record<string, any>;
   for (const key in comp) {
-    if (!(key in base) || base[key] !== comp[key]) {
+    if (comp[key] && (!(key in base) || base[key] !== comp[key])) {
       result[key] = comp[key];
     }
   }
