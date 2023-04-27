@@ -6,6 +6,8 @@ import React, {
   useContext,
   useState,
   Dispatch,
+  useRef,
+  RefObject,
 } from "react";
 
 export enum IncomeLevel {
@@ -76,6 +78,7 @@ const useValue = () => {
   const [refunds, setRefunds] = useState({} as REFUNDS);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -195,6 +198,7 @@ const useValue = () => {
     handleFormChange,
     signatureTermsChecked,
     setSignatureTermsChecked,
+    titleRef,
   };
 };
 
@@ -247,6 +251,7 @@ interface Value {
   signatureTermsChecked: boolean;
   setSignatureTermsChecked: Dispatch<SetStateAction<boolean>>;
   handleFormChange: (key: string, value: string) => void;
+  titleRef: RefObject<HTMLDivElement>;
 }
 
 export const ValueContext = createContext({} as Value);

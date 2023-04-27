@@ -470,3 +470,46 @@ select:focus + .form-icon {
   box-shadow: 0 0 0 40px #374151 inset !important;
   -webkit-box-shadow: 0 0 0 40px #374151 inset !important;
 }
+
+@-webkit-keyframes flash {
+  0%,
+  50%,
+  100% {
+    -webkit-opacity: 1;
+  }
+  25%,
+  75% {
+    -webkit-opacity: 0;
+  }
+}
+.flash {
+  -webkit-animation-name: flash;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+}
+
+@keyframes flash {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+.flash {
+  animation-name: flash;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+@media (print), (prefers-reduced-motion) {
+  .flas {
+    -webkit-animation: unset !important;
+    animation: unset !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+}

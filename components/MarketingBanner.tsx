@@ -1,5 +1,4 @@
-import Image from "next/image";
-import HeaderReview from "../public/images/reviews-logo-inline.png";
+import Trustpilot from "./Trustpilot";
 import { useSystemValues } from "@/contexts/ValueContext";
 
 const MarketingBanner = () => {
@@ -34,7 +33,9 @@ const MarketingBanner = () => {
               <span className="text-lg font-medium">£</span>11,767.
               <span className="text-lg font-medium">69</span>
             </p>
-            <Image className="w-48 mx-4" src={HeaderReview} alt="uk logo" />
+            <div className="mt-2 text-xs text-left">
+              <Trustpilot />
+            </div>
           </div>
         )}
       </div>
