@@ -8,14 +8,6 @@ const StepAlert = ({ step }: { step: STEP }) => {
     <>
       {step === STEP.SIGNATURE && (
         <>
-          {firstEvents.signatureData ||
-            (userData.signatureData && (
-              <CustomAlertBanner
-                color="green"
-                // body={`Great news! You're entitled to claim a £${claimValue} tax refund`}
-                body={`Great news! You're entitled to claim a PPI tax refund`}
-              />
-            ))}
           {!(userData.signatureData || firstEvents.signatureData) && (
             <CustomAlertBanner
               closable={false}

@@ -56,6 +56,7 @@ export type FirstEvents = {
   lendersData: boolean;
   otherLender: boolean;
   amount: boolean;
+  signatureTermsChecked: boolean;
 };
 
 const useValue = () => {
@@ -74,7 +75,7 @@ const useValue = () => {
   const [ready, setReady] = useState(false);
   const [refunds, setRefunds] = useState({} as REFUNDS);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
-  const [signatureTermsChecked, setSignatureTermsChecked] = useState(false);
+  const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -116,6 +117,7 @@ const useValue = () => {
     signatureData: true,
     insurance: true,
     amount: true,
+    signatureTermsChecked: true,
   });
 
   const [taxYears, setTaxYears] = useState<any>({
