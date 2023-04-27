@@ -230,9 +230,11 @@ function Claim({ setReady, data }: ClaimProps) {
             const diff =
               details.email === userEmail
                 ? Utils.getObjectDifference(dbData, formattedDetails)
-                : { ...dbData, ...formattedDetails };
+                : Utils.getObjectDifference(
+                    {},
+                    { ...dbData, ...formattedDetails }
+                  ); // strip out empty fields;
             // set a new link_code either if there isnt an existing one or when user email has changed
-            console.log("details", details.email, userEmail);
 
             const link_code = linkCode
               ? details.email !== userEmail
