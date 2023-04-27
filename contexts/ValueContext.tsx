@@ -27,6 +27,7 @@ export type FirstEvents = {
   [key in keyof UserData]: boolean;
 } & {
   amount: boolean;
+  signatureTermsChecked: boolean;
 };
 
 const useValue = () => {
@@ -73,6 +74,7 @@ const useValue = () => {
     signatureData: true,
     insurance: true,
     amount: true,
+    signatureTermsChecked: true,
   });
 
   const [taxYears, setTaxYears] = useState<any>({

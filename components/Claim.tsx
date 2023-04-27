@@ -261,7 +261,11 @@ function Claim({ setReady, data }: ClaimProps) {
         }
         break;
       case STEP.SIGNATURE:
-        setFirstEvents({ ...firstEvents, signatureData: false });
+        setFirstEvents({
+          ...firstEvents,
+          signatureData: false,
+          signatureTermsChecked: false,
+        });
         if (userData.signatureData && signatureTermsChecked) {
           if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =

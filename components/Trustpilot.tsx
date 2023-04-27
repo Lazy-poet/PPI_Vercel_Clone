@@ -56,10 +56,11 @@ const Trustpilot = () => {
           />
         </svg>
         <p className="text-sm text-gray-500 dark:text-gray-400">
+          Join{" "}
           <span className="font-medium text-gray-900 dark:text-white">
             30,000+
           </span>{" "}
-          claims started in the last 30 days
+          Successful Claimants
         </p>
       </div>
     </div>
