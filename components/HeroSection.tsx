@@ -6,7 +6,7 @@ import SslSecure from "./SslSecure";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Trustpilot from './Trustpilot'
+import Trustpilot from "./Trustpilot";
 const Animated = dynamic(() => import("react-animated-numbers"), {
   ssr: false,
 });
@@ -124,7 +124,7 @@ const HeroSection: React.FC<{
             – simply enter your name below to get started!
           </p>
           {!ready && (
-            <div className="sm:hidden">
+            <div className="mt-2 mb-5">
               <Trustpilot />
             </div>
           )}

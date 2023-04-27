@@ -57,11 +57,10 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TEXTS = [
-  "Verify My Eligibility",
   "Next",
   "Next",
-  "Confirm and Continue",
-  "Proceed to PPI Refunds Breakdown",
+  "Next",
+  "Next",
   "Next",
   "Complete My Claim",
 ];
@@ -72,7 +71,6 @@ export const NEXT_BUTTON_TIMERS = [
   "25 seconds remaining...",
   "15 seconds remaining...",
   "10 seconds remaining...",
-  "5 seconds remaining...",
   "",
 ];
 
@@ -95,22 +93,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
       </a>
       .
     </span>,
-    <span key="3">
-      By clicking next, you are confirming that you have read and agree with
-      the&nbsp;
-      <a
-        href="#"
-        className="hover:underline"
-        onClick={(e) => {
-          e.preventDefault();
-          onClick("terms-of-service.pdf");
-        }}
-      >
-        terms & conditions
-      </a>
-      &nbsp;and that the information you have given on this form is correct, to
-      the best of your knowledge
-    </span>,
+    "",
     "",
     "",
     "",
