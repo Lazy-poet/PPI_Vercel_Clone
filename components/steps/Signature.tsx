@@ -137,14 +137,14 @@ const Signature = () => {
         )}
       </div>
       <div className="p-4 my-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
-        <p className="font-medium leading-relaxed text-gray-900 dark:text-white">
+        <p className="font-bold leading-relaxed text-gray-900 dark:text-white">
           What are you signing;
         </p>
         <ul className="space-y-3 list-disc list-inside mt-1 text-gray-900 dark:text-white">
           <li>
             <span className="inline font-medium">
               <span
-                className="hover:underline"
+                className="hover:underline cursor-pointer"
                 onClick={() => openPdf("authorise_agent_64-8.pdf")}
               >
                 64-8
@@ -155,13 +155,13 @@ const Signature = () => {
             <p className="ml-4 text-gray-500 dark:text-gray-400">
               Appoints us as your Tax Agent and allows HMRC to discuss and
               disclose information with us relating to your tax claim and
-              records.
+              records
             </p>
           </li>
           <li>
             <span className="inline font-medium">
               <span
-                className="hover:underline"
+                className="hover:underline cursor-pointer"
                 onClick={() => openPdf("R40M2022.pdf")}
               >
                 R40
@@ -170,7 +170,8 @@ const Signature = () => {
             </span>
             <br />
             <p className="ml-4 text-gray-500 dark:text-gray-400">
-              This is the claim form we will be submitting on your behalf.
+              This is the claim form we will be submitting on your behalf and
+              includes our appointment as your nominee
             </p>
           </li>
         </ul>
