@@ -128,7 +128,7 @@ const HeroSection: React.FC<{
               <Trustpilot />
             </div>
           )}
-          <form className="max-w-2xl grid grid-cols-1 gap-5 md:gap-8 p-5 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
+          <form className="max-w-2xl grid grid-cols-1 gap-5  p-5 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
             <div
               className={`form-group ${
                 firstEvents.firstName
@@ -234,7 +234,7 @@ const HeroSection: React.FC<{
                 </label>
               </div>
 
-              <div id="birthday" className="grid gap-3 sm:gap-5 sm:grid-cols-3">
+              <div id="birthday" className="grid gap-5 sm:grid-cols-3">
                 <div className="grid gap-5 grid-cols-2 sm:col-span-2">
                   <div
                     className={
@@ -357,7 +357,7 @@ const HeroSection: React.FC<{
                       <div />
                       <div className="block">
                         <div className="w-full font-semibold text-center text-lg">
-                          Check If I Qualify
+                          Start Now
                         </div>
                         <div className="w-full flex flex-row justify-center items-center">
                           <div className="flex justify-center items-center space-x-2 ">

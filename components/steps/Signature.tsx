@@ -92,7 +92,7 @@ const Signature = () => {
             <SignatureCanvas
               ref={canvasRef}
               canvasProps={{
-                className: "w-full h-[200px]",
+                className: "w-full h-[200px] md:h-[220px]",
               }}
               clearOnResize={false}
               penColor={theme === THEME.DARK ? "gray" : "black"}
@@ -136,7 +136,7 @@ const Signature = () => {
           </p>
         )}
       </div>
-      <div className="p-5 my-5 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
+      <div className="p-5 my-10 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
         <p className="font-bold leading-relaxed text-gray-900 dark:text-white">
           What are you signing;
         </p>
@@ -152,7 +152,7 @@ const Signature = () => {
               Authorising Agent Form:{" "}
             </span>
             <br />
-            <p className="ml-4 text-gray-500 dark:text-gray-400">
+            <p className="ml-4 text-sm text-gray-500 dark:text-gray-400">
               Appoints us as your Tax Agent and allows HMRC to discuss and
               disclose information with us relating to your tax claim and
               records
@@ -160,6 +160,7 @@ const Signature = () => {
           </li>
           <li>
             <span className="inline font-medium">
+              {" "}
               <span
                 className="hover:underline cursor-pointer"
                 onClick={() => openPdf("R40M2022.pdf")}
@@ -169,7 +170,7 @@ const Signature = () => {
               Claim for repayment of tax deducted from PPI:{" "}
             </span>
             <br />
-            <p className="ml-4 text-gray-500 dark:text-gray-400">
+            <p className="ml-4 text-sm text-gray-500 dark:text-gray-400">
               This is the claim form we will be submitting on your behalf and
               includes our appointment as your nominee
             </p>

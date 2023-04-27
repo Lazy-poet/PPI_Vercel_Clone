@@ -6,6 +6,8 @@ import React, {
   useContext,
   useState,
   Dispatch,
+  useRef,
+  RefObject,
 } from "react";
 
 export type UserData = {
@@ -46,6 +48,7 @@ const useValue = () => {
   const [ready, setReady] = useState(false);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -148,6 +151,7 @@ const useValue = () => {
     handleFormChange,
     signatureTermsChecked,
     setSignatureTermsChecked,
+    titleRef,
   };
 };
 
@@ -196,6 +200,7 @@ interface Value {
   signatureTermsChecked: boolean;
   setSignatureTermsChecked: Dispatch<SetStateAction<boolean>>;
   handleFormChange: (key: string, value: string) => void;
+  titleRef: RefObject<HTMLDivElement>;
 }
 
 export const ValueContext = createContext({} as Value);

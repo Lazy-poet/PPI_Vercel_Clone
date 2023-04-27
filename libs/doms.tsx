@@ -78,21 +78,7 @@ export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
   const nextButtonHelpers = [
     "",
     "",
-    <span key="2">
-      Your personal information will be treated carefully in accordance with
-      our&nbsp;
-      <a
-        href="#"
-        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-        onClick={(e) => {
-          e.preventDefault();
-          onClick("privacy-policy.pdf");
-        }}
-      >
-        Privacy Policy
-      </a>
-      .
-    </span>,
+    "",
     "",
     "",
     "",
