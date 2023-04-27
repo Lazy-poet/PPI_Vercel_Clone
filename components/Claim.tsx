@@ -219,14 +219,16 @@ function Claim({ setReady, data }: ClaimProps) {
             const diff =
               details.email === userEmail
                 ? Utils.getObjectDifference(dbData, formattedDetails)
-                : { ...dbData, ...formattedDetails };
+                : Utils.getObjectDifference(
+                    {},
+                    { ...dbData, ...formattedDetails }
+                  ); // strip out empty fields;
             // set a new link_code either if there isnt an existing one or when user email has changed
             const link_code = linkCode
               ? details.email !== userEmail
                 ? nanoid(9)
                 : linkCode
               : nanoid(9);
-
             const { data, error } = await supabase
               .from("PPI_Claim_Form")
               .upsert(
