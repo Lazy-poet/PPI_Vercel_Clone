@@ -64,7 +64,7 @@ export const NEXT_BUTTON_TEXTS = [
   "Next",
   "Next",
   "Confirm and Continue",
-  "Proceed to PPI Refunds Breakdown",
+  "Next",
   "Next",
   "Complete My Claim",
 ];
