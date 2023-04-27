@@ -3,39 +3,39 @@ import Image from "next/image";
 const Trustpilot = () => {
   return (
     <div className="flex justify-center items-center divide-x divide-gray-200 dark:divide-gray-700">
-      <div className="flex pr-8  -space-x-4 sm:pr-5 ">
+      <div className="flex pr-3 -space-x-4 sm:pr-5 ">
         <Image
           width={40}
           height={40}
-          className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-gray-800"
           src="/images/profile/Farrah Hussein.jpeg"
           alt="bonnie avatar"
         />
         <Image
           width={40}
           height={40}
-          className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-gray-800"
           src="/images/profile/Mark Taylor.jpeg"
           alt="jese avatar"
         />
         <Image
           width={40}
           height={40}
-          className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-gray-800"
           src="/images/profile/Emily Patel.jpeg"
           alt="leslie avatar"
         />
         <Image
           width={40}
           height={40}
-          className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white dark:border-gray-800"
           src="/images/profile/Sarah Higgins.jpeg"
           alt="thomas avatar"
         />
       </div>
       <div className="pl-3 text-gray-900 sm:pl-5 dark:text-white">
         <svg
-          className="h-6"
+          className="h-5 sm:h-6"
           viewBox="0 0 107 21"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const Trustpilot = () => {
             fill="#005128"
           />
         </svg>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
           Join{" "}
           <span className="font-medium text-gray-900 dark:text-white">
             30,000+
