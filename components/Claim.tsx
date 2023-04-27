@@ -262,7 +262,7 @@ function Claim({ setReady, data }: ClaimProps) {
         break;
       case STEP.SIGNATURE:
         setFirstEvents({ ...firstEvents, signatureData: false });
-        if (userData.signatureData) {
+        if (userData.signatureData && signatureTermsChecked) {
           if (userData.signatureData !== dbData.signatureData) {
             const signatureUrlPrefix =
               "https://zkfqakvzqywbqfuvgyzt.supabase.co/storage/v1/object/public/signatures/";
