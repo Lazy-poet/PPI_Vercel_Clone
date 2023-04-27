@@ -44,7 +44,7 @@ const useValue = () => {
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
-  const [signatureTermsChecked, setSignatureTermsChecked] = useState(false);
+  const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
