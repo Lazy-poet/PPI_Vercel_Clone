@@ -76,7 +76,7 @@ export const NEXT_BUTTON_TIMERS = [
   "15 seconds remaining...",
   "10 seconds remaining...",
   "5 seconds remaining...",
-  "",
+  "0 seconds remaining...",
 ];
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
