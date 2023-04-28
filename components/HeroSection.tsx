@@ -124,7 +124,7 @@ const HeroSection: React.FC<{
             – simply enter your name below to get started!
           </p>
           {!ready && (
-            <div className="mt-2 mb-5">
+            <div className="mt-2 mb-10">
               <Trustpilot />
             </div>
           )}
