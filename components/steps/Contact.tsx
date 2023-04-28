@@ -1,6 +1,4 @@
-import { useEffect, useState, useRef } from "react";
 import Utils from "../../libs/utils";
-import { SelectChangeEvent } from "@mui/material/Select";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Address from "./Address";
 const Details = () => {
@@ -119,7 +117,7 @@ const Details = () => {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="john.doe@example.com"
+                placeholder="e.g. john.doe@example.com"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white"
                 required
                 maxLength={64}
