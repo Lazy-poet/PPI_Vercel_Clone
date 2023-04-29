@@ -2,6 +2,7 @@ import Utils from "../../libs/utils";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Address from "./Address";
 import InputHelper from "../InputHelper";
+import { useEffect } from "react";
 
 const Details = () => {
   const {
@@ -9,8 +10,16 @@ const Details = () => {
     firstEvents,
     handleFormChange,
     openPdf,
+    titleRef,
   } = useSystemValues();
 
+  useEffect(() => {
+    const ref = titleRef.current;
+    if (ref) {
+      setTimeout(() => titleRef.current?.classList.add("flash"), 0);
+    }
+    return () => ref?.classList.remove("flash");
+  }, [titleRef]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value } = e.target;
     switch (name) {
