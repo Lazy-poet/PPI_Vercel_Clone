@@ -126,18 +126,7 @@ const Details = () => {
           </div>
           {firstEvents.email || Utils.validateEmail(data.email) ? (
             <InputHelper>
-              We’ll never share your details in accordance with our{" "}
-              <a
-                href="#"
-                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openPdf("privacy-policy.pdf");
-                }}
-              >
-                Privacy Policy
-              </a>
-              .
+              We need this so we can keep you updated on your claim by email
             </InputHelper>
           ) : (
             <InputHelper text="Please enter a valid email address." error />

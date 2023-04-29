@@ -91,7 +91,7 @@ function Claim({ setReady, data }: ClaimProps) {
     setShowLoadingPage,
   } = useSystemValues();
 
-  const [step, setStep] = useState<STEP>(STEP.LENDERS);
+  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
