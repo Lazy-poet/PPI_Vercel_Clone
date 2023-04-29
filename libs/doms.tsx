@@ -2,8 +2,8 @@ export const PERCENTS = [9, 18, 54, 72, 83, 91, 100];
 
 export const TITLES = [
   (name?: string) => "Your income",
+  (name?: string) => "Your PPI refund(s)",
   (name?: string) => `Its good news ${name}!`,
-  (name?: string) => "Your details",
   (name?: string) => "Your signature",
   (name?: string) => "Confirm your identity",
   (name?: string) => "Your PPI refunds",
@@ -14,8 +14,8 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
+    "Find out if you're eligible for a PPI refund with our easy online tool",
     "Our records show that you are eligible to claim a tax refund. We just need a few details to complete your claim",
-    "To process your refund efficiently, we need to verify your identity. This ensures a smooth experience as we handle your application with HMRC.",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
       directly. We do this by getting your consent via signature. Once your
