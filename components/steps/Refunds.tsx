@@ -32,7 +32,7 @@ const Refunds = (props: {
                   ? ""
                   : "error"
               }`}
-              helperClass={` ${
+              helperClass={`${
                 data.tax_years?.[key] ||
                 data?.firstEvents?.[key] ||
                 arr.some((k) => k !== key && data.tax_years?.[k])

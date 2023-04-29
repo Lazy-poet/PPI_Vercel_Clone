@@ -4,6 +4,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { isValid, parse } from "postcode";
+import InputHelper from "../InputHelper";
 
 const Address = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -15,8 +16,14 @@ const Address = () => {
     userData: data,
     handleFormChange,
     firstEvents,
+    setUserData,
   } = useSystemValues();
 
+  const clearAddresses = () => {
+    setSelectedAddress("");
+    setAddressList([]);
+    setUserData({ ...data, postCode: "", address: "" });
+  };
   // keep track of postcode whose address is currently being shown so we don't refetch unneccessarily
   const currentAddressListPostCode = useRef<string>(
     parse(data.postCode)?.postcode || ""
@@ -179,29 +186,13 @@ const Address = () => {
             </button>
           </div>
           {firstEvents.postCode ? (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Enter your current postcode and click &lsquo;Find My
-              Address&rsquo;
-            </p>
+            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork." />
           ) : !(data.postCode && isValid(data.postCode)) ? (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please enter a valid postcode
-            </p>
+            <InputHelper text="Please enter a valid postcode" error />
           ) : addressList.length === 0 ? (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Click the button to find your address
-            </p>
+            <InputHelper text="Click the button to find your address" error />
           ) : (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Enter your current postcode and click &ldquo;Find My
-              Address&rdquo;
-            </p>
+            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork." />
           )}
         </div>
         {addressList?.length > 0 ? (
@@ -249,9 +240,10 @@ const Address = () => {
               </FormControl>
             </div>
             {!firstEvents.address && !data.address && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Please select your address from the list
-              </p>
+              <InputHelper
+                text="Please select your address from the list"
+                error
+              />
             )}
           </div>
         ) : null}
@@ -271,6 +263,30 @@ const Address = () => {
           </blockquote>
         )}
       </div>
+      {!!addressList?.length && (
+        <div
+          onClick={clearAddresses}
+          className="flex gap-2 items-center text-gray-500 dark:text-gray-400 cursor-pointer"
+        >
+          <svg
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            width="20"
+            height="20"
+          >
+            <path
+              clipRule="evenodd"
+              fillRule="evenodd"
+              d="M7.793 2.232a.75.75 0 01-.025 1.06L3.622 7.25h10.003a5.375 5.375 0 010 10.75H10.75a.75.75 0 010-1.5h2.875a3.875 3.875 0 000-7.75H3.622l4.146 3.957a.75.75 0 01-1.036 1.085l-5.5-5.25a.75.75 0 010-1.085l5.5-5.25a.75.75 0 011.06.025z"
+            />
+          </svg>
+          <span className=" border-b border-gray-400 dark:border-gray-400 py-[2px] ">
+            Search again
+          </span>
+        </div>
+      )}
     </>
   );
 };

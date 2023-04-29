@@ -4,6 +4,7 @@ import { CONFIRMS } from "@/libs/doms";
 import { THEME } from "@/contexts/ThemeContext";
 import { useThemeContext } from "@/contexts/ThemeContext";
 import { useSystemValues } from "@/contexts/ValueContext";
+import InputHelper from "../InputHelper";
 
 const Signature = () => {
   const canvasRef = useRef<SignatureCanvas>(null);
@@ -126,23 +127,21 @@ const Signature = () => {
           </div>
         </div>
         {firstEvents.signatureData || userData.signatureData ? (
-          <p className={`mt-2 text-sm ${"text-gray-500 dark:text-gray-400 "}`}>
-            Take your time to make your signature accurate. You can start again
-            as many times as you like by pressing &quot;Clear&quot;
-          </p>
+          <InputHelper
+            text='Take your time to make your signature accurate. You can start again
+            as many times as you like by pressing "Clear"'
+          />
         ) : (
-          <p className={`mt-2 text-sm error`}>
-            Please sign in the box provided
-          </p>
+          <InputHelper text="Please sign in the box provided" error />
         )}
       </div>
-      <div className="p-5 my-10 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2 text-lg">
-        <p className="font-bold leading-relaxed text-gray-900 dark:text-white">
+      <div className="p-5 my-10 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 flex flex-col gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
           What are you signing;
-        </p>
-        <ul className="space-y-5 list-disc list-inside text-gray-900 dark:text-white">
+        </h2>
+        <ul className="space-y-5 list-disc list-inside text-gray-500 dark:text-gray-400">
           <li>
-            <span className="inline font-medium">
+            <span className="inline font-semibold">
               <span
                 className="hover:underline cursor-pointer"
                 onClick={() => openPdf("authorise_agent_64-8.pdf")}
@@ -151,15 +150,11 @@ const Signature = () => {
               </span>{" "}
               Authorising Agent Form:{" "}
             </span>
-            <br />
-            <p className="ml-4 text-sm text-gray-500 dark:text-gray-400">
-              Appoints us as your Tax Agent and allows HMRC to discuss and
-              disclose information with us relating to your tax claim and
-              records
-            </p>
+            Appoints us as your Tax Agent and allows HMRC to discuss and
+            disclose information with us relating to your tax claim and records
           </li>
           <li>
-            <span className="inline font-medium">
+            <span className="inline font-semibold">
               {" "}
               <span
                 className="hover:underline cursor-pointer"
@@ -169,11 +164,8 @@ const Signature = () => {
               </span>{" "}
               Claim for repayment of tax deducted from PPI:{" "}
             </span>
-            <br />
-            <p className="ml-4 text-sm text-gray-500 dark:text-gray-400">
-              This is the claim form we will be submitting on your behalf and
-              includes our appointment as your nominee
-            </p>
+            This is the claim form we will be submitting on your behalf and
+            includes our appointment as your nominee
           </li>
         </ul>
       </div>
@@ -207,7 +199,7 @@ const Signature = () => {
       </div>
 
       {!firstEvents.signatureTermsChecked && !signatureTermsChecked && (
-        <p className="mt-2 text-sm error">You must confirm to proceed</p>
+        <InputHelper text="You must confirm to proceed" error />
       )}
     </div>
   );

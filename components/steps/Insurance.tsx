@@ -1,10 +1,10 @@
 import { useSystemValues } from "@/contexts/ValueContext";
+import InputHelper from "../InputHelper";
 
 const isNino = require("is-national-insurance-number");
 
 const Insurance = () => {
-  const { userData, firstEvents, handleFormChange } =
-    useSystemValues();
+  const { userData, firstEvents, handleFormChange } = useSystemValues();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase().trim();
@@ -71,28 +71,20 @@ const Insurance = () => {
           </div>
         </div>
         {firstEvents.insurance ? (
-          <p
-            id="helper-text-explanation"
-            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-          >
-            You can find your NI number on your payslip, P60, or any letters
-            sent to you by HMRC relating to tax and benefits.
-          </p>
+          <InputHelper
+            text="You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits."
+          />
         ) : !userData.insurance || !isNino(userData.insurance) ? (
-          <p
-            id="helper-text-explanation"
-            className="mt-2 text-sm text-red-600 dark:text-red-500"
-          >
-            Please provide a valid National Insurance (NI) number
-          </p>
+          <InputHelper
+            text="Please provide a valid National Insurance (NI) number"
+            error
+          />
         ) : (
-          <p
-            id="helper-text-explanation"
-            className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-          >
-            You can find your NI number on your payslip, P60, or any letters
-            sent to you by HMRC relating to tax and benefits.
-          </p>
+          <InputHelper
+            text=" You can find your NI number on your payslip, P60, or any letters
+            sent to you by HMRC relating to tax and benefits."
+          />
         )}
       </div>
     </div>

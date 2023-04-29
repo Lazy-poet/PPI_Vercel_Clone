@@ -1,3 +1,4 @@
+import InputHelper from "./InputHelper";
 import SslSecure from "./SslSecure";
 
 type Props = {
@@ -60,12 +61,8 @@ const NextButton = ({
                 ></path>
               </svg>
             </button>
-            {helper && (
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                {helper}
-              </p>
-            )}
-           <SslSecure />
+            {helper && <InputHelper>{helper}</InputHelper>}
+            <SslSecure />
           </div>
         </li>
       </ul>
