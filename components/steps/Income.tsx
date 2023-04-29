@@ -1,4 +1,5 @@
-import { useSystemValues, IncomeLevel } from "@/contexts/ValueContext";
+import { useSystemValues } from "@/contexts/ValueContext";
+import InputHelper from "../InputHelper";
 
 export enum Earnings {
   LessThan12570 = "Less than £12,570",
@@ -50,19 +51,20 @@ const ClaimNow = () => {
             firstEvent={firstEvents.earnings}
           />
         </div>
-        <p
-          className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${
+        <InputHelper
+          text={
+            userData.earnings === Earnings.MoreThan50271
+              ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
+              : "Please select your annual income"
+          }
+          error={
             firstEvents.earnings ||
             (!!userData.earnings &&
               userData.earnings !== Earnings.MoreThan50271)
-              ? ""
-              : "error"
-          }`}
-        >
-          {userData.earnings === Earnings.MoreThan50271
-            ? "Unfortunately, you do not qualify for a PPI tax refund based on your income"
-            : "Please select your annual income"}
-        </p>
+              ? false
+              : true
+          }
+        />
       </div>
     </div>
   );

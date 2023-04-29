@@ -1,15 +1,11 @@
-import dynamic from "next/dynamic";
 import { useEffect, useState, MouseEvent } from "react";
 import { useSystemValues } from "@/contexts/ValueContext";
-import Image from "next/image";
 import SslSecure from "./SslSecure";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Trustpilot from "./Trustpilot";
-const Animated = dynamic(() => import("react-animated-numbers"), {
-  ssr: false,
-});
+import InputHelper from "./InputHelper";
 const HeroSection: React.FC<{
   handleStart: () => void;
 }> = ({ handleStart }) => {
@@ -128,7 +124,7 @@ const HeroSection: React.FC<{
               <Trustpilot />
             </div>
           )}
-          <form className="max-w-2xl grid grid-cols-1 gap-5 p-5 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
+          <form className="max-w-2xl grid grid-cols-1 gap-5  p-5 mx-auto mb-16 bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 sm:grid-cols-2">
             <div
               className={`form-group ${
                 firstEvents.firstName
@@ -162,13 +158,10 @@ const HeroSection: React.FC<{
               {firstEvents.firstName ? (
                 ""
               ) : !userData.firstName ? (
-                <p className="mt-2 text-sm">
-                  {" "}
-                  Please let us know your first name
-                </p>
+                <InputHelper text="Please let us know your first name" error />
               ) : (
                 userData.firstName.length === 1 && (
-                  <p className="mt-2 text-sm">Please enter a valid name</p>
+                  <InputHelper text="Please enter a valid name" error />
                 )
               )}
             </div>
@@ -205,14 +198,10 @@ const HeroSection: React.FC<{
               {firstEvents.lastName ? (
                 ""
               ) : !userData.lastName ? (
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  Please let us know your last name
-                </p>
+                <InputHelper text="Please let us know your last name" error />
               ) : (
                 userData.lastName.length === 1 && (
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                    Please enter a valid name
-                  </p>
+                  <InputHelper text="Please enter a valid name" error />
                 )
               )}
             </div>
@@ -266,7 +255,7 @@ const HeroSection: React.FC<{
                       </FormControl>
                     </div>
                     {!userData.day && !firstEvents.day && (
-                      <p className="mt-2 text-sm">Select day of birth</p>
+                      <InputHelper text="Select day of birth" error />
                     )}
                   </div>
                   <div
@@ -306,7 +295,7 @@ const HeroSection: React.FC<{
                       </FormControl>
                     </div>
                     {!userData.month && !firstEvents.month && (
-                      <p className="mt-2 text-sm">Select month of birth</p>
+                      <InputHelper text="Select month of birth" error />
                     )}
                   </div>
                 </div>
@@ -341,7 +330,7 @@ const HeroSection: React.FC<{
                     </FormControl>
                   </div>
                   {!userData.year && !firstEvents.year && (
-                    <p className="mt-2 text-sm">Select year of birth</p>
+                    <InputHelper text="Select year of birth" error />
                   )}
                 </div>
               </div>

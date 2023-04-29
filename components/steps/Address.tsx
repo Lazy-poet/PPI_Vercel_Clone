@@ -4,6 +4,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSystemValues } from "@/contexts/ValueContext";
 import { isValid, parse } from "postcode";
+import InputHelper from "../InputHelper";
 
 const Address = () => {
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -179,29 +180,19 @@ const Address = () => {
             </button>
           </div>
           {firstEvents.postCode ? (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Enter your current postcode and click &lsquo;Find My
-              Address&rsquo;
-            </p>
+            <InputHelper
+              text="Enter your current postcode and click &lsquo;Find My
+              Address&rsquo;"
+            />
           ) : !(data.postCode && isValid(data.postCode)) ? (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please enter a valid postcode
-            </p>
+            <InputHelper text="Please enter a valid postcode" error />
           ) : addressList.length === 0 ? (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Click the button to find your address
-            </p>
+            <InputHelper text="Click the button to find your address" error />
           ) : (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              Enter your current postcode and click &ldquo;Find My
-              Address&rdquo;
-            </p>
+            <InputHelper
+              text="Enter your current postcode and click &ldquo;Find My
+              Address&rdquo;"
+            />
           )}
         </div>
         {addressList?.length > 0 ? (
@@ -249,9 +240,10 @@ const Address = () => {
               </FormControl>
             </div>
             {!firstEvents.address && !data.address && (
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                Please select your address from the list
-              </p>
+              <InputHelper
+                text="Please select your address from the list"
+                error
+              />
             )}
           </div>
         ) : null}

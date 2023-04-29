@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import AutoNumeric from "autonumeric";
+import InputHelper from "./InputHelper";
 
 type Props = {
   [key: string]: any;
@@ -112,11 +113,10 @@ const CurrencyTextField = (props: Props) => {
             <span className="form-icon"></span>
           </div>
         </div>
-        <p
-          className={`mt-2 text-sm text-gray-500 dark:text-gray-400 ${props.helperClass}`}
-        >
-          {props.helperText ?? "This can be an estimate"}
-        </p>
+        <InputHelper
+          text={props.helperText ?? "This can be an estimate"}
+          error={props.helperClass === "error"}
+        />
       </div>
     </>
   );
