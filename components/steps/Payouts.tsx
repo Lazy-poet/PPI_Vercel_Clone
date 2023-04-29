@@ -1,30 +1,16 @@
 import { useSystemValues } from "@/contexts/ValueContext";
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent } from "react";
 import CustomCurrencyField from "../CustomCurrencyField";
 
 const Payouts = () => {
-  const {
-    firstEvents,
-    setFirstEvents,
-    amount,
-    setClaimValue,
-    setAmount,
-    titleRef,
-  } = useSystemValues();
+  const { firstEvents, setFirstEvents, amount, setClaimValue, setAmount } =
+    useSystemValues();
 
   const calculateClaimFromAmount = (value: string) => {
     value = value.replace(/,/g, "");
     const claim = Math.round(Number(value) * 0.112);
     setClaimValue(claim);
   };
-
-  useEffect(() => {
-    const ref = titleRef.current;
-    if (ref) {
-      setTimeout(() => titleRef.current?.classList.add("flash"), 0);
-    }
-    return () => ref?.classList.remove("flash");
-  }, [titleRef]);
   return (
     <div className="grid gap-5 mt-6 mb-5 sm:grid-cols-2">
       <CustomCurrencyField
