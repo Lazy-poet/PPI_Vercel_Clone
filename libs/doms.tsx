@@ -14,14 +14,14 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Our records show that you could be owed a refund of £100s, maybe even £1,000s. We just need a few details to complete your claim",
-    "Complete your details below to start your claim today",
+    "Our records show that you are eligible to claim a tax refund. We just need a few details to complete your claim",
+    "To process your refund efficiently, we need to verify your identity. This ensures a smooth experience as we handle your application with HMRC.",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
       directly. We do this by getting your consent via signature. Once your
       application has concluded, we remove this from our records.
     </span>,
-    "HMRC requires your National Insurance (NI) number to identify your tax account. Your refund can’t be issued without it!",
+    "Your National Insurance (NI) number is essential for HMRC to identify your tax account and process your refund. Our form is encrypted to ensure the safety of your information throughout the process",
     "How much PPI did you receive in the last four tax years",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We&apos;ll be in touch with updates on
@@ -75,14 +75,6 @@ export const NEXT_BUTTON_TIMERS = [
 ];
 
 export const NEXT_BUTTON_HELPERS = (step: any, onClick: any) => {
-  const nextButtonHelpers = [
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-  ];
+  const nextButtonHelpers = ["", "", "", "", "", "", ""];
   return nextButtonHelpers[step];
 };
