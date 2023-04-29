@@ -161,11 +161,7 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-          setShowLoadingPage(true);
-          setTimeout(() => {
-            setShowLoadingPage(false);
-            setStep(STEP.PAYOUTS);
-          }, 3000);
+          setStep(STEP.PAYOUTS);
         }
         break;
       case STEP.PAYOUTS:
@@ -188,7 +184,11 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-          setStep(STEP.CONTACT);
+          setShowLoadingPage(true);
+          setTimeout(() => {
+            setShowLoadingPage(false);
+            setStep(STEP.CONTACT);
+          }, 3000);
         }
         break;
       case STEP.CONTACT:

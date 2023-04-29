@@ -3,18 +3,22 @@ import React from "react";
 const Spinner = ({
   className,
   helper,
+  large,
 }: {
   className?: string;
   helper?: string;
+  large?: boolean;
 }) => {
   return (
     <div
       role="status"
-      className={`flex flex-col items-center justify-center gap-2 my-20 ${className}`}
+      className={`flex flex-col items-center justify-center gap-4 my-20 ${className}`}
     >
       <svg
         aria-hidden="true"
-        className="w-10 h-10 lg:w-12 h-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+        className={`${
+          large ? "w-16 h-16" : "w-10 h-10 lg:w-12 lg:h-12"
+        } mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +33,7 @@ const Spinner = ({
         />
       </svg>
       {helper && (
-        <p className="block mx-auto text-center text-sm font-normal text-gray-500 md:text-base dark:text-gray-400">
+        <p className="block mx-auto text-center text-base font-normal text-gray-500 md:text-base dark:text-gray-400">
           {helper}
         </p>
       )}
