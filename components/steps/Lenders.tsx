@@ -1,6 +1,7 @@
 import { useSystemValues } from "@/contexts/ValueContext";
 import { log } from "console";
 import React, { ChangeEvent, useState } from "react";
+import InputHelper from "../InputHelper";
 
 const LENDERS = [
   "Abbey National",
@@ -81,7 +82,6 @@ const Lenders = () => {
           },
         },
       });
-      console.log("refunds checked");
     }
   };
   return (
@@ -128,14 +128,12 @@ const Lenders = () => {
       {lendersData.firstEvent ||
       lendersData.selectedLenders.length ||
       lendersData.showOtherLender ? (
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          If you&apos;ve had more than one refund, feel free to select all that
-          apply
-        </p>
+        <InputHelper
+          text="If you've had more than one refund, feel free to select all that
+          apply"
+        />
       ) : (
-        <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-          Please select at least one bank / lender
-        </p>
+        <InputHelper text="Please select at least one bank / lender" error />
       )}
       {lendersData.showOtherLender && (
         <div
@@ -174,19 +172,6 @@ const Lenders = () => {
             />
             <span className="form-icon"></span>
           </div>
-          {/* {fdEvents.lastName ? (
-          ""
-        ) : !data.lastName ? (
-          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-            Please let us know your last name
-          </p>
-        ) : (
-          data.lastName.length === 1 && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please enter a valid name
-            </p>
-          )
-        )} */}
         </div>
       )}
     </div>

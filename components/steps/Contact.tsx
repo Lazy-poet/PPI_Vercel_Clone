@@ -1,6 +1,8 @@
 import Utils from "../../libs/utils";
 import { useSystemValues } from "@/contexts/ValueContext";
 import Address from "./Address";
+import InputHelper from "../InputHelper";
+
 const Details = () => {
   const {
     userData: data,
@@ -68,17 +70,12 @@ const Details = () => {
             </div>
           </div>
           {firstEvents.phone || isPhoneValid ? (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              We need this so we can keep you updated on your claim with text
-              messages
-            </p>
+            <InputHelper
+              text=" We need this so we can keep you updated on your claim with text
+              messages"
+            />
           ) : (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please enter a valid mobile number.
-            </p>
+            <InputHelper text=" Please enter a valid mobile number." error />
           )}
         </div>
         <div
@@ -128,27 +125,11 @@ const Details = () => {
             </div>
           </div>
           {firstEvents.email || Utils.validateEmail(data.email) ? (
-            <p
-              id="helper-text-explanation"
-              className="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
-              We’ll never share your details in accordance with our{" "}
-              <a
-                href="#"
-                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                onClick={(e) => {
-                  e.preventDefault();
-                  openPdf("privacy-policy.pdf");
-                }}
-              >
-                Privacy Policy
-              </a>
-              .
-            </p>
+            <InputHelper>
+              We need this so we can keep you updated on your claim by email
+            </InputHelper>
           ) : (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              Please enter a valid email address.
-            </p>
+            <InputHelper text="Please enter a valid email address." error />
           )}
         </div>
       </div>
