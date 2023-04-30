@@ -186,13 +186,13 @@ const Address = () => {
             </button>
           </div>
           {firstEvents.postCode ? (
-            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork." />
+            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork" />
           ) : !(data.postCode && isValid(data.postCode)) ? (
             <InputHelper text="Please enter a valid postcode" error />
           ) : addressList.length === 0 ? (
             <InputHelper text="Click the button to find your address" error />
           ) : (
-            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork." />
+            <InputHelper text="If successful, we need your address to send the cheque for your refund. We do not use this information to send any paperwork" />
           )}
         </div>
         {addressList?.length > 0 ? (

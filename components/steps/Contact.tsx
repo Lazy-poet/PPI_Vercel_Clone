@@ -80,10 +80,7 @@ const Details = (props: any) => {
             </div>
           </div>
           {firstEvents.phone || isPhoneValid ? (
-            <InputHelper
-              text=" We need this so we can keep you updated on your claim with text
-              messages"
-            />
+            <InputHelper text="We need this so we can keep you updated on your claim by sms" />
           ) : (
             <InputHelper text=" Please enter a valid mobile number." error />
           )}
