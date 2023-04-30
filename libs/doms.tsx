@@ -15,8 +15,8 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Find out if you're eligible for a PPI refund with our easy online tool",
-    "Our records show that you are eligible to claim a tax refund. We just need a few details to complete your claim",
+    "Let us know how much PPI you received to find out if you qualify for a tax refund",
+    "Our records show that you're eligible to claim a tax refund. We just need a few more details to complete your claim",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
       directly. We do this by getting your consent via signature. Once your
@@ -61,7 +61,7 @@ export const SIDE_INFO = [
 
 export const NEXT_BUTTON_TEXTS = [
   "Next",
-  "Next",
+  "Check My Eligibility",
   "Next",
   "Next",
   "Next",
