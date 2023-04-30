@@ -38,12 +38,10 @@ const Insurance = () => {
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 viewBox="0 0 16 18"
-                className={`w-5 h-5 ${
-                  firstEvents.insurance
-                    ? "text-gray-500 dark:text-gray-400"
-                    : userData.insurance && isNino(userData.insurance)
-                    ? "text-green-500"
-                    : "error"
+                className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
+                  !firstEvents.insurance &&
+                  !(userData.insurance && isNino(userData.insurance)) &&
+                  "error"
                 }`}
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
