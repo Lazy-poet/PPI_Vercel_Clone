@@ -1,6 +1,6 @@
 import Trustpilot from "./Trustpilot";
 import { useSystemValues } from "@/contexts/ValueContext";
-
+import Image from "next/image";
 const MarketingBanner = () => {
   const { ready } = useSystemValues();
   return (
@@ -11,32 +11,42 @@ const MarketingBanner = () => {
     >
       <div className="flex flex-col items-start md:items-center md:flex-row text-gray-900">
         {!ready ? (
-          <p className="flex gap-1 items-center text-sm font-normal">
-            <svg
-              className="flex-shrink-0 w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            86% of customers end up with a tax rebate
-          </p>
+          <>
+            <figure className="max-w-screen-md">
+              <blockquote>
+                <p className="text-sm font-medium text-gray-900">
+                  &ldquo;If you&apos;ve received a PPI payout since April 2016,
+                  you may be due a refund on the income tax deducted from the
+                  interest element of the payout.&rdquo;
+                </p>
+              </blockquote>
+              <figcaption className="flex items-center mt-3 space-x-3">
+                <Image
+                  src="/images/profile/martin lewis.jpeg"
+                  className="w-6 h-6 rounded-full"
+                  width={24}
+                  height={24}
+                  alt="profile picture"
+                />
+                <div className="flex text-xs items-center divide-x divide-gray-900">
+                  <cite className="pr-3 font-medium text-gray-900">
+                    Martin Lewis
+                  </cite>
+                  <cite className="pl-3 text-xs text-gray-900">
+                    Source: ITV News
+                  </cite>
+                </div>
+              </figcaption>
+            </figure>
+          </>
         ) : (
-          <div className="text-center flex flex-col gap-1 items-center justify-center w-full">
-            <p>Our largest HMRC refund</p>
-            <p className="text-3xl font-semibold">
-              <span className="text-lg font-medium">£</span>11,767.
-              <span className="text-lg font-medium">69</span>
-            </p>
-            <div className="mt-2 text-xs text-left">
-              <Trustpilot />
+          <>
+            <div className="text-center flex flex-col gap-1 items-center justify-center w-full">
+              <div className="text-xs text-left">
+                <Trustpilot />
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </div>

@@ -152,6 +152,7 @@ const HeroSection: React.FC<{
                   value={userData.firstName}
                   onBlur={handleInputBlur}
                   onChange={handleInputChange}
+                  autoComplete="given-name"
                 />
                 <span className="form-icon"></span>
               </div>
@@ -192,6 +193,7 @@ const HeroSection: React.FC<{
                   value={userData.lastName}
                   onBlur={handleInputBlur}
                   onChange={handleInputChange}
+                  autoComplete="family-name"
                 />
                 <span className="form-icon"></span>
               </div>
