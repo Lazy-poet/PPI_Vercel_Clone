@@ -6,7 +6,7 @@ const Loading = () => {
     userData: { firstName },
   } = useSystemValues();
   return (
-    <div className="fixed w-screen h-screen top-0 left-0 z-20 bg-white flex flex-col gap-2 items-center justify-center p-5 dark:bg-gray-700">
+    <div className="fixed w-screen h-screen top-0 left-0 z-50 bg-white flex flex-col gap-2 items-center justify-center p-5 dark:bg-gray-700">
       <Spinner
         className="my-2"
         large
