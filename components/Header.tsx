@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 z-20 relative">
+    <header className="bg-gradient-to-b from-gray-100 to-gray-50 dark:from-gray-900 dark:to-gray-800 z-20 relative">
       <Head>
         {/* Review Script */}
         <script
