@@ -23,7 +23,7 @@ const SideItem = ({ info }: { info: string }) => {
 
 const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
   return (
-    <div className="side-panel hidden w-full max-w-md p-12 lg:block bg-primary-600 right-0 top-0 h-screen py-28">
+    <div className="side-panel hidden w-full max-w-md p-12 lg:block bg-primary-600 right-0 top-0 h-screen py-32">
       <div className="block p-8 text-white rounded-lg bg-primary-500">
         <figure className="max-w-screen-md">
           <blockquote>

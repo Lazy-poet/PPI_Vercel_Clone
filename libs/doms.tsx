@@ -1,7 +1,7 @@
 export const PERCENTS = [9, 18, 54, 72, 83, 91, 100];
 
 export const TITLES = [
-  (name?: string) => "Your income",
+  (name?: string) => "Select your annual income to see if you qualify",
   (name?: string) => "Your PPI refund(s)",
   (name?: string) => `Its good news ${name}!`,
   (name?: string) => "Your signature",
@@ -14,7 +14,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Let us know how much PPI you received to find out if you qualify for a tax refund",
+    "Enter the total amount of PPI received to see if you qualify bvvvvb vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
     "Our records show that you're eligible to claim a tax refund. We just need a few more details to complete your claim",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
