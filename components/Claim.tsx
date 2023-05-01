@@ -468,7 +468,7 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.query, router]);
 
   return (
-    <section className="bg-white dark:bg-gray-900">
+    <section>
       <div className="max-w-screen-xl lg:flex justify-start">
         <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
           <div className="w-full">
