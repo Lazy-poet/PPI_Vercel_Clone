@@ -1,19 +1,19 @@
 import { useSystemValues } from "@/contexts/ValueContext";
 import InputHelper from "../InputHelper";
+import OtpInput from "react-otp-input";
 
 const isNino = require("is-national-insurance-number");
 
 const Insurance = () => {
   const { userData, firstEvents, handleFormChange } = useSystemValues();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().trim();
+  const handleInputChange = (value: string) => {
     //accept only letters and numbers
     const regex = new RegExp("^[a-zA-Z0-9]+$");
     if (value.length && !regex.test(value)) {
       return;
     }
-    handleFormChange(e.target.name, value);
+    handleFormChange("insurance", value);
   };
 
   return (
@@ -38,7 +38,7 @@ const Insurance = () => {
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 viewBox="0 0 16 18"
-                className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
+                className={`hidden w-5 h-5 text-gray-500 dark:text-gray-400 ${
                   !firstEvents.insurance &&
                   !(userData.insurance && isNino(userData.insurance)) &&
                   "error"
@@ -54,7 +54,17 @@ const Insurance = () => {
                 />
               </svg>
             </div>
-            <input
+            <OtpInput
+              value={userData.insurance}
+              onChange={(value) =>
+                handleInputChange(value.toUpperCase().trim())
+              }
+              numInputs={9}
+              renderInput={(props) => <input {...props} />}
+              inputStyle="flex-1 !p-1 !h-10 sm:!h-12 !max-w-[48px] sm:p-4 rounded"
+              containerStyle="w-full flex flex-wrap gap-1.5  sm:gap-3"
+            />
+            {/* <input
               type="text"
               name="insurance"
               id="insurance"
@@ -63,9 +73,9 @@ const Insurance = () => {
               required
               maxLength={9}
               value={userData.insurance}
-              onChange={(e) => handleInputChange(e)}
-            />
-            <span className="form-icon"></span>
+              onChange={(e) => handleInputChange(e.target.value)}
+            /> */}
+            {/* <span className="form-icon"></span> */}
           </div>
         </div>
         {firstEvents.insurance ? (

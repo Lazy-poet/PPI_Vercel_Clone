@@ -199,7 +199,7 @@ function Claim({ setReady, data }: ClaimProps) {
           postCode: false,
           address: false,
         });
-        const { ...details } = userData;
+        const { insurance, signatureData, ...details } = userData;
         if (
           Utils.isObjectFilled(details, [
             "phone",
