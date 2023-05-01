@@ -14,7 +14,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Tell us about your annual income to see if you qualify",
-    "Enter the total amount of PPI received to see if you qualify bvvvvb vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+    "Enter the total amount of PPI received to see if you qualify",
     "Our records show that you're eligible to claim a tax refund. We just need a few more details to complete your claim",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
