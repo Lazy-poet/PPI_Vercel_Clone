@@ -112,7 +112,7 @@ const HeroSection: React.FC<{
   };
   return (
     <>
-      <section className="bg-white dark:bg-gray-900">
+      <section className="bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-800">
         <div className="py-8 px-4 mx-auto max-w-screen-lg lg:py-16 lg:px-12">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-center leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
             Claim Your PPI Tax Refund Today!
