@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800">
+    <header className="bg-white dark:bg-gray-800 z-20 relative">
       <Head>
         {/* Review Script */}
         <script
@@ -27,7 +27,7 @@ const Header = () => {
           src="https://cdn.trustindex.io/loader.js?13af5d813e3e503aa57601c3555"
         ></script>
       </Head>
-      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-6 border-gray-200">
+      <nav className="max-w-screen-xl mx-auto px-4 md:px-20 py-6 border-gray-200 ">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl gap-2">
           <Link
             href="/"

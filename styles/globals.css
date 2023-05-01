@@ -513,3 +513,8 @@ select:focus + .form-icon {
     transition: none !important;
   }
 }
+
+.side-panel {
+  position: fixed;
+  z-index: 1;
+}
