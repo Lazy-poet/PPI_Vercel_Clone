@@ -469,7 +469,7 @@ function Claim({ setReady, data }: ClaimProps) {
 
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="max-w-screen-xl mx-auto lg:flex">
+      <div className="max-w-screen-xl lg:flex justify-start">
         <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
           <div className="w-full">
             <ProgressBar step={step} goToPrevStep={prevStep} />
@@ -501,8 +501,11 @@ function Claim({ setReady, data }: ClaimProps) {
             )}
           </div>
         </div>
+        <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block" />
 
-        <SidePanel amount={claimValue} step={step} />
+        <div className="z-10">
+          <SidePanel amount={claimValue} step={step} />
+        </div>
       </div>
     </section>
   );

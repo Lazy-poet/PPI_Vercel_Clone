@@ -6,6 +6,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Trustpilot from "./Trustpilot";
 import InputHelper from "./InputHelper";
+import TempDetails from "./TempDetails";
 const HeroSection: React.FC<{
   handleStart: () => void;
 }> = ({ handleStart }) => {
@@ -388,6 +389,7 @@ const HeroSection: React.FC<{
                 </li>
               </ul>
             </div>
+            <TempDetails />
           </form>
         </div>
       </section>

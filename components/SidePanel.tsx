@@ -1,6 +1,6 @@
 import { STEP } from "@/libs/constants";
 import { SIDE_INFO } from "@/libs/doms";
-
+import Image from "next/image";
 const SideItem = ({ info }: { info: string }) => {
   return (
     <li className="flex items-center space-x-3">
@@ -23,37 +23,30 @@ const SideItem = ({ info }: { info: string }) => {
 
 const SidePanel = ({ step, amount }: { step: STEP; amount: number }) => {
   return (
-    <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block bg-primary-600">
+    <div className="side-panel hidden w-full max-w-md p-12 lg:block bg-primary-600 right-0 top-0 h-screen py-28">
       <div className="block p-8 text-white rounded-lg bg-primary-500">
-        <h3 className="mb-1 text-2xl font-semibold">
-          {/* Your £{amount ? amount : 0} tax refund */}
-          Your PPI tax refund
-        </h3>
-
-        <p className="inline-flex justify-center items-center space-x-1.5 mb-4 font-light text-primary-100 sm:text-lg">
-          {step !== STEP.ALL_DONE && (
-            <>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="15"
-                height="15"
-                fill="currentColor"
-                className="bi bi-info-circle"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-              </svg>
-              <span>More information required</span>
-            </>
-          )}
-        </p>
-
-        <ul role="list" className="space-y-4 text-left">
-          {SIDE_INFO.slice(0, step).map((info, index) => {
-            return <SideItem key={index} info={info} />;
-          })}
-        </ul>
+        <figure className="max-w-screen-md">
+          <blockquote>
+            <p className="text-sm font-medium">
+              &ldquo;If you&apos;ve received a PPI payout since April 2016, you
+              may be due a refund on the income tax deducted from the interest
+              element of the payout.&rdquo;
+            </p>
+          </blockquote>
+          <figcaption className="flex items-center mt-3 space-x-3">
+            <Image
+              src="/images/profile/martin lewis.jpeg"
+              className="w-6 h-6 rounded-full"
+              width={24}
+              height={24}
+              alt="profile picture"
+            />
+            <div className="flex text-xs items-center divide-x divide-white">
+              <cite className="pr-3 font-medium">Martin Lewis</cite>
+              <cite className="pl-3 text-xs">Source: ITV News</cite>
+            </div>
+          </figcaption>
+        </figure>
       </div>
     </div>
   );
