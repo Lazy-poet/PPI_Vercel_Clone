@@ -96,7 +96,7 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
 
       <Header />
       <div className="flex flex-col flex-grow justify-between min-h-[100%]">
-        <main className="relative bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-800">
+        <main className="relative bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-800 dark:to-gray-700">
           <MarketingBanner />
           {children}
         </main>
