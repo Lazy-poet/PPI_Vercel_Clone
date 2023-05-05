@@ -60,22 +60,15 @@ const Insurance = () => {
                 handleInputChange(value.toUpperCase().trim())
               }
               numInputs={9}
-              renderInput={(props) => <input {...props} />}
+              renderInput={(props, index) => (
+                <input
+                  {...props}
+                  type={index > 1 && index < 8 ? "tel" : "text"}
+                />
+              )}
               inputStyle="flex-1 !p-1 !h-10 sm:!h-12 !max-w-[48px] sm:p-4 rounded"
               containerStyle="w-full flex flex-wrap gap-1.5  sm:gap-3"
             />
-            {/* <input
-              type="text"
-              name="insurance"
-              id="insurance"
-              placeholder="e.g. AB123456C"
-              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-              required
-              maxLength={9}
-              value={userData.insurance}
-              onChange={(e) => handleInputChange(e.target.value)}
-            /> */}
-            {/* <span className="form-icon"></span> */}
           </div>
         </div>
         {firstEvents.insurance ? (
