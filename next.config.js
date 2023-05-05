@@ -1,3 +1,6 @@
+const execSync = require("child_process").execSync;
+
+const lastCommitCommand = "git rev-parse HEAD";
 /** @type {import('next').NextConfig} */
 const {
   BugsnagSourceMapUploaderPlugin,
@@ -64,6 +67,7 @@ const nextConfig = {
       new BugsnagSourceMapUploaderPlugin({
         apiKey: "2e8864db5e70f2fd27e9b539354a1270",
         appVersion: buildId,
+        overwrite: true,
         publicPath:
           process.env.NODE_ENV === "production"
             ? "https://quicktaxclaims.co.uk/_next/"
@@ -72,6 +76,10 @@ const nextConfig = {
     );
 
     return config;
+  },
+
+  async generateBuildId() {
+    return execSync(lastCommitCommand).toString().trim();
   },
 };
 
