@@ -221,7 +221,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 ? Utils.getObjectDifference(dbData, formattedDetails)
                 : Utils.getObjectDifference(
                     {},
-                    { ...dbData, ...formattedDetails }
+                    { ...dbData, insurance: null, ...formattedDetails }
                   ); // strip out empty fields;
             // set a new link_code either if there isnt an existing one or when user email has changed
             const link_code = linkCode
