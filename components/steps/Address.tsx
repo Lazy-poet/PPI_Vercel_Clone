@@ -51,14 +51,11 @@ const Address = () => {
     let { name, value } = e.target;
     switch (name) {
       case "postCode":
-        value = value.toUpperCase().substr(0, 8).replace(".", "");
+        value = value.substr(0, 8).replace(".", "");
         if (isValid(value.trim())) {
           value = parse(value.trim()).postcode!;
         }
-        if (
-          name === "postCode" &&
-          value !== currentAddressListPostCode.current
-        ) {
+        if (value !== currentAddressListPostCode.current) {
           const show = !!value && !!isValid(value);
           setShowPulse(show);
         }
@@ -168,6 +165,7 @@ const Address = () => {
                   : data.postCode
               }
               onChange={(e) => handleInputChange(e)}
+              autoCapitalize="characters"
             />
             <button
               type="button"
