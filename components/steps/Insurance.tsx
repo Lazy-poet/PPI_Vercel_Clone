@@ -38,7 +38,7 @@ const Insurance = () => {
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 viewBox="0 0 16 18"
-                className={`hidden w-5 h-5 text-gray-500 dark:text-gray-400 ${
+                className={`w-5 h-5 text-gray-500 dark:text-gray-400 ${
                   !firstEvents.insurance &&
                   !(userData.insurance && isNino(userData.insurance)) &&
                   "error"
@@ -54,21 +54,20 @@ const Insurance = () => {
                 />
               </svg>
             </div>
-            <OtpInput
+            <input
+              type="text"
+              name="insurance"
+              id="insurance"
+              placeholder="e.g. AB123456C"
+              className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pl-10 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+              required
+              maxLength={9}
               value={userData.insurance}
-              onChange={(value) =>
-                handleInputChange(value.toUpperCase().trim())
+              onChange={(e) =>
+                handleInputChange(e.target.value.toUpperCase().trim())
               }
-              numInputs={9}
-              renderInput={(props, index) => (
-                <input
-                  {...props}
-                  type={index > 1 && index < 8 ? "tel" : "text"}
-                />
-              )}
-              inputStyle="flex-1 !p-1 !h-10 sm:!h-12 !max-w-[48px] sm:p-4 rounded"
-              containerStyle="w-full flex flex-wrap gap-1.5  sm:gap-3"
             />
+            <span className="form-icon"></span>
           </div>
         </div>
         {firstEvents.insurance ? (
