@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Trustpilot = () => {
   return (
-    <div className="flex justify-center items-center divide-x divide-gray-200 dark:divide-gray-700">
+    <div className="flex justify-center items-center divide-x divide-gray-200 dark:divide-gray-500">
       <div className="flex pr-3 -space-x-4 sm:pr-5 ">
         <Image
           width={40}

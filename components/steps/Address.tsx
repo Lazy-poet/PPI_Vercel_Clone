@@ -165,7 +165,6 @@ const Address = () => {
                   : data.postCode
               }
               onChange={(e) => handleInputChange(e)}
-              autoCapitalize="characters"
             />
             <button
               type="button"
@@ -246,7 +245,7 @@ const Address = () => {
           </div>
         ) : null}
         {selectedAddress && (
-          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+          <blockquote className=" w-full p-4 border-l-4 border-gray-300 dark:border-gray-500">
             {selectedAddress.split(",").map((address, i) => (
               <p
                 key={i}
