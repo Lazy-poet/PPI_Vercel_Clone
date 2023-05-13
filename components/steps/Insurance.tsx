@@ -1,19 +1,21 @@
 import { useSystemValues } from "@/contexts/ValueContext";
 import InputHelper from "../InputHelper";
-import OtpInput from "react-otp-input";
+import { ChangeEvent } from "react";
 
 const isNino = require("is-national-insurance-number");
 
 const Insurance = () => {
   const { userData, firstEvents, handleFormChange } = useSystemValues();
 
-  const handleInputChange = (value: string) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     //accept only letters and numbers
+    let { name, value } = e.target;
+    value = value.toUpperCase().trim();
     const regex = new RegExp("^[a-zA-Z0-9]+$");
     if (value.length && !regex.test(value)) {
       return;
     }
-    handleFormChange("insurance", value);
+    handleFormChange(name, value);
   };
 
   return (
@@ -63,9 +65,7 @@ const Insurance = () => {
               required
               maxLength={9}
               value={userData.insurance}
-              onChange={(e) =>
-                handleInputChange(e.target.value.toUpperCase().trim())
-              }
+              onChange={handleInputChange}
             />
             <span className="form-icon"></span>
           </div>
