@@ -31,9 +31,6 @@ const Income = dynamic(() => import("@/components/steps/Income"), {
 const Payouts = dynamic(() => import("@/components/steps/Payouts"), {
   loading: () => <Spinner />,
 });
-const Address = dynamic(() => import("@/components/steps/Address"), {
-  loading: () => <Spinner />,
-});
 
 const Signature = dynamic(() => import("@/components/steps/Signature"), {
   loading: () => <Spinner />,
@@ -95,7 +92,8 @@ function Claim({ setReady, data }: ClaimProps) {
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
-  const handleFormChange5 = (key: string, value: string) => {
+  // Step5
+  const handleTaxYearsChange = (key: string, value: string) => {
     setTaxYears({
       firstEvents: {
         ...taxYears.firstEvents,
@@ -146,8 +144,6 @@ function Claim({ setReady, data }: ClaimProps) {
   };
 
   const nextStep = async () => {
-    // let { day, month, year, ...otherFormData1 } = userData;
-
     switch (step) {
       case STEP.EARNINGS:
         setFirstEvents({ ...firstEvents, earnings: false });
@@ -171,7 +167,6 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-
           setStep(STEP.PAYOUTS);
         }
         break;
@@ -209,7 +204,7 @@ function Claim({ setReady, data }: ClaimProps) {
           postCode: false,
           address: false,
         });
-        const { ...details } = userData;
+        const { insurance, signatureData, ...details } = userData;
         if (
           Utils.isObjectFilled(details, [
             "phone",
@@ -233,7 +228,7 @@ function Claim({ setReady, data }: ClaimProps) {
                 ? Utils.getObjectDifference(dbData, formattedDetails)
                 : Utils.getObjectDifference(
                     {},
-                    { ...dbData, ...formattedDetails }
+                    { ...dbData, insurance: null, ...formattedDetails }
                   ); // strip out empty fields;
             // set a new link_code either if there isnt an existing one or when user email has changed
 
@@ -533,8 +528,8 @@ function Claim({ setReady, data }: ClaimProps) {
   }, [router.query, router]);
 
   return (
-    <section className="bg-white dark:bg-gray-900">
-      <div className="max-w-screen-xl mx-auto lg:flex">
+    <section>
+      <div className="max-w-screen-xl lg:flex justify-start">
         <div className="flex items-start mx-auto md:w-[42rem] px-4 md:px-8 xl:px-0">
           <div className="w-full">
             <ProgressBar step={step} goToPrevStep={prevStep} />
@@ -562,8 +557,11 @@ function Claim({ setReady, data }: ClaimProps) {
             )}
           </div>
         </div>
+        <div className="hidden w-full max-w-md p-12 lg:h-auto lg:block" />
 
-        <SidePanel amount={claimValue} step={step} />
+        <div className="z-10">
+          <SidePanel amount={claimValue} step={step} />
+        </div>
       </div>
     </section>
   );

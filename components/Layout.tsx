@@ -36,7 +36,7 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col justify-start min-h-screen">
       <Head>
         <link rel="icon" href="/images/favicon.png" key="favicon" />
         <link rel="canonical" href={`${url}${asPath}`} key="canonical" />
@@ -95,12 +95,13 @@ const Layout = ({ children, ...customMeta }: LayoutProps) => {
       </Head>
 
       <Header />
-      <main className="relative bg-white dark:bg-gray-900">
-        <MarketingBanner />
-        {children}
-      </main>
-
-      <Footer />
+      <div className="flex flex-col flex-grow justify-between min-h-[100%]">
+        <main className="relative bg-gradient-to-b from-gray-50 to-transparent dark:from-gray-800 dark:to-gray-700">
+          <MarketingBanner />
+          {children}
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 };

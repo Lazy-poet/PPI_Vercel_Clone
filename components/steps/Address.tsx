@@ -19,7 +19,6 @@ const Address = () => {
     setUserData,
   } = useSystemValues();
 
-
   const clearAddresses = () => {
     setSelectedAddress("");
     setAddressList([]);
@@ -52,14 +51,11 @@ const Address = () => {
     let { name, value } = e.target;
     switch (name) {
       case "postCode":
-        value = value.toUpperCase().substr(0, 8).replace(".", "");
+        value = value.substr(0, 8).replace(".", "");
         if (isValid(value.trim())) {
           value = parse(value.trim()).postcode!;
         }
-        if (
-          name === "postCode" &&
-          value !== currentAddressListPostCode.current
-        ) {
+        if (value !== currentAddressListPostCode.current) {
           const show = !!value && !!isValid(value);
           setShowPulse(show);
         }
@@ -249,7 +245,7 @@ const Address = () => {
           </div>
         ) : null}
         {selectedAddress && (
-          <blockquote className=" w-full p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+          <blockquote className="sm:col-span-2 p-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
             {selectedAddress.split(",").map((address, i) => (
               <p
                 key={i}

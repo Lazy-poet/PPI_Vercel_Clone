@@ -5,7 +5,7 @@ import Link from "next/link";
 const Footer = () => {
   const { openPdf } = useSystemValues();
   return (
-    <footer className="px-4 py-16 bg-white dark:bg-gray-800">
+    <footer className="px-4 py-16 bg-white dark:bg-gray-800 relative z-20">
       <div className="mx-auto max-w-screen-xl text-center">
         <Link
           href="/"
