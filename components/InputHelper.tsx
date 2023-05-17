@@ -5,14 +5,22 @@ type Props = {
   text?: string;
   error?: boolean;
   success?: boolean;
+  align?: "left" | "center";
 };
 
-const InputHelper = ({ text, error, success, children }: Props) => {
+const InputHelper = ({
+  text,
+  error,
+  success,
+  children,
+  align = "left",
+}: Props) => {
   if (!text && !children) return null;
+
   return (
     <p
       id="helper-text-explanation"
-      className={`mt-2 text-sm flex gap-1  ${
+      className={`mt-2 text-${align} text-sm flex gap-1  ${
         error
           ? "text-red-600 dark:text-red-500"
           : success

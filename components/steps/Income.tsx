@@ -3,11 +3,11 @@ import InputHelper from "../InputHelper";
 
 export enum Earnings {
   LessThan12570 = "Less than £12,570",
-  Between12571And50270 = "£12,500 to £50,270",
+  Between12571And50270 = "£12,571 to £50,270",
   MoreThan50271 = "More than £50,271",
 }
 
-const ClaimNow = () => {
+const ClaimNow = (props: any) => {
   const { userData, firstEvents, handleFormChange } = useSystemValues();
 
   return (

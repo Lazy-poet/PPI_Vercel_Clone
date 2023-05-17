@@ -4,12 +4,11 @@ import Address from "./Address";
 import InputHelper from "../InputHelper";
 import { useEffect } from "react";
 
-const Details = () => {
+const Details = (props: any) => {
   const {
     userData: data,
     firstEvents,
     handleFormChange,
-    openPdf,
     titleRef,
   } = useSystemValues();
 
