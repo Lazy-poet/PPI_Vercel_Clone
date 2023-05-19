@@ -1,5 +1,5 @@
 import { Earnings } from "@/components/steps/Income";
-import { DBData } from "@/libs/constants";
+import { DBData, STEP } from "@/libs/constants";
 import React, {
   createContext,
   SetStateAction,
@@ -79,6 +79,8 @@ const useValue = () => {
   const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
   const titleRef = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
+
   const [lendersData, setLendersData] = useState<LendersData>({
     selectedLenders: [],
     showOtherLender: false,
@@ -199,6 +201,8 @@ const useValue = () => {
     signatureTermsChecked,
     setSignatureTermsChecked,
     titleRef,
+    step,
+    setStep,
   };
 };
 
@@ -252,6 +256,8 @@ interface Value {
   setSignatureTermsChecked: Dispatch<SetStateAction<boolean>>;
   handleFormChange: (key: string, value: string) => void;
   titleRef: RefObject<HTMLDivElement>;
+  step: STEP;
+  setStep: Dispatch<SetStateAction<STEP>>;
 }
 
 export const ValueContext = createContext({} as Value);

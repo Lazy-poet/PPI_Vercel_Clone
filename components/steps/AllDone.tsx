@@ -1,5 +1,5 @@
 const AllDone = () => {
-  return <div className="mt-6 mb-5" />;
+  return <div className="mt-8 md:mt-24" />;
 };
 
 export default AllDone;

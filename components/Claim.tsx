@@ -86,25 +86,12 @@ function Claim({ setReady, data }: ClaimProps) {
     setUserData,
     signatureTermsChecked,
     setShowLoadingPage,
+    step,
+    setStep,
   } = useSystemValues();
-
-  const [step, setStep] = useState<STEP>(STEP.EARNINGS);
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
 
-  // Step5
-  const handleTaxYearsChange = (key: string, value: string) => {
-    setTaxYears({
-      firstEvents: {
-        ...taxYears.firstEvents,
-        [key]: false,
-      },
-      tax_years: {
-        ...taxYears.tax_years,
-        [key]: value,
-      },
-    });
-  };
 
   const base64ToFile = async (base64String: string) =>
     new File(
@@ -321,7 +308,11 @@ function Claim({ setReady, data }: ClaimProps) {
               await updateSecondaryTable(data[0]);
             }
           }
-          setStep(STEP.LENDERS);
+          setShowLoadingPage(true);
+          setTimeout(() => {
+            setShowLoadingPage(false);
+            setStep(STEP.LENDERS);
+          }, 2000);
         }
         break;
       case STEP.LENDERS:
