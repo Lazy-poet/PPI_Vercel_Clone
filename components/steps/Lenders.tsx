@@ -118,7 +118,7 @@ const Lenders = () => {
             />
             <label
               htmlFor={lender}
-              className="w-full py-4 ml-3 font-bold text-gray-900 dark:text-white"
+              className="w-full py-4 ml-3 font-medium text-gray-900 dark:text-white"
             >
               {lender}
             </label>
