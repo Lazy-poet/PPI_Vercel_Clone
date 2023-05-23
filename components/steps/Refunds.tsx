@@ -30,7 +30,7 @@ const Refunds = () => {
     }));
   };
   return (
-    <div className="grid  gap-10 mt-6 mb-5">
+    <div className="grid gap-10 mt-6 mb-5">
       {lendersData.selectedLenders
         .concat(
           lendersData.otherLender?.value ? [lendersData.otherLender.value] : []
@@ -38,13 +38,13 @@ const Refunds = () => {
         .map((lender) => (
           <div key={lender}>
             <div
-              className={
+              className={`mb-5 ${
                 refunds[lender]?.firstEvent?.year
                   ? ""
                   : refunds[lender]?.year
                   ? "success"
                   : "error"
-              }
+              }`}
             >
               <label
                 htmlFor="address"
@@ -52,7 +52,7 @@ const Refunds = () => {
               >
                 Select the year you received your refund from {lender}
               </label>
-              <FormControl className="w-full mui-select mb-5">
+              <FormControl className="w-full mui-select">
                 <Select
                   id="address"
                   name="address"
