@@ -10,7 +10,7 @@ const ProgressBar = ({ step, goToPrevStep }: Props) => {
   return (
     <div className="w-full mt-5 mx-auto text-center lg:mt-10">
       <div className="flex justify-between items-center mb-1">
-        {step !== STEP.LENDERS && (
+        {step !== STEP.REFUNDS && (
           <button
             className="inline-flex items-center text-sm font-medium underline text-gray-900 dark:text-white"
             onClick={() => goToPrevStep()}

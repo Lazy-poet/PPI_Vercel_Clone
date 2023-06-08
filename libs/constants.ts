@@ -14,7 +14,6 @@ export enum STEP {
   CONTACT,
   SIGNATURE,
   INSURANCE,
-  LENDERS,
   REFUNDS,
   ALL_DONE,
   ERROR,

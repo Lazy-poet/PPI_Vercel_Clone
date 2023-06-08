@@ -15,26 +15,17 @@ export enum IncomeLevel {
   BR = "Basic Rate",
   ABR = "Above Basic Rate",
 }
-type LendersData = {
-  selectedLenders: string[];
-  showOtherLender: boolean;
-  otherLender: {
-    value: string;
-    firstEvent: boolean;
-  };
-  firstEvent: boolean;
+export type RefundData = {
+  lender: string;
+  year: string;
+  amount: string;
+  tax_deduction: string;
 };
-export type REFUNDS = Record<
-  string,
-  {
-    year: string;
-    amount: string;
-    tax_deduction: string;
-    firstEvent: {
-      [key: string]: boolean;
-    };
-  }
->;
+export type REFUNDS = (RefundData & {
+  firstEvent: {
+    [key in keyof RefundData]: boolean;
+  };
+})[];
 
 export type UserData = {
   firstName: string;
@@ -75,21 +66,25 @@ const useValue = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [fileURL, setFileURL] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
-  const [refunds, setRefunds] = useState({} as REFUNDS);
+  const [refunds, setRefunds] = useState([
+    {
+      lender: "",
+      year: "",
+      amount: "",
+      tax_deduction: "",
+      firstEvent: {
+        lender: true,
+        year: true,
+        amount: true,
+        tax_deduction: true,
+      },
+    },
+  ]);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [signatureTermsChecked, setSignatureTermsChecked] = useState(true);
   const titleRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState<STEP>(STEP.EARNINGS);
 
-  const [lendersData, setLendersData] = useState<LendersData>({
-    selectedLenders: [],
-    showOtherLender: false,
-    otherLender: {
-      value: "",
-      firstEvent: true,
-    },
-    firstEvent: true,
-  });
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -187,8 +182,6 @@ const useValue = () => {
     openPdf,
     ready,
     setReady,
-    lendersData,
-    setLendersData,
     refunds,
     setRefunds,
     userData,
@@ -242,8 +235,6 @@ interface Value {
   setOpen: Dispatch<SetStateAction<boolean>>;
   ready: boolean;
   setReady: Dispatch<SetStateAction<boolean>>;
-  lendersData: LendersData;
-  setLendersData: Dispatch<SetStateAction<LendersData>>;
   refunds: REFUNDS;
   setRefunds: Dispatch<SetStateAction<REFUNDS>>;
   userData: UserData;

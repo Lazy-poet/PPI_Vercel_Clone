@@ -1,4 +1,4 @@
-export const PERCENTS = [9, 18, 54, 72, 81, 90, 95, 100];
+export const PERCENTS = [9, 18, 54, 72, 81, 90, 100];
 
 export const TITLES = [
   (name?: string) => "Your income",
@@ -6,7 +6,6 @@ export const TITLES = [
   (name?: string) => `Its good news ${name}!`,
   (name?: string) => "Your signature",
   (name?: string) => "Confirm your identity",
-  (name?: string) => "Your Lenders",
   (name?: string) => "Your PPI refunds",
   (name?: string) => "Thank you! 🎉",
   (name?: string) => "Apologies, we are unable to proceed",
@@ -23,7 +22,6 @@ export const SUB_TITLES = (step: any, onClick: any, name: string) => {
       application has concluded, we remove this from our records.
     </span>,
     "Your National Insurance (NI) number is essential for HMRC to identify your tax account and process your refund. Our form is encrypted to ensure the safety of your information throughout the process",
-    "We now need to know which lenders you received a PPI refund from",
     "Enter the year, total amount received, and tax deduction for each lender selected.",
     <span key="what-happens-next">
       <strong>What happens next?</strong> We&apos;ll be in touch with updates on
@@ -54,7 +52,6 @@ export const SIDE_INFO = [
   "Your Contact",
   "Your Signature",
   "Your (NI) number",
-  "Your Lenders",
   "Your PPI Refunds",
   "Thank you",
 ];
@@ -62,7 +59,6 @@ export const SIDE_INFO = [
 export const NEXT_BUTTON_TEXTS = [
   "Next",
   "Check My Eligibility",
-  "Next",
   "Next",
   "Next",
   "Next",
@@ -75,7 +71,6 @@ export const NEXT_BUTTON_TIMERS = [
   "25 seconds remaining...",
   "15 seconds remaining...",
   "10 seconds remaining...",
-  "5 seconds remaining...",
   "0 seconds remaining...",
 ];
 

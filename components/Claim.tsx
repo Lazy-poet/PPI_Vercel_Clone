@@ -39,10 +39,6 @@ const Signature = dynamic(() => import("@/components/steps/Signature"), {
 const Insurance = dynamic(() => import("@/components/steps/Insurance"), {
   loading: () => <Spinner />,
 });
-
-const Lenders = dynamic(() => import("@/components/steps/Lenders"), {
-  loading: () => <Spinner />,
-});
 const Refunds = dynamic(() => import("@/components/steps/Refunds"), {
   loading: () => <Spinner />,
 });
@@ -76,8 +72,6 @@ function Claim({ setReady, data }: ClaimProps) {
     userPhone,
     userIp,
     openPdf,
-    lendersData,
-    setLendersData,
     refunds,
     setRefunds,
     firstEvents,
@@ -91,7 +85,6 @@ function Claim({ setReady, data }: ClaimProps) {
   } = useSystemValues();
 
   const [utmParams, setUtmParams] = useState({} as Record<string, string>);
-
 
   const base64ToFile = async (base64String: string) =>
     new File(
@@ -311,44 +304,8 @@ function Claim({ setReady, data }: ClaimProps) {
           setShowLoadingPage(true);
           setTimeout(() => {
             setShowLoadingPage(false);
-            setStep(STEP.LENDERS);
+            setStep(STEP.REFUNDS);
           }, 2000);
-        }
-        break;
-      case STEP.LENDERS:
-        setLendersData({
-          ...lendersData,
-          firstEvent: false,
-          otherLender: {
-            ...lendersData.otherLender,
-            firstEvent: false,
-          },
-        });
-        if (
-          (lendersData.selectedLenders.length &&
-            !lendersData.showOtherLender) ||
-          (lendersData.showOtherLender && lendersData.otherLender.value)
-        ) {
-          // append other lender into the refunds object
-          if (lendersData.otherLender?.value) {
-            if (!(lendersData.otherLender?.value in refunds)) {
-              setRefunds({
-                ...refunds,
-                [lendersData.otherLender?.value]: {
-                  year: "",
-                  amount: "",
-                  tax_deduction: "",
-                  firstEvent: {
-                    year: true,
-                    amount: true,
-                    tax_deduction: true,
-                  },
-                },
-              });
-            }
-          }
-
-          setStep(STEP.REFUNDS);
         }
         break;
       case STEP.REFUNDS:
@@ -356,6 +313,7 @@ function Claim({ setReady, data }: ClaimProps) {
           refunds[lender] = {
             ...refunds[lender],
             firstEvent: {
+              lender: false,
               year: false,
               amount: false,
               tax_deduction: false,
@@ -363,22 +321,14 @@ function Claim({ setReady, data }: ClaimProps) {
           };
         }
 
-        setRefunds({ ...refunds });
-
-        const can_proceed = lendersData.selectedLenders
-          .concat(
-            lendersData.otherLender?.value
-              ? [lendersData.otherLender.value]
-              : []
-          )
-          .every((lender) => {
-            return (
-              refunds[lender]?.amount &&
-              Number(refunds[lender].amount.replace(/,/g, "")) > 0 &&
-              Number(refunds[lender].tax_deduction.replace(/,/g, "")) > 0 &&
-              refunds[lender]?.year
-            );
-          });
+        setRefunds([...refunds]);
+        const can_proceed = refunds.every((refund) => {
+          return (
+            Utils.isObjectFilled(refund) &&
+            Number(refund.amount.replace(/,/g, "")) > 0 &&
+            Number(refund.tax_deduction.replace(/,/g, "")) > 0
+          );
+        });
         if (can_proceed) {
           const refund_data = {} as {
             [key: string]: {
@@ -387,19 +337,15 @@ function Claim({ setReady, data }: ClaimProps) {
               tax_deduction: number;
             };
           };
-          for (const lender in refunds) {
-            if (
-              lendersData.selectedLenders.includes(lender) ||
-              lender === lendersData.otherLender.value
-            ) {
-              refund_data[lender] = {
-                year: refunds[lender].year,
-                amount: Number(refunds[lender].amount.replace(/,/g, "")),
-                tax_deduction: Number(
-                  refunds[lender].tax_deduction.replace(/,/g, "")
-                ),
-              };
-            }
+          for (const i in refunds) {
+            const lender = refunds[i].lender
+            refund_data[lender] = {
+              year: refunds[i].year,
+              amount: Number(refunds[i].amount.replace(/,/g, "")),
+              tax_deduction: Number(
+                refunds[i].tax_deduction.replace(/,/g, "")
+              ),
+            };
           }
           if (Utils.hasObjectValueChanged(refund_data, dbData.refunds || {})) {
             const { data } = await supabase
@@ -534,7 +480,6 @@ function Claim({ setReady, data }: ClaimProps) {
             {step === STEP.EARNINGS && <Income />}
             {step === STEP.SIGNATURE && <Signature />}
             {step === STEP.INSURANCE && <Insurance />}
-            {step === STEP.LENDERS && <Lenders />}
             {step === STEP.REFUNDS && <Refunds />}
             {step === STEP.ALL_DONE && <AllDone />}
 

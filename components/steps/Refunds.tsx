@@ -1,7 +1,5 @@
-import { ChangeEvent } from "react";
-import CustomCurrencyField from "../CustomCurrencyField";
-import { FormControl, MenuItem, Select } from "@mui/material";
 import { useSystemValues } from "@/contexts/ValueContext";
+import Lender from "./Lender";
 
 export enum TAX_YEARS {
   APR062018_APR052019 = "6 April 2018 and 5 April 2019",
@@ -11,135 +9,51 @@ export enum TAX_YEARS {
 }
 
 const Refunds = () => {
-  const { lendersData, refunds, setRefunds } = useSystemValues();
-  const handleChange = (
-    field: "year" | "amount" | "tax_deduction",
-    lender: string,
-    value: string
-  ) => {
-    setRefunds((prev) => ({
-      ...prev,
-      [lender]: {
-        ...prev[lender],
-        [field]: value,
+  const { refunds, setRefunds } = useSystemValues();
+
+  const addPayout = () => {
+    setRefunds([
+      ...refunds,
+      {
+        lender: "",
+        year: "",
+        amount: "",
+        tax_deduction: "",
         firstEvent: {
-          ...prev[lender].firstEvent,
-          [field]: false,
+          lender: true,
+          year: true,
+          amount: true,
+          tax_deduction: true,
         },
       },
-    }));
+    ]);
   };
   return (
     <div className="grid gap-10 mt-6 mb-5">
-      {lendersData.selectedLenders
-        .concat(
-          lendersData.otherLender?.value ? [lendersData.otherLender.value] : []
-        )
-        .map((lender) => (
-          <div key={lender}>
-            <div
-              className={`mb-5 ${
-                refunds[lender]?.firstEvent?.year
-                  ? ""
-                  : refunds[lender]?.year
-                  ? "success"
-                  : "error"
-              }`}
-            >
-              <label
-                htmlFor="address"
-                className="block mb-2 text-lg font-bold text-gray-900 dark:text-white"
-              >
-                Select the year you received your refund from {lender}
-              </label>
-              <FormControl className="w-full mui-select">
-                <Select
-                  id="address"
-                  name="address"
-                  className="p-1 bg-gray-50 border border-gray-300 text-gray-900 sm:text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:placeholder-opacity-75 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={refunds[lender]?.year || ""}
-                  onChange={(e) => handleChange("year", lender, e.target.value)}
-                  displayEmpty
-                  // IconComponent={ExpandMoreIcon}
-                >
-                  <MenuItem value="" disabled selected>
-                    Select Year
-                  </MenuItem>
-                  <MenuItem value="2018">Before 2018</MenuItem>
-                  <MenuItem value="2019">2019</MenuItem>
-                  <MenuItem value="2020">2020</MenuItem>
-                  <MenuItem value="2021">2021</MenuItem>
-                  <MenuItem value="2022">2022</MenuItem>
-                </Select>
-                <span className="form-icon"></span>
-              </FormControl>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-10 flex-col sm:flex-row w-full">
-              <CustomCurrencyField
-                id={`${lender}-amount`}
-                value={refunds[lender]?.amount + "" || ""}
-                label="Total Amount Received"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleChange("amount", lender, e.target.value)
-                }
-                errorClass={
-                  refunds[lender]?.firstEvent?.amount
-                    ? ""
-                    : !!refunds[lender]?.amount &&
-                      Number(refunds[lender].amount.replace(/,/g, "")) > 0
-                    ? "success"
-                    : "error"
-                }
-                helperClass={
-                  refunds[lender]?.firstEvent?.amount
-                    ? ""
-                    : !!refunds[lender]?.amount &&
-                      Number(refunds[lender].amount.replace(/,/g, "")) > 0
-                    ? "success"
-                    : "error"
-                }
-                helperText={
-                  !refunds[lender]?.firstEvent?.amount &&
-                  !refunds[lender]?.amount
-                    ? "Please enter the total PPI refund amount."
-                    : ""
-                }
-              />
-              <CustomCurrencyField
-                id={`${lender}-tax`}
-                value={refunds[lender]?.tax_deduction + "" || ""}
-                label="Tax Deduction"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  handleChange("tax_deduction", lender, e.target.value)
-                }
-                errorClass={
-                  refunds[lender]?.firstEvent?.tax_deduction
-                    ? ""
-                    : !!refunds[lender]?.tax_deduction &&
-                      Number(refunds[lender].tax_deduction.replace(/,/g, "")) >
-                        0
-                    ? "success"
-                    : "error"
-                }
-                helperClass={
-                  refunds[lender]?.firstEvent?.tax_deduction
-                    ? ""
-                    : !!refunds[lender]?.tax_deduction &&
-                      Number(refunds[lender].tax_deduction.replace(/,/g, "")) >
-                        0
-                    ? "success"
-                    : "error"
-                }
-                helperText={
-                  !refunds[lender]?.firstEvent?.tax_deduction &&
-                  !refunds[lender]?.tax_deduction
-                    ? "Please enter the tax deduction amount."
-                    : ""
-                }
-              />
-            </div>
-          </div>
-        ))}
+      {refunds.map(({ lender }, index) => (
+        <Lender key={lender} index={index} />
+      ))}
+      <button
+        className="inline-flex justify-center items-center gap-3 p-5 w-full focus:outline-none text-center text-gray-900 bg-[#FCE96A] hover:bg-[#FCE96A] focus:ring-4 focus:ring-green-300 font-semibold rounded-lg dark:focus:ring-green-800"
+        onClick={addPayout}
+      >
+        <span>Add another payout</span>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z"
+            stroke="#111928"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
   );
 };
