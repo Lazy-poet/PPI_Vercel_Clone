@@ -28,9 +28,9 @@ const Contact = dynamic(() => import("@/components/steps/Contact"), {
 const Income = dynamic(() => import("@/components/steps/Income"), {
   loading: () => <Spinner />,
 });
-const Payouts = dynamic(() => import("@/components/steps/Payouts"), {
-  loading: () => <Spinner />,
-});
+// const Payouts = dynamic(() => import("@/components/steps/Payouts"), {
+//   loading: () => <Spinner />,
+// });
 
 const Signature = dynamic(() => import("@/components/steps/Signature"), {
   loading: () => <Spinner />,
@@ -147,28 +147,6 @@ function Claim({ setReady, data }: ClaimProps) {
               setDbData(data[0]);
             }
           }
-          setStep(STEP.PAYOUTS);
-        }
-        break;
-      case STEP.PAYOUTS:
-        setFirstEvents({ ...firstEvents, amount: false });
-        if (amount && Number(amount?.replace(/,/g, "")) >= 100) {
-          const valueChanged = amount !== dbData.estimated_total;
-          if ((userEmail || linkCode) && valueChanged) {
-            const { data, error } = await supabase
-              .from("PPI_Claim_Form")
-              .update({
-                estimated_total: amount,
-              })
-              .match(userEmail ? { email: userEmail } : { link_code: linkCode })
-              .select();
-            if (data?.length && (data[0].signatureData || data[0].insurance)) {
-              await updateSecondaryTable({
-                ...data[0],
-              });
-              setDbData(data[0]);
-            }
-          }
           setShowLoadingPage(true);
           setTimeout(() => {
             setShowLoadingPage(false);
@@ -176,6 +154,32 @@ function Claim({ setReady, data }: ClaimProps) {
           }, 3000);
         }
         break;
+      // case STEP.PAYOUTS:
+      //   setFirstEvents({ ...firstEvents, amount: false });
+      //   if (amount && Number(amount?.replace(/,/g, "")) >= 100) {
+      //     const valueChanged = amount !== dbData.estimated_total;
+      //     if ((userEmail || linkCode) && valueChanged) {
+      //       const { data, error } = await supabase
+      //         .from("PPI_Claim_Form")
+      //         .update({
+      //           estimated_total: amount,
+      //         })
+      //         .match(userEmail ? { email: userEmail } : { link_code: linkCode })
+      //         .select();
+      //       if (data?.length && (data[0].signatureData || data[0].insurance)) {
+      //         await updateSecondaryTable({
+      //           ...data[0],
+      //         });
+      //         setDbData(data[0]);
+      //       }
+      //     }
+      //     setShowLoadingPage(true);
+      //     setTimeout(() => {
+      //       setShowLoadingPage(false);
+      //       setStep(STEP.CONTACT);
+      //     }, 3000);
+      //   }
+      //   break;
       case STEP.CONTACT:
         setFirstEvents({
           ...firstEvents,
@@ -338,13 +342,11 @@ function Claim({ setReady, data }: ClaimProps) {
             };
           };
           for (const i in refunds) {
-            const lender = refunds[i].lender
+            const lender = refunds[i].lender;
             refund_data[lender] = {
               year: refunds[i].year,
               amount: Number(refunds[i].amount.replace(/,/g, "")),
-              tax_deduction: Number(
-                refunds[i].tax_deduction.replace(/,/g, "")
-              ),
+              tax_deduction: Number(refunds[i].tax_deduction.replace(/,/g, "")),
             };
           }
           if (Utils.hasObjectValueChanged(refund_data, dbData.refunds || {})) {
@@ -476,7 +478,7 @@ function Claim({ setReady, data }: ClaimProps) {
             <Title step={step} onClick={openPdf} />
 
             {step === STEP.CONTACT && <Contact />}
-            {step === STEP.PAYOUTS && <Payouts />}
+            {/* {step === STEP.PAYOUTS && <Payouts />} */}
             {step === STEP.EARNINGS && <Income />}
             {step === STEP.SIGNATURE && <Signature />}
             {step === STEP.INSURANCE && <Insurance />}

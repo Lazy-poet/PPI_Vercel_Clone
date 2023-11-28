@@ -1,8 +1,8 @@
-export const PERCENTS = [9, 18, 54, 72, 81, 90, 100];
+export const PERCENTS = [9, 18, 54, 72, 90, 100];
 
 export const TITLES = [
   (name?: string) => "Your income",
-  (name?: string) => "Your PPI refund(s)",
+  // (name?: string) => "Your PPI refund(s)",
   (name?: string) => `Its good news ${name}!`,
   (name?: string) => "Your signature",
   (name?: string) => "Confirm your identity",
@@ -14,7 +14,7 @@ export const TITLES = [
 export const SUB_TITLES = (step: any, onClick: any, name: string) => {
   const subtitles = [
     "Select your annual income to see if you qualify",
-    "Enter the total amount of PPI received to see if you qualify",
+    // "Enter the total amount of PPI received to see if you qualify",
     "Our records show that you're eligible to claim a tax refund. We just need a few more details to complete your claim",
     <span key="tos">
       We need your permission to deal with your application with the HMRC
@@ -48,7 +48,7 @@ export const ERRORS = [
 
 export const SIDE_INFO = [
   "Your Income",
-  "Your PPI Payouts",
+  // "Your PPI Payouts",
   "Your Contact",
   "Your Signature",
   "Your (NI) number",
@@ -57,7 +57,7 @@ export const SIDE_INFO = [
 ];
 
 export const NEXT_BUTTON_TEXTS = [
-  "Next",
+  // "Next",
   "Check My Eligibility",
   "Next",
   "Next",

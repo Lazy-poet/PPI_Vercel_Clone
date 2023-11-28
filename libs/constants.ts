@@ -10,7 +10,7 @@ export enum TAX_TYPE {
 
 export enum STEP {
   EARNINGS,
-  PAYOUTS,
+  // PAYOUTS,
   CONTACT,
   SIGNATURE,
   INSURANCE,
