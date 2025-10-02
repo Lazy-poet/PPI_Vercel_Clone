@@ -91,7 +91,7 @@ const Address = () => {
     if (!e || !isValid(e)) {
       return;
     }
-    const endpoint = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=ak_ku4e95aqGky1uIIQZMefHVykARiTn&q=${e}`;
+    const endpoint = `https://api.ideal-postcodes.co.uk/v1/autocomplete/addresses?api_key=${process.env.NEXT_PUBLIC_IDEAL_POSTCODE_API_KEY}&q=${e}`;
 
     fetch(endpoint, { method: "GET", redirect: "follow" })
       .then((response) => response.json())
