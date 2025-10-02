@@ -50,25 +50,25 @@ const nextConfig = {
       })
     );
 
-    // Upload source maps on production build
-    config.plugins.push(
-      new BugsnagBuildReporterPlugin(
-        {
-          apiKey: "2e8864db5e70f2fd27e9b539354a1270",
-          appVersion: buildId,
-          releaseStage: process.env.NODE_ENV,
-        },
-        { logLevel: "debug" }
-      ),
-      new BugsnagSourceMapUploaderPlugin({
-        apiKey: "2e8864db5e70f2fd27e9b539354a1270",
-        appVersion: buildId,
-        publicPath:
-          process.env.NODE_ENV === "production"
-            ? "https://ppi.claimingmadeeasy.co.uk/_next/"
-            : "http://localhost:3000/_next/",
-      })
-    );
+    // // Upload source maps on production build
+    // config.plugins.push(
+    //   new BugsnagBuildReporterPlugin(
+    //     {
+    //       apiKey: "2e8864db5e70f2fd27e9b539354a1270",
+    //       appVersion: buildId,
+    //       releaseStage: process.env.NODE_ENV,
+    //     },
+    //     { logLevel: "debug" }
+    //   ),
+    //   new BugsnagSourceMapUploaderPlugin({
+    //     apiKey: "2e8864db5e70f2fd27e9b539354a1270",
+    //     appVersion: buildId,
+    //     publicPath:
+    //       process.env.NODE_ENV === "production"
+    //         ? "https://ppi.claimingmadeeasy.co.uk/_next/"
+    //         : "http://localhost:3000/_next/",
+    //   })
+    // );
 
     return config;
   },
